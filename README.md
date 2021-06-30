@@ -12,7 +12,7 @@ in APIs folder contains logic of all SQL query functions, their blueprints and d
 Diagrams folder contains PDF version of DFD and HIPO diagrams
 frontend contains graphics and other display pages this project
 
-To run this project:
+To run this project:;
 1. Download xampp at (suggested: https://www.apachefriends.org/download.html)
 2. Install xampp (normally recommended default directory in C:/xampp)
 3. choose any directory on computer, git clone https://github.com/martinha1909/Hassner.git
