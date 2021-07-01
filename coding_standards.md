@@ -9,5 +9,5 @@ Coding Standards
 2. Formatting:
     2.1 Indentation should all be used with tabs (no spaces)
     2.2 if else structure always needs opening and closing brackets (applies to one line if else structure)
-    2.3 Opening and closing brackets require a separate line
+    2.3 Opening and closing brackets and quotation marks require a separate line
     2.4 conditional statements require a space (i.e x < 4)
