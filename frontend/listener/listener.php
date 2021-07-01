@@ -45,7 +45,7 @@ $_SESSION['btn_show'];
                         <div class="container-searchbar">
                             <label>
                                 <span class="screen-reader-text">Search for...</span>
-                                <form class="form-inline" action="../APIs/SearchSongsConnection.php" method="post">
+                                <form class="form-inline" action="../../APIs/artist/SearchArtistBackend.php" method="post">
                                     <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_name" />
                                 </form>
                             </label>
@@ -69,7 +69,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px #11171a; border-right-color: #11171a;">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="My Portfolio ->"
                                         </form>
                                     </li>
@@ -79,7 +79,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="My Portfolio">
                                         </form>
                                     </li>
@@ -89,7 +89,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Top Invested Artists ->">
                                         </form>
                                     </li>
@@ -99,7 +99,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="Top Invested Artists">
                                         </form>
                                     </li>
@@ -109,7 +109,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Buy Siliqas ->">
                                         </form>
                                     </li>
@@ -119,7 +119,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold;border:1px orange; background-color: transparent;" value="Buy Siliqas">
                                         </form>
                                     </li>
@@ -129,7 +129,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Sell Siliqas ->">
                                         </form>
                                     </li>
@@ -139,7 +139,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Sell Siliqas">
                                         </form>
                                     </li>
@@ -149,7 +149,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Account ->">
                                         </form>
                                     </li>
@@ -159,7 +159,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Account">
                                         </form>
                                     </li>
@@ -169,7 +169,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Settings ->">
                                         </form>
                                     </li>
@@ -179,7 +179,7 @@ $_SESSION['btn_show'];
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../APIs/DisplaySwitch.php" method="post">
+                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Settings">
                                         </form>
                                     </li>
@@ -194,7 +194,7 @@ $_SESSION['btn_show'];
                                 <li class="list-group-item-no-hover"></li>
                                 <li class="list-group-item-no-hover" style="padding-top: 52px;"></li>
                                 <li class="list-group-item-no-hover" style="border-bottom: 2px solid white;">
-                                    <a class="dropdown-item" id="dashboard-hover" style="background-color: transparent;" href="login.php">Log out</a>
+                                    <a class="dropdown-item" id="dashboard-hover" style="background-color: transparent;" href="../credentials/login.php">Log out</a>
                                 </li>
                             ';
                         ?>

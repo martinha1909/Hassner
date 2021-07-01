@@ -1,8 +1,8 @@
 <?php
 
     session_start();
-    include 'connection.php';
-    include 'logic.php';    
+    include '../connection.php';
+    include '../logic.php';    
 
     $conn = connect();
         $username = $_POST['username'];
@@ -18,22 +18,22 @@
             $_SESSION['password'] = $row['password'];
             $_SESSION['id'] = $row['id'];
             if($row['account_type'] == "user"){
-                header("Location: ../frontend/listener/listener.php");
+                header("Location: ../../frontend/listener/Listener.php");
                 die;
             }
             else if($row['account_type'] == "artist"){
-                header("Location: ../frontend/artist/artist.php");
+                header("Location: ../../frontend/artist/Artist.php");
                 die;
             }
             else if($row['account_type'] == "admin"){
-                header("Location: ../frontend/admin/admin.php");
+                header("Location: ../../frontend/admin/Admin.php");
                 die;
             }
            
         }
         else
         {
-            header("Location: ../frontend/login.php");
+            header("Location: ../../frontend/credentials/login.php");
         }
 
     closeCon($conn); 

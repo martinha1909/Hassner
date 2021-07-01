@@ -80,7 +80,7 @@ session_start();
             </div>
 
             <!-- signup form -->
-            <form action = "../../APIs/SignUpConnection.php" method = "post">
+            <form action = "../../APIs/credentials/SignUpBackend.php" method = "post">
 
             <!-- username field -->
 

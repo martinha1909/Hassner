@@ -75,7 +75,7 @@ $_SESSION['add_share'] = 0;
             </div>
 
           <!-- signup form -->
-            <form action="../../APIs/loginConnection.php" method="post">
+            <form action="../../APIs/credentials/LoginBackend.php" method="post">
 
               <!-- username field -->
               <div class="form-group">
