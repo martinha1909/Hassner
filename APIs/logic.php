@@ -11,6 +11,16 @@
             return $result;
         }
 
+        function searchAccount($conn, $username)
+        {
+            $sql = "SELECT * FROM account WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result;
+        }
+
         function signup($conn, $username, $password, $type, $email) //done2
         {
             $original_share= "";

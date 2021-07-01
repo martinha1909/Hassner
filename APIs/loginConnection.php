@@ -18,15 +18,15 @@
             $_SESSION['password'] = $row['password'];
             $_SESSION['id'] = $row['id'];
             if($row['account_type'] == "user"){
-                header("Location: ../frontend/listener.php");
+                header("Location: ../frontend/listener/listener.php");
                 die;
             }
             else if($row['account_type'] == "artist"){
-                header("Location: ../frontend/artist.php");
+                header("Location: ../frontend/artist/artist.php");
                 die;
             }
             else if($row['account_type'] == "admin"){
-                header("Location: ../frontend/admin.php");
+                header("Location: ../frontend/admin/admin.php");
                 die;
             }
            
