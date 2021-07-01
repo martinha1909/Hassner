@@ -1,10 +1,11 @@
 <?php
-session_start();
-$_SESSION['conversion_rate'] = -0.05;
-$_SESSION['coins'];
-$_SESSION['notify'];
-$_SESSION['cad'];
-$_SESSION['btn_show'];
+    include '../../APIs/control/Dependencies.php';
+    session_start();
+    $_SESSION['conversion_rate'] = -0.05;
+    $_SESSION['coins'];
+    $_SESSION['notify'];
+    $_SESSION['cad'];
+    $_SESSION['btn_show'];
 ?>
 
 <!doctype html>
@@ -35,11 +36,8 @@ $_SESSION['btn_show'];
                     </a>
 
                     <?php
-                        include '../../APIs/logic.php';
-                        include '../../APIs/connection.php';
-                        $conn = connect();
-                        $result = searchAccount($conn, $_SESSION['username']);
-                        $account = $result->fetch_assoc();
+                        include '../../APIs/listener/AccountInfoBackend.php';
+                        $account = getAccount($_SESSION['username']);
                     ?>
                     <div class="wrapper-searchbar">
                         <div class="container-searchbar">
@@ -197,6 +195,64 @@ $_SESSION['btn_show'];
                                     <a class="dropdown-item" id="dashboard-hover" style="background-color: transparent;" href="../credentials/login.php">Log out</a>
                                 </li>
                             ';
+                        ?>
+                    </ul>
+                    <ul class="list-group col">
+                        <?php
+                            if($_SESSION['display'] == 1)
+                            {
+                                echo '
+                                    <table class="table">
+                                        <thead class="thead-orange">
+                                            <tr>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "#"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Artist"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Shares bought"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Price per share (q̶)"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Rate"></th>
+                                            </tr>
+                                        </thead>
+                                    <tbody>
+                                ';
+                                if($_SESSION['display'] == 1)
+                                {
+                                    echo '<form action="../../APIs/artist/ArtistShareInfoBackend.php" method="post">';
+                                    include "../../APIs/listener/TopInvestedArtistBackend.php";
+                                    $result = query_account('artist');
+                                    if($result->num_rows == 0)
+                                    {
+                                        echo '<h3> There are no artists to display </h3>';
+                                    }
+                                    else
+                                    {
+                                        $all_shares = array();
+                                        $users = array();
+                                        populateArray($all_shares, $users, $result);
+                                        sortArrays($all_shares, $users);
+                                        $id = 1;
+                                        for($i=0; $i<sizeof($all_shares); $i++)
+                                        {
+                                            if($id == 6)
+                                                break;
+                                            $price_per_share = getArtistPricePerShare($users[$i]);
+                                            $rate = getArtistCurrentRate($users[$i]);
+                                            echo '<tr><th scope="row">'.$id.'</th>
+                                                        <td><input name = "artist_name['.$users[$i].']" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$users[$i].'"></td></td>
+                                                        <td style="color: white">'.$all_shares[$i].'</td>
+                                                        <td style="color: white">'.$price_per_share.'</td>';
+                                            if($rate > 0)
+                                                echo '<td class="increase">+'.$rate.'%</td></tr>';
+                                            else if($rate == 0)
+                                                echo '<td>'.$rate.'%</td></tr>';
+                                            else
+                                                echo '<td class="decrease">'.$rate.'%</td></tr>';       
+                                            $id++;
+                                        }
+                                        
+                                    }
+                                    echo '</form>';
+                                }
+                            }
                         ?>
                     </ul>
                 </div>

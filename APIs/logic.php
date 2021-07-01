@@ -21,6 +21,16 @@
             return $result;
         }
 
+        function searchAccountType($conn, $type)
+        {
+            $sql = "SELECT * FROM account WHERE account_type = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $type);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result;
+        }
+
         function signup($conn, $username, $password, $type, $email) //done2
         {
             $original_share= "";
