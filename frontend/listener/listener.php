@@ -199,6 +199,7 @@
                     </ul>
                     <ul class="list-group col">
                         <?php
+                            include '../../APIs/listener/MyPortfolioBackend.php';                        
                             if($_SESSION['display'] == 0 || $_SESSION['display'] == 2)
                             {
                                 echo '
@@ -256,7 +257,6 @@
                                         </thead>
                                     <tbody>
                                 ';
-                                include '../../APIs/listener/MyPortfolioBackend.php';
                                 $my_investments = queryInvestment($_SESSION['username']);
                                 $all_profits = 0;
                                 $all_rates = array();
@@ -283,11 +283,11 @@
                                     }
                                     else if($_SESSION['sort_type'] == 2)
                                     {
-                                        sortArtist($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Ascending");
+                                        sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Ascending");
                                     }
                                     else if($_SESSION['sort_type'] == 3)
                                     {
-                                        sortArtist($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Ascending");
+                                        sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Ascending");
                                     }
                                     else if($_SESSION['sort_type'] == 4)
                                     {
@@ -295,33 +295,17 @@
                                     }
                                     else if($_SESSION['sort_type'] == 5)
                                     {
-                                        sortArtist($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Descending");
+                                        sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Descending");
                                     }
                                     else if($_SESSION['sort_type'] == 6)
                                     {
-                                        sortArtist($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Descending");
+                                        sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Descending");
                                     }
                                     else if ($_SESSION['sort_type'] == 7)
                                     {
                                         sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Descending");
                                     }
-                                    $id = 1;
-                                    echo '<form action="../../APIs/artist/ArtistShareInfoBackend.php" method="post">';
-                                    for($i=0; $i<sizeof($all_artists); $i++)
-                                    {
-                                        if($all_shares_bought[$i] != 0)
-                                        {
-                                            echo '<tr><th scope="row">'.$id.'</th><td><input name = "artist_name['.$all_artists[$i].']" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$all_artists[$i].'"></td><td>'.$all_shares_bought[$i].'</td><td>'.$all_price_per_share[$i].'</td>';
-                                            if($all_rates[$i] > 0)
-                                                echo '<td class="increase">+'.$all_rates[$i].'%</td></tr>';
-                                            else if($all_rates[$i] == 0)
-                                                echo '<td>'.$all_rates[$i].'%</td></tr>';
-                                            else
-                                                echo '<td class="decrease">'.$all_rates[$i].'%</td></tr>';
-                                            $id++;
-                                        }
-                                    }
-                                    echo '</form>';
+                                    printChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
                                 }
                                 echo '</tbody>
                                     </table>';

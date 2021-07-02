@@ -230,4 +230,25 @@
             }
         }
     }
+
+    function printChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share)
+    {
+        echo '<form action="../../APIs/artist/ArtistShareInfoBackend.php" method="post">';
+        $id = 1;
+        for($i=0; $i<sizeof($all_artists); $i++)
+        {
+            if($all_shares_bought[$i] != 0)
+            {
+                echo '<tr><th scope="row">'.$id.'</th><td><input name = "artist_name['.$all_artists[$i].']" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$all_artists[$i].'"></td><td>'.$all_shares_bought[$i].'</td><td>'.$all_price_per_share[$i].'</td>';
+                if($all_rates[$i] > 0)
+                    echo '<td class="increase">+'.$all_rates[$i].'%</td></tr>';
+                else if($all_rates[$i] == 0)
+                    echo '<td>'.$all_rates[$i].'%</td></tr>';
+                else
+                    echo '<td class="decrease">'.$all_rates[$i].'%</td></tr>';
+                $id++;
+            }
+        }
+        echo '</form>';        
+    }
 ?>
