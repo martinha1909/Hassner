@@ -56,5 +56,28 @@
         return $rate['rate'];
     }
 
+    function printTopInvestedArtistChart($users, $all_shares)
+    {
+        $id = 1;
+        for($i=0; $i<sizeof($all_shares); $i++)
+        {
+            if($id == 6)
+                break;
+            $price_per_share = getArtistPricePerShare($users[$i]);
+            $rate = getArtistCurrentRate($users[$i]);
+            echo '<tr><th scope="row">'.$id.'</th>
+                        <td><input name = "artist_name['.$users[$i].']" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$users[$i].'"></td></td>
+                        <td style="color: white">'.$all_shares[$i].'</td>
+                        <td style="color: white">'.$price_per_share.'</td>';
+            if($rate > 0)
+                echo '<td class="increase">+'.$rate.'%</td></tr>';
+            else if($rate == 0)
+                echo '<td>'.$rate.'%</td></tr>';
+            else
+                echo '<td class="decrease">'.$rate.'%</td></tr>';       
+            $id++;
+        }        
+    }
+
     // 
 ?>
