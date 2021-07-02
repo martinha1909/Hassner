@@ -26,207 +26,104 @@
         
         closeCon($conn);
     }
-
-    function sortChart(&$all_artists, &$all_shares_bought, &$all_rates, &$all_price_per_share, $target, $indicator)
+    function insertionSort(&$guide_arr, &$arr1, &$arr2, &$arr3, $indicator)
     {
         $i;
         $key;
         $key2;
         $j;
+        if($indicator == "Ascending")
+        {
+            for($i=1; $i<sizeof($guide_arr); $i++)
+            {
+                $key = $guide_arr[$i];
+                $key2 = $arr1[$i];
+                $key3 = $arr2[$i];
+                $key4 = $arr3[$i];
+                $j = $i-1;
+                while($j >= 0 && $all_artists[$j] < $key)
+                {
+                    $all_artists[($j+1)] = $all_artists[$j];
+                    $arr1[($j+1)] = $arr1[$j];
+                    $arr2[($j+1)] = $arr2[$j];
+                    $arr3[($j+1)] = $arr3[$j];
+                    $j = $j-1;
+                }
+                $all_artists[($j+1)] = $key;
+                $arr1[($j+1)] = $key2;
+                $arr2[($j+1)] = $key3;
+                $arr3[($j+1)] = $key4;
+            }                    
+        }
+        else
+        {
+            for($i=1; $i<sizeof($guide_arr); $i++)
+            {
+                $key = $guide_arr[$i];
+                $key2 = $arr1[$i];
+                $key3 = $arr2[$i];
+                $key4 = $arr3[$i];
+                $j = $i-1;
+                while($j >= 0 && $all_artists[$j] > $key)
+                {
+                    $all_artists[($j+1)] = $all_artists[$j];
+                    $arr1[($j+1)] = $arr1[$j];
+                    $arr2[($j+1)] = $arr2[$j];
+                    $arr3[($j+1)] = $arr3[$j];
+                    $j = $j-1;
+                }
+                $all_artists[($j+1)] = $key;
+                $arr1[($j+1)] = $key2;
+                $arr2[($j+1)] = $key3;
+                $arr3[($j+1)] = $key4;
+            }                  
+        }
+    }
+
+    function sortChart(&$all_artists, &$all_shares_bought, &$all_rates, &$all_price_per_share, $target, $indicator)
+    {
         if($target == "Artist")
         {
             if($indicator = "Ascending")
             {
-                for($i=1; $i<sizeof($all_artists); $i++)
-                {
-                    $key = $all_artists[$i];
-                    $key2 = $all_shares_bought[$i];
-                    $key3 = $all_rates[$i];
-                    $key4 = $all_price_per_share[$i];
-                    $j = $i-1;
-                    while($j >= 0 && $all_artists[$j] < $key)
-                    {
-                        $all_artists[($j+1)] = $all_artists[$j];
-                        $all_shares_bought[($j+1)] = $all_shares_bought[$j];
-                        $all_rates[($j+1)] = $all_rates[$j];
-                        $all_price_per_share[($j+1)] = $all_price_per_share[$j];
-                        $j = $j-1;
-                    }
-                    $all_artists[($j+1)] = $key;
-                    $all_shares_bought[($j+1)] = $key2;
-                    $all_rates[($j+1)] = $key3;
-                    $all_price_per_share[($j+1)] = $key4;
-                }        
+                insertionSort($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Ascending");       
             }
             else
             {
-                for($i=1; $i<sizeof($all_artists); $i++)
-                {
-                    $key = $all_artists[$i];
-                    $key2 = $all_shares_bought[$i];
-                    $key3 = $all_rates[$i];
-                    $key4 = $all_price_per_share[$i];
-                    $j = $i-1;
-                    while($j >= 0 && $all_artists[$j] > $key)
-                    {
-                        $all_artists[($j+1)] = $all_artists[$j];
-                        $all_shares_bought[($j+1)] = $all_shares_bought[$j];
-                        $all_rates[($j+1)] = $all_rates[$j];
-                        $all_price_per_share[($j+1)] = $all_price_per_share[$j];
-                        $j = $j-1;
-                    }
-                    $all_artists[($j+1)] = $key;
-                    $all_shares_bought[($j+1)] = $key2;
-                    $all_rates[($j+1)] = $key3;
-                    $all_price_per_share[($j+1)] = $key4;
-                }    
+                insertionSort($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Descending");   
             }
         }
         else if($target == "PPS")
         {
             if($indicator = "Ascending")
             {
-                for($i=1; $i<sizeof($all_price_per_share); $i++)
-                {
-                    $key = $all_price_per_share[$i];
-                    $key2 = $all_artists[$i];
-                    $key3 = $all_rates[$i];
-                    $key4 = $all_shares_bought[$i];
-                    $j = $i-1;
-                    while($j >= 0 && $all_price_per_share[$j] < $key)
-                    {
-                        $all_price_per_share[($j+1)] = $all_price_per_share[$j];
-                        $all_artists[($j+1)] = $all_artists[$j];
-                        $all_rates[($j+1)] = $all_rates[$j];
-                        $all_shares_bought[($j+1)] = $all_shares_bought[$j];
-                        $j = $j-1;
-                    }
-                    $all_price_per_share[($j+1)] = $key;
-                    $all_artists[($j+1)] = $key2;
-                    $all_rates[($j+1)] = $key3;
-                    $all_shares_bought[($j+1)] = $key4;
-                }                
+                insertionSort($all_price_per_share, $all_artists, $all_rates, $all_shares_bought, "Ascending");           
             }
             else
             {
-                for($i=1; $i<sizeof($all_price_per_share); $i++)
-                {
-                    $key = $all_price_per_share[$i];
-                    $key2 = $all_artists[$i];
-                    $key3 = $all_rates[$i];
-                    $key4 = $all_shares_bought[$i];
-                    $j = $i-1;
-                    while($j >= 0 && $all_price_per_share[$j] > $key)
-                    {
-                        $all_price_per_share[($j+1)] = $all_price_per_share[$j];
-                        $all_artists[($j+1)] = $all_artists[$j];
-                        $all_rates[($j+1)] = $all_rates[$j];
-                        $all_shares_bought[($j+1)] = $all_shares_bought[$j];
-                        $j = $j-1;
-                    }
-                    $all_price_per_share[($j+1)] = $key;
-                    $all_artists[($j+1)] = $key2;
-                    $all_rates[($j+1)] = $key3;
-                    $all_shares_bought[($j+1)] = $key4;
-                }             
+                insertionSort($all_price_per_share, $all_artists, $all_rates, $all_shares_bought, "Descending");             
             }
         }
         else if($target == "Share")
         {
             if($indicator == "Ascending")
             {
-                for($i=1; $i<sizeof($all_shares_bought); $i++)
-                {
-                    $key = $all_shares_bought[$i];
-                    $key2 = $all_artists[$i];
-                    $key3 = $all_rates[$i];
-                    $key4 = $all_price_per_share[$i];
-                    $j = $i-1;
-                    while($j >= 0 && $all_shares_bought[$j] < $key)
-                    {
-                        $all_shares_bought[($j+1)] = $all_shares_bought[$j];
-                        $all_artists[($j+1)] = $all_artists[$j];
-                        $all_rates[($j+1)] = $all_rates[$j];
-                        $all_price_per_share[($j+1)] = $all_price_per_share[$j];
-                        $j = $j-1;
-                    }
-                    $all_shares_bought[($j+1)] = $key;
-                    $all_artists[($j+1)] = $key2;
-                    $all_rates[($j+1)] = $key3;
-                    $all_price_per_share[($j+1)] = $key4;
-                }
+                insertionSort($all_shares_bought, $all_artists, $all_rates, $all_price_per_share, "Ascending");         
             }
             else
             {
-                for($i=1; $i<sizeof($all_shares_bought); $i++)
-                {
-                    $key = $all_shares_bought[$i];
-                    $key2 = $all_artists[$i];
-                    $key3 = $all_rates[$i];
-                    $key4 = $all_price_per_share[$i];
-                    $j = $i-1;
-                    while($j >= 0 && $all_shares_bought[$j] > $key)
-                    {
-                        $all_shares_bought[($j+1)] = $all_shares_bought[$j];
-                        $all_artists[($j+1)] = $all_artists[$j];
-                        $all_rates[($j+1)] = $all_rates[$j];
-                        $all_price_per_share[($j+1)] = $all_price_per_share[$j];
-                        $j = $j-1;
-                    }
-                    $all_shares_bought[($j+1)] = $key;
-                    $all_artists[($j+1)] = $key2;
-                    $all_rates[($j+1)] = $key3;
-                    $all_price_per_share[($j+1)] = $key4;
-                }
+                insertionSort($all_shares_bought, $all_artists, $all_rates, $all_price_per_share, "Descending");  
             }
         }
         else if($target == "Rate")
         {
             if($indicator == "Ascending")
             {
-                for($i=1; $i<sizeof($all_rates); $i++)
-                {
-                    $key = $all_rates[$i];
-                    $key2 = $all_artists[$i];
-                    $key3 = $all_shares_bought[$i];
-                    $key4 = $all_price_per_share[$i];
-                    $j = $i-1;
-                    while($j >= 0 && $all_rates[$j] < $key)
-                    {
-                        $all_rates[($j+1)] = $all_rates[$j];
-                        $all_artists[($j+1)] = $all_artists[$j];
-                        $all_shares_bought[($j+1)] = $all_shares_bought[$j];
-                        $all_price_per_share[($j+1)] = $all_price_per_share[$j];
-                        $j = $j-1;
-                    }
-                    $all_rates[($j+1)] = $key;
-                    $all_artists[($j+1)] = $key2;
-                    $all_shares_bought[($j+1)] = $key3;
-                    $all_price_per_share[($j+1)] = $key4;
-                }
+                insertionSort($all_rates, $all_artists, $all_shares_bought, $all_price_per_share, "Ascending");  
             }
             else
             {
-                for($i=1; $i<sizeof($all_rates); $i++)
-                {
-                    $key = $all_rates[$i];
-                    $key2 = $all_artists[$i];
-                    $key3 = $all_shares_bought[$i];
-                    $key4 = $all_price_per_share[$i];
-                    $j = $i-1;
-                    while($j >= 0 && $all_rates[$j] > $key)
-                    {
-                        $all_rates[($j+1)] = $all_rates[$j];
-                        $all_artists[($j+1)] = $all_artists[$j];
-                        $all_shares_bought[($j+1)] = $all_shares_bought[$j];
-                        $all_price_per_share[($j+1)] = $all_price_per_share[$j];
-                        $j = $j-1;
-                    }
-                    $all_rates[($j+1)] = $key;
-                    $all_artists[($j+1)] = $key2;
-                    $all_shares_bought[($j+1)] = $key3;
-                    $all_price_per_share[($j+1)] = $key4;
-                }
+                insertionSort($all_rates, $all_artists, $all_shares_bought, $all_price_per_share, "Descending");
             }
         }
     }
