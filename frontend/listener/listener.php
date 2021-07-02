@@ -63,7 +63,7 @@
                 <div class="row">
                     <ul class="list-group bg-dark">
                         <?php
-                            if($_SESSION['display'] == 2 || $_SESSION['display'] == 0)
+                            if($_SESSION['display'] == 0 || $_SESSION['display'] == 2)
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px #11171a; border-right-color: #11171a;">
