@@ -199,7 +199,134 @@
                     </ul>
                     <ul class="list-group col">
                         <?php
-                            if($_SESSION['display'] == 1)
+                            if($_SESSION['display'] == 0 || $_SESSION['display'] == 2)
+                            {
+                                echo '
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="color: white;" class="bg-dark">#</th>
+                                                <form action="../../APIs/control/SortPortfolioArtistBackEnd.php">
+                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
+                                ';
+                                if($_SESSION['sort_type'] == 1)
+                                    echo " ↑";
+                                else if($_SESSION['sort_type'] == 4)
+                                    echo " ↓";
+                                else
+                                    echo "";
+                                echo '
+                                                </th>
+                                                </form>
+                                                <form action="../../APIs/control/SortPortfolioShareBackEnd.php">
+                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
+                                if($_SESSION['sort_type'] == 2)
+                                    echo " ↑";
+                                else if($_SESSION['sort_type'] == 5)
+                                    echo " ↓";
+                                else
+                                    echo "";
+                                echo '
+                                                </th>
+                                                </form>
+                                                <form action = "../../APIs/control/SortPortfolioPPSBackEnd.php">
+                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
+                                if($_SESSION['sort_type'] == 3)
+                                    echo " ↑";
+                                else if($_SESSION['sort_type'] == 6)
+                                    echo " ↓";
+                                else
+                                    echo "";
+    
+                                echo '
+                                                </th>
+                                                </form>
+                                                <form action = "../../APIs/control/SortPortfolioRateBackEnd.php">
+                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Rate" onclick="window.location.reload();">';
+                                if($_SESSION['sort_type'] == 0)
+                                    echo ' ↑';
+                                else if($_SESSION['sort_type'] == 7)
+                                    echo " ↓";
+                                else
+                                    echo "";
+                                echo '
+                                                </th>
+                                                </form>
+                                            </tr>
+                                        </thead>
+                                    <tbody>
+                                ';
+                                include '../../APIs/listener/MyPortfolioBackend.php';
+                                $my_investments = queryInvestment($_SESSION['username']);
+                                $all_profits = 0;
+                                $all_rates = array();
+                                $all_price_per_share = array();
+                                $all_shares_bought = array();
+                                $all_artists = array();
+                                if($my_investments->num_rows == 0)
+                                {
+                                    echo '<h3> No results </h3>';
+                                }
+                                else
+                                {
+                                    $artist_name = "";
+                                    $rate = 0;
+                                    
+                                    populateVars($all_shares_bought, $all_artists, $artist_name, $rate, $all_profits, $all_rates, $all_price_per_share, $my_investments);
+                                    if($_SESSION['sort_type'] == 0)
+                                    {
+                                        sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Ascending");
+                                    }
+                                    else if($_SESSION['sort_type'] == 1)
+                                    {
+                                        sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Ascending");
+                                    }
+                                    else if($_SESSION['sort_type'] == 2)
+                                    {
+                                        sortArtist($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Ascending");
+                                    }
+                                    else if($_SESSION['sort_type'] == 3)
+                                    {
+                                        sortArtist($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Ascending");
+                                    }
+                                    else if($_SESSION['sort_type'] == 4)
+                                    {
+                                        sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Descending");
+                                    }
+                                    else if($_SESSION['sort_type'] == 5)
+                                    {
+                                        sortArtist($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Descending");
+                                    }
+                                    else if($_SESSION['sort_type'] == 6)
+                                    {
+                                        sortArtist($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Descending");
+                                    }
+                                    else if ($_SESSION['sort_type'] == 7)
+                                    {
+                                        sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Descending");
+                                    }
+                                    $id = 1;
+                                    echo '<form action="../../APIs/artist/ArtistShareInfoBackend.php" method="post">';
+                                    for($i=0; $i<sizeof($all_artists); $i++)
+                                    {
+                                        if($all_shares_bought[$i] != 0)
+                                        {
+                                            echo '<tr><th scope="row">'.$id.'</th><td><input name = "artist_name['.$all_artists[$i].']" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$all_artists[$i].'"></td><td>'.$all_shares_bought[$i].'</td><td>'.$all_price_per_share[$i].'</td>';
+                                            if($all_rates[$i] > 0)
+                                                echo '<td class="increase">+'.$all_rates[$i].'%</td></tr>';
+                                            else if($all_rates[$i] == 0)
+                                                echo '<td>'.$all_rates[$i].'%</td></tr>';
+                                            else
+                                                echo '<td class="decrease">'.$all_rates[$i].'%</td></tr>';
+                                            $id++;
+                                        }
+                                    }
+                                    echo '</form>';
+                                }
+                                echo '</tbody>
+                                    </table>';
+                            }
+                            else if($_SESSION['display'] == 1)
                             {
                                 echo '
                                     <table class="table">
@@ -214,44 +341,41 @@
                                         </thead>
                                     <tbody>
                                 ';
-                                if($_SESSION['display'] == 1)
+                                echo '<form action="../../APIs/artist/ArtistShareInfoBackend.php" method="post">';
+                                include "../../APIs/listener/TopInvestedArtistBackend.php";
+                                $result = query_account('artist');
+                                if($result->num_rows == 0)
                                 {
-                                    echo '<form action="../../APIs/artist/ArtistShareInfoBackend.php" method="post">';
-                                    include "../../APIs/listener/TopInvestedArtistBackend.php";
-                                    $result = query_account('artist');
-                                    if($result->num_rows == 0)
-                                    {
-                                        echo '<h3> There are no artists to display </h3>';
-                                    }
-                                    else
-                                    {
-                                        $all_shares = array();
-                                        $users = array();
-                                        populateArray($all_shares, $users, $result);
-                                        sortArrays($all_shares, $users);
-                                        $id = 1;
-                                        for($i=0; $i<sizeof($all_shares); $i++)
-                                        {
-                                            if($id == 6)
-                                                break;
-                                            $price_per_share = getArtistPricePerShare($users[$i]);
-                                            $rate = getArtistCurrentRate($users[$i]);
-                                            echo '<tr><th scope="row">'.$id.'</th>
-                                                        <td><input name = "artist_name['.$users[$i].']" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$users[$i].'"></td></td>
-                                                        <td style="color: white">'.$all_shares[$i].'</td>
-                                                        <td style="color: white">'.$price_per_share.'</td>';
-                                            if($rate > 0)
-                                                echo '<td class="increase">+'.$rate.'%</td></tr>';
-                                            else if($rate == 0)
-                                                echo '<td>'.$rate.'%</td></tr>';
-                                            else
-                                                echo '<td class="decrease">'.$rate.'%</td></tr>';       
-                                            $id++;
-                                        }
-                                        
-                                    }
-                                    echo '</form>';
+                                    echo '<h3> There are no artists to display </h3>';
                                 }
+                                else
+                                {
+                                    $all_shares = array();
+                                    $users = array();
+                                    populateArray($all_shares, $users, $result);
+                                    sortArrays($all_shares, $users);
+                                    $id = 1;
+                                    for($i=0; $i<sizeof($all_shares); $i++)
+                                    {
+                                        if($id == 6)
+                                            break;
+                                        $price_per_share = getArtistPricePerShare($users[$i]);
+                                        $rate = getArtistCurrentRate($users[$i]);
+                                        echo '<tr><th scope="row">'.$id.'</th>
+                                                    <td><input name = "artist_name['.$users[$i].']" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$users[$i].'"></td></td>
+                                                    <td style="color: white">'.$all_shares[$i].'</td>
+                                                    <td style="color: white">'.$price_per_share.'</td>';
+                                        if($rate > 0)
+                                            echo '<td class="increase">+'.$rate.'%</td></tr>';
+                                        else if($rate == 0)
+                                            echo '<td>'.$rate.'%</td></tr>';
+                                        else
+                                            echo '<td class="decrease">'.$rate.'%</td></tr>';       
+                                        $id++;
+                                    }
+                                    
+                                }
+                                echo '</form>';
                             }
                         ?>
                     </ul>
