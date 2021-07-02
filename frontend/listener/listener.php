@@ -63,6 +63,8 @@
                 <div class="row">
                     <ul class="list-group bg-dark">
                         <?php
+                            //By default My Portfolio is selected
+                            //When My Portfolio is selected
                             if($_SESSION['display'] == 0 || $_SESSION['display'] == 2)
                             {
                                 echo '
@@ -73,6 +75,7 @@
                                     </li>
                                 ';
                             }
+                            //When My Portfolio is not selected but onclick
                             else
                             {
                                 echo '
@@ -83,6 +86,7 @@
                                     </li>
                                 ';
                             }
+                            //When Top Invested Artist is selected
                             if($_SESSION['display'] == 1)
                             {
                                 echo '
@@ -93,6 +97,7 @@
                                     </li>
                                 ';
                             }
+                            //When Top Invested Artist is not selected but onclick
                             else
                             {
                                 echo '
@@ -103,6 +108,7 @@
                                     </li>
                                 ';
                             }
+                            //When Buy Siliqas is selected
                             if($_SESSION['display'] == 3)
                             {
                                 echo '
@@ -123,6 +129,7 @@
                                     </li>
                                 ';
                             }
+                            //When Sell Siliqas is selected
                             if($_SESSION['display'] == 4)
                             {
                                 echo '
@@ -143,6 +150,7 @@
                                     </li>
                                 ';
                             }
+                            //When Account is selected
                             if($_SESSION['display'] == 5)
                             {
                                 echo '
@@ -198,10 +206,11 @@
                         ?>
                     </ul>
                     <ul class="list-group col">
-                        <?php
-                            include '../../APIs/listener/MyPortfolioBackend.php';                        
+                        <?php                    
+                            //displaying My Portfolio
                             if($_SESSION['display'] == 0 || $_SESSION['display'] == 2)
                             {
+                                include '../../APIs/listener/MyPortfolioBackend.php';    
                                 echo '
                                     <table class="table">
                                         <thead>
@@ -310,6 +319,8 @@
                                 echo '</tbody>
                                     </table>';
                             }
+
+                            //displaying Top Invested Artist
                             else if($_SESSION['display'] == 1)
                             {
                                 echo '
@@ -342,6 +353,106 @@
                                     
                                 }
                                 echo '</form>';
+                            }
+                            else if($_SESSION['display'] == 3)
+                            {
+                                include '../../APIs/listener/BuySiliqasBackend.php';
+                                $balance = getUserBalance($_SESSION['username']);
+
+                                //notify
+                                if($_SESSION['notify'] == 1)
+                                    echo "<script>alert('Siliqas bought successfully');</script>";
+                                if($_SESSION['notify'] == 2)
+                                    echo "<script>alert('Card verfication failed');</script>";
+                                $_SESSION['notify'] = 0;
+
+                                echo '
+                                    <section id="login" class="py-5";>
+                                        <div class="container">
+                                            <div class="col-12 mx-auto my-auto text-center">
+                                                <form action="../../APIs/listener/CurrencyBackend.php" method="post">
+                                ';
+                                if($_SESSION['currency']==0)
+                                {
+                                    
+                                    echo'
+                                            <div style="float:none;margin:auto;" class="select-dark">
+                                                <select name="currency" id="dark" onchange="this.form.submit()">
+                                                    <option selected disabled>Currency</option>
+                                                    <option value="USD">USD</option>
+                                                    <option value="CAD">CAD</option>
+                                                    <option value="EURO">EURO</option>
+                                                </select>
+                                            </div>
+                                    ';
+                                }
+                                else
+                                {
+                                    echo $_SESSION['currency'];
+                                    echo '
+                                            <div style="float:none;margin:auto;" class="select-dark">
+                                                <select name="currency" id="dark" onchange="this.form.submit()">
+                                                    <option selected disabled>'.$_SESSION['currency'].'</option>
+                                                    <option value="USD">USD</option>
+                                                    <option value="CAD">CAD</option>
+                                                    <option value="EURO">EURO</option>
+                                                </select>
+                                            </div>
+                                    ';
+                                }
+                                echo '</form>';
+                            //     echo '
+                            //                 </form>
+                            //                 <form action = "../../APIs/listener/CheckConversionBackend.php" method = "post">
+                            //                     <div class="form-group">
+                            //     ';
+                            //     echo $_SESSION['currency'];
+                            //     if($_SESSION['currency'] == 0)
+                            //         echo '
+                            //                 <h5 style="padding-top:150px;"> Please choose a currency</h5>
+                            //         ';
+                            //     else
+                            //     {
+                            //         echo '
+                            //                 <h5 style="padding-top:150px;">Enter Amount in '.$_SESSION['currency'].'</h5>
+                            //                 <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
+                            //             </div>
+                            //             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                            //                     <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
+                            //             </div>
+                            //             </form>
+                            //             <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
+                            //         ';
+                            //         if($_SESSION['coins']!=0)
+                            //         {
+                            //             echo round($_SESSION['coins'], 2);
+                            //         }
+                            //         else
+                            //         {
+                            //             echo " ";
+                            //             echo 0;
+                            //         }
+                            //         echo '
+                            //             </p>
+                            //             </form>
+                            //             <form action = "CheckoutView.php" method = "post">
+                            //                 <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                            //         ';
+                            //         if($_SESSION['btn_show'] == 1)
+                            //         {
+                            //             echo '
+                            //                     <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Buy this amount!" onclick="window.location.reload();">
+                            //                 </div>
+                            //             </form>
+                            //             ';
+                            //         }
+                            //         echo'
+                            //             </div>
+                            //         </div>
+                            //     </div>
+                            // </section>';
+                            //         $_SESSION['btn_show'] = 0;
+                            //     }
                             }
                         ?>
                     </ul>
