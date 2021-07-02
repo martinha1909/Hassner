@@ -41,15 +41,15 @@
                 $key3 = $arr2[$i];
                 $key4 = $arr3[$i];
                 $j = $i-1;
-                while($j >= 0 && $all_artists[$j] < $key)
+                while($j >= 0 && $guide_arr[$j] < $key)
                 {
-                    $all_artists[($j+1)] = $all_artists[$j];
+                    $guide_arr[($j+1)] = $guide_arr[$j];
                     $arr1[($j+1)] = $arr1[$j];
                     $arr2[($j+1)] = $arr2[$j];
                     $arr3[($j+1)] = $arr3[$j];
                     $j = $j-1;
                 }
-                $all_artists[($j+1)] = $key;
+                $guide_arr[($j+1)] = $key;
                 $arr1[($j+1)] = $key2;
                 $arr2[($j+1)] = $key3;
                 $arr3[($j+1)] = $key4;
@@ -64,15 +64,15 @@
                 $key3 = $arr2[$i];
                 $key4 = $arr3[$i];
                 $j = $i-1;
-                while($j >= 0 && $all_artists[$j] > $key)
+                while($j >= 0 && $guide_arr[$j] > $key)
                 {
-                    $all_artists[($j+1)] = $all_artists[$j];
+                    $guide_arr[($j+1)] = $guide_arr[$j];
                     $arr1[($j+1)] = $arr1[$j];
                     $arr2[($j+1)] = $arr2[$j];
                     $arr3[($j+1)] = $arr3[$j];
                     $j = $j-1;
                 }
-                $all_artists[($j+1)] = $key;
+                $guide_arr[($j+1)] = $key;
                 $arr1[($j+1)] = $key2;
                 $arr2[($j+1)] = $key3;
                 $arr3[($j+1)] = $key4;
