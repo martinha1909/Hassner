@@ -94,6 +94,23 @@
             
             return $result;
         }
-        //queries in song table and searches for all tuples that matches the given songId
-        //return the tuple of the song table if there is a matching tuple
+
+        function saveUserPaymentInfo($conn, $username, $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number)
+        {
+            $sql = "UPDATE account SET Full_name = '$full_name', email='$email', billing_address='$address', City = '$city', State='$state', ZIP = '$zip', Card_number='$card_number' WHERE username='$username'";
+            $conn->query($sql);
+        }
+
+        function purchaseSiliqas($conn, $username, $coins)
+        {
+            $coins = round($coins, 2);
+            $notify = 0;
+            $sql = "UPDATE account SET balance = balance + $coins WHERE username = '$username'";
+            if ($conn->query($sql) === TRUE) {
+                $notify = 1;
+            } else {
+                $notify = 2;
+            }  
+            return $notify;
+        }
 ?>

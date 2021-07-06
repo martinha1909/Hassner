@@ -8,22 +8,14 @@
   <meta name="viewport" content="width=divice-width, initial-scale=1.0">
   <title><?php echo $_SESSION['username'];?> Page</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/checkout.css" type="text/css">
-  <link rel="stylesheet" href="css/default.css" type="text/css">
-  <link rel="stylesheet" href="css/menu.css" type="text/css">
+  <link rel="stylesheet" href="../css/checkout.css" type="text/css">
+  <link rel="stylesheet" href="../css/default.css" type="text/css">
+  <link rel="stylesheet" href="../css/menu.css" type="text/css">
 </head>
 
 <?php
-  include '../APIs/logic.php';
-  include '../APIs/connection.php';
-  $conn = connect();
-  $result = searchAccount($conn, $_SESSION['username']);
-  $account_info = $result->fetch_assoc();
-  if($_SESSION['notify'] == 1)
-    echo "<script>alert('Siliqas Purchased Successfully');</script>";
-  if($_SESSION['notify'] == 2)
-    echo "<script>alert('Please fill out all forms');</script>";
-  $_SESSION['notify'] = 0;
+  include '../../APIs/listener/CheckoutBackend.php';
+  $account_info = getAccount($_SESSION['username']);
 ?>
 <body class="bg-dark">
     <header class="smart-scroll">
@@ -37,12 +29,12 @@
 <div style="padding-top:50px;" class="row">
   <div class="col-75">
     <div class="container">
-      <form action="../APIs/CheckoutConnection.php" method="post">
+      <form action="../../APIs/listener/CardVerificationBackend.php" method="post">
       
         <div class="row">
           <div class="col-50">
             <h3>Billing Address</h3>
-            <h5 class="text-right"><a href="../APIs/UseSavedPaymentInfoConnnection.php" onclick='window.location.reload();' class="btn btn-primary py-2">Use saved payment info</a></h5>
+            <h5 class="text-right"><a href="../../APIs/listener/UseSavedPaymentInfoBackend.php" onclick='window.location.reload();' class="btn btn-primary py-2">Use saved payment info</a></h5>
             <label for="fname"><i class="fa fa-user"></i> Full Name</label>
             <?php
             if($_SESSION['saved'] == 1)
@@ -185,15 +177,7 @@
         echo "$";
       else if($_SESSION['currency'] == "EURO")
         echo "€";
-      echo$_SESSION['siliqas'];
-      ?></span></p>
-      <p><a>Fees (2%)</a> <span class="price"><?php 
-      if($_SESSION['currency'] == "USD" || $_SESSION['currency'] == "CAD") 
-        echo "$";
-      else if($_SESSION['currency'] == "EURO")
-        echo "€";
-        $fees = $_SESSION['siliqas']*0.02;
-        echo $fees;
+      echo $_SESSION['siliqas'];
       ?></span></p>
       <hr>
       <p>Total <span class="price" style="color: white;"><b><?php 
@@ -201,15 +185,12 @@
             echo "$";
         else if($_SESSION['currency'] == "EURO")
             echo "€";
-        $total = $fees + $_SESSION['siliqas'];
+        $total = $_SESSION['siliqas'];
         echo $total;
       ?></b></span></p>
     </div>
   </div>
 </div>
-<?php
-  $_SESSION['saved'] = 0;
-?>
 <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
 </body>

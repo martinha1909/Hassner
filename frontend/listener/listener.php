@@ -420,17 +420,32 @@
                                             </div>
                                     ';
                                 }
-                                echo '</form>';
+                                echo "Account balance: " . $balance. "<br>";
+                                $conversion_rate = $_SESSION['conversion_rate'] * 100;
+                                if($conversion_rate < 0)
+                                {
+                                    echo "↓ " .$conversion_rate. "%<br>";
+                                }
+                                else if($conversion_rate > 0)
+                                {
+                                    echo "↑ " .$conversion_rate. "%<br>";
+                                }
+                                else 
+                                {
+                                    echo $conversion_rate;
+                                    echo "%<br>";
+                                }
                                 echo '
                                             </form>
                                             <form action = "../../APIs/listener/CheckConversionBackend.php" method = "post">
                                                 <div class="form-group">
                                 ';
-                                echo $_SESSION['currency'];
                                 if($_SESSION['currency'] == 0)
+                                {
                                     echo '
                                             <h5 style="padding-top:150px;"> Please choose a currency</h5>
                                     ';
+                                }
                                 else
                                 {
                                     echo '
@@ -455,7 +470,7 @@
                                     echo '
                                         </p>
                                         </form>
-                                        <form action = "CheckoutView.php" method = "post">
+                                        <form action = "Checkout.php" method = "post">
                                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
                                     ';
                                     if($_SESSION['btn_show'] == 1)
