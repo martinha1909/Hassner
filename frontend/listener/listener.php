@@ -474,6 +474,10 @@
                                     $_SESSION['btn_show'] = 0;
                                 }
                             }
+                            else if($_SESSION['display'] == 5)
+                            {
+                                
+                            }
                         ?>
                     </ul>
                 </div>
