@@ -374,7 +374,6 @@
                                 ';
                                 if($_SESSION['currency']==0)
                                 {
-                                    
                                     echo'
                                             <div style="float:none;margin:auto;" class="select-dark">
                                                 <select name="currency" id="dark" onchange="this.form.submit()">
@@ -388,7 +387,6 @@
                                 }
                                 else
                                 {
-                                    echo $_SESSION['currency'];
                                     echo '
                                             <div style="float:none;margin:auto;" class="select-dark">
                                                 <select name="currency" id="dark" onchange="this.form.submit()">
@@ -401,58 +399,58 @@
                                     ';
                                 }
                                 echo '</form>';
-                            //     echo '
-                            //                 </form>
-                            //                 <form action = "../../APIs/listener/CheckConversionBackend.php" method = "post">
-                            //                     <div class="form-group">
-                            //     ';
-                            //     echo $_SESSION['currency'];
-                            //     if($_SESSION['currency'] == 0)
-                            //         echo '
-                            //                 <h5 style="padding-top:150px;"> Please choose a currency</h5>
-                            //         ';
-                            //     else
-                            //     {
-                            //         echo '
-                            //                 <h5 style="padding-top:150px;">Enter Amount in '.$_SESSION['currency'].'</h5>
-                            //                 <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
-                            //             </div>
-                            //             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            //                     <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
-                            //             </div>
-                            //             </form>
-                            //             <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
-                            //         ';
-                            //         if($_SESSION['coins']!=0)
-                            //         {
-                            //             echo round($_SESSION['coins'], 2);
-                            //         }
-                            //         else
-                            //         {
-                            //             echo " ";
-                            //             echo 0;
-                            //         }
-                            //         echo '
-                            //             </p>
-                            //             </form>
-                            //             <form action = "CheckoutView.php" method = "post">
-                            //                 <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            //         ';
-                            //         if($_SESSION['btn_show'] == 1)
-                            //         {
-                            //             echo '
-                            //                     <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Buy this amount!" onclick="window.location.reload();">
-                            //                 </div>
-                            //             </form>
-                            //             ';
-                            //         }
-                            //         echo'
-                            //             </div>
-                            //         </div>
-                            //     </div>
-                            // </section>';
-                            //         $_SESSION['btn_show'] = 0;
-                            //     }
+                                echo '
+                                            </form>
+                                            <form action = "../../APIs/listener/CheckConversionBackend.php" method = "post">
+                                                <div class="form-group">
+                                ';
+                                echo $_SESSION['currency'];
+                                if($_SESSION['currency'] == 0)
+                                    echo '
+                                            <h5 style="padding-top:150px;"> Please choose a currency</h5>
+                                    ';
+                                else
+                                {
+                                    echo '
+                                            <h5 style="padding-top:150px;">Enter Amount in '.$_SESSION['currency'].'</h5>
+                                            <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
+                                        </div>
+                                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
+                                        </div>
+                                        </form>
+                                        <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
+                                    ';
+                                    if($_SESSION['coins']!=0)
+                                    {
+                                        echo round($_SESSION['coins'], 2);
+                                    }
+                                    else
+                                    {
+                                        echo " ";
+                                        echo 0;
+                                    }
+                                    echo '
+                                        </p>
+                                        </form>
+                                        <form action = "CheckoutView.php" method = "post">
+                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                    ';
+                                    if($_SESSION['btn_show'] == 1)
+                                    {
+                                        echo '
+                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Buy this amount!" onclick="window.location.reload();">
+                                            </div>
+                                        </form>
+                                        ';
+                                    }
+                                    echo'
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>';
+                                    $_SESSION['btn_show'] = 0;
+                                }
                             }
                         ?>
                     </ul>
