@@ -96,4 +96,20 @@
         }
         //queries in song table and searches for all tuples that matches the given songId
         //return the tuple of the song table if there is a matching tuple
+
+        function editEmail($conn, $user_username, $new_email)
+        {
+            $sql = "UPDATE account SET email = ? WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $new_email, $user_username);
+            $stmt->execute();
+        }
+
+        function editPassword($conn, $user_username, $new_pwd)
+        {
+            $sql = "UPDATE account SET password = ? WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $new_pwd, $user_username);
+            $stmt->execute();
+        }
 ?>
