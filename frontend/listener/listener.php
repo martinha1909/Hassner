@@ -75,7 +75,6 @@
                                     </li>
                                 ';
                             }
-                            //When My Portfolio is not selected but onclick
                             else
                             {
                                 echo '
@@ -86,6 +85,7 @@
                                     </li>
                                 ';
                             }
+
                             //When Top Invested Artist is selected
                             if($_SESSION['display'] == 1)
                             {
@@ -97,7 +97,6 @@
                                     </li>
                                 ';
                             }
-                            //When Top Invested Artist is not selected but onclick
                             else
                             {
                                 echo '
@@ -108,6 +107,7 @@
                                     </li>
                                 ';
                             }
+
                             //When Buy Siliqas is selected
                             if($_SESSION['display'] == 3)
                             {
@@ -129,6 +129,7 @@
                                     </li>
                                 ';
                             }
+
                             //When Sell Siliqas is selected
                             if($_SESSION['display'] == 4)
                             {
@@ -150,6 +151,7 @@
                                     </li>
                                 ';
                             }
+
                             //When Account is selected
                             if($_SESSION['display'] == 5)
                             {
@@ -171,6 +173,8 @@
                                     </li>
                                 ';
                             }
+
+                            //When settings is selected
                             if($_SESSION['display'] == 6)
                             {
                                 echo '
@@ -191,6 +195,8 @@
                                     </li>
                                 ';
                             }
+                            
+                            //Logout option
                             echo '
                                 <li class="list-group-item-no-hover"></li>
                                 <li class="list-group-item-no-hover"></li>
@@ -219,10 +225,16 @@
                                                 <form action="../../APIs/control/SortPortfolioArtistBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
                                 ';
+                                //sort Artist ascending alphabetically
                                 if($_SESSION['sort_type'] == 1)
+                                {
                                     echo " ↑";
+                                }
+                                //sort Artist descending alphabetically
                                 else if($_SESSION['sort_type'] == 4)
+                                {
                                     echo " ↓";
+                                }
                                 else
                                     echo "";
                                 echo '
@@ -230,8 +242,10 @@
                                                 </form>
                                                 <form action="../../APIs/control/SortPortfolioShareBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
+                                //sort Shares bought ascending alphabetically
                                 if($_SESSION['sort_type'] == 2)
                                     echo " ↑";
+                                //sort Shares bought descending alphabetically
                                 else if($_SESSION['sort_type'] == 5)
                                     echo " ↓";
                                 else
@@ -241,8 +255,10 @@
                                                 </form>
                                                 <form action = "../../APIs/control/SortPortfolioPPSBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
+                                //sort Price per share ascending alphabetically
                                 if($_SESSION['sort_type'] == 3)
                                     echo " ↑";
+                                //sort Price per share descending alphabetically
                                 else if($_SESSION['sort_type'] == 6)
                                     echo " ↓";
                                 else
@@ -253,8 +269,10 @@
                                                 </form>
                                                 <form action = "../../APIs/control/SortPortfolioRateBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Rate" onclick="window.location.reload();">';
+                                //sort Rate ascending alphabetically
                                 if($_SESSION['sort_type'] == 0)
                                     echo ' ↑';
+                                //sort Rate descending alphabetically
                                 else if($_SESSION['sort_type'] == 7)
                                     echo " ↓";
                                 else
@@ -281,7 +299,9 @@
                                     $artist_name = "";
                                     $rate = 0;
                                     
+                                    //retrieving data from the data base to populate arrays that store information of artists that the user has invested in
                                     populateVars($all_shares_bought, $all_artists, $artist_name, $rate, $all_profits, $all_rates, $all_price_per_share, $my_investments);
+                                    
                                     if($_SESSION['sort_type'] == 0)
                                     {
                                         sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Ascending");
@@ -354,6 +374,8 @@
                                 }
                                 echo '</form>';
                             }
+
+                            //displaying Buy Siliqas functionality
                             else if($_SESSION['display'] == 3)
                             {
                                 include '../../APIs/listener/BuySiliqasBackend.php';

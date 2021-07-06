@@ -26,6 +26,9 @@
         
         closeCon($conn);
     }
+
+    //performing insertionSort to targeted arrays with $indicator being either ascending or descending
+    //guide_arr is the leading array to sort with indixes correspond to other array indices
     function insertionSort(&$guide_arr, &$arr1, &$arr2, &$arr3, $indicator)
     {
         $i;
@@ -80,6 +83,7 @@
         }
     }
 
+    //sort the columns of My Portfolio chart based on $target and $indicator of ascending or descending order
     function sortChart(&$all_artists, &$all_shares_bought, &$all_rates, &$all_price_per_share, $target, $indicator)
     {
         if($target == "Artist")
