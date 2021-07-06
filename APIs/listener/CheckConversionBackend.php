@@ -1,4 +1,5 @@
 <?php
+    session_start();
     $_SESSION['siliqas'] = $_POST['currency'];
     if(!empty($_SESSION['siliqas']) && is_numeric($_SESSION['siliqas']))
     {
