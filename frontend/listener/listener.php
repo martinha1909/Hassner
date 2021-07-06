@@ -476,7 +476,31 @@
                             }
                             else if($_SESSION['display'] == 5)
                             {
-                                
+                                if($_SESSION['notify'] == 3)
+                                {
+                                    echo "<script>alert('Incorrect Password');</script>";
+                                }
+                                $_SESSION['notify'] = 0;
+                                echo '
+                                    <section id="login">
+                                    <div class="container">
+                                        <div">
+                                            <div class="col-12 mx-auto my-auto text-center">
+                                                <h3 style="color: orange;padding-top:150px;">Verify your password to access personal page</h3>
+                                                <form action="../../APIs/listener/PersonalPageBackend.php" method="post">
+                                                    <div class="form-group">
+                                                        <h5>Password</h5>
+                                                        <input name = "verify_password" type="password" style="border-color: white;" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
+                                                    </div>
+                                                    <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                        <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
+                                                    </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                ';
                             }
                         ?>
                     </ul>
