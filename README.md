@@ -1,15 +1,12 @@
 # Hassner
 
-This project is a submission for a database managment systems university course.
-
-Hassner is a service that simulates a music service platform, and allows users to rate artists' songs with comments and stars.
+Hassner is a service that allows user to invest in their favourite artists and raise capital
 
 Sources:
 - landing page template (https://webresourcesdepot.com/freebie/knight/#download)
 
 
 in APIs folder contains logic of all SQL query functions, their blueprints and definitions as well as handling data input and output.
-Diagrams folder contains PDF version of DFD and HIPO diagrams
 frontend contains graphics and other display pages this project
 
 To run this project:;
