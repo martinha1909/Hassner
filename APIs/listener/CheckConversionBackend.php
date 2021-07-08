@@ -5,9 +5,9 @@
     {
         $_SESSION['coins'] = $_SESSION['siliqas'] * (1 + $_SESSION['conversion_rate']);
         if($_SESSION['currency'] == "USD")
-            $_SESSION['coins'] = $_SESSION['coins'] * 0.83;
+            $_SESSION['coins'] = $_SESSION['coins'] * 1.25;
         else if($_SESSION['currency'] == "EURO")
-            $_SESSION['coins'] = $_SESSION['coins'] * 0.68;
+            $_SESSION['coins'] = $_SESSION['coins'] * 1.47;
         $_SESSION['btn_show'] = 1;
         
     }
