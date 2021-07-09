@@ -42,7 +42,7 @@
                 if($_SESSION['saved'] == 1) // change this to transit num 
                   echo '<input type="text" id="cname" name="cardname" value='.$account_info['Transit_no'].'>';
                 else if($_SESSION['saved'] == 0)
-                  echo '<input type="text" id="cname" name="cardname" placeholder="1111-2222-3333-4444">';
+                  echo '<input type="text" id="cname" name="cardname" placeholder="12345">';
             ?>
             
             <label for="ccnum">Institution No.: </label>
@@ -50,14 +50,14 @@
                 if($_SESSION['saved'] == 1)// change this to inst num
                   echo '<input type="text" id="ccnum" name="cardnumber" value='.$account_info['Inst_no'].'>';
                 else if($_SESSION['saved'] == 0)
-                  echo '<input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">';
+                  echo '<input type="text" id="ccnum" name="cardnumber" placeholder="123">';
             ?>
             <label for="expmonth">Account No.: </label>
             <?php
                 if($_SESSION['saved'] == 1)// change this to acct num
                   echo '<input type="text" id="ccnum" name="cardnumber" value='.$account_info['Account_no'].'>';
                 else if($_SESSION['saved'] == 0)
-                  echo '<input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">';
+                  echo '<input type="text" id="ccnum" name="cardnumber" placeholder="12345678">';
             ?>
             <div class="row">
               <div class="col-50">
@@ -66,7 +66,7 @@
                 if($_SESSION['saved'] == 1)// change this to swift/bic num
                   echo '<input type="text" id="ccnum" name="cardnumber" value='.$account_info['Swift'].'>';
                 else if($_SESSION['saved'] == 0)
-                  echo '<input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">';
+                  echo '<input type="text" id="ccnum" name="cardnumber" placeholder="AAAABBCCDDDD">';
             ?>
                 
               </div>
