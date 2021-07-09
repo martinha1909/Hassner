@@ -29,7 +29,7 @@
 <div style="padding-top:50px;" class="row">
   <div class="col-75">
     <div class="container">
-      <form action="../../APIs/listener/CardVerificationBackend.php" method="post">
+      <form action="../../APIs/listener/DepositVerificationBackend.php" method="post">
       
         <div class="row">
           
