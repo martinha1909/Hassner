@@ -370,7 +370,6 @@
                                     populateArray($all_shares, $users, $result);
                                     sortArrays($all_shares, $users);
                                     printTopInvestedArtistChart($users, $all_shares);
-                                    
                                 }
                                 echo '</form>';
                             }
