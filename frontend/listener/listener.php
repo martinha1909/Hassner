@@ -384,7 +384,7 @@
                                 if($_SESSION['notify'] == 1)
                                     echo "<script>alert('Siliqas bought successfully');</script>";
                                 if($_SESSION['notify'] == 2)
-                                    echo "<script>alert('Card verfication failed');</script>";
+                                    echo "<script>alert('Please fill out all forms');</script>";
                                 $_SESSION['notify'] = 0;
 
                                 echo '
