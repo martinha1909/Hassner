@@ -40,7 +40,7 @@
             <label for="cname">Transit No.: </label>
             <?php
                 if($_SESSION['saved'] == 1) // change this to transit num 
-                  echo '<input type="text" id="cname" name="cardname" value='.$account_info['Full_name'].'>';
+                  echo '<input type="text" id="cname" name="cardname" value='.$account_info['Transit_no'].'>';
                 else if($_SESSION['saved'] == 0)
                   echo '<input type="text" id="cname" name="cardname" placeholder="1111-2222-3333-4444">';
             ?>
@@ -48,14 +48,14 @@
             <label for="ccnum">Institution No.: </label>
             <?php
                 if($_SESSION['saved'] == 1)// change this to inst num
-                  echo '<input type="text" id="ccnum" name="cardnumber" value='.$account_info['Card_number'].'>';
+                  echo '<input type="text" id="ccnum" name="cardnumber" value='.$account_info['Inst_no'].'>';
                 else if($_SESSION['saved'] == 0)
                   echo '<input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">';
             ?>
             <label for="expmonth">Account No.: </label>
             <?php
                 if($_SESSION['saved'] == 1)// change this to acct num
-                  echo '<input type="text" id="ccnum" name="cardnumber" value='.$account_info['Card_number'].'>';
+                  echo '<input type="text" id="ccnum" name="cardnumber" value='.$account_info['Account_no'].'>';
                 else if($_SESSION['saved'] == 0)
                   echo '<input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">';
             ?>
@@ -64,7 +64,7 @@
                 <label for="expyear">Swift/BIC Code: </label>
                 <?php
                 if($_SESSION['saved'] == 1)// change this to swift/bic num
-                  echo '<input type="text" id="ccnum" name="cardnumber" value='.$account_info['Card_number'].'>';
+                  echo '<input type="text" id="ccnum" name="cardnumber" value='.$account_info['Swift'].'>';
                 else if($_SESSION['saved'] == 0)
                   echo '<input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">';
             ?>
@@ -79,7 +79,7 @@
         <label>
         <?php
             // change everything to sellout cuz rn its on buyouts
-          if($_SESSION['saved'] == 0 || ((empty($account_info['Full_name']) || $account_info['Full_name'] == 0) && empty($account_info['email']) && empty($account_info['billing_address']) && empty($account_info['City']) && empty($account_info['State']) && empty($account_info['ZIP']) && empty($account_info['Card_number']) && empty($account_info['Expiry_month']) && empty($account_info['Expiry_year'])))
+          if($_SESSION['saved'] == 0 || (empty($account_info['Transit_no']) || empty($account_info['Account_no']) || empty($account_info['Swift'])))
               echo '<input type="checkbox" name="save_info" value="Yes" checked> Save information for later sellouts';
           else
             echo '<input type="checkbox" name="save_info" value="Yes" checked> Update billing information';
