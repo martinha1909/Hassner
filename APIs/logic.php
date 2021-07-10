@@ -100,11 +100,29 @@
             $conn->query($sql);
         }
 
+        function saveUserAccountInfo($conn, $username, $transit_no, $inst_no, $account_no, $swift, )
+        {
+            $sql = "UPDATE account SET Transit_no = '$transit_no', Inst_no = '$inst_no', Account_no = '$account_no', Swift = '$swift' WHERE username='$username'";
+            $conn->query($sql);
+        }
+
         function purchaseSiliqas($conn, $username, $coins)
         {
             $coins = round($coins, 2);
             $notify = 0;
             $sql = "UPDATE account SET balance = balance + $coins WHERE username = '$username'";
+            if ($conn->query($sql) === TRUE) {
+                $notify = 1;
+            } else {
+                $notify = 2;
+            }  
+            return $notify;
+        }
+        function sellSiliqas($conn, $username, $coins)
+        {
+            $coins = round($coins, 2);
+            $notify = 0;
+            $sql = "UPDATE account SET balance = balance - $coins WHERE username = '$username'";
             if ($conn->query($sql) === TRUE) {
                 $notify = 1;
             } else {

@@ -499,9 +499,9 @@
 
                                 //notify
                                 if($_SESSION['notify'] == 1)
-                                    echo "<script>alert('Siliqas bought successfully');</script>";
+                                    echo "<script>alert('Siliqas Sold successfully');</script>";
                                 if($_SESSION['notify'] == 2)
-                                    echo "<script>alert('Card verfication failed');</script>";
+                                    echo "<script>alert('Account verfication failed');</script>";
                                 $_SESSION['notify'] = 0;
 
                                 echo '
