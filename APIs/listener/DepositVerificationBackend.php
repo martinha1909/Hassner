@@ -47,6 +47,7 @@
             $_SESSION['notify'] = 2;
         }
     }
+    $_SESSION['saved'] = 0;
     header("Location: ../../frontend/listener/listener.php");
     
 ?>

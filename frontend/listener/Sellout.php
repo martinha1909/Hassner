@@ -36,8 +36,8 @@
           </div>
           <div class="col-50">
             <h3>Sellout</h3>
-      
-            <label for="cname">Transit No.: </label>
+            <h5 class="text-right"><a href="../../APIs/listener/UseSavedAccountInfoBackend.php" onclick='window.location.reload();' class="btn btn-primary py-2">Use saved account info</a></h5>
+            <label for="cname">Transit No. : </label>
             <?php
                 if($_SESSION['saved'] == 1) // change this to transit num 
                   echo '<input type="text" id="cname" name="transit_no" value='.$account_info['Transit_no'].'>';
@@ -45,14 +45,14 @@
                   echo '<input type="text" id="cname" name="transit_no" placeholder="12345">';
             ?>
             
-            <label for="ccnum">Institution No.: </label>
+            <label for="ccnum">Institution No. : </label>
             <?php
                 if($_SESSION['saved'] == 1)// change this to inst num
                   echo '<input type="text" id="ccnum" name="inst_no" value='.$account_info['Inst_no'].'>';
                 else if($_SESSION['saved'] == 0)
                   echo '<input type="text" id="ccnum" name="inst_no" placeholder="123">';
             ?>
-            <label for="expmonth">Account No.: </label>
+            <label for="expmonth">Account No. : </label>
             <?php
                 if($_SESSION['saved'] == 1)// change this to acct num
                   echo '<input type="text" id="ccnum" name="account_no" value='.$account_info['Account_no'].'>';
