@@ -1,5 +1,7 @@
 <?php
     session_start();
+    include '../logic.php';
+    include '../connection.php';
     $save_info = $_POST['save_info'];
     $transit_no = $_POST['transit_no'];
     $inst_no = $_POST['inst_no'];
