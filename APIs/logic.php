@@ -112,6 +112,7 @@
                 $notify = 2;
             }  
             return $notify;
+        }
         //queries in song table and searches for all tuples that matches the given songId
         //return the tuple of the song table if there is a matching tuple
 
