@@ -98,10 +98,15 @@
             
             return $result;
         }
-
         function saveUserPaymentInfo($conn, $username, $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number)
         {
             $sql = "UPDATE account SET Full_name = '$full_name', email='$email', billing_address='$address', City = '$city', State='$state', ZIP = '$zip', Card_number='$card_number' WHERE username='$username'";
+            $conn->query($sql);
+        }
+
+        function saveUserAccountInfo($conn, $username, $transit_no, $inst_no, $account_no, $swift, )
+        {
+            $sql = "UPDATE account SET Transit_no = '$transit_no', Inst_no = '$inst_no', Account_no = '$account_no', Swift = '$swift' WHERE username='$username'";
             $conn->query($sql);
         }
 
@@ -110,6 +115,18 @@
             $coins = round($coins, 2);
             $notify = 0;
             $sql = "UPDATE account SET balance = balance + $coins WHERE username = '$username'";
+            if ($conn->query($sql) === TRUE) {
+                $notify = 1;
+            } else {
+                $notify = 2;
+            }  
+            return $notify;
+        }
+        function sellSiliqas($conn, $username, $coins)
+        {
+            $coins = round($coins, 2);
+            $notify = 0;
+            $sql = "UPDATE account SET balance = balance - $coins WHERE username = '$username'";
             if ($conn->query($sql) === TRUE) {
                 $notify = 1;
             } else {
