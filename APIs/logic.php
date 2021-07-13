@@ -42,6 +42,72 @@
             return $result;
         }
 
+        function searchSpecificInvestment($conn, $user_username, $invested_artist)
+        {
+            $sql = "SELECT no_of_share_bought FROM user_artist_share WHERE user_username = ? AND artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $user_username, $invested_artist);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchArtistCurrentPricePerShare($conn, $artist_username)
+        {
+            $sql = "SELECT price_per_share FROM account WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchInitialPriceWhenBought($conn, $user_username, $invested_artist)
+        {
+            $sql = "SELECT price_per_share_when_bought FROM user_artist_share WHERE user_username = ? AND artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $user_username, $invested_artist);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchArtistTotalSharesBought($conn, $artist_username)
+        {
+            $sql = "SELECT Shares FROM account WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function getUsersSellingPrices($conn, $artist_username)
+        {
+            $sql = "SELECT selling_price FROM user_artist_sell_share WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchNumberOfShareDistributed($conn, $artist_username)
+        {
+            $sql = "SELECT Share_Distributed FROM account WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function signup($conn, $username, $password, $type, $email) //done2
         {
             $original_share= "";

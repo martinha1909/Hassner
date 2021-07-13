@@ -66,7 +66,7 @@
             $price_per_share = getArtistPricePerShare($users[$i]);
             $rate = getArtistCurrentRate($users[$i]);
             echo '<tr><th scope="row">'.$id.'</th>
-                        <td><input name = "artist_name['.$users[$i].']" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$users[$i].'"></td></td>
+                        <td><input name = "artist_name" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$users[$i].'"></td></td>
                         <td style="color: white">'.$all_shares[$i].'</td>
                         <td style="color: white">'.$price_per_share.'</td>';
             if($rate > 0)
