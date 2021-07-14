@@ -1,5 +1,6 @@
 <?php
     include '../../APIs/control/dependencies.php';
+    include '../../APIs/listener/ArtistShareMarketplaceBackend.php';
     session_start();
     $_SESSION['conversion_rate'];
     $_SESSION['coins'] = 0;
@@ -61,6 +62,10 @@
     </div>
 </section>
 
+<?php
+    fetchMarketPrice($_SESSION['selected_artist']);
+?>
+
 <!-- listener functionality -->
 <section id="login">
     <div class="container-fluid">
@@ -82,10 +87,11 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row"><?php echo $_SESSION['shares_owned']['no_of_share_bought']; ?></th>
+                            <th scope="row"><?php 
+                                echo $_SESSION['shares_owned']; ?></th>
                                 <td><?php echo $_SESSION['selected_artist']; ?></td>
-                                <td>Siliqas: <?php echo round($_SESSION['current_pps']['price_per_share'],2); ?></td>
-                                <td>Siliqas: <?php echo round($_SESSION['profit'],2) ?> (<?php echo round($_SESSION['profit_rate'], 2); ?>%)</td>
+                                <td><?php echo round($_SESSION['current_pps']['price_per_share'],2); ?></td>
+                                <td><?php echo $_SESSION['profit']; ?> (<?php echo $_SESSION['profit_rate']; ?>%)</td>
                                 <td><?php echo $_SESSION['available_shares']; ?></td>
                         </tr>
                     </tbody>
@@ -93,18 +99,8 @@
             </div>
             <div class="mx-auto my-auto text-center col-4">
                 <?php
-                    //Buy more share button is only available if there are available shares to buy
-                    if($_SESSION['available_shares'] > 0)
-                    {
-                        echo '
-                            <form action="../../APIs/listener/ToggleBuySellShareBackend.php" method="post">
-                                <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="+Buy more shares">
-                            </form>
-                        ';
-                        echo "<br>";
-                    }
                     //Sell shares button is only available if you own some shares
-                    if($_SESSION['shares_owned']['no_of_share_bought'] > 0)
+                    if($_SESSION['shares_owned'] > 0)
                     {
                         echo '
                             <form action="../../APIs/listener/ToggleBuySellShareBackend.php" method="post">
@@ -139,27 +135,104 @@
 <section class="vh-md-100">
     <div class="container-fluid">
         <div class="row vh-md-100 align-items-start">
-            <div class="py-4 text-center">
-                <h2> 
-                    <?php
-                        echo $_SESSION['selected_artist'];
-                    ?>
-                    's Marketplace
-                </h2>
-            </div>
-            <?php
-                //displaying buy more share button if user chooses the options
-                if($_SESSION['available_shares'] > 0)
-                {
-                    include '../../APIs/listener/ArtistShareMarketplaceBackend.php';
-                    $users_sell_prices = fetchMarketplace($_SESSION['selected_artist']);
+            <div class="mx-auto my-auto text-center col">
+                <div class="py-4 text-center">
+                    <h2> 
+                        <?php
+                            echo $_SESSION['selected_artist'];
+                        ?>
+                        's Marketplace
+                    </h2>
+                </div>
+                <?php
+                    //displaying asked price marketplace
+                    $min_prices = array();
+                    fetchAskedPrice($min_prices, $_SESSION['selected_artist']);
+                        echo '
+                            <div class="py-4 text-left">
+                                <h3>Lowest Asked Price </h3>
+                            </div>';
+                    if(sizeof($min_prices) > 0)
+                    {
+                        echo'
+                            <form action="#" method="post">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+                        for($i=0; $i<sizeof($min_prices); $i++)
+                        {
+                            //skip the shares that you sell yourself
+                            if($min_prices[$i]['user_username'] != $_SESSION['username'])
+                            {
+                                echo '
+                                        <tr>
+                                            <th scope="row">'.$min_prices[$i]['user_username'].'</th>
+                                                <td>'.$min_prices[$i]['selling_price'].'</td>
+                                                <td>'.$min_prices[$i]['no_of_share'].'</td>
+                                                <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"</td>
+                                        </tr>
+                                ';
+                            }
+                        }
+                        echo '
+                                    </tbody>
+                                </table>
+                            </form>';
+                    }
+                    else
+                    {
+                        echo '
+                            <div class="py-4 text-center">
+                                <h4>No shares are currently sold by other users</h4>
+                            </div>
+                        ';
+                    }
                     echo '
-                        <div class="py-6 text-center">
-                            <h3>From Users: </h3>
-                        </div>
-                    ';
-                }
-            ?>
+                        <div class="py-4 text-left">
+                            <h3>Market Price</h3>
+                        </div>';
+                    if($_SESSION['available_shares'] > 0)
+                    {
+                        echo '
+                            <form action="#" method="post">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">'.$_SESSION['selected_artist'].'</th>
+                                                <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
+                                                <td>'.$_SESSION['available_shares'].'</td>
+                                                <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        ';
+                    }
+                    else
+                    {
+                        echo '
+                            <div class="py-4 text-center">
+                                <h4>No shares are currently available from '.$_SESSION['selected_artist'].'</h4>
+                            </div>
+                        ';
+                    }
+                ?>
+            </div>
         </div>
     </div>
 </section>
