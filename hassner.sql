@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2021 at 12:55 AM
+-- Generation Time: Jul 14, 2021 at 11:22 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -60,6 +60,7 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `lower_bound`) VALUES
 ('88Glam', 'artist', 'artist', 2, 0, 0, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 1, 0, 0, 0, 0),
+('kai', 'user', 'user', 4, 0, 0, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('martin', 'user', 'user', 1, 0, 7785.59, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '1', '1', '1', '1', 0, 0, 0, 0, 0),
 ('NAV', 'artist', 'artist', 3, 1, 0, 0.013, 10, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 1.1, 0, 0, 0, 0);
 
@@ -72,8 +73,17 @@ INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `
 CREATE TABLE `user_artist_sell_share` (
   `user_username` varchar(50) NOT NULL,
   `artist_username` varchar(50) NOT NULL,
-  `selling_price` float NOT NULL
+  `selling_price` int(11) NOT NULL,
+  `no_of_share` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user_artist_sell_share`
+--
+
+INSERT INTO `user_artist_sell_share` (`user_username`, `artist_username`, `selling_price`, `no_of_share`) VALUES
+('kai', 'NAV', 1, 1),
+('martin', 'NAV', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -93,7 +103,7 @@ CREATE TABLE `user_artist_share` (
 --
 
 INSERT INTO `user_artist_share` (`user_username`, `artist_username`, `no_of_share_bought`, `price_per_share_when_bought`) VALUES
-('martin', 'NAV', 1, 0);
+('martin', 'NAV', 1, 1.1);
 
 --
 -- Indexes for dumped tables
@@ -110,7 +120,7 @@ ALTER TABLE `account`
 -- Indexes for table `user_artist_sell_share`
 --
 ALTER TABLE `user_artist_sell_share`
-  ADD KEY `user_username_key_sell` (`user_username`),
+  ADD PRIMARY KEY (`user_username`,`artist_username`,`selling_price`),
   ADD KEY `artist_username_key_sell` (`artist_username`);
 
 --
