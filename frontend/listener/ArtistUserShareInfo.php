@@ -154,8 +154,9 @@
                             </div>';
                     if(sizeof($min_prices) > 0)
                     {
-                        echo'
-                            <form action="#" method="post">
+                        if($_SESSION['buy_asked_price'] == 0)
+                        {
+                            echo'
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -166,25 +167,68 @@
                                         </tr>
                                     </thead>
                                     <tbody>';
-                        for($i=0; $i<sizeof($min_prices); $i++)
-                        {
-                            //skip the shares that you sell yourself
-                            if($min_prices[$i]['user_username'] != $_SESSION['username'])
+                            for($i=0; $i<sizeof($min_prices); $i++)
                             {
-                                echo '
+                                //skip the shares that you sell yourself
+                                if($min_prices[$i]['user_username'] != $_SESSION['username'])
+                                {
+                                    echo '
+                                            <tr>
+                                                <th scope="row">'.$min_prices[$i]['user_username'].'</th>
+                                                    <td>'.$min_prices[$i]['selling_price'].'</td>
+                                                    <td>'.$min_prices[$i]['no_of_share'].'</td>
+                                                    <form action="../../APIs/listener/ToggleBuyAskedPriceBackend.php" method="post">
+                                                        <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"</td>
+                                                    </form>
+                                            </tr>
+                                    ';
+                                }
+                            }
+                            echo '
+                                        </tbody>
+                                    </table>
+                            ';
+                        }
+                        else
+                        {
+                            echo'
+                                <table class="table">
+                                    <thead>
                                         <tr>
-                                            <th scope="row">'.$min_prices[$i]['user_username'].'</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+                            for($i=0; $i<sizeof($min_prices); $i++)
+                            {
+                                //skip the shares that you sell yourself
+                                if($min_prices[$i]['user_username'] != $_SESSION['username'])
+                                {
+                                    echo '
+                                            <tr>
+                                                <th scope="row">'.$min_prices[$i]['user_username'].'</th>
                                                 <td>'.$min_prices[$i]['selling_price'].'</td>
                                                 <td>'.$min_prices[$i]['no_of_share'].'</td>
-                                                <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"</td>
-                                        </tr>
-                                ';
+                                                <td>
+                                                    <form action="#" method="post">
+                                                        <input name = "buy_asked_price" type="text" style="border-color: white;" class="form-control" placeholder="Enter amount">
+                                                    </form>
+                                                    <form action="../../APIs/listener/ToggleBuyAskedPriceBackend.php" method="post">
+                                                        <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-"</td>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                    ';
+                                }
                             }
+                            echo '
+                                        </tbody>
+                                    </table>
+                            ';
                         }
-                        echo '
-                                    </tbody>
-                                </table>
-                            </form>';
                     }
                     else
                     {
@@ -200,8 +244,9 @@
                         </div>';
                     if($_SESSION['available_shares'] > 0)
                     {
-                        echo '
-                            <form action="#" method="post">
+                        if($_SESSION['buy_market_price'] == 0)
+                        {
+                            echo '
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -216,12 +261,44 @@
                                             <th scope="row">'.$_SESSION['selected_artist'].'</th>
                                                 <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
                                                 <td>'.$_SESSION['available_shares'].'</td>
-                                                <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"</td>
+                                                <form action="../../APIs/listener/ToggleBuyMarketPriceBackend.php" method="post">
+                                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"</td>
+                                                </form>
                                         </tr>
                                     </tbody>
                                 </table>
-                            </form>
-                        ';
+                            ';
+                        }
+                        else
+                        {
+                            echo '
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">'.$_SESSION['selected_artist'].'</th>
+                                                <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
+                                                <td>'.$_SESSION['available_shares'].'</td>
+                                                <td>
+                                                    <form action="#" method="post">
+                                                            <input name = "buy_asked_price" type="text" style="border-color: white;" class="form-control" placeholder="Enter amount">
+                                                    </form>
+                                                    <form action="../../APIs/listener/ToggleBuyMarketPriceBackend.php" method="post">
+                                                        <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-"</td>
+                                                    </form>
+                                                </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            ';
+                        }
                     }
                     else
                     {
