@@ -86,23 +86,28 @@
             return $result;
         }
 
-        function getLowestPrice($conn, $artist_username)
+        function getAskedPrices($conn, $artist_username)
         {
-            $sql = "SELECT MIN(selling_price) AS min_price FROM user_artist_sell_share WHERE artist_username = ?";
+            $sql = "SELECT * FROM user_artist_sell_share WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
             $result = $stmt->get_result();
 
-            $min_price = $result->fetch_assoc();
-            $min = $min_price['min_price'];
-            $sql = "SELECT * FROM user_artist_sell_share WHERE artist_username = ? AND selling_price = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sd', $artist_username, $min);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
             return $result;
+            // $sql = "SELECT selling_price AND user_username FROM user_artist_sell_share WHERE artist_username = ?";
+            // $stmt = $conn->prepare($sql);
+            // $stmt->bind_param('s', $artist_username);
+            // $stmt->execute();
+            // $result = $stmt->get_result();
+
+            // $asked_prices = array();
+            // while($row = $result->fetch_assoc())
+            // {
+            //     array_push($asked_prices, $row);
+            // }
+
+            // return $asked_prices;
         }
 
         function searchNumberOfShareDistributed($conn, $artist_username)

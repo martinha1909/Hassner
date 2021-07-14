@@ -1,15 +1,30 @@
 <?php
+    include '../../APIs/listener/MyPortfolioBackend.php';
+
     //gets all the users that has lowest price listed with the passed artist_username param
-    function fetchAskedPrice(&$min_prices, $artist_username)
+    function fetchAskedPrice(&$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
     {
         $conn = connect();
-        $result = getLowestPrice($conn, $artist_username);
+        $result = getAskedPrices($conn, $artist_username);
+        //loading up data so all the arrays have corresponding indices that map to the database
         while($row = $result->fetch_assoc())
         {
-            array_push($min_prices, $row);
+            array_push($asked_prices, $row['selling_price']);
+            array_push($user_usernames, $row['user_username']);
+            array_push($artist_usernames, $row['artist_username']);
+            array_push($quantities, $row['no_of_share']);
         }
+        //using insertion sort in MyPortfiolioBackend.php file
+        insertionSort($asked_prices, $user_usernames, $artist_usernames, $quantities, "Descending");
     }
 
+    //fetching the market price, if current user has not invested in the selected artist, simply just populate default values
+    //default values should be displayed on the table like this:
+    //  Owned Shares: 0
+    //  Artist: selected artist
+    //  Current price per share (q̶): grabs current price per share from database
+    //  Selling profit per share (q̶): N/A(0%)
+    //  Available Shares: grabs current shares available for purchase in the database in case the user wants to purchase their first share
     function fetchMarketPrice($artist_username)
     {
         $conn = connect();

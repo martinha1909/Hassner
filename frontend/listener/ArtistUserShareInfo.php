@@ -50,6 +50,8 @@
                     aria-label="Toggle navigation">
                     <span data-feather="grid"></span>
             </button>
+            
+            <!-- displaying user account info (i.e balance) -->
             <?php
             echo '<div style="color: #11171a; font-weight: bold; background-color:white; border-left: 4px solid #11171a; border-right: 10px solid white;">';
             echo "&nbsp;(q̶): ";
@@ -75,7 +77,8 @@
                     <h2>Your shares with <?php echo $_SESSION['selected_artist'];?> </h2>
                 </div>
 
-              <table class="table">
+                <!-- displaying current share information between current user and selected artist -->
+                <table class="table">
                     <thead>
                         <tr>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Owned Shares</th>
@@ -87,6 +90,9 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <!-- displaying Amount of shares owned, selected artist name, 
+                                market price per share of artist, profit since last bought, 
+                                and amount of available shares for purchase, respectively -->
                             <th scope="row"><?php 
                                 echo $_SESSION['shares_owned']; ?></th>
                                 <td><?php echo $_SESSION['selected_artist']; ?></td>
@@ -146,14 +152,23 @@
                 </div>
                 <?php
                     //displaying asked price marketplace
-                    $min_prices = array();
-                    fetchAskedPrice($min_prices, $_SESSION['selected_artist']);
+                    $asked_prices = array();
+                    //displaying corresponding user_username
+                    $user_usernames = array();
+                    //displaying corresponding artist_username
+                    $artist_usernames = array();
+                    //displaying the quantity that are being sold
+                    $quantities = array();
+                    //sorting asked_price in a descending order, so the first index would be the lowest value, then swaps the other arrays 
+                    //to match with asked_price indices
+                    fetchAskedPrice($asked_prices, $user_usernames, $artist_usernames, $quantities, $_SESSION['selected_artist']);
                         echo '
                             <div class="py-4 text-left">
-                                <h3>Lowest Asked Price </h3>
+                                <h3>Asked Price </h3>
                             </div>';
-                    if(sizeof($min_prices) > 0)
+                    if(sizeof($asked_prices) > 0)
                     {
+                        //displays the buy button when user has not clicked on it
                         if($_SESSION['buy_asked_price'] == 0)
                         {
                             echo'
@@ -167,16 +182,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>';
-                            for($i=0; $i<sizeof($min_prices); $i++)
+                            for($i=0; $i<sizeof($asked_prices); $i++)
                             {
                                 //skip the shares that you sell yourself
-                                if($min_prices[$i]['user_username'] != $_SESSION['username'])
+                                if($user_usernames[$i] != $_SESSION['username'])
                                 {
                                     echo '
                                             <tr>
-                                                <th scope="row">'.$min_prices[$i]['user_username'].'</th>
-                                                    <td>'.$min_prices[$i]['selling_price'].'</td>
-                                                    <td>'.$min_prices[$i]['no_of_share'].'</td>
+                                                <th scope="row">'.$user_usernames[$i].'</th>
+                                                    <td>'.$asked_prices[$i].'</td>
+                                                    <td>'.$quantities[$i].'</td>
                                                     <form action="../../APIs/listener/ToggleBuyAskedPriceBackend.php" method="post">
                                                         <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"</td>
                                                     </form>
@@ -189,6 +204,7 @@
                                     </table>
                             ';
                         }
+                        //replaces the Buy button with a slide bar ranging from 0 to the quantity that other users are selling
                         else
                         {
                             echo'
@@ -202,16 +218,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>';
-                            for($i=0; $i<sizeof($min_prices); $i++)
+                            for($i=0; $i<sizeof($asked_prices); $i++)
                             {
                                 //skip the shares that you sell yourself
-                                if($min_prices[$i]['user_username'] != $_SESSION['username'])
+                                if($user_usernames[$i]!= $_SESSION['username'])
                                 {
                                     echo '
                                             <tr>
-                                                <th scope="row">'.$min_prices[$i]['user_username'].'</th>
-                                                <td>'.$min_prices[$i]['selling_price'].'</td>
-                                                <td>'.$min_prices[$i]['no_of_share'].'</td>
+                                                <th scope="row">'.$user_usernames[$i].'</th>
+                                                <td>'.$asked_prices[$i].'</td>
+                                                <td>'.$quantities[$i].'</td>
                                                 <td>
                                                     <form action="#" method="post">
                                                         <input name = "buy_asked_price" type="text" style="border-color: white;" class="form-control" placeholder="Enter amount">
@@ -230,6 +246,7 @@
                             ';
                         }
                     }
+                    //If other users are selling shares, displays nothing
                     else
                     {
                         echo '
@@ -242,8 +259,11 @@
                         <div class="py-4 text-left">
                             <h3>Market Price</h3>
                         </div>';
+                    
+                    //If the amount of artist shares has not sold out or the artist has distributed some shares, makes Buy option available 
                     if($_SESSION['available_shares'] > 0)
                     {
+                        //replaces the Buy button with a slide bar ranging from 0 to the quantity that is equivalent to the maximum available share for purchase
                         if($_SESSION['buy_market_price'] == 0)
                         {
                             echo '
