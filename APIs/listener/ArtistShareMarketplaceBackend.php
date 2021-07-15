@@ -51,7 +51,7 @@
             $_SESSION['bought_pps'] = $search_3->fetch_assoc();
 
             //displaying profit in siliqas
-            $_SESSION['profit'] = $_SESSION['bought_pps']['price_per_share_when_bought'] - $_SESSION['current_pps']['price_per_share'];
+            $_SESSION['profit'] = $_SESSION['current_pps']['price_per_share'] - $_SESSION['bought_pps']['price_per_share_when_bought'];
             $_SESSION['profit'] = round($_SESSION['profit'], 2);
             //displaying profit in %
             $_SESSION['profit_rate'] = ($_SESSION['profit']/$_SESSION['current_pps']['price_per_share']) * 100;
@@ -69,12 +69,16 @@
 
         $search_4 = searchArtistTotalSharesBought($conn, $_SESSION['selected_artist']);
         //total number of shares bought accross all users with the selected artist
-        $total_share_bought = $search_4->fetch_assoc();
+        $total_share_bought = 0;
+        while($row = $search_4->fetch_assoc())
+        {
+            $total_share_bought += $row['no_of_share_bought'];
+        }
         $search_5 = searchNumberOfShareDistributed($conn, $_SESSION['selected_artist']);
         //Number of share distributed by the selected artist
         $share_distributed = $search_5->fetch_assoc();
         //shares available for purchase of the selected artist
-        $_SESSION['available_shares'] = $share_distributed['Share_Distributed'] - $total_share_bought['Shares'];
+        $_SESSION['available_shares'] = $share_distributed['Share_Distributed'] - $total_share_bought;
 
         $search_6 = searchAccount($conn, $_SESSION['username']);
         $_SESSION['user_balance'] = $search_6->fetch_assoc();

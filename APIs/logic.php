@@ -77,7 +77,7 @@
 
         function searchArtistTotalSharesBought($conn, $artist_username)
         {
-            $sql = "SELECT Shares FROM account WHERE username = ?";
+            $sql = "SELECT no_of_share_bought FROM user_artist_share WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -191,5 +191,71 @@
                 $notify = 2;
             }  
             return $notify;
+        }
+
+        function purchaseMarketPriceShare($conn, $buyer, $artist, $buyer_new_balance, $artist_new_balance, $inital_pps, $new_pps, $buyer_new_share_amount, $shares_owned, $amount)
+        {
+            $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET Shares = Shares + '$amount' WHERE username = '$artist'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$buyer'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET balance = '$artist_new_balance' WHERE username = '$artist'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist'";
+            $conn->query($sql);
+
+            if($shares_owned == 0)
+            {
+                $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought)
+                    VALUES(?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $inital_pps);
+                $stmt->execute();
+            }
+
+            $sql = "UPDATE user_artist_share SET no_of_share_bought = '$buyer_new_share_amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
+            $conn->query($sql);
+        }
+
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount)
+        {
+            $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = '$seller'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$buyer'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET balance = '$seller_new_balance' WHERE username = '$seller'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist'";
+            $conn->query($sql);
+
+            if($shares_owned == 0)
+            {
+                $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought)
+                    VALUES(?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $inital_pps);
+                $stmt->execute();
+            }
+
+            $sql = "UPDATE user_artist_share SET no_of_share_bought = '$buyer_new_share_amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
+            $conn->query($sql);
+
+            $sql = "UPDATE user_artist_share SET no_of_share_bought = '$seller_new_share_amount' WHERE user_username = '$seller' AND artist_username = '$artist'";
+            $conn->query($sql);
+
+            $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share - $amount WHERE user_username = '$seller' AND artist_username = '$artist'";
+            $conn->query($sql);
         }
 ?>

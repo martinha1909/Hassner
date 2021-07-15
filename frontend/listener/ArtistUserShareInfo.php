@@ -23,6 +23,7 @@
     <!-- Bootstrap CSS / Color Scheme -->
     <link rel="stylesheet" href="../css/default.css" id="theme-color">
     <link rel="stylesheet" href="../css/searchbar.css" id="theme-color">
+    <link rel="stylesheet" href="../css/slidebar.css" id="theme-color">
 </head>
 <body class="bg-dark">
 
@@ -123,8 +124,10 @@
                             <div class="wrapper-searchbar">
                                 <div class="container-searchbar mx-auto">
                                     <label>
-                                        <form action="../APIs/ShareSellConnection.php" method="post">
-                                            <input type="search" "class="search-field" placeholder="Enter share amount" name="share" />
+                                        <form action="#" method="post">
+                                            <input name = "purchase_quantity" type="range" min="1" max='.$_SESSION['shares_owned'].' value="1" class="slider" id="myRange">
+                                            <p>Quantity: <span id="demo"></span></p>
+                                            <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
                                         </form>
                                     </label> 
                                 </div>
@@ -185,7 +188,7 @@
                             for($i=0; $i<sizeof($asked_prices); $i++)
                             {
                                 //skip the shares that you sell yourself
-                                if($user_usernames[$i] != $_SESSION['username'])
+                                if($user_usernames[$i] != $_SESSION['username'] && $quantities[$i] > 0)
                                 {
                                     echo '
                                             <tr>
@@ -193,7 +196,7 @@
                                                     <td>'.$asked_prices[$i].'</td>
                                                     <td>'.$quantities[$i].'</td>
                                                     <form action="../../APIs/listener/ToggleBuyAskedPriceBackend.php" method="post">
-                                                        <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"</td>
+                                                        <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[$i].'" onclick="window.location.reload();"></td>
                                                     </form>
                                             </tr>
                                     ';
@@ -214,6 +217,7 @@
                                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
                                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
                                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col"></th>
                                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
                                         </tr>
                                     </thead>
@@ -228,16 +232,32 @@
                                                 <th scope="row">'.$user_usernames[$i].'</th>
                                                 <td>'.$asked_prices[$i].'</td>
                                                 <td>'.$quantities[$i].'</td>
-                                                <td>
-                                                    <form action="#" method="post">
-                                                        <input name = "buy_asked_price" type="text" style="border-color: white;" class="form-control" placeholder="Enter amount">
+                                                <td>';
+                                    if(strcmp($_SESSION['seller'], $user_usernames[$i]) == 0)
+                                    {
+                                        $_SESSION['purchase_price'] = $asked_prices[$i];
+                                        $_SESSION['seller_toggle'] = $user_usernames[$i];
+                                        echo'
+                                                    <form action="../../APIs/listener/BuySharesBackend.php" method="post">
+                                                        <input name = "purchase_quantity" type="range" min="1" max='.$quantities[$i].' value="1" class="slider" id="myRange">
+                                                        <p>Quantity: <span id="demo"></span></p>
+                                                        <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
                                                     </form>
                                                     <form action="../../APIs/listener/ToggleBuyAskedPriceBackend.php" method="post">
-                                                        <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-"</td>
+                                                        <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                                    </form>
+                                        ';
+                                    }
+                                    else
+                                    {
+                                        echo'
+                                                    <form action="../../APIs/listener/ToggleBuyAskedPriceBackend.php" method="post">
+                                                        <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[$i].'" onclick="window.location.reload();"</td>
                                                     </form>
                                                 </td>
                                             </tr>
-                                    ';
+                                        ';
+                                    }
                                 }
                             }
                             echo '
@@ -274,6 +294,7 @@
                                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
                                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
                                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
+                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -282,7 +303,7 @@
                                                 <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
                                                 <td>'.$_SESSION['available_shares'].'</td>
                                                 <form action="../../APIs/listener/ToggleBuyMarketPriceBackend.php" method="post">
-                                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"</td>
+                                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
                                                 </form>
                                         </tr>
                                     </tbody>
@@ -291,6 +312,8 @@
                         }
                         else
                         {
+                            $_SESSION['seller_toggle'] = $_SESSION['selected_artist'];
+                            $_SESSION['purchase_price'] = $_SESSION['current_pps']['price_per_share'];
                             echo '
                                 <table class="table">
                                     <thead>
@@ -307,11 +330,13 @@
                                                 <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
                                                 <td>'.$_SESSION['available_shares'].'</td>
                                                 <td>
-                                                    <form action="#" method="post">
-                                                            <input name = "buy_asked_price" type="text" style="border-color: white;" class="form-control" placeholder="Enter amount">
+                                                    <form action="../../APIs/listener/BuySharesBackend.php" method="post">
+                                                        <input name = "purchase_quantity" type="range" min="1" max='.$_SESSION['available_shares'].' value="1" class="slider" id="myRange">
+                                                        <p>Quantity: <span id="demo"></span></p>
+                                                        <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->">
                                                     </form>
                                                     <form action="../../APIs/listener/ToggleBuyMarketPriceBackend.php" method="post">
-                                                        <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-"</td>
+                                                        <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
                                                     </form>
                                                 </td>
                                         </tr>
@@ -344,5 +369,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 <script src="js/scripts.js"></script>
+<script>
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+    }
+</script>
 </body>
 </html>
