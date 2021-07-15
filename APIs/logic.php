@@ -53,6 +53,17 @@
             return $result;
         }
 
+        function searchUserSellingShares($conn, $user_username)
+        {
+            $sql = "SELECT * FROM user_artist_sell_share WHERE user_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchArtistCurrentPricePerShare($conn, $artist_username)
         {
             $sql = "SELECT price_per_share FROM account WHERE username = ?";
@@ -86,6 +97,18 @@
             return $result;
         }
 
+        function getArtistShareLowerBound($conn, $artist_username)
+        {
+            $type = "artist";
+            $sql = "SELECT lower_bound FROM account WHERE username = ? AND account_type = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $artist_username, $type);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function getAskedPrices($conn, $artist_username)
         {
             $sql = "SELECT * FROM user_artist_sell_share WHERE artist_username = ?";
@@ -95,19 +118,17 @@
             $result = $stmt->get_result();
 
             return $result;
-            // $sql = "SELECT selling_price AND user_username FROM user_artist_sell_share WHERE artist_username = ?";
-            // $stmt = $conn->prepare($sql);
-            // $stmt->bind_param('s', $artist_username);
-            // $stmt->execute();
-            // $result = $stmt->get_result();
+        }
 
-            // $asked_prices = array();
-            // while($row = $result->fetch_assoc())
-            // {
-            //     array_push($asked_prices, $row);
-            // }
+        function getSpecificAskedPrice($conn, $user_username, $artist_username)
+        {
+            $sql = "SELECT * FROM user_artist_sell_share WHERE artist_username = ? AND user_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $artist_username, $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-            // return $asked_prices;
+            return $result;
         }
 
         function searchNumberOfShareDistributed($conn, $artist_username)
@@ -257,5 +278,20 @@
 
             $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share - $amount WHERE user_username = '$seller' AND artist_username = '$artist'";
             $conn->query($sql);
+        }
+
+        function updateAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price)
+        {
+            $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share + $quantity WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$quantity'";
+            $conn->query($sql);
+        }
+
+        function postAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price)
+        {
+            $sql = "INSERT INTO user_artist_sell_share (user_username, artist_username, selling_price, no_of_share)
+                    VALUES(?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssdi', $user_username, $artist_username, $quantity, $asked_price);
+            $stmt->execute();
         }
 ?>

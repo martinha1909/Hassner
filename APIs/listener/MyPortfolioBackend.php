@@ -152,4 +152,16 @@
         }
         echo '</form>';        
     }
+
+    function fetchUserSellingShares($user_username)
+    {
+        $conn = connect();
+        $selling_shares = array();
+        $result = searchUserSellingShares($conn, $user_username);
+        while($row = $result->fetch_assoc())
+        {
+            array_push($selling_shares, $row);
+        }
+        return $selling_shares;
+    }
 ?>

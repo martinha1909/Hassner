@@ -338,6 +338,27 @@
                                 }
                                 echo '</tbody>
                                     </table>';
+                                $selling_shares = fetchUserSellingShares($_SESSION['username']);
+                                echo'    
+                                    <h3>Your active shares</h3>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Artist</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Selling for (q̶)</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">
+                                                    <td>afafasf</td>
+                                                    <td>afafasf</td>
+                                                    <td>afafasf</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                ';
                             }
 
                             //displaying Top Invested Artist

@@ -9,10 +9,13 @@
         //loading up data so all the arrays have corresponding indices that map to the database
         while($row = $result->fetch_assoc())
         {
-            array_push($asked_prices, $row['selling_price']);
-            array_push($user_usernames, $row['user_username']);
-            array_push($artist_usernames, $row['artist_username']);
-            array_push($quantities, $row['no_of_share']);
+            if($row['no_of_share'] > 0 && (strcmp($row['user_username'], $_SESSION['username']) != 0))
+            {
+                array_push($asked_prices, $row['selling_price']);
+                array_push($user_usernames, $row['user_username']);
+                array_push($artist_usernames, $row['artist_username']);
+                array_push($quantities, $row['no_of_share']);
+            }
         }
         //using insertion sort in MyPortfiolioBackend.php file
         insertionSort($asked_prices, $user_usernames, $artist_usernames, $quantities, "Descending");
@@ -82,5 +85,13 @@
 
         $search_6 = searchAccount($conn, $_SESSION['username']);
         $_SESSION['user_balance'] = $search_6->fetch_assoc();
+    }
+
+    function getLowerBound($artist_username)
+    {
+        $conn = connect();
+        $result = getArtistShareLowerBound($conn, $artist_username);
+        $lower_bound = $result->fetch_assoc();
+        return $lower_bound['lower_bound'];
     }
 ?>
