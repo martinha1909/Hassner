@@ -15,7 +15,7 @@ function printSearch($search_result)
         //$price_per_share = getArtistPricePerShare($users[$i]);
         //$rate = getArtistCurrentRate($users[$i]);
         echo '<tr><th scope="row">'.$id.'</th>
-                    <td style="color: white">'.$artist_name.'</td>
+                    <td><input name = $artist_name type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$artist_name.'"></td></td>
                     <td style="color: white">'.$price_per_share.'</td>
                     <td style="color: white">'.$market_cap.'</td>
                     <td style="color: white">'.$lower_bound.'</td>
