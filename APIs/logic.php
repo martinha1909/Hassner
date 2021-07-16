@@ -294,4 +294,12 @@
             $stmt->bind_param('ssdi', $user_username, $artist_username, $quantity, $asked_price);
             $stmt->execute();
         }
+
+        function removeUserArtistSellShareTuple($conn, $user_username, $artist_username, $selling_price, $no_of_share)
+        {
+            $sql = "DELETE FROM user_artist_sell_share WHERE user_username = ? AND artist_username = ? AND selling_price = ? AND no_of_share = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssdi', $user_username, $artist_username, $selling_price, $no_of_share);
+            $stmt->execute();
+        }
 ?>

@@ -338,7 +338,12 @@
                                 }
                                 echo '</tbody>
                                     </table>';
-                                $selling_shares = fetchUserSellingShares($_SESSION['username']);
+                                $artist_usernames = array();
+                                //profit relative to the current price per share of the artist
+                                $profits = array();
+                                $selling_prices = array();
+                                $share_amounts = array();
+                                fetchUserSellingShares($_SESSION['username'], $artist_usernames, $profits, $selling_prices, $share_amounts);
                                 echo'    
                                     <h3>Your active shares</h3>
                                     <table class="table">
@@ -347,15 +352,23 @@
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Artist</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Selling for (q̶)</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Gain/Loss Unrealized</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody>';
+                                $conn = connect();
+                                for($i=0; $i<sizeof($selling_prices); $i++)
+                                {
+                                    echo'
                                             <tr>
-                                                <th scope="row">
-                                                    <td>afafasf</td>
-                                                    <td>afafasf</td>
-                                                    <td>afafasf</td>
+                                                <th scope="row">'.$artist_usernames[$i].'</th>
+                                                    <td>'.$selling_prices[$i].'</td>
+                                                    <td>'.$share_amounts[$i].'</td>
+                                                    <td>'.$profits[$i].'%</td>
                                             </tr>
+                                    ';
+                                }
+                                echo '
                                         </tbody>
                                     </table>
                                 ';

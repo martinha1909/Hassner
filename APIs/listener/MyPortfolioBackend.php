@@ -153,15 +153,27 @@
         echo '</form>';        
     }
 
-    function fetchUserSellingShares($user_username)
+    function fetchUserSellingShares($user_username, &$artist_usernames, &$profits, &$selling_prices, &$share_amounts)
     {
         $conn = connect();
-        $selling_shares = array();
         $result = searchUserSellingShares($conn, $user_username);
         while($row = $result->fetch_assoc())
         {
-            array_push($selling_shares, $row);
+            if($row['no_of_share'] == 0)
+            {
+                removeUserArtistSellShareTuple($conn, $row['user_username'], $row['artist_username'], $row['selling_price'], $row['no_of_share']);
+            }
+            else
+            {
+                $result = searchArtistCurrentPricePerShare($conn, $row['artist_username']);
+                $pps = $result->fetch_assoc();
+                $profit = (($row['selling_price'] - $pps['price_per_share'])/($pps['price_per_share']))*100;
+                array_push($artist_usernames, $row['artist_username']);
+                array_push($profits, round($profit, 2));
+                array_push($selling_prices, $row['selling_price']);
+                array_push($share_amounts, $row['no_of_share']);
+            }
         }
-        return $selling_shares;
+        insertionSort($selling_prices, $artist_usernames, $profits, $share_amounts, "Descending");
     }
 ?>
