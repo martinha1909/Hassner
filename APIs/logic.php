@@ -280,19 +280,34 @@
             $conn->query($sql);
         }
 
-        function updateAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price)
+        function updateAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price, $new_pps)
         {
             $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share + $quantity WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$quantity'";
             $conn->query($sql);
+
+            $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist_username'";
+            $conn->query($sql);
         }
 
-        function postAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price)
+        function updateExistedSellingShare($conn, $user_username, $artist_username, $quantity, $asked_price)
+        {
+            $sql = "UPDATE user_artist_sell_share SET no_of_share = '$quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username'";
+            $conn->query($sql);
+
+            $sql = "UPDATE user_artist_sell_share SET selling_price = '$asked_price' WHERE user_username = '$user_username' AND artist_username = '$artist_username'";
+            $conn->query($sql);
+        }
+
+        function postAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price, $new_pps)
         {
             $sql = "INSERT INTO user_artist_sell_share (user_username, artist_username, selling_price, no_of_share)
                     VALUES(?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdi', $user_username, $artist_username, $quantity, $asked_price);
+            $stmt->bind_param('ssdi', $user_username, $artist_username, $asked_price, $quantity);
             $stmt->execute();
+
+            $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist_username'";
+            $conn->query($sql);
         }
 
         function removeUserArtistSellShareTuple($conn, $user_username, $artist_username, $selling_price, $no_of_share)

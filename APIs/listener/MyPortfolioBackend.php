@@ -153,6 +153,8 @@
         echo '</form>';        
     }
 
+    //retrieves from the database all the rows that contains all selling shares accrossed all artists of $user_username
+    //If notices a row that has quantity of 0, simply just removes it from the database
     function fetchUserSellingShares($user_username, &$artist_usernames, &$profits, &$selling_prices, &$share_amounts)
     {
         $conn = connect();
@@ -175,5 +177,14 @@
             }
         }
         insertionSort($selling_prices, $artist_usernames, $profits, $share_amounts, "Descending");
+    }
+
+    //gets the total amount of share that the user holds corresponds to the $artist_username
+    function getMaxShareQuantity($user_username, $artist_username)
+    {
+        $conn = connect();
+        $result = searchSpecificInvestment($conn, $user_username, $artist_username);
+        $amount = $result->fetch_assoc();
+        return $amount['no_of_share_bought'];
     }
 ?>

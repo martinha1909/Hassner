@@ -343,6 +343,7 @@
                                 $profits = array();
                                 $selling_prices = array();
                                 $share_amounts = array();
+                                //update the sahres that the user is currently selling
                                 fetchUserSellingShares($_SESSION['username'], $artist_usernames, $profits, $selling_prices, $share_amounts);
                                 echo'    
                                     <h3>Your active shares</h3>
@@ -353,6 +354,7 @@
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Selling for (q̶)</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Gain/Loss Unrealized</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col"></th>
                                             </tr>
                                         </thead>
                                         <tbody>';
@@ -364,9 +366,41 @@
                                                 <th scope="row">'.$artist_usernames[$i].'</th>
                                                     <td>'.$selling_prices[$i].'</td>
                                                     <td>'.$share_amounts[$i].'</td>
-                                                    <td>'.$profits[$i].'%</td>
+                                                    <td>'.$profits[$i].'%</td>';
+                                    //Edits sold shares where the suer can fix the bid price and the quantity
+                                    //If the user chooses the new quantity to be 0, the current selling share would be removed from the market 
+                                    //and other users can't buy the current share anymore. 
+                                    if((strcmp($_SESSION['artist_share_remove'], $artist_usernames[$i]) == 0) && ($_SESSION['share_price_remove'] == $selling_prices[$i]))
+                                    {
+                                        $max_quantity = getMaxShareQuantity($_SESSION['username'], $artist_usernames[$i]);
+                                        //seding old bid prices, old quantity of shares being sold, and new bid prices and new quatity of shares being sold
+                                        echo '
+                                                    <form action="../../APIs/listener/ConfirmEditSellingShareBackend.php" method="post">
+                                                        <td>
+                                                            <input name = "new_quantity" type="range" min="0" max='.$max_quantity.' value="'.$share_amounts[$i].'" class="slider" id="myRange">
+                                                            <p>New Quantity: <span id="demo"></span></p>
+                                                            <p>New Asked Price: <span id="asked_value"></span></p>
+                                                            <input type="text" name="new_asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new amount">
+                                                            <input name="old_asked_price['.$selling_prices[$i].']" style="cursor: context-menu; border:1px transparent; background-color: transparent;">
+                                                            <input name="old_quantity['.$share_amounts[$i].']" style="cursor: context-menu; border:1px transparent; background-color: transparent;">
+                                                            <input name="artist_name['.$artist_usernames[$i].']"type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
+                                                        </td>
+                                                    </form>
                                             </tr>
-                                    ';
+                                        ';
+                                    }
+                                    else
+                                    {
+                                        echo '
+                                                    <form action="../../APIs/listener/EditSellingShareBackend.php" method="post">
+                                                        <td>
+                                                            <input name="remove_share_artist['.$artist_usernames[$i].']" style="cursor: context-menu; border:1px transparent; background-color: transparent;">
+                                                            <input name="remove_share_price['.$selling_prices[$i].']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();">
+                                                        </td>
+                                                    </form>
+                                            </tr>
+                                        ';
+                                    }
                                 }
                                 echo '
                                         </tbody>
@@ -543,5 +577,14 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
         <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
         <script src="js/scripts.js"></script>
+        <script>
+            var slider = document.getElementById("myRange");
+            var output = document.getElementById("demo");
+            output.innerHTML = slider.value;
+
+            slider.oninput = function() {
+                output.innerHTML = this.value;
+            }
+        </script>
     </body>
 </html>

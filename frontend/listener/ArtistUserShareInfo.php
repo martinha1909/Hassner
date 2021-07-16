@@ -130,9 +130,9 @@
                                         <form action="../../APIs/listener/SellSharesBackend.php" method="post">
                                             <input name = "purchase_quantity" type="range" min="1" max='.$_SESSION['shares_owned'].' value="1" class="slider" id="myRange">
                                             <p>Quantity: <span id="demo"></span></p>
-                                            <input name = "asked_price" type="range" min='.$lower_bound.' max='.$upper_bound.' value="1" class="slider" id="asked_range">
+                                            <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
                                             <p>Asked Price: <span id="asked_value"></span></p>
-                                            <input name="buy_user_selling_price" type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
+                                            <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
                                         </form>
                                     </label> 
                                 </div>
@@ -177,6 +177,7 @@
                     if(sizeof($asked_prices) > 0)
                     {
                         //displays the buy button when user has not clicked on it
+                        //always displays first index, which is lowest bid price
                         if($_SESSION['buy_asked_price'] == 0)
                         {
                             echo'
@@ -225,6 +226,7 @@
                                 ';
                                     if(strcmp($_SESSION['seller'], $user_usernames[0]) == 0)
                                     {
+                                        echo "AEeaeafae";
                                         $_SESSION['purchase_price'] = $asked_prices[0];
                                         $_SESSION['seller_toggle'] = $user_usernames[0];
                                         echo'
@@ -242,7 +244,7 @@
                                     {
                                         echo'
                                                 <form action="../../APIs/listener/ToggleBuyAskedPriceBackend.php" method="post">
-                                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[$i].'" onclick="window.location.reload();"</td>
+                                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[0].'" onclick="window.location.reload();"</td>
                                                 </form>
                                                 </td>
                                             </tr>
@@ -363,14 +365,6 @@
     output.innerHTML = slider.value;
 
     slider.oninput = function() {
-        output.innerHTML = this.value;
-    }
-
-    var asked = document.getElementById("asked_range");
-    var output = document.getElementById("asked_value");
-    output.innerHTML = asked.value;
-
-    asked.oninput = function() {
         output.innerHTML = this.value;
     }
 </script>
