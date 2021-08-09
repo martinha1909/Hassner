@@ -1,7 +1,7 @@
 <?php
     session_start();
     include '../../APIs/control/Dependencies.php';
-    include '../../APIs/artist/SearchArtistBackend.php';
+    include '../../APIs/listener/SearchArtistBackend.php';
 ?>
 
 <!doctype html>
@@ -58,44 +58,34 @@
         <section class="py-0" id="login">
             <div class="container-fluid">
                 <div class="row">
-                    <ul class="list-group bg-dark">
-                        
-                    </ul>
                     <ul class="list-group col">
                         <?php                    
-                            
-                            //displaying Top Invested Artist
-                            
-                                if($_SESSION['found'] == 0)
-                                {
-                                    echo '<h3> There are no artists to display </h3>';
-                                }
-                                else
-                                {
-                                    echo '
-                                        <table class="table">
-                                            <thead class="thead-orange">
-                                                <tr>
-                                                    <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "#"></th>
-                                                    <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Artist"></th>
-                                                    <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Price Per Share"></th>
-                                                    <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Market Cap"></th>
-                                                    <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Lower Bound"></th>
-                                                    <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Monthly Shareholders"></th>
-                                                </tr>
-                                            </thead>
-                                        <tbody>
-                                    ';
-                                    printSearch($_SESSION['artist_found']);
-                                }
-                                echo '</form>';
-                            
+                            if($_SESSION['found'] == 0)
+                            {
+                                echo '<h3> There are no artists to display </h3>';
+                            }
+                            else
+                            {
+                                echo '
+                                    <table class="table">
+                                        <thead class="thead-orange">
+                                            <tr>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "#"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Artist"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Price Per Share"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Market Cap"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Lower Bound"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Monthly Shareholders"></th>
+                                            </tr>
+                                        </thead>
+                                    <tbody>
+                                ';
+                                printSearch($_SESSION['artist_found']);
+                            }
+                            echo '</form>';     
 
-                            
-                                $_SESSION['btn_show'] = 0;
-                                
-                            
-                            
+                            $_SESSION['btn_show'] = 0;
+
                         ?>
                     </ul>
                 </div>
