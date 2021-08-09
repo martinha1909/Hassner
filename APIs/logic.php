@@ -152,4 +152,8 @@
             $stmt->bind_param('ss', $new_pwd, $user_username);
             $stmt->execute();
         }
+        function redirectToListener()
+        {
+            header("Location: ../../frontend/listener/listener.php");
+        }
 ?>

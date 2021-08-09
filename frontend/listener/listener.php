@@ -43,8 +43,8 @@
                         <div class="container-searchbar">
                             <label>
                                 <span class="screen-reader-text">Search for...</span>
-                                <form class="form-inline" action="../../APIs/artist/SearchArtistBackend.php" method="post">
-                                    <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_name" />
+                                <form class="form-inline" action="../../APIs/listener/SearchPageBackend.php" method="post">
+                                    <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_search" />
                                 </form>
                             </label>
                         </div>
