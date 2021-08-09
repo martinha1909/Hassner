@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2021 at 01:57 AM
+-- Generation Time: Jul 14, 2021 at 11:22 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -60,8 +60,35 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `lower_bound`) VALUES
 ('88Glam', 'artist', 'artist', 2, 0, 0, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 1, 0, 0, 0, 0),
+<<<<<<< HEAD
 ('martin', 'user', 'user', 1, 0, 8214.99, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '', '', '', '', 0, 0, 0, 0, 0),
 ('NAV', 'artist', 'artist', 3, 1, 0, 0.013, 1, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 1.1, 0, 0, 0, 0);
+=======
+('kai', 'user', 'user', 4, 0, 0, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
+('martin', 'user', 'user', 1, 0, 7785.59, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '1', '1', '1', '1', 0, 0, 0, 0, 0),
+('NAV', 'artist', 'artist', 3, 1, 0, 0.013, 10, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 1.1, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_artist_sell_share`
+--
+
+CREATE TABLE `user_artist_sell_share` (
+  `user_username` varchar(50) NOT NULL,
+  `artist_username` varchar(50) NOT NULL,
+  `selling_price` int(11) NOT NULL,
+  `no_of_share` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user_artist_sell_share`
+--
+
+INSERT INTO `user_artist_sell_share` (`user_username`, `artist_username`, `selling_price`, `no_of_share`) VALUES
+('kai', 'NAV', 1, 1),
+('martin', 'NAV', 1, 1);
+>>>>>>> listener_share_interact
 
 -- --------------------------------------------------------
 
@@ -72,15 +99,21 @@ INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `
 CREATE TABLE `user_artist_share` (
   `user_username` varchar(50) NOT NULL,
   `artist_username` varchar(50) NOT NULL,
-  `no_of_share_bought` int(255) NOT NULL
+  `no_of_share_bought` int(255) NOT NULL,
+  `price_per_share_when_bought` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_artist_share`
 --
 
+<<<<<<< HEAD
 INSERT INTO `user_artist_share` (`user_username`, `artist_username`, `no_of_share_bought`) VALUES
 ('martin', 'NAV', 1);
+=======
+INSERT INTO `user_artist_share` (`user_username`, `artist_username`, `no_of_share_bought`, `price_per_share_when_bought`) VALUES
+('martin', 'NAV', 1, 1.1);
+>>>>>>> listener_share_interact
 
 --
 -- Indexes for dumped tables
@@ -94,6 +127,13 @@ ALTER TABLE `account`
   ADD UNIQUE KEY `id` (`id`);
 
 --
+-- Indexes for table `user_artist_sell_share`
+--
+ALTER TABLE `user_artist_sell_share`
+  ADD PRIMARY KEY (`user_username`,`artist_username`,`selling_price`),
+  ADD KEY `artist_username_key_sell` (`artist_username`);
+
+--
 -- Indexes for table `user_artist_share`
 --
 ALTER TABLE `user_artist_share`
@@ -103,6 +143,13 @@ ALTER TABLE `user_artist_share`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `user_artist_sell_share`
+--
+ALTER TABLE `user_artist_sell_share`
+  ADD CONSTRAINT `artist_username_key_sell` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`),
+  ADD CONSTRAINT `user_username_key_sell` FOREIGN KEY (`user_username`) REFERENCES `account` (`username`);
 
 --
 -- Constraints for table `user_artist_share`

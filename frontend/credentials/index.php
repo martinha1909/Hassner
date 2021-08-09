@@ -13,6 +13,10 @@
   $_SESSION['buy_sell'] = 0;
   $_SESSION['add'] = 0;
   $_SESSION['add_share'] = 0;
+  $_SESSION['buy_asked_price'] = 0;
+  $_SESSION['buy_market_price'] = 0;
+  $_SESSION['artist_share_remove'] = 0;
+  $_SESSION['share_price_remove'] = 0;
 ?>
 
 <!doctype html>

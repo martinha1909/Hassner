@@ -140,7 +140,7 @@
         {
             if($all_shares_bought[$i] != 0)
             {
-                echo '<tr><th scope="row">'.$id.'</th><td><input name = "artist_name['.$all_artists[$i].']" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$all_artists[$i].'"></td><td>'.$all_shares_bought[$i].'</td><td>'.$all_price_per_share[$i].'</td>';
+                echo '<tr><th scope="row">'.$id.'</th><td><input name = "artist_name" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$all_artists[$i].'"></td><td>'.$all_shares_bought[$i].'</td><td>'.$all_price_per_share[$i].'</td>';
                 if($all_rates[$i] > 0)
                     echo '<td class="increase">+'.$all_rates[$i].'%</td></tr>';
                 else if($all_rates[$i] == 0)
@@ -151,5 +151,40 @@
             }
         }
         echo '</form>';        
+    }
+
+    //retrieves from the database all the rows that contains all selling shares accrossed all artists of $user_username
+    //If notices a row that has quantity of 0, simply just removes it from the database
+    function fetchUserSellingShares($user_username, &$artist_usernames, &$profits, &$selling_prices, &$share_amounts)
+    {
+        $conn = connect();
+        $result = searchUserSellingShares($conn, $user_username);
+        while($row = $result->fetch_assoc())
+        {
+            if($row['no_of_share'] == 0)
+            {
+                removeUserArtistSellShareTuple($conn, $row['user_username'], $row['artist_username'], $row['selling_price'], $row['no_of_share']);
+            }
+            else
+            {
+                $result = searchArtistCurrentPricePerShare($conn, $row['artist_username']);
+                $pps = $result->fetch_assoc();
+                $profit = (($row['selling_price'] - $pps['price_per_share'])/($pps['price_per_share']))*100;
+                array_push($artist_usernames, $row['artist_username']);
+                array_push($profits, round($profit, 2));
+                array_push($selling_prices, $row['selling_price']);
+                array_push($share_amounts, $row['no_of_share']);
+            }
+        }
+        insertionSort($selling_prices, $artist_usernames, $profits, $share_amounts, "Descending");
+    }
+
+    //gets the total amount of share that the user holds corresponds to the $artist_username
+    function getMaxShareQuantity($user_username, $artist_username)
+    {
+        $conn = connect();
+        $result = searchSpecificInvestment($conn, $user_username, $artist_username);
+        $amount = $result->fetch_assoc();
+        return $amount['no_of_share_bought'];
     }
 ?>
