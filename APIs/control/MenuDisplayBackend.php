@@ -21,7 +21,7 @@
     {
         $_SESSION['display'] = 5;
     }
-    else if($type == "Settings")
+    else if($type == "Communities")
     {
         $_SESSION['display'] = 6;
     }

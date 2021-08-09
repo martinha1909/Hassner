@@ -180,7 +180,7 @@
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
                                         <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Settings ->">
+                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Communities ->">
                                         </form>
                                     </li>
                                 ';
@@ -190,7 +190,7 @@
                                 echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Settings">
+                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Communities">
                                         </form>
                                     </li>
                                 ';
