@@ -395,7 +395,7 @@
                                                     <form action="../../APIs/listener/EditSellingShareBackend.php" method="post">
                                                         <td>
                                                             <input name="remove_share_artist['.$artist_usernames[$i].']" style="cursor: context-menu; border:1px transparent; background-color: transparent;">
-                                                            <input name="remove_share_price['.$selling_prices[$i].']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();">
+                                                            <input name="remove_share_price['.$selling_prices[$i].']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="✏" onclick="window.location.reload();">
                                                         </td>
                                                     </form>
                                             </tr>

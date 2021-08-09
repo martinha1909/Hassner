@@ -252,9 +252,11 @@
             $stmt->bind_param('ss', $new_pwd, $user_username);
             $stmt->execute();
         }
+
         function redirectToListener()
         {
             header("Location: ../../frontend/listener/listener.php");
+        }
 
         function purchaseMarketPriceShare($conn, $buyer, $artist, $buyer_new_balance, $artist_new_balance, $inital_pps, $new_pps, $buyer_new_share_amount, $shares_owned, $amount)
         {
