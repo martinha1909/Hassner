@@ -182,42 +182,7 @@
                       //Artist's portfolio
                       else if($_SESSION['display'] == 2 || $_SESSION['display'] == 0)
                       {
-                        $_SESSION['add'] = 0;
-                        if($account_info['Share_Distributed'] == 0)
-                        {
-                          echo '<h3>Get started by distributing share in the account tab</h3>';
-                        }
-                        else
-                        {
-                          echo '<h6>Price Per Share: '.$account_info['price_per_share'].'</h6>';
-                          echo '<h6>Share distributed: '.$account_info['Share_Distributed'].'   <a href="../APIs/artist/IncreaseSharesDistributed.php" id="icon-btn">+</a></h6>';
-                          echo '<h6>Current Shareholders: </h6>';
-                          echo '<h6>Current market cap: </h6>';
-                          echo '<h6>Current lower bound: </h6>';
-                          if($_SESSION['add_share'] == 1)
-                          {
-                            $max = $account_info['Share_Distributed'];
-                            echo'  <h1>Distribute more shares</h1>
-                            <p>Drag the slider to display the current value.</p>
-                            
-                            <div class="slidecontainer">
-                              <form action="../APIs/artist/IncreaseSharesDistributed.php" method ="post">
-                                <input name="share_added" type="range" min="0" max='.$max.' value="0" class="slider" id="myRange">
-                                <input type="submit" class="btn btn-primary py-2" value="Distribute">
-                              </form>
-                              <h6>Value: <span id="demo"></span></h6>
-                            </div>';
-                            echo '<script>
-                                  var slider = document.getElementById("myRange");
-                                  var output = document.getElementById("demo");
-                                  output.innerHTML = slider.value;
-                                  
-                                  slider.oninput = function() {
-                                    output.innerHTML = this.value;
-                                  }
-                                  </script>';
-                          }
-                        }
+                        
                       }
 
                       //brings to Artist personal account page, where they can input their metrics, which are shown
