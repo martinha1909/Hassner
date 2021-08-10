@@ -1,12 +1,11 @@
 <?php
-  session_start();
   $_SESSION['expmonth'] = 0;
   $_SESSION['expyear'] = 0;
 ?>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=divice-width, initial-scale=1.0">
-  <title><?php echo $_SESSION['username'];?> Page</title>
+  <title>Checkout</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/checkout.css" type="text/css">
   <link rel="stylesheet" href="../css/default.css" type="text/css">

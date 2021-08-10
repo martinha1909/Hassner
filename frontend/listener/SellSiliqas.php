@@ -1,5 +1,5 @@
 <?php
-  session_start();
+  include '../../APIs/control/Dependencies.php';
   $_SESSION['expmonth'] = 0;
   $_SESSION['expyear'] = 0;
 ?>
@@ -14,8 +14,6 @@
 </head>
 
 <?php
-  include '../APIs/logic.php';
-  include '../APIs/connection.php';
   $conn = connect();
   $result = searchAccount($conn, $_SESSION['username']);
   $account_info = $result->fetch_assoc();

@@ -1,6 +1,5 @@
 <?php
     include '../../APIs/control/Dependencies.php';
-    session_start();
     $_SESSION['conversion_rate'] = -0.05;
     $_SESSION['coins'];
     $_SESSION['notify'];

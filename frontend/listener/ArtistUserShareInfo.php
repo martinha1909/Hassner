@@ -1,7 +1,6 @@
 <?php
     include '../../APIs/control/dependencies.php';
     include '../../APIs/listener/ArtistShareMarketplaceBackend.php';
-    session_start();
     $_SESSION['conversion_rate'];
     $_SESSION['coins'] = 0;
     $_SESSION['notify'];

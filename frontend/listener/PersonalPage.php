@@ -1,5 +1,4 @@
 <?php
-  session_start();
   include '../../APIs/control/Dependencies.php';
   include '../../APIs/listener/PersonalPageFunctions.php';
 ?>
