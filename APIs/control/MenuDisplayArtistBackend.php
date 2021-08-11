@@ -1,7 +1,7 @@
 <?php
     session_start();
     $type = $_POST['display_type'];
-    if($type == "Top Invested Artists")
+    if($type == "Your Campaign")
     {
         $_SESSION['display'] = 1;
     }
@@ -9,7 +9,7 @@
     {
         $_SESSION['display'] = 2;
     }
-    else if($type == "Buy Siliqas")
+    else if($type == "Account")
     {
         $_SESSION['display'] = 3;
     }
@@ -17,13 +17,9 @@
     {
         $_SESSION['display'] = 4;
     }
-    else if($type == "Account")
+    else if($type == "Settings")
     {
         $_SESSION['display'] = 5;
     }
-    else if($type == "Communities")
-    {
-        $_SESSION['display'] = 6;
-    }
-    header("Location: ../../frontend/listener/Listener.php");
+    header("Location: ../../frontend/artist/Artist.php");
 ?>
