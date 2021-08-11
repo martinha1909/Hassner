@@ -97,6 +97,39 @@
             return $result;
         }
 
+        function searchArtistHighestPrice($conn, $artist_username)
+        {
+            $sql = "SELECT MAX(selling_price) AS maximum FROM user_artist_sell_share WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchArtistLowestPrice($conn, $artist_username)
+        {
+            $sql = "SELECT MIN(selling_price) AS minimum FROM user_artist_sell_share WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function getArtistShareHolders($conn, $artist_username)
+        {
+            $sql = "SELECT user_username FROM user_artist_share WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function getArtistShareLowerBound($conn, $artist_username)
         {
             $type = "artist";
@@ -310,7 +343,7 @@
                 $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought)
                     VALUES(?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $inital_pps);
+                $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $initial_pps);
                 $stmt->execute();
             }
 

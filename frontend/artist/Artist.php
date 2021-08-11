@@ -190,11 +190,17 @@
                         else
                         {
                           $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
+                          $market_cap = calculateMarketCap($_SESSION['username']);
+                          $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
+                          $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
+                          $lower_bound = getLowerBound($_SESSION['username']);
                           echo '<h6>Price Per Share: '.$account_info['price_per_share'].'</h6>';
                           echo '<h6>Share distributed: '.$account_info['Share_Distributed'].'   <a href="../APIs/artist/IncreaseSharesDistributed.php" id="icon-btn">+</a></h6>';
-                          echo '<h6>Current Shareholders: </h6>';
-                          echo '<h6>Current market cap: </h6>';
-                          echo '<h6>Current lower bound: </h6>';
+                          echo '<h6>Current Shareholders: '.$shareholder_list->num_rows.'</h6>';
+                          echo '<h6>Current market cap (q̶): '.$market_cap.'</h6>';
+                          echo '<h6>Highest share (q̶): '.$high.'</h6>';
+                          echo '<h6>Lowest share (q̶): '.$low.'</h6>';
+                          echo '<h6>Current lower bound (q̶): '.$lower_bound['lower_bound'].'</h6>';
                           if($_SESSION['add_share'] == 1)
                           {
                             $max = $account_info['Share_Distributed'];
