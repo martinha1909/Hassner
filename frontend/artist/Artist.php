@@ -189,6 +189,7 @@
                         }
                         else
                         {
+                          $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
                           echo '<h6>Price Per Share: '.$account_info['price_per_share'].'</h6>';
                           echo '<h6>Share distributed: '.$account_info['Share_Distributed'].'   <a href="../APIs/artist/IncreaseSharesDistributed.php" id="icon-btn">+</a></h6>';
                           echo '<h6>Current Shareholders: </h6>';
