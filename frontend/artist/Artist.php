@@ -204,17 +204,18 @@
                           if($_SESSION['add_share'] == 1)
                           {
                             $max = $account_info['Share_Distributed'];
-                            echo'  <h1>Distribute more shares</h1>
-                            <p>Drag the slider to display the current value.</p>
-                            
-                            <div class="slidecontainer">
-                              <form action="../APIs/artist/IncreaseSharesDistributed.php" method ="post">
-                                <input name="share_added" type="range" min="0" max='.$max.' value="0" class="slider" id="myRange">
-                                <input type="submit" class="btn btn-primary py-2" value="Distribute">
-                              </form>
-                              <h6>Value: <span id="demo"></span></h6>
-                            </div>';
-                            echo '<script>
+                            echo'  
+                                <h1>Distribute more shares</h1>
+                                <p>Drag the slider to display the current value.</p>
+                                
+                                <div class="slidecontainer">
+                                  <form action="../APIs/artist/IncreaseSharesDistributed.php" method ="post">
+                                    <input name="share_added" type="range" min="0" max='.$max.' value="0" class="slider" id="myRange">
+                                    <input type="submit" class="btn btn-primary py-2" value="Distribute">
+                                  </form>
+                                  <h6>Value: <span id="demo"></span></h6>
+                                </div>
+                                <script>
                                   var slider = document.getElementById("myRange");
                                   var output = document.getElementById("demo");
                                   output.innerHTML = slider.value;
@@ -222,7 +223,8 @@
                                   slider.oninput = function() {
                                     output.innerHTML = this.value;
                                   }
-                                  </script>';
+                                </script>
+                              ';
                           }
                         }
                       }
