@@ -37,6 +37,7 @@
                     <?php
                         include '../../APIs/listener/AccountInfoBackend.php';
                         $account = getAccount($_SESSION['username']);
+                        $_SESSION['user_balance'] = $account['balance'];
                     ?>
                     <div class="wrapper-searchbar">
                         <div class="container-searchbar">

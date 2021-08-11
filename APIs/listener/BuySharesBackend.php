@@ -6,7 +6,7 @@
     $conn = connect();
     $amount_bought = $_POST['purchase_quantity'];
     //not enough siliqas
-    if($_SESSION['user_balance']['balance'] < ($amount_bought * $_SESSION['purchase_price']))
+    if($_SESSION['user_balance'] < ($amount_bought * $_SESSION['purchase_price']))
     {
         //disabling both options, forbids user from buying anything unless they purchase more siliqas
         $_SESSION['buy_market_price'] = 0;
@@ -25,7 +25,7 @@
             $artist_new_balance = $artist_balance['balance'] + ($amount_bought * $_SESSION['purchase_price']);
 
             //subtracts the siliqas from the user
-            $buyer_new_balance = $_SESSION['user_balance']['balance'] - ($amount_bought * $_SESSION['purchase_price']);
+            $buyer_new_balance = $_SESSION['user_balance'] - ($amount_bought * $_SESSION['purchase_price']);
 
             //the user now owns more share of the artist
             $buyer_new_share_amount = $_SESSION['shares_owned'] + $amount_bought;
@@ -52,7 +52,7 @@
             $seller_new_balance = $seller_initial_balance['balance'] + ($amount_bought * $_SESSION['purchase_price']); 
 
             //subtracts siliqas from the user
-            $buyer_new_balance = $_SESSION['user_balance']['balance'] - ($amount_bought * $_SESSION['purchase_price']);
+            $buyer_new_balance = $_SESSION['user_balance'] - ($amount_bought * $_SESSION['purchase_price']);
             $result = searchSpecificInvestment($conn, $_SESSION['seller_toggle'], $_SESSION['selected_artist']);
             
             //the owned share of the seller is now transfered to the buyer

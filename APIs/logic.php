@@ -310,7 +310,7 @@
                 $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought)
                     VALUES(?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $inital_pps);
+                $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $initial_pps);
                 $stmt->execute();
             }
 

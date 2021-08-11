@@ -84,7 +84,8 @@
         $_SESSION['available_shares'] = $share_distributed['Share_Distributed'] - $total_share_bought;
 
         $search_6 = searchAccount($conn, $_SESSION['username']);
-        $_SESSION['user_balance'] = $search_6->fetch_assoc();
+        $balance = $search_6->fetch_assoc();
+        $_SESSION['user_balance'] = $balance['balance'];
     }
 
     function getLowerBound($artist_username)
