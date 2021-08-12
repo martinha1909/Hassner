@@ -118,59 +118,83 @@
             </form>
           ';
         }
-        echo '
-              </section>
-              <section class="middle-card">
-                <h1 id="h1-sm">Payment info</h1>
-                <p><i style="color: white;" class="fa fa-user"></i> Name on card: <?php
-                '.$account_info['Full_name'].'
-                ?></p>
-              </section>
-              <section class="middle-card">
-                <p><i class="far fa-credit-card"></i> Card number:
-            ';
-        printUserImportantInfo($account_info['Card_number']); 
         echo '</section>';
-        echo '
-
-              <section class="middle-card">
-                <p><i style="color: white;" class="fas fa-map-marker-alt"></i> Billing Address: </p>
-              </section>
-          
-              <section class="middle-card">
-                <p><i style="color: white;" class="fa fa-envelope"></i> Email: </p>
-              </section>
-          
-              <section class="middle-card">
-                <p><i style="color: white;" class="fas fa-location-arrow"></i> City: </p>
-              </section>
-          
-              <section class="middle-card">
-                <p><i style="color: white;" class="fas fa-archway"></i> State: </p>
-              </section>
-          
-              <section class="middle-card">
-                <p><i style="color: white;" class="fas fa-align-justify"></i> Zip: </p>
-              </section>
-          
-              <section class="middle-card">
-                <h1 id="h1-sm">Deposit info</h1>
-                <p><i class="fas fa-dolly-flatbed"></i> Transit No. : </p>
-              </section>
-          
-              <section class="middle-card">
-                <p><i class="fas fa-project-diagram"></i> Institution No. : </p>
-              </section>
-              
-              <section class="middle-card">
-                <p><i class="fas fa-wallet"></i> Account No. : </p>
-              </section>
-          
-              <section class="middle-card">
-                <p><i class="fas fa-wind"></i> Swift/BIC Code :</p>
-              </section>';
       }
     ?>
+    <section class="middle-card">
+      <h1 id="h1-sm">Payment info</h1>
+      <p><i style="color: white;" class="fa fa-user"></i> Name on card: <?php
+        echo $account_info['Full_name'];
+      ?></p>
+    </section>
+
+    <!-- Displaying card number of personal page -->
+    <section class="middle-card">
+    <p><i class="far fa-credit-card"></i> Card number: <?php
+      printUserImportantInfo($account_info['Card_number']);
+    ?></p>
+    </section>
+
+    <!-- Displaying billing address of personal page -->
+    <section class="middle-card">
+      <p><i style="color: white;" class="fas fa-map-marker-alt"></i> Billing Address: <?php
+        echo $account_info['billing_address'];
+      ?></p>
+    </section>
+    
+    <!-- Displaying billing info of personal page -->
+
+    <!-- Displaying city -->
+    <section class="middle-card">
+      <p><i style="color: white;" class="fas fa-location-arrow"></i> City: <?php
+        echo $account_info['City'];
+      ?></p>
+    </section>
+
+    <!-- Displaying state -->
+    <section class="middle-card">
+      <p><i style="color: white;" class="fas fa-archway"></i> State: <?php
+        echo $account_info['State'];
+      ?></p>
+    </section>
+
+    <!-- Displaying zip code -->
+    <section class="middle-card">
+      <p><i style="color: white;" class="fas fa-align-justify"></i> Zip: <?php
+        echo $account_info['ZIP'];
+      ?></p>
+    </section>
+
+    <!-- This section displays deposit info (sell siliqas) of personal page -->
+
+    <!-- Displaying transit number -->
+    <section class="middle-card">
+      <h1 id="h1-sm">Deposit info</h1>
+      <p><i class="fas fa-dolly-flatbed"></i> Transit No. : <?php
+        echo $account_info['Transit_no'];
+      ?></p>
+    </section>
+
+    <!-- Displaying institution number -->
+    <section class="middle-card">
+      <p><i class="fas fa-project-diagram"></i> Institution No. : <?php
+        echo $account_info['Inst_no'];
+      ?></p>
+    </section>
+    
+    <!-- Displaying Account number -->
+    <section class="middle-card">
+      <p><i class="fas fa-wallet"></i> Account No. : <?php
+        echo $account_info['Account_no'];
+      ?></p>
+    </section>
+
+    <!-- Displaying swift code -->
+    <section class="middle-card">
+      <p><i class="fas fa-wind"></i> Swift/BIC Code : <?php
+        echo $account_info['Swift'];
+      ?></p>
+    </section>
 
   </main>
 <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
