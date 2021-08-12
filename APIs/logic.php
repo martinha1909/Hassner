@@ -225,12 +225,18 @@
             return $result;
         }
 
-        function getMaxSongID($conn){
-            $sql = "SELECT MAX(id) AS max_id FROM song";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
+        function artistShareDistributionInit($conn, $artist_username, $share_distributing, $lower_bound, $initial_pps)
+        {
+            $sql = "UPDATE account SET lower_bound = '$lower_bound' WHERE username='$artist_username'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET Share_Distributed = '$share_distributing' WHERE username='$artist_username'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET price_per_share = '$initial_pps' WHERE username='$artist_username'";
+            $conn->query($sql);
         }
+
         function saveUserPaymentInfo($conn, $username, $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number)
         {
             $sql = "UPDATE account SET Full_name = '$full_name', email='$email', billing_address='$address', City = '$city', State='$state', ZIP = '$zip', Card_number='$card_number' WHERE username='$username'";
@@ -267,8 +273,6 @@
             }  
             return $notify;
         }
-        //queries in song table and searches for all tuples that matches the given songId
-        //return the tuple of the song table if there is a matching tuple
 
         function editEmail($conn, $user_username, $new_email)
         {

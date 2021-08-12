@@ -557,7 +557,7 @@
                                     $_SESSION['btn_show'] = 0;
                                 }
                             }
-                            //displaying Selllll Siliqas functionality
+                            //displaying Sell Siliqas functionality
                             else if($_SESSION['display'] == 4)
                             {
                                 include '../../APIs/listener/BuySiliqasBackend.php';
@@ -673,6 +673,8 @@
                                     $_SESSION['btn_show'] = 0;
                                 }
                             }
+                            
+                            //Account page functionality
                             else if($_SESSION['display'] == 5)
                             {
                                 if($_SESSION['notify'] == 3)

@@ -1,5 +1,4 @@
 <?php
-  session_start();
   $_SESSION['expmonth'] = 0;
   $_SESSION['expyear'] = 0;
 ?>

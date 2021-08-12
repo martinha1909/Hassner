@@ -15,6 +15,7 @@ session_start();
   $_SESSION['buy_market_price'] = 0;
   $_SESSION['artist_share_remove'] = 0;
   $_SESSION['share_price_remove'] = 0;
+  $_SESSION['dependencies'] = 0;
 ?>
 
 <!doctype html>

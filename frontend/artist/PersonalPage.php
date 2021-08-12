@@ -13,19 +13,13 @@
     <header class="smart-scroll">
         <div class="container-xxl">
             <nav class="navbar navbar-expand-md navbar-dark bg-orange d-flex justify-content-between">
-                <a id = "href-hover" style = "background: transparent;" class="navbar-brand" href="../artist.php" onclick='window.location.reload();'>
+                <a id = "href-hover" style = "background: transparent;" class="navbar-brand" href="Artist.php" onclick='window.location.reload();'>
                     HASSNER
                 </a>
+            </nav>
         </div>
     </header>
   <main>
-    <!-- <section class="top-card">
-      <img src="Images/account.png" alt="user picture">
-      <div class="menu-icon">
-        <div class="menu item1"></div>
-        <div class="menu item2"></div>
-      </div>
-    </section> -->
     <?php
       if($_SESSION['notify'] == 2)
         echo "<script>alert('Please enter input fields with numbers');</script>";
@@ -37,27 +31,53 @@
       $account_info = $query->fetch_assoc();
       if($account_info['Share_Distributed'] == 0)
       {
-        echo '<form action="../../APIs/artist/ArtistDistributeShare.php" method="post">
+        if($_SESSION['notify'] == 1)
+        {
+          echo "<script>alert('Please enter correct format');</script>";
+        }
+        $_SESSION['notify'] = 0;
+        echo '
+              <form action="../../APIs/artist/DistributeShareBackend.php" method="post">
 
-                  <!-- username field -->
-                  <div class="form-group">
-                    <h5>How many shares are you distributing?</h5>
-                    <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
-                  </div>
+                <div class="form-group">
+                  <h5>Deposit</h5>
+                  <input name = "deposit" type="text" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
+                </div>
 
-                  <!-- password field -->
-                  <div class="form-group">
-                    <h5>Price per share</h5>
-                    <input name = "price_per_share" type="text" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
-                  </div>
+                <div class="form-group">
+                  <h5>How many shares are you distributing?</h5>
+                  <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
+                </div>
 
+                <label style="color: white;">Accepted Cards</label>
+                <div class="icon-container">
+                  <i class="fab fa-cc-visa fa-2x"></i>
+                  <i class="fab fa-cc-amex fa-2x"></i>
+                  <i class="fab fa-cc-mastercard fa-2x"></i>
+                  <i class="fab fa-cc-paypal fa-2x"></i>
+                </div>
 
-                  <!-- login button -->
-                  <!-- TODO: login button functionality-->
-                  <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                    <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
-                  </div>
-              </form>';
+                <div class="form-group">
+                  <label style="color: white;">Name on Card</label>
+                  <input name = "name_on_card" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="John Doe">
+                </div>
+
+                <div class="form-group">
+                  <label style="color: white;">Card Number</label>
+                  <input name = "card_number" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="1111-2222-3333-4444">
+                </div>
+
+                <div class="form-group">
+                  <label style="color: white;">CVV</label>
+                  <input name = "cvv" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="111">
+                </div>
+
+                <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                  <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
+                </div>
+
+              </form>
+            ';
       }
       else
       {
