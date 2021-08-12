@@ -33,4 +33,6 @@
         $conn = connect();
         return getArtistShareLowerBound($conn, $artist_username)->fetch_assoc();
     }
+
+    
 ?>

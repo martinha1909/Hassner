@@ -196,6 +196,14 @@
       ?></p>
     </section>
 
+    <section class="middle-card">
+      <h1 id="h1-sm">Share info</h1>
+      <p><i style="color: white;" class="fa fa-user"></i> Share Distributed: <?php
+        echo $account_info['Share_Distributed'];
+      ?></p>
+      <a href="#" id="icon-btn"><i class="fa fa-edit"></i></a>
+    </section>
+
   </main>
 <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
 </body>

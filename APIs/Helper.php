@@ -34,8 +34,21 @@
             $res1 = searchArtistCurrentPricePerShare($conn, $artist_username);
             $market_price = $res1->fetch_assoc();
 
-            $res2 = searchArtistLowestPrice($conn, $artist_username);
-            $lowest_asked_price = $res2->fetch_assoc();
+            $res2 = getAskedPrices($conn, $_SESSION['username']);
+
+            //If there are no users that are selling this artist's shares other than himself, 
+            //return the market price per share 
+            if($res2->num_rows == 0)
+            {
+                return $market_price['price_per_share'];
+            }
+
+            $res3 = searchArtistLowestPrice($conn, $artist_username);
+            if($res3->num_rows == 0)
+            {
+                return $market_price['price_per_share'];
+            }
+            $lowest_asked_price = $res3->fetch_assoc();
 
             //if market price is lower, return that as a lowest value
             if($market_price['price_per_share'] < $lowest_asked_price['minimum'])
