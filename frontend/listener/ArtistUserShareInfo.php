@@ -225,7 +225,6 @@
                                 ';
                                     if(strcmp($_SESSION['seller'], $user_usernames[0]) == 0)
                                     {
-                                        echo "AEeaeafae";
                                         $_SESSION['purchase_price'] = $asked_prices[0];
                                         $_SESSION['seller_toggle'] = $user_usernames[0];
                                         echo'

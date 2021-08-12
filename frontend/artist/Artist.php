@@ -195,7 +195,11 @@
                           $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
                           $lower_bound = getLowerBound($_SESSION['username']);
                           echo '<h6>Price Per Share: '.$account_info['price_per_share'].'</h6>';
-                          echo '<h6>Share distributed: '.$account_info['Share_Distributed'].'   <a href="../APIs/artist/IncreaseSharesDistributed.php" id="icon-btn">+</a></h6>';
+                          echo '
+                                <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">
+                                  <h6>Share distributed: '.$account_info['Share_Distributed'].' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
+                                </form>
+                              ';
                           echo '<h6>Current Shareholders: '.$shareholder_list->num_rows.'</h6>';
                           echo '<h6>Current market cap (q̶): '.$market_cap.'</h6>';
                           echo '<h6>Highest share (q̶): '.$high.'</h6>';

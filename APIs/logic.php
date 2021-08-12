@@ -247,6 +247,12 @@
             $conn->query($sql);
         }
 
+        function updateShareDistributed($conn, $artist_username, $new_share_distributed)
+        {
+            $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username='$artist_username'";
+            $conn->query($sql);
+        }
+
         function saveUserPaymentInfo($conn, $username, $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number)
         {
             $sql = "UPDATE account SET Full_name = '$full_name', email='$email', billing_address='$address', City = '$city', State='$state', ZIP = '$zip', Card_number='$card_number' WHERE username='$username'";

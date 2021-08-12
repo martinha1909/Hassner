@@ -90,7 +90,7 @@
         if($_SESSION['edit'] == 1)
         {
           echo '
-              <form action="../../APIs/listener/UpdatePasswordBackend.php" method="post">
+              <form action="../../APIs/shared/UpdatePasswordBackend.php" method="post">
                 <div class="form-group">
                   <input type="password" name = "pwd_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new password">
                 </div>

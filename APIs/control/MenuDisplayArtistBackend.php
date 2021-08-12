@@ -21,5 +21,9 @@
     {
         $_SESSION['display'] = 5;
     }
+    else if($type == "+")
+    {
+        $_SESSION['display'] = 3;
+    }
     header("Location: ../../frontend/artist/Artist.php");
 ?>

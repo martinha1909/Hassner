@@ -108,7 +108,7 @@
         if($_SESSION['edit'] == 1)
         {
           echo '
-            <form action="../../APIs/listener/UpdatePasswordBackend.php" method="post">
+            <form action="../../APIs/shared/UpdatePasswordBackend.php" method="post">
               <div class="form-group">
                 <input type="password" name = "pwd_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new password">
               </div>
@@ -201,7 +201,24 @@
       <p><i style="color: white;" class="fa fa-user"></i> Share Distributed: <?php
         echo $account_info['Share_Distributed'];
       ?></p>
-      <a href="#" id="icon-btn"><i class="fa fa-edit"></i></a>
+      <a href="../../APIs/artist/EditShareDistributedBackend.php" id="icon-btn">+</a>
+      <?php
+        if($_SESSION['edit'] == 3)
+        {
+          echo '
+            <form action="../../APIs/artist/UpdateShareDistributedBackend.php" method="post">
+              <div class="form-group">
+                <h6>How many more shares would you like to distribute?</h6>
+                <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">
+              </div>
+              <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                <input type = "submit" class="my_btn edit-btn" role="button" aria-pressed="true" name = "button" value = "Save">  
+              </div>
+            </form>
+          ';
+        }
+        echo '</section>';
+      ?>
     </section>
 
   </main>
