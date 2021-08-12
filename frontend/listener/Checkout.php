@@ -13,7 +13,7 @@
 </head>
 
 <?php
-  include '../../APIs/listener/CheckoutBackend.php';
+  include '../../APIs/shared/CheckoutBackend.php';
   $account_info = getAccount($_SESSION['username']);
 ?>
 <body class="bg-dark">
@@ -28,12 +28,12 @@
 <div style="padding-top:50px;" class="row">
   <div class="col-75">
     <div class="container">
-      <form action="../../APIs/listener/CardVerificationBackend.php" method="post">
+      <form action="../../APIs/shared/CardVerificationBackend.php" method="post">
       
         <div class="row">
           <div class="col-50">
             <h3>Billing Address</h3>
-            <h5 class="text-right"><a href="../../APIs/listener/UseSavedPaymentInfoBackend.php" onclick='window.location.reload();' class="btn btn-primary py-2">Use saved payment info</a></h5>
+            <h5 class="text-right"><a href="../../APIs/shared/UseSavedPaymentInfoBackend.php" onclick='window.location.reload();' class="btn btn-primary py-2">Use saved payment info</a></h5>
             <label for="fname"><i class="fa fa-user"></i> Full Name</label>
             <?php
             if($_SESSION['saved'] == 1)

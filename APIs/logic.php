@@ -197,6 +197,7 @@
             $income = 0;
             $market_cap = 0;
             $lower_bound = 0;
+            $deposit = 0;
             if($type == 'artist')
                 $price_per_share = 1;
             else
@@ -204,12 +205,18 @@
             $result = getMaxID($conn);
             $row = $result->fetch_assoc(); 
             $id = $row["max_id"] + 1;
-            // $sql = "INSERT INTO account (username, password, account_type, id)
-            //         VALUES('$username', '$password', '$type', '$id')";
-            $sql = "INSERT INTO account (username, password, account_type, id, Shares, balance, rate, Share_Distributed, email, billing_address, Full_name, City, State, ZIP, Card_number, Transit_no, Inst_no, Account_no, Swift, price_per_share, Monthly_shareholder, Income, Market_cap, lower_bound)
-                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO account (username, password, account_type, id, Shares, balance, rate, 
+                                         Share_Distributed, email, billing_address, Full_name, City, State, ZIP, 
+                                         Card_number, Transit_no, Inst_no, Account_no, Swift, price_per_share, 
+                                         Monthly_shareholder, Income, Market_cap, lower_bound, deposit)
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sssiiddisssssssssssdiddd', $username, $password, $type, $id, $num_of_shares, $balance, $rate, $share_distributed, $email, $billing_address, $full_name, $city, $state, $zip, $card_number, $transit_no, $inst_no, $account_no, $swift, $price_per_share, $monthly_shareholder, $income, $market_cap, $lower_bound);
+            $stmt->bind_param('sssiiddisssssssssssdidddd', $username, $password, $type, $id, $num_of_shares, 
+                                                           $balance, $rate, $share_distributed, $email, 
+                                                           $billing_address, $full_name, $city, $state, $zip, 
+                                                           $card_number, $transit_no, $inst_no, $account_no, 
+                                                           $swift, $price_per_share, $monthly_shareholder, 
+                                                           $income, $market_cap, $lower_bound, $deposit);
             if ($stmt->execute() === TRUE) {
                 $notify = 1;
             } else {
@@ -225,7 +232,7 @@
             return $result;
         }
 
-        function artistShareDistributionInit($conn, $artist_username, $share_distributing, $lower_bound, $initial_pps)
+        function artistShareDistributionInit($conn, $artist_username, $share_distributing, $lower_bound, $initial_pps, $deposit)
         {
             $sql = "UPDATE account SET lower_bound = '$lower_bound' WHERE username='$artist_username'";
             $conn->query($sql);
@@ -234,6 +241,9 @@
             $conn->query($sql);
 
             $sql = "UPDATE account SET price_per_share = '$initial_pps' WHERE username='$artist_username'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET deposit = '$deposit' WHERE username='$artist_username'";
             $conn->query($sql);
         }
 

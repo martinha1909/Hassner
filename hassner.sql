@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2021 at 11:22 PM
+-- Generation Time: Aug 12, 2021 at 04:23 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -51,22 +51,20 @@ CREATE TABLE `account` (
   `Monthly_shareholder` int(11) NOT NULL,
   `Income` float NOT NULL,
   `Market_cap` float NOT NULL,
-  `lower_bound` float NOT NULL
+  `lower_bound` float NOT NULL,
+  `deposit` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `lower_bound`) VALUES
-('88Glam', 'artist', 'artist', 2, 0, 0, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 1, 0, 0, 0, 0),
-<<<<<<< HEAD
-('martin', 'user', 'user', 1, 0, 8214.99, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '', '', '', '', 0, 0, 0, 0, 0),
-('NAV', 'artist', 'artist', 3, 1, 0, 0.013, 1, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 1.1, 0, 0, 0, 0);
-=======
-('kai', 'user', 'user', 4, 0, 0, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('martin', 'user', 'user', 1, 0, 7785.59, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '1', '1', '1', '1', 0, 0, 0, 0, 0),
-('NAV', 'artist', 'artist', 3, 1, 0, 0.013, 10, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 1.1, 0, 0, 0, 0);
+INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `lower_bound`, `deposit`) VALUES
+('88Glam', 'artist', 'artist', 2, 0, 0, 0, 0, '1234@gmail.com', '1234 This ', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '', '', '', '', 0, 0, 0, 0, 0, 0),
+('kai', 'user', 'user', 4, 6, 539.652, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, 0),
+('martin', 'user', 'user', 1, 0, 7757.71, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '1', '1', '1', '1', 0, 0, 0, 0, 0, 0),
+('NAV', 'artist', 'artist', 3, 1, 1083.23, 0.013, 10, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 120.747, 0, 0, 0, 0, 0),
+('vitor', 'user', 'user', 5, 2, 385.003, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -86,9 +84,7 @@ CREATE TABLE `user_artist_sell_share` (
 --
 
 INSERT INTO `user_artist_sell_share` (`user_username`, `artist_username`, `selling_price`, `no_of_share`) VALUES
-('kai', 'NAV', 1, 1),
-('martin', 'NAV', 1, 1);
->>>>>>> listener_share_interact
+('kai', 'NAV', 100, 0);
 
 -- --------------------------------------------------------
 
@@ -107,13 +103,10 @@ CREATE TABLE `user_artist_share` (
 -- Dumping data for table `user_artist_share`
 --
 
-<<<<<<< HEAD
-INSERT INTO `user_artist_share` (`user_username`, `artist_username`, `no_of_share_bought`) VALUES
-('martin', 'NAV', 1);
-=======
 INSERT INTO `user_artist_share` (`user_username`, `artist_username`, `no_of_share_bought`, `price_per_share_when_bought`) VALUES
-('martin', 'NAV', 1, 1.1);
->>>>>>> listener_share_interact
+('kai', 'NAV', 6, 70.9525),
+('martin', 'NAV', 0, 64.356),
+('vitor', 'NAV', 2, 109.521);
 
 --
 -- Indexes for dumped tables
