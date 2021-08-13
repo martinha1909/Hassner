@@ -1,6 +1,6 @@
 <?php
   include '../../APIs/control/Dependencies.php';
-  include '../../APIs/listener/PersonalPageFunctions.php';
+  include '../../APIs/shared/PersonalPageFunctions.php';
 ?>
 <head>
   <meta charset="utf-8">
@@ -44,13 +44,13 @@
         printUserImportantInfo($account_info['email']);
       ?>
       <!-- Brings to a page that allows user to edit their email address -->
-      <a href="../../APIs/listener/EditEmailBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>
+      <a href="../../APIs/shared/EditEmailBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>
       <?php
       //If they click on the edit button, prompt a textfield that allows user to enter new email and save it
       if($_SESSION['edit'] == 2)
       {
         echo '
-            <form action="../../APIs/listener/UpdateEmailBackend.php" method="post">
+            <form action="../../APIs/shared/UpdateEmailBackend.php" method="post">
               <div class="form-group">
                 <input type="text" name = "email_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new email address">
               </div>
@@ -84,13 +84,13 @@
         ?>
       </p> 
       <!-- Brings to a page that allows user to edit their password -->
-      <a href="../../APIs/listener/EditPasswordBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>
+      <a href="../../APIs/shared/EditPasswordBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>
       <?php
       //If they click on the edit button, prompt a textfield that allows user to enter new password and save it
         if($_SESSION['edit'] == 1)
         {
           echo '
-              <form action="../../APIs/listener/UpdatePasswordBackend.php" method="post">
+              <form action="../../APIs/shared/UpdatePasswordBackend.php" method="post">
                 <div class="form-group">
                   <input type="password" name = "pwd_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new password">
                 </div>

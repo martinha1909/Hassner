@@ -20,3 +20,8 @@ To run this project:;
 8. Run the project, starting the landing page by typing localhost:80/Hassner/frontend/index.php
 
 The database found in hassner.sql is just an example database, feel free to add or remove any tuples in any tables
+
+Notes on the database
+1.  In column "Shares" of the "account" table, if
+    a. account type is "user", then it means the total amount of shares that has been bought by that user       accross all artists.
+    b. account type id "artist", then it means the total amount of shares owned by that artist that has been bought throughout all users in the platform. In other words, the amount of share available for purchase of that artist would be equivalent to the "Share_Distributed" column value minus "Shares" column value. (any artist Available Shares = Share_Distributed - Shares)

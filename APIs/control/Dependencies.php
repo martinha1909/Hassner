@@ -1,5 +1,15 @@
 <?php
     session_start();
-    include '../../APIs/logic.php';
-    include '../../APIs/connection.php';
+    if($_SESSION['dependencies'] == 0)
+    {
+        include '../../APIs/logic.php';
+        include '../../APIs/connection.php';
+        include '../../APIs/helper.php';
+    }
+    else
+    {
+        include '../logic.php';
+        include '../connection.php';
+        include '../helper.php';
+    }
 ?>

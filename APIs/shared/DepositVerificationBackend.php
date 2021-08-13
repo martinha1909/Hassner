@@ -1,7 +1,7 @@
 <?php
-    session_start();
-    include '../logic.php';
-    include '../connection.php';
+    $_SESSION['dependencies'] = 1;
+    include '../control/Dependencies.php';
+
     $conn = connect();
     $save_info = $_POST['save_info'];
     $transit_no = $_POST['transit_no'];
@@ -10,8 +10,6 @@
     $swift = $_POST['swift'];
     if($save_info == "Yes")
     {
-        
-       
         if(!empty($transit_no) && !empty($inst_no) && !empty($account_no) && !empty($swift))
         {
             $_SESSION['coins'] = round($_SESSION['coins'], 2);
@@ -31,7 +29,6 @@
     }
     else
     {
-        
         if(!empty($transit_no) && !empty($inst_no) && !empty($account_no) && !empty($swift))
         {
             $_SESSION['coins'] = round($_SESSION['coins'], 2);
@@ -48,6 +45,8 @@
         }
     }
     $_SESSION['saved'] = 0;
-    header("Location: ../../frontend/listener/listener.php");
+    $_SESSION['dependencies'] = 0;
+
+    returnToMainPage();
     
 ?>

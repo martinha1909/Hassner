@@ -13,29 +13,44 @@
 </head>
 
 <?php
-  include '../../APIs/listener/CheckoutBackend.php';
+  include '../../APIs/shared/CheckoutBackend.php';
   $account_info = getAccount($_SESSION['username']);
 ?>
 <body class="bg-dark">
     <header class="smart-scroll">
         <div class="container-xxl">
             <nav class="navbar navbar-expand-md navbar-dark bg-orange d-flex justify-content-between">
-                <a id = "href-hover" style = "background: transparent;" class="navbar-brand" href="listener.php" onclick='window.location.reload();'>
-                    HASSNER
-                </a>
+                <?php
+                    if($_SESSION['account_type'] == "user")
+                    {
+                        echo '
+                              <a id = "href-hover" style = "background: transparent;" class="navbar-brand" href="../listener/listener.php">
+                                HASSNER
+                              </a>
+                        ';
+                    }
+                    else if($_SESSION['account_type'] == "artist")
+                    {
+                      echo '
+                              <a id = "href-hover" style = "background: transparent;" class="navbar-brand" href="../artist/Artist.php">
+                                HASSNER
+                              </a>
+                      ';
+                    }
+                ?>
         </div>
     </header>
 <div style="padding-top:50px;" class="row">
   <div class="col-75">
     <div class="container">
-      <form action="../../APIs/listener/DepositVerificationBackend.php" method="post">
+      <form action="../../APIs/shared/DepositVerificationBackend.php" method="post">
       
         <div class="row">
           
           </div>
           <div class="col-50">
             <h3>Sellout</h3>
-            <h5 class="text-right"><a href="../../APIs/listener/UseSavedAccountInfoBackend.php" onclick='window.location.reload();' class="btn btn-primary py-2">Use saved account info</a></h5>
+            <h5 class="text-right"><a href="../../APIs/shared/UseSavedAccountInfoBackend.php" onclick='window.location.reload();' class="btn btn-primary py-2">Use saved account info</a></h5>
             <label for="cname">Transit No. : </label>
             <?php
                 if($_SESSION['saved'] == 1) // change this to transit num 

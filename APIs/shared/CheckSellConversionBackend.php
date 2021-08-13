@@ -1,6 +1,7 @@
 <?php
-// same as CheckConversionBackend.php but the multiplicative values are inversed
-    session_start();
+    $_SESSION['dependencies'] = 1;
+    include '../control/Dependencies.php';
+    //same as CheckConversionBackend.php but the multiplicative values are inversed
     $_SESSION['siliqas'] = $_POST['currency'];
     if(!empty($_SESSION['siliqas']) && is_numeric($_SESSION['siliqas']))
     {
@@ -13,5 +14,7 @@
         
     }
 
-    header("Location: ../../frontend/listener/listener.php");
+    $_SESSION['dependencies'] = 0;
+
+    returnToMainPage();
 ?>
