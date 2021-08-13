@@ -265,7 +265,6 @@
                             sellSiliqasInit($balance);
                         }
 
-                        //Account page
                         else if($_SESSION['display'] == 5)
                         {
                         
