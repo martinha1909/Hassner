@@ -1,6 +1,8 @@
 <?php
   include '../../APIs/control/Dependencies.php';
   include '../../APIs/artist/ArtistBackend.php';
+
+  $_SESSION['lower_bound'] = 0.5;
   $_SESSION['status'] = 0;
   $account_info = getArtistAccount($_SESSION['username'], "artist");
 ?> 

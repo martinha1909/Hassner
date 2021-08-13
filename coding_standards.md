@@ -22,6 +22,6 @@ Coding Standards
 
 3. File names:
 
-    3.1 Backend files has to end with "Backend.php" (i.e LoginBackend.php)
+    3.1 Backend files has to end with "<filename>Backend.php" (i.e LoginBackend.php)
     
     3.2 File name has to have first word uppercase format (i.e SignupBackend.php)
