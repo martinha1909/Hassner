@@ -34,16 +34,6 @@
                   HASSNER
               </a>
 
-              <p>
-                  <?php
-                      // include '../APIs/logic.php';
-                      // include '../APIs/connection.php';
-                      // $conn = connect();
-                      // $result = getArtistShares($conn, $_SESSION['username']);
-                      // $_SESSION['artist_distributed'] = $result->fetch_assoc();
-                  ?>
-              </p>
-
               <div class="col text-right">
                   <a href="../APIs/IncreaseSharesDistributed.php" onclick='window.location.reload();'>+</a>
               </div>
@@ -59,8 +49,7 @@
 
               <div style="color: #11171a; font-weight: bold; background-color:white; border-left: 4px solid #11171a; border-right: 10px solid white;">
                 <?php
-                  echo ' ';
-                  echo "&nbsp;(q̶): ";
+                  echo ' &nbsp;(q̶): ';
                   echo round($account_info['balance'], 2);
                   $unbought = $account_info['Share_Distributed'] - $account_info['Shares'];
                   echo '<br> &nbsp;Available Shares: ';
@@ -173,70 +162,70 @@
 
                   <div class="col">
                     <?php
-                      //Artist campaigns, including benchmark, raffle, and give aways.
-                      if($_SESSION['display'] == 1)
-                      {  
+                        //Artist campaigns, including benchmark, raffle, and give aways.
+                        if($_SESSION['display'] == 1)
+                        {  
                         //nothing to do now as it's not part of vital functionality
-                      }
+                        }
 
-                      //Artist's portfolio
-                      else if($_SESSION['display'] == 2 || $_SESSION['display'] == 0)
-                      {
+                        //Artist's portfolio
+                        else if($_SESSION['display'] == 2 || $_SESSION['display'] == 0)
+                        {
                         $_SESSION['add'] = 0;
                         if($account_info['Share_Distributed'] == 0)
                         {
-                          echo '<h3>Get started by distributing share in the account tab</h3>';
+                            echo '<h3>Get started by distributing share in the account tab</h3>';
                         }
                         else
                         {
-                          $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
-                          $market_cap = calculateMarketCap($_SESSION['username']);
-                          $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
-                          $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
-                          $lower_bound = getLowerBound($_SESSION['username']);
-                          echo '<h6>Price Per Share: '.$account_info['price_per_share'].'</h6>';
-                          echo '
+                            $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
+                            $market_cap = calculateMarketCap($_SESSION['username']);
+                            $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
+                            $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
+                            $lower_bound = getLowerBound($_SESSION['username']);
+                            echo '<h6>Price Per Share: '.$account_info['price_per_share'].'</h6>';
+                            echo '
                                 <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">
-                                  <h6>Share distributed: '.$account_info['Share_Distributed'].' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
+                                    <h6>Share distributed: '.$account_info['Share_Distributed'].' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
                                 </form>
-                              ';
-                          echo '<h6>Current Shareholders: '.$shareholder_list->num_rows.'</h6>';
-                          echo '<h6>Current market cap (q̶): '.$market_cap.'</h6>';
-                          echo '<h6>Highest share (q̶): '.$high.'</h6>';
-                          echo '<h6>Lowest share (q̶): '.$low.'</h6>';
-                          echo '<h6>Current lower bound (q̶): '.$lower_bound['lower_bound'].'</h6>';
-                          if($_SESSION['add_share'] == 1)
-                          {
+                                ';
+                            echo '<h6>Current Shareholders: '.$shareholder_list->num_rows.'</h6>';
+                            echo '<h6>Current market cap (q̶): '.$market_cap.'</h6>';
+                            echo '<h6>Highest share (q̶): '.$high.'</h6>';
+                            echo '<h6>Lowest share (q̶): '.$low.'</h6>';
+                            echo '<h6>Current lower bound (q̶): '.$lower_bound['lower_bound'].'</h6>';
+                            if($_SESSION['add_share'] == 1)
+                            {
                             $max = $account_info['Share_Distributed'];
                             echo'  
                                 <h1>Distribute more shares</h1>
                                 <p>Drag the slider to display the current value.</p>
                                 
                                 <div class="slidecontainer">
-                                  <form action="../APIs/artist/IncreaseSharesDistributed.php" method ="post">
+                                    <form action="../APIs/artist/IncreaseSharesDistributed.php" method ="post">
                                     <input name="share_added" type="range" min="0" max='.$max.' value="0" class="slider" id="myRange">
                                     <input type="submit" class="btn btn-primary py-2" value="Distribute">
-                                  </form>
-                                  <h6>Value: <span id="demo"></span></h6>
+                                    </form>
+                                    <h6>Value: <span id="demo"></span></h6>
                                 </div>
                                 <script>
-                                  var slider = document.getElementById("myRange");
-                                  var output = document.getElementById("demo");
-                                  output.innerHTML = slider.value;
-                                  
-                                  slider.oninput = function() {
+                                    var slider = document.getElementById("myRange");
+                                    var output = document.getElementById("demo");
+                                    output.innerHTML = slider.value;
+                                    
+                                    slider.oninput = function() {
                                     output.innerHTML = this.value;
-                                  }
+                                    }
                                 </script>
-                              ';
-                          }
+                                ';
+                            }
                         }
-                      }
+                        }
 
-                      //brings to Artist personal account page, where they can input their metrics, which are shown
-                      //when users search for them and also on their portfolio tab
-                      else if($_SESSION['display'] == 3)
-                      {
+                        //brings to Artist personal account page, where they can input their metrics, which are shown
+                        //when users search for them and also on their portfolio tab
+                        else if($_SESSION['display'] == 3)
+                        {
                         if($_SESSION['notify'] == 3)
                                 {
                                     echo "<script>alert('Incorrect Password');</script>";
@@ -262,19 +251,123 @@
                                         </div>
                                     </section>
                                 ';
-                      }
+                        }
 
-                      //Sell siliqas to USD/CAD/EURO
-                      else if($_SESSION['display'] == 4)
-                      {
+                        //Sell siliqas to USD/CAD/EURO
+                        else if($_SESSION['display'] == 4)
+                        {
+                            include '../../APIs/shared/SiliqasHelperBackend.php';
+                            $balance = getUserBalance($_SESSION['username']);
 
-                      }
+                            echo '
+                                <section id="login" class="py-5";>
+                                    <div class="container">
+                                        <div class="col-12 mx-auto my-auto text-center">
+                                            <form action="../../APIs/shared/CurrencyBackend.php" method="post">
+                            ';
+                            if($_SESSION['currency']==0)
+                            {
+                                echo'
+                                        <div style="float:none;margin:auto;" class="select-dark">
+                                            <select name="currency" id="dark" onchange="this.form.submit()">
+                                                <option selected disabled>Currency</option>
+                                                <option value="USD">USD</option>
+                                                <option value="CAD">CAD</option>
+                                                <option value="EURO">EURO</option>
+                                            </select>
+                                        </div>
+                                ';
+                            }
+                            else
+                            {
+                            echo '
+                                    <div style="float:none;margin:auto;" class="select-dark">
+                                        <select name="currency" id="dark" onchange="this.form.submit()">
+                                            <option selected disabled>'.$_SESSION['currency'].'</option>
+                                            <option value="USD">USD</option>
+                                            <option value="CAD">CAD</option>
+                                            <option value="EURO">EURO</option>
+                                        </select>
+                                    </div>
+                            ';
+                            }
+                            echo "Account balance: " . $balance. "<br>";
+                            $conversion_rate = $_SESSION['conversion_rate'] * 100;
+                            if($conversion_rate < 0)
+                            {
+                                echo "↓ " .$conversion_rate. "%<br>";
+                            }
+                            else if($conversion_rate > 0)
+                            {
+                                echo "↑ " .$conversion_rate. "%<br>";
+                            }
+                            else 
+                            {
+                                echo $conversion_rate;
+                                echo "%<br>";
+                            }
+                            echo '
+                                        </form>
+                                        <form action = "../../APIs/shared/CheckSellConversionBackend.php" method = "post">
+                                            <div class="form-group">
+                            ';
+                            if($_SESSION['currency'] == 0)
+                            {
+                                echo '
+                                                <h5 style="padding-top:150px;"> Please choose a currency</h5>
+                                ';
+                            }
+                            else
+                            {
+                                echo '
+                                                <h5 style="padding-top:150px;">Enter Amount in Siliqas (q̶)</h5>
+                                                <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
+                                            </div>
+                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
+                                            </div>
+                                        </form>
+                                            <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
+                                ';
+                                
+                                if($_SESSION['coins']!=0)
+                                {
+                                    //rounding to 2 decimals
+                                    echo round($_SESSION['coins'], 2);
+                                }
+                                else
+                                {
+                                    echo " ";
+                                    echo 0;
+                                }
+                                echo '
+                                            </p>
+                                        </form>
+                                        <form action = "../shared/Sellout.php" method = "post">
+                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                ';
+                                if($_SESSION['btn_show'] == 1)
+                                {
+                                    echo '
+                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Buy this amount!" onclick="window.location.reload();">
+                                            </div>
+                                        </form>
+                                    ';
+                                }
+                                echo'
+                                    </div>
+                                </div>
+                            </div>
+                        </section>';
+                                $_SESSION['btn_show'] = 0;
+                            }
+                        }
 
-                      //Account page
-                      else if($_SESSION['display'] == 5)
-                      {
+                        //Account page
+                        else if($_SESSION['display'] == 5)
+                        {
                         
-                      }
+                        }
                     ?>
                 </div>
                 <!-- header -->

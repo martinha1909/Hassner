@@ -77,13 +77,7 @@
         }
     }
     $_SESSION['dependencies'] = 0;
-    if($_SESSION['account_type'] == "user")
-    {
-        header("Location: ../../frontend/listener/listener.php");
-    }
-    else if($_SESSION['account_type'] == "artist")
-    {
-        header("Location: ../../frontend/artist/Artist.php");
-    }
+    
+    returnToMainPage();
     
 ?>

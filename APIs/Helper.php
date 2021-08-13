@@ -67,4 +67,16 @@
             return $market_price['price_per_share'];
         }
     }
+
+    function returnToMainPage()
+    {
+        if($_SESSION['account_type'] == "user")
+        {
+            header("Location: ../../frontend/listener/listener.php");
+        }
+        else if($_SESSION['account_type'] == "artist")
+        {
+            header("Location: ../../frontend/artist/Artist.php");
+        }
+    }
 ?>

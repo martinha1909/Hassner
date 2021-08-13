@@ -444,7 +444,7 @@
                             //displaying Buy Siliqas functionality
                             else if($_SESSION['display'] == 3)
                             {
-                                include '../../APIs/listener/BuySiliqasBackend.php';
+                                include '../../APIs/shared/SiliqasHelperBackend.php';
                                 $balance = getUserBalance($_SESSION['username']);
 
                                 //notify
@@ -560,21 +560,14 @@
                             //displaying Sell Siliqas functionality
                             else if($_SESSION['display'] == 4)
                             {
-                                include '../../APIs/listener/BuySiliqasBackend.php';
+                                include '../../APIs/shared/SiliqasHelperBackend.php';
                                 $balance = getUserBalance($_SESSION['username']);
-
-                                //notify
-                                if($_SESSION['notify'] == 1)
-                                    echo "<script>alert('Siliqas Sold successfully');</script>";
-                                if($_SESSION['notify'] == 2)
-                                    echo "<script>alert('Account verfication failed');</script>";
-                                $_SESSION['notify'] = 0;
 
                                 echo '
                                     <section id="login" class="py-5";>
                                         <div class="container">
                                             <div class="col-12 mx-auto my-auto text-center">
-                                                <form action="../../APIs/listener/CurrencyBackend.php" method="post">
+                                                <form action="../../APIs/shared/CurrencyBackend.php" method="post">
                                 ';
                                 if($_SESSION['currency']==0)
                                 {
@@ -619,26 +612,26 @@
                                 }
                                 echo '
                                             </form>
-                                            <form action = "../../APIs/listener/CheckSellConversionBackend.php" method = "post">
+                                            <form action = "../../APIs/shared/CheckSellConversionBackend.php" method = "post">
                                                 <div class="form-group">
                                 ';
                                 if($_SESSION['currency'] == 0)
                                 {
                                     echo '
-                                            <h5 style="padding-top:150px;"> Please choose a currency</h5>
+                                                    <h5 style="padding-top:150px;"> Please choose a currency</h5>
                                     ';
                                 }
                                 else
                                 {
                                     echo '
-                                            <h5 style="padding-top:150px;">Enter Amount in Siliqas (q̶)</h5>
-                                            <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
-                                        </div>
-                                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
-                                        </div>
-                                        </form>
-                                        <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
+                                                    <h5 style="padding-top:150px;">Enter Amount in Siliqas (q̶)</h5>
+                                                    <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
+                                                </div>
+                                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                    <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
+                                                </div>
+                                            </form>
+                                                <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
                                     ';
                                     
                                     if($_SESSION['coins']!=0)
@@ -652,17 +645,17 @@
                                         echo 0;
                                     }
                                     echo '
-                                        </p>
-                                        </form>
-                                        <form action = "Sellout.php" method = "post">
-                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                </p>
+                                            </form>
+                                            <form action = "../shared/Sellout.php" method = "post">
+                                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
                                     ';
                                     if($_SESSION['btn_show'] == 1)
                                     {
                                         echo '
-                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Buy this amount!" onclick="window.location.reload();">
-                                            </div>
-                                        </form>
+                                                    <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Buy this amount!" onclick="window.location.reload();">
+                                                </div>
+                                            </form>
                                         ';
                                     }
                                     echo'

@@ -197,7 +197,7 @@
     </section>
 
     <section class="middle-card">
-      <h1 id="h1-sm">Share info</h1>
+      <h1 id="h1-sm">Market info</h1>
       <p><i style="color: white;" class="fa fa-user"></i> Share Distributed: <?php
         echo $account_info['Share_Distributed'];
       ?></p>
