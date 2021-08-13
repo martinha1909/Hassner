@@ -440,6 +440,7 @@
                                     printTopInvestedArtistChart($users, $all_shares);
                                 }
                                 echo '</form>';
+                                echo '</table>';
                             }
 
                             //displaying Buy Siliqas functionality

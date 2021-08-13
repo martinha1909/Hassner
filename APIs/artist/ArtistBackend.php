@@ -34,5 +34,15 @@
         return getArtistShareLowerBound($conn, $artist_username)->fetch_assoc();
     }
 
-    
+    function ArtistShareHoldersInfoInit($artist_username, &$shareholder_names, &$shareholder_shares_bought, &$shareholder_shares_sold, &$shareholder_shares_duration)
+    {
+        $conn = connect();
+
+        $res_1 = getArtistShareHoldersInfo($conn, $artist_username);
+        while($row = $res_1->fetch_assoc())
+        {
+            array_push($shareholder_names, $row['user_username']);
+            array_push($shareholder_shares_bought, $row['no_of_share_bought']);
+        }
+    }
 ?>

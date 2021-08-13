@@ -130,6 +130,17 @@
             return $result;
         }
 
+        function getArtistShareHoldersInfo($conn, $artist_username)
+        {
+            $sql = "SELECT * FROM user_artist_share WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function getArtistShareLowerBound($conn, $artist_username)
         {
             $type = "artist";

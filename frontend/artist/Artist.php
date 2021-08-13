@@ -225,6 +225,32 @@
                                         <br>
                                         <h2>Your Shareholders</h2>
                                 ';
+                                $shareholder_names = array();
+                                $shareholder_shares_bought = array();
+                                $shareholder_shares_sold = array();
+                                $shareholder_shares_duration = array();
+                                ArtistShareHoldersInfoInit($_SESSION['username'], $shareholder_names, $shareholder_shares_bought, $shareholder_shares_sold, $shareholder_shares_duration);
+                                echo '
+                                        <table class="table">
+                                            <thead class="thead-orange">
+                                                <tr>
+                                                    <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "#"></th>
+                                                    <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Name"></th>
+                                                    <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Shares bought"></th>
+                                                    <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Shares selling"></th>
+                                                    <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Longest Duration"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr><th scope="row">1</th>
+                                                    <td><input name = "artist_name" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "afaf"></td></td>
+                                                    <td style="color: white">dhrtgrs</td>
+                                                    <td style="color: white">qfe</td>
+                                                    <td class="increase">qffwe</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                ';
                             }
                         }
 
