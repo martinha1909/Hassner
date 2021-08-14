@@ -181,6 +181,7 @@
                             else
                             {
                                 $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
+                                echo "fnoenf";
                                 $market_cap = calculateMarketCap($_SESSION['username']);
                                 $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
                                 $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
