@@ -446,7 +446,6 @@
                             //displaying Buy Siliqas functionality
                             else if($_SESSION['display'] == 3)
                             {
-                                include '../../APIs/shared/SiliqasHelperBackend.php';
                                 $balance = getUserBalance($_SESSION['username']);
 
                                 //notify
@@ -460,7 +459,7 @@
                                     <section id="login" class="py-5";>
                                         <div class="container">
                                             <div class="col-12 mx-auto my-auto text-center">
-                                                <form action="../../APIs/listener/CurrencyBackend.php" method="post">
+                                                <form action="../../APIs/shared/CurrencyBackend.php" method="post">
                                 ';
                                 if($_SESSION['currency']==0)
                                 {
