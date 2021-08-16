@@ -10,6 +10,8 @@ Coding Standards
 
     1.4 Classes name should match with filename (i.e class called "Hassner" should have file Hassner.php)
 
+    1.5 all instance, function name, class, and class constants are in mixed case with a lowercase first letter. Internal words start with capital letters.
+
 2. Formatting:
 
     2.1 Indentation should all be used with tabs (no spaces)

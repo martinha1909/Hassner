@@ -17,7 +17,7 @@ To run this project:;
 5. Run server by opening xampp control at C:/xampp/xampp-control. Once the console pops up, start Apache and MySQL
 6. Start database by going to any web browser and type localhost:80/phpmyadmin
 7. Create a database by importing the hassner.sql file in the repository
-8. Run the project, starting the landing page by typing localhost:80/Hassner/frontend/index.php
+8. Run the project, starting the landing page by typing localhost:80/Hassner/frontend/credentials/index.php
 
 The database found in hassner.sql is just an example database, feel free to add or remove any tuples in any tables
 
