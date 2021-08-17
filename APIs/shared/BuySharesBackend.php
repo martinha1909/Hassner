@@ -62,10 +62,16 @@
 
             //since there is a buying mecahnism, demand has gone up so price per share is increased
             $new_pps = $_SESSION['current_pps']['price_per_share'];
-            for($i = 0; $i<$amount_bought; $i++)
+
+            //only user will fluctuate demand, if artists buy back the share they simply just own back their 
+            //portion
+            if($_SESSION['account_type'] == "user")
             {
-                //for now each time a share is bought its value is increased by 5%
-                $new_pps*=1.05;
+                for($i = 0; $i<$amount_bought; $i++)
+                {
+                    //for now each time a share is bought its value is increased by 5%
+                    $new_pps*=1.05;
+                }
             }
             purchaseAskedPriceShare($conn, $_SESSION['username'], $_SESSION['seller_toggle'], $_SESSION['selected_artist'], $buyer_new_balance, $seller_new_balance, $_SESSION['current_pps']['price_per_share'], $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $_SESSION['shares_owned'], $amount_bought);
             $_SESSION['buy_market_price'] = 0;

@@ -216,7 +216,7 @@
                                                 <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
                                                 <td>'.$_SESSION['available_shares'].'</td>
                                                 <td>
-                                                    <form action="../../APIs/listener/BuySharesBackend.php" method="post">
+                                                    <form action="../../APIs/shared/BuySharesBackend.php" method="post">
                                                         <input name = "purchase_quantity" type="range" min="1" max='.$_SESSION['available_shares'].' value="1" class="slider" id="myRange">
                                                         <p>Quantity: <span id="demo"></span></p>
                                                         <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->">

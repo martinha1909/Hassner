@@ -186,6 +186,17 @@
             return $result;
         }
 
+        function getArtistIinitialDeposit($conn, $artist_username)
+        {
+            $sql = "SELECT deposit FROM account WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function signup($conn, $username, $password, $type, $email) //done2
         {
             $original_share= "";
@@ -258,9 +269,15 @@
             $conn->query($sql);
         }
 
-        function updateShareDistributed($conn, $artist_username, $new_share_distributed)
+        function updateShareDistributed($conn, $artist_username, $new_share_distributed, $new_pps, $new_lower_bound)
         {
             $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username='$artist_username'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username='$artist_username'";
+            $conn->query($sql);
+
+            $sql = "UPDATE account SET lower_bound = '$new_lower_bound' WHERE username='$artist_username'";
             $conn->query($sql);
         }
 
