@@ -1,6 +1,7 @@
 <?php
   include '../../APIs/control/Dependencies.php';
   include '../../APIs/artist/ArtistBackend.php';
+  include '../../APIs/shared/MarketplaceBackend.php';
 
   $_SESSION['lower_bound'] = 0.5;
   $_SESSION['status'] = 0;
@@ -195,7 +196,7 @@
                                 echo '<h6>Current market cap (q̶): '.$market_cap.'</h6>';
                                 echo '<h6>Highest share (q̶): '.$high.'</h6>';
                                 echo '<h6>Lowest share (q̶): '.$low.'</h6>';
-                                echo '<h6>Current lower bound (q̶): '.$lower_bound['lower_bound'].'</h6>';
+                                echo '<h6>Current lower bound (q̶): '.$lower_bound.'</h6>';
                                 if($_SESSION['add_share'] == 1)
                                 {
                                 $max = $account_info['Share_Distributed'];
@@ -226,6 +227,8 @@
                                         <h2>Buy Back Shares</h2>
                                 ';
 
+                                askedPriceInit();
+
                                 echo '
                                         <br>
                                         <h2>Your Shareholders</h2>
@@ -234,7 +237,7 @@
                                 $shareholder_shares_bought = array();
                                 $shareholder_shares_sold = array();
                                 $shareholder_shares_duration = array();
-                                ArtistShareHoldersDurationInit($_SESSION['username'], $shareholder_names, $shareholder_shares_bought, $shareholder_shares_sold, $shareholder_shares_duration);
+                                artistShareHoldersDurationInit($_SESSION['username'], $shareholder_names, $shareholder_shares_bought, $shareholder_shares_sold, $shareholder_shares_duration);
                                 echo '
                                         <table class="table">
                                             <thead class="thead-orange">
@@ -336,6 +339,15 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+  <script>
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+    }
+  </script>
   <script src="js/scripts.js"></script>
   </body>
 </html>

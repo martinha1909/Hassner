@@ -20,5 +20,13 @@
 
     //if the user is buying from bid price, disable market buying options
     $_SESSION['buy_market_price'] = 0;
-    header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+
+    if($_SESSION['account_type'] == "user")
+    {
+        header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+    }
+    else if($_SESSION['account_type'] == "artist")
+    {
+        header("Location: ../../frontend/artist/Artist.php");
+    }
 ?>

@@ -1,5 +1,7 @@
 <?php
     include '../../APIs/control/Dependencies.php';
+    include '../../APIs/listener/AccountInfoBackend.php';
+    
     $_SESSION['conversion_rate'] = -0.05;
     $_SESSION['coins'];
     $_SESSION['notify'];
@@ -35,7 +37,6 @@
                     </a>
 
                     <?php
-                        include '../../APIs/listener/AccountInfoBackend.php';
                         $account = getAccount($_SESSION['username']);
                         $_SESSION['user_balance'] = $account['balance'];
                     ?>

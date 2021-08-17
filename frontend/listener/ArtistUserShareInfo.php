@@ -1,6 +1,6 @@
 <?php
     include '../../APIs/control/dependencies.php';
-    include '../../APIs/listener/ArtistShareMarketplaceBackend.php';
+    include '../../APIs/shared/MarketplaceBackend.php';
     $_SESSION['conversion_rate'];
     $_SESSION['coins'] = 0;
     $_SESSION['notify'];
@@ -130,7 +130,7 @@
                                             <input name = "purchase_quantity" type="range" min="1" max='.$_SESSION['shares_owned'].' value="1" class="slider" id="myRange">
                                             <p>Quantity: <span id="demo"></span></p>
                                             <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
-                                            <p>Asked Price: <span id="asked_value"></span></p>
+                                            <p>Minimum: '.$lower_bound.'q̶</p>
                                             <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
                                         </form>
                                     </label> 
@@ -158,115 +158,13 @@
                     </h2>
                 </div>
                 <?php
-                    //displaying asked price marketplace
-                    $asked_prices = array();
-                    //displaying corresponding user_username
-                    $user_usernames = array();
-                    //displaying corresponding artist_username
-                    $artist_usernames = array();
-                    //displaying the quantity that are being sold
-                    $quantities = array();
-                    //sorting asked_price in a descending order, so the first index would be the lowest value, then swaps the other arrays 
-                    //to match with asked_price indices
-                    fetchAskedPrice($asked_prices, $user_usernames, $artist_usernames, $quantities, $_SESSION['selected_artist']);
-                        echo '
-                            <div class="py-4 text-left">
-                                <h3>Lowest Asked Price </h3>
-                            </div>';
-                    if(sizeof($asked_prices) > 0)
-                    {
-                        //displays the buy button when user has not clicked on it
-                        //always displays first index, which is lowest bid price
-                        if($_SESSION['buy_asked_price'] == 0)
-                        {
-                            echo'
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">'.$user_usernames[0].'</th>
-                                            <td>'.$asked_prices[0].'</td>
-                                            <td>'.$quantities[0].'</td>
-                                            <form action="../../APIs/listener/ToggleBuyAskedPriceBackend.php" method="post">
-                                                <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[0].'" onclick="window.location.reload();"></td>
-                                            </form>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            ';
-                        }
-                        //replaces the Buy button with a slide bar ranging from 0 to the quantity that other users are selling
-                        else
-                        {
-                            echo'
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col"></th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">'.$user_usernames[0].'</th>
-                                            <td>'.$asked_prices[0].'</td>
-                                            <td>'.$quantities[0].'</td>
-                                            <td>
-                                ';
-                                    if(strcmp($_SESSION['seller'], $user_usernames[0]) == 0)
-                                    {
-                                        $_SESSION['purchase_price'] = $asked_prices[0];
-                                        $_SESSION['seller_toggle'] = $user_usernames[0];
-                                        echo'
-                                                <form action="../../APIs/listener/BuySharesBackend.php" method="post">
-                                                    <input name = "purchase_quantity" type="range" min="1" max='.$quantities[0].' value="1" class="slider" id="myRange">
-                                                    <p>Quantity: <span id="demo"></span></p>
-                                                    <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
-                                                </form>
-                                                <form action="../../APIs/listener/ToggleBuyAskedPriceBackend.php" method="post">
-                                                    <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
-                                                </form>
-                                        ';
-                                    }
-                                    else
-                                    {
-                                        echo'
-                                                <form action="../../APIs/listener/ToggleBuyAskedPriceBackend.php" method="post">
-                                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[0].'" onclick="window.location.reload();"></td>
-                                                </form>
-                                                </td>
-                                            </tr>
-                                        ';
-                                    }
-                            echo '
-                                    </tbody>
-                                </table>
-                            ';
-                        }
-                    }
-                    //If other users are selling shares, displays nothing
-                    else
-                    {
-                        echo '
-                            <div class="py-4 text-center">
-                                <h4>No shares are currently sold by other users</h4>
-                            </div>
-                        ';
-                    }
-                    echo '
+                   askedPriceInit();
+
+                   echo '
                         <div class="py-4 text-left">
                             <h3>Market Price</h3>
-                        </div>';
+                        </div>
+                    ';
                     
                     //If the amount of artist shares has not sold out or the artist has distributed some shares, makes Buy option available 
                     if($_SESSION['available_shares'] > 0)
