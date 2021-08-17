@@ -442,4 +442,76 @@
             $stmt->bind_param('ssdi', $user_username, $artist_username, $selling_price, $no_of_share);
             $stmt->execute();
         }
+
+        function cleanDatabase($conn)
+        {
+            $notify = 0;
+            $sql = "SELECT username FROM account";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            while($row = $result->fetch_assoc())
+            {
+                $username = $row['username'];
+                $account_type = $row['account_type'];
+
+                $query = "UPDATE account SET Shares = 0 WHERE username='$username'";
+                $conn->query($sql);
+
+                $query = "UPDATE account SET balance = 0 WHERE username='$username'";
+                $conn->query($sql);
+
+                $query = "UPDATE account SET rate = 0 WHERE username='$username'";
+                $conn->query($sql);
+
+                $query = "UPDATE account SET Share_Distributed = 0 WHERE username='$username'";
+                $conn->query($sql);
+
+                $query = "UPDATE account SET price_per_share = 0 WHERE username='$username'";
+                $conn->query($sql);
+
+                $query = "UPDATE account SET Monthly_shareholder = 0 WHERE username='$username'";
+                $conn->query($sql);
+
+                $query = "UPDATE account SET Income = 0 WHERE username='$username'";
+                $conn->query($sql);
+
+                $query = "UPDATE account SET Market_cap = 0 WHERE username='$username'";
+                $conn->query($sql);
+
+                $query = "UPDATE account SET lower_bound = 0 WHERE username='$username'";
+                $conn->query($sql);
+
+                $query = "UPDATE account SET deposit = 0 WHERE username='$username'";
+                $conn->query($sql);
+
+                if($account_type == "artist")
+                {
+                    $sql = "DELETE FROM user_artist_sell_share WHERE artist_username = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param('s', $username);
+                    $stmt->execute();
+
+                    $sql = "DELETE FROM user_artist_share WHERE artist_username = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param('s', $username);
+                    $stmt->execute();
+                }
+                else if($account_type == "user")
+                {
+                    $sql = "DELETE FROM user_artist_sell_share WHERE user_username = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param('s', $username);
+                    $stmt->execute();
+
+                    $sql = "DELETE FROM user_artist_share WHERE user_username = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param('s', $username);
+                    $stmt->execute();
+                }
+            }
+
+            return $notify;
+        }
 ?>
