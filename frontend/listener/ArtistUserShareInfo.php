@@ -242,7 +242,7 @@
                                     {
                                         echo'
                                                 <form action="../../APIs/listener/ToggleBuyAskedPriceBackend.php" method="post">
-                                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[0].'" onclick="window.location.reload();"</td>
+                                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[0].'" onclick="window.location.reload();"></td>
                                                 </form>
                                                 </td>
                                             </tr>

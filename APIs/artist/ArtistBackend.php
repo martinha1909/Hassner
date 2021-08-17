@@ -34,15 +34,23 @@
         return getArtistShareLowerBound($conn, $artist_username)->fetch_assoc();
     }
 
-    function ArtistShareHoldersInfoInit($artist_username, &$shareholder_names, &$shareholder_shares_bought, &$shareholder_shares_sold, &$shareholder_shares_duration)
+    function ArtistShareHoldersDurationInit($artist_username, &$shareholder_names, &$shareholder_shares_bought, &$shareholder_shares_sold, &$shareholder_shares_duration)
     {
         $conn = connect();
 
         $res_1 = getArtistShareHoldersInfo($conn, $artist_username);
         while($row = $res_1->fetch_assoc())
         {
+            //we query the amount of entries in the user_artist_sell_share table of the database and 
+            //the number of entries returned is how many shares of this artist the user is selling, 
+            //since each entry represents 1 share sold by user of a specific artist
+            $res_2 = getSpecificAskedPrice($conn, $row['user_username'], $_SESSION['username']);
+
+            array_push($shareholder_shares_sold, $res_2->num_rows);
             array_push($shareholder_names, $row['user_username']);
             array_push($shareholder_shares_bought, $row['no_of_share_bought']);
+            //Just putting a temporary value until figure out how to track real time in PHP
+            array_push($shareholder_shares_duration, 1);
         }
     }
 ?>
