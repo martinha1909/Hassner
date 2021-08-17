@@ -3,7 +3,7 @@
     include '../APIs/connection.php';
 
     $conn = connect();
-    cleanDatabase($conn);
+    deleteDatabase($conn);
     
-    echo '<h3 style="color: green;">Database cleaned successfully</h3>';
+    echo '<h3 style="color: green;">Database deleted successfully</h3>';
 ?>
