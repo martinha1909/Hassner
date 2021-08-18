@@ -190,13 +190,13 @@
                                 echo '<h6>Price Per Share: '.$account_info['price_per_share'].'</h6>';
                                 echo '
                                     <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">
-                                        <h6>Share distributed: '.$account_info['Share_Distributed'].' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
+                                        <h6>Volumn: '.$account_info['Share_Distributed'].' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
                                     </form>
                                     ';
                                 echo '<h6>Current Shareholders: '.$shareholder_list->num_rows.'</h6>';
-                                echo '<h6>Current market cap (q̶): '.$market_cap.'</h6>';
-                                echo '<h6>Highest share (q̶): '.$high.'</h6>';
-                                echo '<h6>Lowest share (q̶): '.$low.'</h6>';
+                                echo '<h6>Market cap (q̶): '.$market_cap.'</h6>';
+                                echo '<h6>Day High (q̶): '.$high.'</h6>';
+                                echo '<h6>Day Low (q̶): '.$low.'</h6>';
                                 echo '<h6>Current lower bound (q̶): '.$lower_bound.'</h6>';
                                 if($_SESSION['add_share'] == 1)
                                 {
