@@ -13,7 +13,7 @@
 
     $res_2 = searchArtistCurrentPricePerShare($conn, $_SESSION['username']);
     $current_pps = $res_2->fetch_assoc();
-    $new_pps = $current_pps['price_per_share']/$additional_shares;
+    $new_pps = $current_pps['price_per_share'] * ($additional_shares/$new_shares_distributed);
 
     $res_3 = getArtistIinitialDeposit($conn, $_SESSION['username']);
     $deposit = $res_3->fetch_assoc();

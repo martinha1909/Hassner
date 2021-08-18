@@ -3,6 +3,7 @@
   include '../../APIs/artist/ArtistBackend.php';
   include '../../APIs/shared/MarketplaceBackend.php';
 
+  $_SESSION['selected_artist'] = $_SESSION['username'];
   $_SESSION['lower_bound'] = 0.5;
   $_SESSION['status'] = 0;
   $account_info = getArtistAccount($_SESSION['username'], "artist");
