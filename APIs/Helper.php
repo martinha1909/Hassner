@@ -1,4 +1,14 @@
 <?php
+
+    function getAccount($username)
+    {
+        $conn = connect();
+        $result = searchAccount($conn, $username);
+        $account = $result->fetch_assoc();
+        closeCon($conn);
+        return $account;
+    }
+    
     function getUserBalance($user_username)
     {
         $conn = connect();

@@ -1,17 +1,21 @@
 <?php
-    session_start();
-    include '../logic.php';
-    include '../connection.php';
+    $_SESSION['dependencies'] = 1;
+    include '../control/Dependencies.php';
     $conn = connect();
     $pwd = $_POST['verify_password'];
     $result = login($conn, $_SESSION['username'], $pwd);
+
+    closeCon($conn);
+    
     if($result->num_rows > 0)
     {
+        $_SESSION['dependencies'] = 0;;
         header("Location: ../../frontend/listener/PersonalPage.php");
     }
     else
     {
         $_SESSION['notify'] = 3;
+        $_SESSION['dependencies'] = 0;
         header("Location: ../../frontend/listener/listener.php");
     }
 ?>

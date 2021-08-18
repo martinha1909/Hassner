@@ -1,11 +1,14 @@
 <?php
-    session_start();
-    include '../logic.php';
-    include '../connection.php';
+    $_SESSION['dependencies'] = 1;
+    include '../control/Dependencies.php';
 
     $conn = connect();
     //selected artist
     $_SESSION['selected_artist'] = $_POST['artist_name'];
+
+    closeCon($conn);
+    
+    $_SESSION['dependencies'] = 0;
 
     header("Location: ../../frontend/listener/ArtistUserShareInfo.php")
 ?>

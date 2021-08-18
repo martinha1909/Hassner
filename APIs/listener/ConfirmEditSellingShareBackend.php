@@ -1,7 +1,6 @@
 <?php
-    session_start();
-    include '../logic.php';
-    include '../connection.php';
+    $_SESSION['dependencies'] = 1;
+    include '../control/Dependencies.php';
 
     $conn = connect();
 
@@ -21,5 +20,9 @@
 
     $_SESSION['artist_share_remove'] = 0;
     $_SESSION['share_price_remove'] = 0;
+    $_SESSION['dependencies'] = 0;
+
+    closeCon($conn);
+    
     header("Location: ../../frontend/listener/listener.php");
 ?>

@@ -32,7 +32,6 @@
                     </a>
 
                     <?php
-                        include '../../APIs/listener/AccountInfoBackend.php';
                         $account = getAccount($_SESSION['username']);
                     ?>
                     <div class="wrapper-searchbar">

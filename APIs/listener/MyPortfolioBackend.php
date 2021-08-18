@@ -177,6 +177,7 @@
             }
         }
         insertionSort($selling_prices, $artist_usernames, $profits, $share_amounts, "Descending");
+        closeCon($conn);
     }
 
     //gets the total amount of share that the user holds corresponds to the $artist_username
@@ -185,6 +186,7 @@
         $conn = connect();
         $result = searchSpecificInvestment($conn, $user_username, $artist_username);
         $amount = $result->fetch_assoc();
+        closeCon($conn);
         return $amount['no_of_share_bought'];
     }
 ?>

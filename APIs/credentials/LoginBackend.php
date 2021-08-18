@@ -1,8 +1,6 @@
 <?php
-
-    session_start();
-    include '../connection.php';
-    include '../logic.php';    
+    $_SESSION['dependencies'] = 1;
+    include '../control/Dependencies.php'; 
 
     $conn = connect();
     $username = $_POST['username'];
@@ -17,6 +15,7 @@
         $_SESSION['username'] = $row['username'];
         $_SESSION['password'] = $row['password'];
         $_SESSION['id'] = $row['id'];
+        $_SESSION['dependencies'] = 0;
         if($row['account_type'] == "user"){
             header("Location: ../../frontend/listener/Listener.php");
             die;
@@ -32,6 +31,7 @@
     }
     else
     {
+        $_SESSION['dependencies'] = 0;
         header("Location: ../../frontend/credentials/login.php");
     }
 

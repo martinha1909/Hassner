@@ -1,10 +1,15 @@
 <?php
-    session_start();
-    include '../logic.php';
-    include '../connection.php';
+    $_SESSION['dependencies'] = 1;
+    include '../control/Dependencies.php';
+
     $conn = connect();
     $pwd = $_POST['verify_password'];
     $result = login($conn, $_SESSION['username'], $pwd);
+
+    $_SESSION['dependencies'] = 0;
+
+    closeCon($conn);
+    
     if($result->num_rows > 0)
     {
         header("Location: ../../frontend/artist/PersonalPage.php");

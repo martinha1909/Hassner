@@ -77,7 +77,7 @@
         }
     }
     $_SESSION['dependencies'] = 0;
-    
+    closeCon($conn);
     returnToMainPage();
     
 ?>

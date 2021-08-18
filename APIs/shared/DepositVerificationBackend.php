@@ -47,6 +47,8 @@
     $_SESSION['saved'] = 0;
     $_SESSION['dependencies'] = 0;
 
+    closeCon($conn);
+    
     returnToMainPage();
     
 ?>

@@ -15,7 +15,6 @@
     {
         $_SESSION['currency'] = $_POST['currency'];
         $_SESSION['lower_bound'] = $_SESSION['deposit']/$_SESSION['shares_distributing'];
-        echo $_SESSION['lower_bound'];
         if($_SESSION['lower_bound'] < 0.5)
         {
             $_SESSION['notify'] = 2;
@@ -26,6 +25,8 @@
 
         $_SESSION['dependencies'] = 0;
 
-        // header("Location: ../../frontend/artist/Checkout.php");
+        closeCon($conn);
+
+        header("Location: ../../frontend/artist/Checkout.php");
     }
 ?>

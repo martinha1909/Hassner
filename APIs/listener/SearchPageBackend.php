@@ -1,7 +1,6 @@
 <?php
-    session_start();
-    include '../logic.php';
-    include '../connection.php';
+    $_SESSION['dependencies'] = 1;
+    include '../control/Dependencies.php';
 
     $conn = connect();
     $_SESSION['found'];
@@ -16,5 +15,7 @@
     {
         $_SESSION['found'] = 0;
     }
+    $_SESSION['dependencies'] = 0;
+    closeCon($conn);
     header("Location: ../../frontend/listener/SearchPage.php");
 ?>

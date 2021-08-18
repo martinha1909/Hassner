@@ -4,6 +4,7 @@
         $conn = connect();
         $result = searchAccount($conn, $artist_username);
         $account_info = $result->fetch_assoc();
+        closeCon($conn);
         return $account_info;
     }
 
@@ -24,6 +25,8 @@
         {
             $market_cap += ($row['no_of_share_bought'] * $pps['price_per_share']);
         }
+
+        closeCon($conn);
 
         return $market_cap;
     }
@@ -48,5 +51,6 @@
             //Just putting a temporary value until figure out how to track real time in PHP
             array_push($shareholder_shares_duration, 1);
         }
+        closeCon($conn);
     }
 ?>

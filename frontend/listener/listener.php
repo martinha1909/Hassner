@@ -1,6 +1,5 @@
 <?php
     include '../../APIs/control/Dependencies.php';
-    include '../../APIs/listener/AccountInfoBackend.php';
     
     $_SESSION['conversion_rate'] = -0.05;
     $_SESSION['coins'];
@@ -359,7 +358,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>';
-                                $conn = connect();
                                 for($i=0; $i<sizeof($selling_prices); $i++)
                                 {
                                     echo'

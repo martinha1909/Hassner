@@ -1,4 +1,7 @@
 <?php
+  include '../../APIs/control/Dependencies.php';
+
+  $account_info = getAccount($_SESSION['username']);
   $_SESSION['expmonth'] = 0;
   $_SESSION['expyear'] = 0;
 ?>
@@ -12,10 +15,6 @@
   <link rel="stylesheet" href="../css/menu.css" type="text/css">
 </head>
 
-<?php
-  include '../../APIs/shared/CheckoutBackend.php';
-  $account_info = getAccount($_SESSION['username']);
-?>
 <body class="bg-dark">
     <header class="smart-scroll">
         <div class="container-xxl">
