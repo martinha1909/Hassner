@@ -1,5 +1,6 @@
 <?php
-  session_start();
+  include '../../APIs/control/Dependencies.php';
+
   $_SESSION['coins'] = 0;
   $_SESSION['notify'] =  0;
   $_SESSION['display'] = 0;
@@ -18,6 +19,7 @@
   $_SESSION['artist_share_remove'] = 0;
   $_SESSION['share_price_remove'] = 0;
   $_SESSION['dependencies'] = 0;
+  $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
 ?>
 
 <!doctype html>

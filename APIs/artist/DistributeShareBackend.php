@@ -25,7 +25,7 @@
 
         $_SESSION['dependencies'] = 0;
 
-        closeCon($conn);
+         
 
         header("Location: ../../frontend/artist/Checkout.php");
     }

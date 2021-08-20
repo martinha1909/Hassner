@@ -67,7 +67,7 @@
         $balance = $search_6->fetch_assoc();
         $_SESSION['user_balance'] = $balance['balance'];
 
-        closeCon($conn);
+         
     }
 
     function getLowerBound($artist_username)
@@ -75,7 +75,7 @@
         $conn = connect();
         $result = getArtistShareLowerBound($conn, $artist_username);
         $lower_bound = $result->fetch_assoc();
-        closeCon($conn);
+         
         return $lower_bound['lower_bound'];
     }
 
@@ -97,7 +97,7 @@
         }
         //using insertion sort in MyPortfiolioBackend.php file
         insertionSort($asked_prices, $user_usernames, $artist_usernames, $quantities, "Descending");
-        closeCon($conn);
+         
     }
 
     function askedPriceInit()

@@ -6,7 +6,7 @@
     //selected artist
     $_SESSION['selected_artist'] = $_POST['artist_name'];
 
-    closeCon($conn);
+     
     
     $_SESSION['dependencies'] = 0;
 

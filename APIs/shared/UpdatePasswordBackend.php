@@ -11,7 +11,7 @@
     
     $_SESSION['dependencies'] = 0;
 
-    closeCon($conn);
+     
 
     if($_SESSION['account_type'] == "user")
     {

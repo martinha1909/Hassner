@@ -30,7 +30,7 @@
         header("Location: ../../frontend/credentials/signup.php");
     }
 
-    closeCon($conn); 
+      
 
 
 ?>

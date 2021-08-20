@@ -35,7 +35,7 @@
         header("Location: ../../frontend/credentials/login.php");
     }
 
-    closeCon($conn); 
+      
 
 
 ?>

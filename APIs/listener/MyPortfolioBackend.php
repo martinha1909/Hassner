@@ -3,7 +3,7 @@
     {
         $conn = connect();
         $result = searchUsersInvestment($conn, $listener_username);
-        closeCon($conn);
+         
         return $result;
     }
 
@@ -24,7 +24,7 @@
             array_push($all_price_per_share, $account_info['price_per_share']);
         }
         
-        closeCon($conn);
+         
     }
 
     //performing insertionSort to targeted arrays with $indicator being either ascending or descending
@@ -167,8 +167,8 @@
             }
             else
             {
-                $result = searchArtistCurrentPricePerShare($conn, $row['artist_username']);
-                $pps = $result->fetch_assoc();
+                $result_2 = searchArtistCurrentPricePerShare($conn, $row['artist_username']);
+                $pps = $result_2->fetch_assoc();
                 $profit = (($row['selling_price'] - $pps['price_per_share'])/($pps['price_per_share']))*100;
                 array_push($artist_usernames, $row['artist_username']);
                 array_push($profits, round($profit, 2));
@@ -177,7 +177,6 @@
             }
         }
         insertionSort($selling_prices, $artist_usernames, $profits, $share_amounts, "Descending");
-        closeCon($conn);
     }
 
     //gets the total amount of share that the user holds corresponds to the $artist_username
@@ -186,7 +185,7 @@
         $conn = connect();
         $result = searchSpecificInvestment($conn, $user_username, $artist_username);
         $amount = $result->fetch_assoc();
-        closeCon($conn);
+         
         return $amount['no_of_share_bought'];
     }
 ?>

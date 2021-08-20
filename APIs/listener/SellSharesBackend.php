@@ -3,13 +3,15 @@
     include '../control/Dependencies.php';
 
     $conn = connect();
+
+    $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
     $quantity = $_POST['purchase_quantity'];
     $asked_price = $_POST['asked_price'];
 
-    $result = getArtistShareLowerBound($conn, $artist_username);
+    $result = getArtistShareLowerBound($conn, $_SESSION['selected_artist']);
     $lower_bound = $result->fetch_assoc();
 
-    if($lower_bound <= $asked_price)
+    if($lower_bound['lower_bound'] <= $asked_price)
     {
         $result = getSpecificAskedPrice($conn, $_SESSION['username'], $_SESSION['selected_artist']);
         $existed = 0;
@@ -46,7 +48,7 @@
                 $new_pps = $lower_bound['lower_bound'];
             }
 
-            postAskedPrice($conn, $_SESSION['username'], $_SESSION['selected_artist'], $quantity, $asked_price, $new_pps);
+            postAskedPrice($conn, $_SESSION['username'], $_SESSION['selected_artist'], $quantity, $asked_price, $new_pps, $_SESSION['current_date']);
         }
 
         //If the user has already been selling the same share, simply just adjust the quantity to the new requested quantity
@@ -71,12 +73,10 @@
                 $new_pps = $lower_bound['lower_bound'];
             }
 
-            updateAskedPrice($conn, $_SESSION['username'], $_SESSION['selected_artist'], $quantity, $asked_price, $new_pps);
+            updateAskedPrice($conn, $_SESSION['username'], $_SESSION['selected_artist'], $quantity, $asked_price, $new_pps, $_SESSION['current_time']);
         }
     }
 
     $_SESSION['dependencies'] = 0;
-    
-    closeCon($conn);
     header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
 ?>

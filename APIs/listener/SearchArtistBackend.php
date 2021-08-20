@@ -20,6 +20,6 @@
                                 <td style="color: white">'.$Monthly_shareholders.'
                         </td>
                 ';    
-                closeCon($conn);
+                 
         }
 ?>

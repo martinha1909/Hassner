@@ -43,7 +43,7 @@
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;
             $_SESSION['dependencies'] = 0;
-            closeCon($conn);
+             
             header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
         }
         //if the user chooses a seller from bid price section
@@ -108,7 +108,7 @@
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;
             $_SESSION['dependencies'] = 0;
-            closeCon($conn);
+             
             if($_SESSION['account_type'] == "user")
             {
                 header("Location: ../../frontend/listener/ArtistUserShareInfo.php");

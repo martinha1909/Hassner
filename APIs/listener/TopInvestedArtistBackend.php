@@ -3,7 +3,7 @@
     {
         $conn = connect();
         $result = searchAccountType($conn, $account_type);
-        closeCon($conn);
+         
         return $result;
     }
 
@@ -44,7 +44,7 @@
         $conn = connect();
         $result = searchAccount($conn, $artist_username);
         $price_per_share = $result->fetch_assoc();
-        closeCon($conn);
+         
         return $price_per_share['price_per_share'];
     }
 
@@ -54,7 +54,7 @@
         $result = searchAccount($conn, $artist_username);
         $rate = $result->fetch_assoc();
         $rate['rate'] = $rate['rate'] * 100;
-        closeCon($conn);
+         
         return $rate['rate'];
     }
 

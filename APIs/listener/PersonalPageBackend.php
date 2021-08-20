@@ -5,7 +5,7 @@
     $pwd = $_POST['verify_password'];
     $result = login($conn, $_SESSION['username'], $pwd);
 
-    closeCon($conn);
+     
     
     if($result->num_rows > 0)
     {

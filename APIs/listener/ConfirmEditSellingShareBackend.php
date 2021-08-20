@@ -4,6 +4,7 @@
 
     $conn = connect();
 
+    $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
     $new_quantity = $_POST['new_quantity'];
     $new_asked_price = $_POST['new_asked_price'];
     $artist_name = key($_POST['artist_name']);
@@ -15,14 +16,14 @@
     }
     else
     {
-        updateExistedSellingShare($conn, $_SESSION['username'], $artist_name, $new_quantity, $new_asked_price);
+        updateExistedSellingShare($conn, $_SESSION['username'], $artist_name, $new_quantity, $new_asked_price, $_SESSION['current_date']);
     }
 
     $_SESSION['artist_share_remove'] = 0;
     $_SESSION['share_price_remove'] = 0;
     $_SESSION['dependencies'] = 0;
 
-    closeCon($conn);
+     
     
     header("Location: ../../frontend/listener/listener.php");
 ?>

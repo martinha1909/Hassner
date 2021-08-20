@@ -16,6 +16,6 @@
         $_SESSION['found'] = 0;
     }
     $_SESSION['dependencies'] = 0;
-    closeCon($conn);
+     
     header("Location: ../../frontend/listener/SearchPage.php");
 ?>
