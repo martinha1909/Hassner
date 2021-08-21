@@ -1,6 +1,6 @@
 <?php
-    include '../APIs/logic.php';
-    include '../APIs/connection.php';
+    include '../APIs/control/logic.php';
+    include '../APIs/control/connection.php';
 
     $conn = connect();
     deleteDatabase($conn);
