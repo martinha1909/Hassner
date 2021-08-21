@@ -1,6 +1,6 @@
 <?php
   session_start();
-  $_SESSION['notify'];
+  $_SESSION['status'];
 ?>
 
 <!doctype html>
@@ -43,11 +43,11 @@
 </section>
 
 <?php
-  if($_SESSION['notify'] == 1)
+  if($_SESSION['status'] == 1)
     echo "<script>alert('Admin ID sent successfully');</script>";
-  if($_SESSION['notify'] == 2)
+  if($_SESSION['status'] == 2)
     echo "<script>alert('Failed');</script>";
-  $_SESSION['notify'] = 0;
+  $_SESSION['status'] = 0;
 ?>
 
 <!--signup functionality-->

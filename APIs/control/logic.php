@@ -224,7 +224,7 @@
             $balance = 0;
             $rate = 0;
             $num_of_shares = 0;
-            $notify = 0;
+            $status = 0;
             $share_distributed = 0;
             $monthly_shareholder = 0;
             $income = 0;
@@ -251,11 +251,11 @@
                                                            $swift, $price_per_share, $monthly_shareholder, 
                                                            $income, $market_cap, $lower_bound, $deposit);
             if ($stmt->execute() === TRUE) {
-                $notify = 1;
+                $status = 1;
             } else {
-                $notify = 2;
+                $status = 2;
             }
-            return $notify;
+            return $status;
         }
 
         function getMaxID($conn){
@@ -313,26 +313,26 @@
         function purchaseSiliqas($conn, $username, $coins)
         {
             $coins = round($coins, 2);
-            $notify = 0;
+            $status = 0;
             $sql = "UPDATE account SET balance = balance + $coins WHERE username = '$username'";
             if ($conn->query($sql) === TRUE) {
-                $notify = 1;
+                $status = 1;
             } else {
-                $notify = 2;
+                $status = 2;
             }  
-            return $notify;
+            return $status;
         }
         function sellSiliqas($conn, $username, $coins)
         {
             $coins = round($coins, 2);
-            $notify = 0;
+            $status = 0;
             $sql = "UPDATE account SET balance = balance - $coins WHERE username = '$username'";
             if ($conn->query($sql) === TRUE) {
-                $notify = 1;
+                $status = 1;
             } else {
-                $notify = 2;
+                $status = 2;
             }  
-            return $notify;
+            return $status;
         }
 
         function editEmail($conn, $user_username, $new_email)

@@ -240,11 +240,11 @@
                         //when users search for them and also on their portfolio tab
                         else if($_SESSION['display'] == 3)
                         {
-                        if($_SESSION['notify'] == 3)
+                        if($_SESSION['status'] == 3)
                                 {
                                     echo "<script>alert('Incorrect Password');</script>";
                                 }
-                                $_SESSION['notify'] = 0;
+                                $_SESSION['status'] = 0;
                                 echo '
                                     <section id="login">
                                     <div class="container">

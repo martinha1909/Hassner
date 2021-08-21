@@ -11,8 +11,8 @@
     if(!empty($username) && !empty($password)){
         if(empty($email))
             $email = "";
-        $_SESSION['notify'] = signup($conn,$username,$password,$account_type, $email);
-        if($_SESSION['notify'] == 1)
+        $_SESSION['status'] = signup($conn,$username,$password,$account_type, $email);
+        if($_SESSION['status'] == 1)
         {
             $_SESSION['dependencies'] = 0;
             header("Location: ../../frontend/credentials/login.php");
@@ -25,7 +25,7 @@
     }
     else
     {
-        $_SESSION['notify'] = 2;
+        $_SESSION['status'] = 2;
         $_SESSION['dependencies'] = 0;
         header("Location: ../../frontend/credentials/signup.php");
     }

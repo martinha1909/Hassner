@@ -3,7 +3,7 @@
     include '../../APIs/shared/MarketplaceBackend.php';
     $_SESSION['conversion_rate'];
     $_SESSION['coins'] = 0;
-    $_SESSION['notify'];
+    $_SESSION['status'];
 ?>
 
 <!doctype html>

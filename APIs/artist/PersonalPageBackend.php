@@ -16,7 +16,6 @@
     }
     else
     {
-        $_SESSION['notify'] = 3;
         header("Location: ../../frontend/artist/PersonalPage.php");
     }
 ?>

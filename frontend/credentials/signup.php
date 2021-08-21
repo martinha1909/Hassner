@@ -1,4 +1,5 @@
 <?php
+  $_SESSION['index'] = 0;
   include '../../APIs/control/Dependencies.php';
   
   $_SESSION['coins'] = 0;
@@ -55,11 +56,11 @@
     </section>
 
     <?php
-    if($_SESSION['notify'] == 1)
+    if($_SESSION['status'] == 1)
     echo "<script>alert('Account created sucessfully');</script>";
-    if($_SESSION['notify'] == 2)
+    if($_SESSION['status'] == 2)
     echo "<script>alert('Failed to create account');</script>";
-    $_SESSION['notify'] = 0;
+    $_SESSION['status'] = 0;
     ?>
 
 <!--signup functionality-->

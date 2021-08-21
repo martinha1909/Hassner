@@ -8,7 +8,6 @@
 
     if(!is_numeric($_SESSION['shares_distributing']) || !is_numeric($_SESSION['deposit']))
     {
-        $_SESSION['notify'] = 1;
         header("Location: ../../frontend/artist/PersonalPage.php");
     }
     else
@@ -17,7 +16,6 @@
         $_SESSION['lower_bound'] = $_SESSION['deposit']/$_SESSION['shares_distributing'];
         if($_SESSION['lower_bound'] < 0.5)
         {
-            $_SESSION['notify'] = 2;
             header("Location: ../../frontend/artist/PersonalPage.php");
         }
 

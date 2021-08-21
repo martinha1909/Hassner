@@ -23,7 +23,7 @@
             saveUserPaymentInfo($conn, $_SESSION['username'], $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number);
             if($_SESSION['account_type'] == "user")
             {
-                $_SESSION['notify'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
+                $_SESSION['status'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
             }
             else if($_SESSION['account_type'] == "artist")
             {
@@ -38,7 +38,7 @@
         }
         else
         {
-            $_SESSION['notify'] = 2; 
+            $_SESSION['status'] = 2; 
         }
     }
     else
@@ -59,7 +59,7 @@
             $_SESSION['coins'] = round($_SESSION['coins'], 2);
             if($_SESSION['account_type'] == "artist")
             {
-                $_SESSION['notify'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
+                $_SESSION['status'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
             }
             else if($_SESSION['account_type'] == "artist")
             {
@@ -73,7 +73,7 @@
         }
         else
         {
-            $_SESSION['notify'] = 2;
+            $_SESSION['status'] = 2;
         }
     }
     $_SESSION['dependencies'] = 0;
