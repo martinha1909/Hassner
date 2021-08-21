@@ -48,7 +48,8 @@
                 $new_pps = $lower_bound['lower_bound'];
             }
 
-            postAskedPrice($conn, $_SESSION['username'], $_SESSION['selected_artist'], $quantity, $asked_price, $new_pps, $_SESSION['current_date']);
+            insertUserArtistSellShareTuple($conn, $_SESSION['username'], $_SESSION['selected_artist'], $quantity, $asked_price);
+            updateArtistPPS($conn, $_SESSION['selected_artist'], $new_pps);
         }
 
         //If the user has already been selling the same share, simply just adjust the quantity to the new requested quantity
@@ -72,8 +73,19 @@
             {
                 $new_pps = $lower_bound['lower_bound'];
             }
-
-            updateAskedPrice($conn, $_SESSION['username'], $_SESSION['selected_artist'], $quantity, $asked_price, $new_pps, $_SESSION['current_time']);
+            $res = searchUserSellingShares($conn, $_SESSION['username']);
+            $counter = 0;
+            while($row = $res->fetch_assoc())
+            {
+                if($row['selling_price'] == $asked_price)
+                {
+                    $quantity += $row['no_of_share'];
+                    adjustExistedAskedPriceQuantity($conn, $_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
+                    updateArtistPPS($conn, $_SESSION['selected_artist'], $new_pps);
+                    $counter = 1;
+                    break;
+                }
+            }
         }
     }
 

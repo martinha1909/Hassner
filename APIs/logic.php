@@ -280,6 +280,12 @@
             $conn->query($sql);
         }
 
+        function updateArtistPPS($conn, $artist_username, $new_pps)
+        {
+            $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username='$artist_username'";
+            $conn->query($sql);
+        }
+
         function updateShareDistributed($conn, $artist_username, $new_share_distributed, $new_pps, $new_lower_bound)
         {
             $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username='$artist_username'";
@@ -443,15 +449,6 @@
             $conn->query($sql);
         }
 
-        function updateAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price, $new_pps)
-        {
-            $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share + $quantity WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$quantity'";
-            $conn->query($sql);
-
-            $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist_username'";
-            $conn->query($sql);
-        }
-
         function updateExistedSellingShare($conn, $user_username, $artist_username, $quantity, $asked_price, $old_asked_price, $old_quantity)
         {
             $sql = "UPDATE user_artist_sell_share SET no_of_share = '$quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$old_asked_price' AND no_of_share = '$old_quantity'";
@@ -461,16 +458,19 @@
             $conn->query($sql);
         }
 
-        function postAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price, $new_pps)
+        function adjustExistedAskedPriceQuantity($conn, $user_username, $artist_username, $asked_price, $new_quantity)
+        {
+            $sql = "UPDATE user_artist_sell_share SET no_of_share = '$new_quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
+            $conn->query($sql);
+        }
+
+        function insertUserArtistSellShareTuple($conn, $user_username, $artist_username, $quantity, $asked_price)
         {
             $sql = "INSERT INTO user_artist_sell_share (user_username, artist_username, selling_price, no_of_share)
                     VALUES(?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdis', $user_username, $artist_username, $asked_price, $quantity);
+            $stmt->bind_param('ssdd', $user_username, $artist_username, $asked_price, $quantity);
             $stmt->execute();
-
-            $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist_username'";
-            $conn->query($sql);
         }
 
         function removeUserArtistSellShareTuple($conn, $user_username, $artist_username, $selling_price, $no_of_share)
