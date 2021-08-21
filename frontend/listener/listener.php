@@ -31,7 +31,7 @@
     <body class="bg-dark">
         <section class="smart-scroll">
             <div class="container-xxl">
-                <nav class="navbar navbar-expand-md navbar-dark bg-orange justify-content-between">
+                <nav class="navbar navbar-expand-md navbar-dark bg-orange">
                     <a id = "href-hover" class="navbar-brand heading-black" href="#" onclick='window.location.reload();'>
                         HASSNER
                     </a>
@@ -40,7 +40,7 @@
                         $account = getAccount($_SESSION['username']);
                         $_SESSION['user_balance'] = $account['balance'];
                     ?>
-                    <div class="wrapper-searchbar">
+                    <div style="float:none;margin:auto;" class="wrapper-searchbar">
                         <div class="container-searchbar">
                             <label>
                                 <span class="screen-reader-text">Search for...</span>

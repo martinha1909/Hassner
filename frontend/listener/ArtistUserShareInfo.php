@@ -53,7 +53,7 @@
             
             <!-- displaying user account info (i.e balance) -->
             <?php
-            echo '<div style="color: #11171a; font-weight: bold; background-color:white; border-left: 4px solid #11171a; border-right: 10px solid white;">';
+            echo '<div class="rounded" style="color: #11171a; font-weight: bold; background-color:white; border-left: 4px solid #11171a; border-right: 4px solid white;">';
             echo "&nbsp;(q̶): ";
             echo round($_SESSION['user_balance'], 2);
             echo '  <br>
@@ -131,7 +131,7 @@
                                             <p>Quantity: <span id="demo"></span></p>
                                             <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
                                             <p>Minimum: '.$lower_bound.'q̶</p>
-                                            <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
+                                            <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post">
                                         </form>
                                     </label> 
                                 </div>
@@ -189,7 +189,7 @@
                                                 <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
                                                 <td>'.$_SESSION['available_shares'].'</td>
                                                 <form action="../../APIs/listener/ToggleBuyMarketPriceBackend.php" method="post">
-                                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"></td>
                                                 </form>
                                         </tr>
                                     </tbody>
@@ -222,7 +222,7 @@
                                                         <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->">
                                                     </form>
                                                     <form action="../../APIs/listener/ToggleBuyMarketPriceBackend.php" method="post">
-                                                        <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                                        <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-"></td>
                                                     </form>
                                                 </td>
                                         </tr>
