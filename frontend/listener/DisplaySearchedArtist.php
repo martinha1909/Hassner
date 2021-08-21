@@ -1,5 +1,8 @@
 <?php
-  session_start();
+    include '../../APIs/control/Dependencies.php';
+
+    $result = getUserBalance($conn, $_SESSION['username']);
+    $balance = $result->fetch_assoc();
 ?>
 
 <!doctype html>
@@ -28,25 +31,18 @@
             <a id="href-hover" class="navbar-brand heading-black" href="listener.php">
                 HASSNER
             </a>
-            <?php
-                        include '../APIs/logic.php';
-                        include '../APIs/connection.php';
-                        $conn = connect();
-                        $result = getUserBalance($conn, $_SESSION['username']);
-                        $balance = $result->fetch_assoc();
-                    ?>
-                    <div class="wrapper-searchbar">
-                            <div class="container-searchbar">
-                                    <label>
-                                        <span class="screen-reader-text">Search for...</span>
-                                        <form class="form-inline" action="../APIs/SearchSongsConnection.php" method="post">
-                                            <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_name" />
-                                        </form>
-                                    </label>
-                                    <!-- <input type="submit" class="search-submit button" value="&#xf002" /> -->
-                                    
-                            </div>
-                        </div>
+            <div class="wrapper-searchbar">
+                <div class="container-searchbar">
+                        <label>
+                            <span class="screen-reader-text">Search for...</span>
+                            <form class="form-inline" action="../APIs/SearchSongsConnection.php" method="post">
+                                <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_name" />
+                            </form>
+                        </label>
+                        <!-- <input type="submit" class="search-submit button" value="&#xf002" /> -->
+                        
+                </div>
+            </div>
             <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse"
                     data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
                     aria-label="Toggle navigation">

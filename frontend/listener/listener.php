@@ -1,5 +1,6 @@
 <?php
     include '../../APIs/control/Dependencies.php';
+    include '../../APIs/listener/ListenerBackend.php';
     
     $_SESSION['conversion_rate'] = -0.05;
     $_SESSION['coins'];
@@ -215,8 +216,7 @@
                         <?php                    
                             //displaying My Portfolio
                             if($_SESSION['display'] == 0 || $_SESSION['display'] == 2)
-                            {
-                                include '../../APIs/listener/MyPortfolioBackend.php';    
+                            {  
                                 echo '
                                     <table class="table">
                                         <thead>
@@ -424,7 +424,6 @@
                                     <tbody>
                                 ';
                                 echo '<form action="../../APIs/artist/ArtistShareInfoBackend.php" method="post">';
-                                include "../../APIs/listener/TopInvestedArtistBackend.php";
                                 $result = query_account('artist');
                                 if($result->num_rows == 0)
                                 {
@@ -434,7 +433,7 @@
                                 {
                                     $all_shares = array();
                                     $users = array();
-                                    populateArray($all_shares, $users, $result);
+                                    topInvestedArtistInit($all_shares, $users, $result);
                                     sortArrays($all_shares, $users);
                                     printTopInvestedArtistChart($users, $all_shares);
                                 }
