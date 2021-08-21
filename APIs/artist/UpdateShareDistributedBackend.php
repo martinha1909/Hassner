@@ -24,7 +24,5 @@
     $_SESSION['edit'] = 0;
     $_SESSION['dependencies'] = 0;
     
-     
-
     header("Location: ../../frontend/artist/PersonalPage.php");
 ?>
