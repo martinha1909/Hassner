@@ -17,11 +17,23 @@
     }
     else
     {
-        if($old_asked_price == $new_asked_price)
+        //If the user adjusts the asked price to the same as another asked price that already existed in the database
+        //just increase the amount of that tuple in the database
+        $res = searchUserSellingShares($conn, $_SESSION['username']);
+        $counter = 0;
+        while($row = $res->fetch_assoc())
         {
-            $new_quantity += $old_quantity;
-            removeUserArtistSellShareTuple($conn, $_SESSION['username'], $artist_name, $old_asked_price, $old_quantity);
-            updateExistedSellingShare($conn, $_SESSION['username'], $artist_name, $new_quantity, $new_asked_price, $old_asked_price, $old_quantity, $_SESSION['current_date']);
+            if($row['selling_price'] == $new_asked_price)
+            {
+                $new_quantity += $row['no_of_share'];
+                $counter = 1;
+                break;
+            }
+        }
+        if($counter == 0)
+        {
+            echo "efonwef";
+            updateExistedSellingShare($conn, $_SESSION['username'], $artist_name, $new_quantity, $new_asked_price, $old_asked_price, $old_quantity);
         }
     }
 

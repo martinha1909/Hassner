@@ -46,10 +46,6 @@
                 array_push($shareholder_shares_sold, $row_2['no_of_share']);
                 array_push($shareholder_names, $row_2['user_username']);
                 array_push($share_holder_selling_price, $row_2['selling_price']);
-
-                $time_remaining = calculateTimeRemaining($_SESSION['current_date'], $row_2['date_posted']);
-                
-                array_push($shareholder_shares_duration, $time_remaining);
             }
         }
          

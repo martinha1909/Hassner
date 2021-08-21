@@ -64,17 +64,6 @@
             return $result;
         }
 
-        function getDatePosted($conn, $user_username, $artist_username, $old_asked_price, $old_quantity)
-        {
-            $sql = "SELECT date_posted FROM user_artist_sell_share WHERE user_username = ? AND artist_username = ? AND selling_price = ? AND no_of_share = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdi', $user_username, $artist_username, $old_asked_price, $old_quantity);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            return $result;
-        }
-
         function searchArtistCurrentPricePerShare($conn, $artist_username)
         {
             $sql = "SELECT price_per_share FROM account WHERE username = ?";
@@ -454,36 +443,30 @@
             $conn->query($sql);
         }
 
-        function updateAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price, $new_pps, $date_posted)
+        function updateAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price, $new_pps)
         {
             $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share + $quantity WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$quantity'";
-            $conn->query($sql);
-
-            $sql = "UPDATE user_artist_sell_share SET date_posted = '$date_posted' WHERE WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$quantity'";
             $conn->query($sql);
 
             $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist_username'";
             $conn->query($sql);
         }
 
-        function updateExistedSellingShare($conn, $user_username, $artist_username, $quantity, $asked_price, $old_asked_price, $old_quantity, $current_time)
+        function updateExistedSellingShare($conn, $user_username, $artist_username, $quantity, $asked_price, $old_asked_price, $old_quantity)
         {
             $sql = "UPDATE user_artist_sell_share SET no_of_share = '$quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$old_asked_price' AND no_of_share = '$old_quantity'";
             $conn->query($sql);
 
             $sql = "UPDATE user_artist_sell_share SET selling_price = '$asked_price' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$old_asked_price' AND no_of_share = '$old_quantity'";
             $conn->query($sql);
-
-            $sql = "UPDATE user_artist_sell_share SET date_posted = '$current_time' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$old_asked_price' AND no_of_share = '$old_quantity'";
-            $conn->query($sql);
         }
 
-        function postAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price, $new_pps, $date_posted)
+        function postAskedPrice($conn, $user_username, $artist_username, $quantity, $asked_price, $new_pps)
         {
-            $sql = "INSERT INTO user_artist_sell_share (user_username, artist_username, selling_price, no_of_share, date_posted)
-                    VALUES(?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO user_artist_sell_share (user_username, artist_username, selling_price, no_of_share)
+                    VALUES(?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdis', $user_username, $artist_username, $asked_price, $quantity, $date_posted);
+            $stmt->bind_param('ssdis', $user_username, $artist_username, $asked_price, $quantity);
             $stmt->execute();
 
             $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist_username'";

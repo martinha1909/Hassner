@@ -1,25 +1,25 @@
 <?php
-  include '../../APIs/control/Dependencies.php';
+    $_SESSION['dependencies'] = 0;
+    include '../../APIs/control/Dependencies.php';
 
-  $_SESSION['coins'] = 0;
-  $_SESSION['notify'] =  0;
-  $_SESSION['display'] = 0;
-  $_SESSION['sort_type'] = 0;
-  $_SESSION['cad'] = 0;
-  $_SESSION['edit'] = 0;
-  $_SESSION['currency'] = 0;
-  $_SESSION['btn_show'] = 0;
-  $_SESSION['saved'] = 0;
-  $_SESSION['top_rating'] = 0;
-  $_SESSION['buy_sell'] = 0;
-  $_SESSION['add'] = 0;
-  $_SESSION['add_share'] = 0;
-  $_SESSION['buy_asked_price'] = 0;
-  $_SESSION['buy_market_price'] = 0;
-  $_SESSION['artist_share_remove'] = 0;
-  $_SESSION['share_price_remove'] = 0;
-  $_SESSION['dependencies'] = 0;
-  $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
+    $_SESSION['coins'] = 0;
+    $_SESSION['notify'] =  0;
+    $_SESSION['display'] = 0;
+    $_SESSION['sort_type'] = 0;
+    $_SESSION['cad'] = 0;
+    $_SESSION['edit'] = 0;
+    $_SESSION['currency'] = 0;
+    $_SESSION['btn_show'] = 0;
+    $_SESSION['saved'] = 0;
+    $_SESSION['top_rating'] = 0;
+    $_SESSION['buy_sell'] = 0;
+    $_SESSION['add'] = 0;
+    $_SESSION['add_share'] = 0;
+    $_SESSION['buy_asked_price'] = 0;
+    $_SESSION['buy_market_price'] = 0;
+    $_SESSION['artist_share_remove'] = 0;
+    $_SESSION['share_price_remove'] = 0;
+    $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
 ?>
 
 <!doctype html>
