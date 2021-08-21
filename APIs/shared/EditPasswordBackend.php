@@ -1,6 +1,6 @@
   
 <?php
-    $_SESSION['dependencies'] = 1;
+    $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
     
     if($_SESSION['edit'] == 1)
@@ -12,7 +12,7 @@
         $_SESSION['edit'] = 1;
     }
 
-    $_SESSION['dependencies'] = 0;
+    $_SESSION['dependencies'] = "FRONTEND";
     
     if($_SESSION['account_type'] == "user")
     {

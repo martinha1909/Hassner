@@ -1,5 +1,5 @@
 <?php
-    $_SESSION['dependencies'] = 1;
+    $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';   
 
     $conn = connect();
@@ -14,19 +14,19 @@
         $_SESSION['status'] = signup($conn,$username,$password,$account_type, $email);
         if($_SESSION['status'] == 1)
         {
-            $_SESSION['dependencies'] = 0;
+            $_SESSION['dependencies'] = "FRONTEND";
             header("Location: ../../frontend/credentials/login.php");
         }
         else
         {
-            $_SESSION['dependencies'] = 0;
+            $_SESSION['dependencies'] = "FRONTEND";
             header("Location: ../../frontend/credentials/signup.php");
         }
     }
     else
     {
         $_SESSION['status'] = 2;
-        $_SESSION['dependencies'] = 0;
+        $_SESSION['dependencies'] = "FRONTEND";
         header("Location: ../../frontend/credentials/signup.php");
     }
 

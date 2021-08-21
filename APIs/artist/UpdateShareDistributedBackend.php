@@ -1,5 +1,5 @@
 <?php
-    $_SESSION['dependencies'] = 1;
+    $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
 
     $conn = connect();
@@ -22,7 +22,7 @@
     updateShareDistributed($conn, $_SESSION['username'], $new_shares_distributed, $new_pps, $new_lower_bound);
 
     $_SESSION['edit'] = 0;
-    $_SESSION['dependencies'] = 0;
+    $_SESSION['dependencies'] = "FRONTEND";
     
     header("Location: ../../frontend/artist/PersonalPage.php");
 ?>

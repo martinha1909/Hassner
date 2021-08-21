@@ -1,5 +1,5 @@
 <?php
-    $_SESSION['dependencies'] = 1;
+    $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php'; 
 
     $conn = connect();
@@ -15,7 +15,7 @@
         $_SESSION['username'] = $row['username'];
         $_SESSION['password'] = $row['password'];
         $_SESSION['id'] = $row['id'];
-        $_SESSION['dependencies'] = 0;
+        $_SESSION['dependencies'] = "FRONTEND";
         if($row['account_type'] == "user"){
             header("Location: ../../frontend/listener/Listener.php");
             die;
@@ -31,7 +31,7 @@
     }
     else
     {
-        $_SESSION['dependencies'] = 0;
+        $_SESSION['dependencies'] = "FRONTEND";
         header("Location: ../../frontend/credentials/login.php");
     }
 
