@@ -22,8 +22,12 @@ Coding Standards
 
     2.4 conditional statements require a space (i.e x < 4)
 
-3. File names:
+3. Files:
 
     3.1 Backend files has to end with "<filename>Backend.php" (i.e LoginBackend.php)
     
     3.2 File name has to have first word uppercase format (i.e SignupBackend.php)
+
+    3.3 No SQL queries should be happening in the frontend files. 
+
+    3.4 Backend files should be used as the intermediary between frontend and the database
