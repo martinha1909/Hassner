@@ -339,12 +339,13 @@
                                 echo '</tbody>
                                     </table>';
                                 $artist_usernames = array();
-                                //profit relative to the current price per share of the artist
-                                $profits = array();
+                                $roi = array();
                                 $selling_prices = array();
                                 $share_amounts = array();
+                                $profits = array();
+
                                 //update the sahres that the user is currently selling
-                                fetchUserSellingShares($_SESSION['username'], $artist_usernames, $profits, $selling_prices, $share_amounts);
+                                fetchUserSellingShares($_SESSION['username'], $artist_usernames, $roi, $selling_prices, $share_amounts, $profits);
                                 echo'    
                                     <h3>Your active shares</h3>
                                     <table class="table">
@@ -353,7 +354,8 @@
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Artist</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Selling for (q̶)</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Gain/Loss Unrealized</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Return on investment</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Profit/Loss (q̶)</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col"></th>
                                             </tr>
                                         </thead>
@@ -365,7 +367,9 @@
                                                 <th scope="row">'.$artist_usernames[$i].'</th>
                                                     <td>'.$selling_prices[$i].'</td>
                                                     <td>'.$share_amounts[$i].'</td>
-                                                    <td>'.$profits[$i].'%</td>';
+                                                    <td>'.$roi[$i].'%</td>
+                                                    <td>'.$profits[$i].'</td>
+                                    ';
                                     //Edits sold shares where the suer can fix the bid price and the quantity
                                     //If the user chooses the new quantity to be 0, the current selling share would be removed from the market 
                                     //and other users can't buy the current share anymore. 

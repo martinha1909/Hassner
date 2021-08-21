@@ -155,7 +155,7 @@
 
     //retrieves from the database all the rows that contains all selling shares accrossed all artists of $user_username
     //If notices a row that has quantity of 0, simply just removes it from the database
-    function fetchUserSellingShares($user_username, &$artist_usernames, &$profits, &$selling_prices, &$share_amounts)
+    function fetchUserSellingShares($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits)
     {
         $conn = connect();
         $result = searchUserSellingShares($conn, $user_username);
@@ -169,14 +169,17 @@
             {
                 $result_2 = searchArtistCurrentPricePerShare($conn, $row['artist_username']);
                 $pps = $result_2->fetch_assoc();
-                $profit = (($row['selling_price'] - $pps['price_per_share'])/($pps['price_per_share']))*100;
+                $_roi = (($row['selling_price'] - $pps['price_per_share'])/($pps['price_per_share']))*100;
+                $profit = $row['selling_price'] - $pps['price_per_share'];
                 array_push($artist_usernames, $row['artist_username']);
-                array_push($profits, round($profit, 2));
+                array_push($roi, round($_roi, 2));
                 array_push($selling_prices, $row['selling_price']);
                 array_push($share_amounts, $row['no_of_share']);
+                array_push($profits, $profit);
             }
         }
-        insertionSort($selling_prices, $artist_usernames, $profits, $share_amounts, "Descending");
+        insertionSort($selling_prices, $artist_usernames, $roi, $share_amounts, "Descending");
+        singleSort($profits);
     }
 
     //gets the total amount of share that the user holds corresponds to the $artist_username
@@ -226,6 +229,27 @@
             $all_shares[($j+1)] = $key;
             $users[($j+1)] = $key2;
         }        
+    }
+
+    function singleSort(&$arr)
+    {
+        for ($i = 1; $i < sizeof($arr); $i++)
+        {
+            $key = $arr[$i];
+            $j = $i-1;
+        
+            // Move elements of arr[0..i-1],
+            // that are    greater than key, to
+            // one position ahead of their
+            // current position
+            while ($j >= 0 && $arr[$j] > $key)
+            {
+                $arr[$j + 1] = $arr[$j];
+                $j = $j - 1;
+            }
+            
+            $arr[$j + 1] = $key;
+        }
     }
 
     function getArtistPricePerShare($artist_username)
