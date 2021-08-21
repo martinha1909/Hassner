@@ -1,5 +1,5 @@
 <?php
-    $_SESSION['dependencies'] = 1;
+    $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
 
     $conn = connect();
@@ -42,7 +42,7 @@
                                      $buyer_new_share_amount, $_SESSION['shares_owned'], $amount_bought);
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;
-            $_SESSION['dependencies'] = 0;
+            $_SESSION['dependencies'] = "FRONTEND";
              
             header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
         }
@@ -107,7 +107,7 @@
             }
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;
-            $_SESSION['dependencies'] = 0;
+            $_SESSION['dependencies'] = "FRONTEND";
              
             if($_SESSION['account_type'] == "user")
             {

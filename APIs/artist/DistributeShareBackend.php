@@ -1,5 +1,5 @@
 <?php
-    $_SESSION['dependencies'] = 1;
+    $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
 
     $conn = connect();
@@ -21,7 +21,7 @@
 
         $_SESSION['initial_pps'] = $_SESSION['lower_bound'];
 
-        $_SESSION['dependencies'] = 0;
+        $_SESSION['dependencies'] = "FRONTEND";
 
          
 

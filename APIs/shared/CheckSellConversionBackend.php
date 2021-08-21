@@ -1,5 +1,5 @@
 <?php
-    $_SESSION['dependencies'] = 1;
+    $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
     //same as CheckConversionBackend.php but the multiplicative values are inversed
     $_SESSION['siliqas'] = $_POST['currency'];
@@ -14,7 +14,7 @@
         
     }
 
-    $_SESSION['dependencies'] = 0;
+    $_SESSION['dependencies'] = "FRONTEND";
 
     returnToMainPage();
 ?>

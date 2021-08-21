@@ -1,7 +1,7 @@
 <?php
     function hassnerInit()
     {   
-        $_SESSION['dependencies'] = 0;
+        $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['coins'] = 0;
         $_SESSION['status'] =  0;
         $_SESSION['display'] = 0;

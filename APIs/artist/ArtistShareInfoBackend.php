@@ -1,5 +1,5 @@
 <?php
-    $_SESSION['dependencies'] = 1;
+    $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
 
     $conn = connect();
@@ -8,7 +8,7 @@
 
      
     
-    $_SESSION['dependencies'] = 0;
+    $_SESSION['dependencies'] = "FRONTEND";
 
     header("Location: ../../frontend/listener/ArtistUserShareInfo.php")
 ?>

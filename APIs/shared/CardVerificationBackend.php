@@ -1,5 +1,5 @@
 <?php
-    $_SESSION['dependencies'] = 1;
+    $_SESSION['dependencies'] = "BACKEND";
     include '../control/dependencies.php';
 
     $conn = connect();
@@ -76,7 +76,7 @@
             $_SESSION['status'] = 2;
         }
     }
-    $_SESSION['dependencies'] = 0;
+    $_SESSION['dependencies'] = "FRONTEND";
      
     returnToMainPage();
     

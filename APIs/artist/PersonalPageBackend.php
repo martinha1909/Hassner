@@ -1,12 +1,12 @@
 <?php
-    $_SESSION['dependencies'] = 1;
+    $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
 
     $conn = connect();
     $pwd = $_POST['verify_password'];
     $result = login($conn, $_SESSION['username'], $pwd);
 
-    $_SESSION['dependencies'] = 0;
+    $_SESSION['dependencies'] = "FRONTEND";
 
      
     
