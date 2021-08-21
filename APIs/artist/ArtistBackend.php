@@ -31,25 +31,26 @@
         return $market_cap;
     }
 
-    function artistShareHoldersDurationInit($artist_username, &$shareholder_names, &$shareholder_shares_bought, &$shareholder_shares_sold, &$shareholder_shares_duration)
+    function artistShareHoldersDurationInit($artist_username, &$shareholder_names, &$share_holder_selling_price, &$shareholder_shares_sold, &$shareholder_shares_duration)
     {
+        $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
+
         $conn = connect();
 
         $res_1 = getArtistShareHoldersInfo($conn, $artist_username);
         while($row = $res_1->fetch_assoc())
         {
             $res_2 = getSpecificAskedPrice($conn, $row['user_username'], $_SESSION['username']);
-            $amount = 0;
             while($row_2 = $res_2->fetch_assoc())
             {
-                $amount += $row_2['no_of_share'];
-            }
+                array_push($shareholder_shares_sold, $row_2['no_of_share']);
+                array_push($shareholder_names, $row_2['user_username']);
+                array_push($share_holder_selling_price, $row_2['selling_price']);
 
-            array_push($shareholder_shares_sold, $amount);
-            array_push($shareholder_names, $row['user_username']);
-            array_push($shareholder_shares_bought, $row['no_of_share_bought']);
-            //Just putting a temporary value until figure out how to track real time in PHP
-            array_push($shareholder_shares_duration, 1);
+                $time_remaining = calculateTimeRemaining($_SESSION['current_date'], $row_2['date_posted']);
+                
+                array_push($shareholder_shares_duration, $time_remaining);
+            }
         }
          
     }

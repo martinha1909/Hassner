@@ -10,13 +10,19 @@
     $artist_name = key($_POST['artist_name']);
     $old_asked_price = key($_POST['old_asked_price']);
     $old_quantity = key($_POST['old_quantity']);
+
     if($new_quantity == 0)
     {
         removeUserArtistSellShareTuple($conn, $_SESSION['username'], $artist_name, $old_asked_price, $old_quantity);
     }
     else
     {
-        updateExistedSellingShare($conn, $_SESSION['username'], $artist_name, $new_quantity, $new_asked_price, $_SESSION['current_date']);
+        if($old_asked_price == $new_asked_price)
+        {
+            $new_quantity += $old_quantity;
+            removeUserArtistSellShareTuple($conn, $_SESSION['username'], $artist_name, $old_asked_price, $old_quantity);
+            updateExistedSellingShare($conn, $_SESSION['username'], $artist_name, $new_quantity, $new_asked_price, $old_asked_price, $old_quantity, $_SESSION['current_date']);
+        }
     }
 
     $_SESSION['artist_share_remove'] = 0;
@@ -25,5 +31,5 @@
 
      
     
-    header("Location: ../../frontend/listener/listener.php");
+    // header("Location: ../../frontend/listener/listener.php");
 ?>

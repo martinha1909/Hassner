@@ -229,46 +229,6 @@
                                 ';
 
                                 askedPriceInit();
-
-                                echo '
-                                        <br>
-                                        <h2>Your Shareholders</h2>
-                                ';
-                                $shareholder_names = array();
-                                $shareholder_shares_bought = array();
-                                $shareholder_shares_sold = array();
-                                $shareholder_shares_duration = array();
-                                artistShareHoldersDurationInit($_SESSION['username'], $shareholder_names, $shareholder_shares_bought, $shareholder_shares_sold, $shareholder_shares_duration);
-                                echo '
-                                        <table class="table">
-                                            <thead class="thead-orange">
-                                                <tr>
-                                                    <th scope="col" class="bg-dark">#</th>
-                                                    <th scope="col" class="bg-dark">Name</th>
-                                                    <th scope="col" class="bg-dark">Amount bought</th>
-                                                    <th scope="col" class="bg-dark">Amount selling</th>
-                                                    <th scope="col" class="bg-dark">Longest Duration</th>
-                                                    <th scope="col" class="bg-dark"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                ';
-                                for($i=0; $i<sizeof($shareholder_names); $i++)
-                                {
-                                    $index = $i+1;
-                                    echo'           
-                                                    <tr>
-                                                        <th scope="row">'.$index.'</th>
-                                                        <td style="color: white">'.$shareholder_names[$i].'</td>
-                                                        <td style="color: white">'.$shareholder_shares_bought[$i].'</td>
-                                                        <td>'.$shareholder_shares_sold[$i].'</td>
-                                                        <td>'.$shareholder_shares_duration[$i].'</td>
-                                                        <form action="#" method="post">
-                                                            <td><input name="buy_back_share" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
-                                                        </form>
-                                                    </tr>
-                                    ';
-                                }
                                 echo '
                                             </tbody>
                                         </table>
