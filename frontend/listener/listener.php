@@ -222,7 +222,7 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="color: white;" class="bg-dark">#</th>
-                                                <form action="../../APIs/control/SortPortfolioArtistBackEnd.php">
+                                                <form action="../../APIs/listener/SortPortfolioArtistBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
                                 ';
                                 //sort Artist ascending alphabetically
@@ -240,7 +240,7 @@
                                 echo '
                                                 </th>
                                                 </form>
-                                                <form action="../../APIs/control/SortPortfolioShareBackEnd.php">
+                                                <form action="../../APIs/listener/SortPortfolioShareBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
                                 //sort Shares bought ascending alphabetically
                                 if($_SESSION['sort_type'] == 2)
@@ -253,7 +253,7 @@
                                 echo '
                                                 </th>
                                                 </form>
-                                                <form action = "../../APIs/control/SortPortfolioPPSBackEnd.php">
+                                                <form action = "../../APIs/listener/SortPortfolioPPSBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
                                 //sort Price per share ascending alphabetically
                                 if($_SESSION['sort_type'] == 3)
@@ -267,7 +267,7 @@
                                 echo '
                                                 </th>
                                                 </form>
-                                                <form action = "../../APIs/control/SortPortfolioRateBackEnd.php">
+                                                <form action = "../../APIs/listener/SortPortfolioRateBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Rate" onclick="window.location.reload();">';
                                 //sort Rate ascending alphabetically
                                 if($_SESSION['sort_type'] == 0)
