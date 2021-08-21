@@ -1,8 +1,5 @@
 <?php
-    if($_SESSION['index'] == 0)
-    {
-        session_start();
-    }
+    session_start();
     if($_SESSION['dependencies'] == 0)
     {
         include '../../APIs/control/logic.php';
