@@ -4,7 +4,7 @@
     
     $_SESSION['conversion_rate'] = -0.05;
     $_SESSION['coins'];
-    $_SESSION['notify'];
+    $_SESSION['status'];
     $_SESSION['cad'];
     $_SESSION['btn_show'];
 ?>
@@ -446,12 +446,12 @@
                             {
                                 $balance = getUserBalance($_SESSION['username']);
 
-                                //notify
-                                if($_SESSION['notify'] == 1)
+                                //status
+                                if($_SESSION['status'] == 1)
                                     echo "<script>alert('Siliqas bought successfully');</script>";
-                                if($_SESSION['notify'] == 2)
+                                if($_SESSION['status'] == 2)
                                     echo "<script>alert('Please fill out all forms');</script>";
-                                $_SESSION['notify'] = 0;
+                                $_SESSION['status'] = 0;
 
                                 echo '
                                     <section id="login" class="py-5";>
@@ -567,11 +567,11 @@
                             //Account page functionality
                             else if($_SESSION['display'] == 5)
                             {
-                                if($_SESSION['notify'] == 3)
+                                if($_SESSION['status'] == 3)
                                 {
                                     echo "<script>alert('Incorrect Password');</script>";
                                 }
-                                $_SESSION['notify'] = 0;
+                                $_SESSION['status'] = 0;
                                 echo '
                                     <section id="login">
                                     <div class="container">

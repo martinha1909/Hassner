@@ -27,11 +27,11 @@
       if($account_info['Share_Distributed'] == 0)
       {
           $status = "";
-          if($_SESSION['notify'] == 1)
+          if($_SESSION['status'] == 1)
           {
             $status = "Please enter in number format";
           }
-          else if($_SESSION['notify'] == 2)
+          else if($_SESSION['status'] == 2)
           {
             $status = "Your price per share cannot be below 0.5q̶/share";
           }
@@ -56,11 +56,11 @@
                     <h5>How many shares are you distributing?</h5>
                     <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
                   </div>';
-          if($_SESSION['notify'] == 1)
+          if($_SESSION['status'] == 1)
           {
             echo '<h6 style="color: red;">'.$status.'</h6>';
           }
-          else if($_SESSION['notify'] == 2)
+          else if($_SESSION['status'] == 2)
           {
             echo '
                   <h6 style="color: red;">'.$status.'</h6>
@@ -76,7 +76,7 @@
 
                 </form>
               ';
-          $_SESSION['notify'] = 0;
+          $_SESSION['status'] = 0;
       }
       else
       {

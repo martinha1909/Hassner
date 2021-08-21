@@ -14,7 +14,7 @@
     }
     else
     {
-        $_SESSION['notify'] = 3;
+        $_SESSION['status'] = 3;
         $_SESSION['dependencies'] = 0;
         header("Location: ../../frontend/listener/listener.php");
     }

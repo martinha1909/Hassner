@@ -17,11 +17,11 @@
   $conn = connect();
   $result = searchAccount($conn, $_SESSION['username']);
   $account_info = $result->fetch_assoc();
-  if($_SESSION['notify'] == 1)
+  if($_SESSION['status'] == 1)
     echo "<script>alert('Siliqas Sold Successfully');</script>";
-  if($_SESSION['notify'] == 2)
+  if($_SESSION['status'] == 2)
     echo "<script>alert('Please fill out all forms');</script>";
-  $_SESSION['notify'] = 0;
+  $_SESSION['status'] = 0;
 ?>
 <body class="bg-dark">
     <header class="smart-scroll">

@@ -1,9 +1,11 @@
 <?php
+    session_start();
+    $_SESSION['index'] = 1;
     $_SESSION['dependencies'] = 0;
     include '../../APIs/control/Dependencies.php';
 
     $_SESSION['coins'] = 0;
-    $_SESSION['notify'] =  0;
+    $_SESSION['status'] =  0;
     $_SESSION['display'] = 0;
     $_SESSION['sort_type'] = 0;
     $_SESSION['cad'] = 0;

@@ -14,7 +14,7 @@
         {
             $_SESSION['coins'] = round($_SESSION['coins'], 2);
             saveUseraccountInfo($conn, $_SESSION['username'], $transit_no, $inst_no, $account_no, $swift);
-            $_SESSION['notify'] = sellSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
+            $_SESSION['status'] = sellSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
             $_SESSION['btn_show'] = 0;
             $_SESSION['cad'] = 0;
             $_SESSION['coins'] = 0;
@@ -24,7 +24,7 @@
         }
         else
         {
-            $_SESSION['notify'] = 2; 
+            $_SESSION['status'] = 2; 
         }
     }
     else
@@ -32,7 +32,7 @@
         if(!empty($transit_no) && !empty($inst_no) && !empty($account_no) && !empty($swift))
         {
             $_SESSION['coins'] = round($_SESSION['coins'], 2);
-            $_SESSION['notify'] = sellSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
+            $_SESSION['status'] = sellSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
             $_SESSION['cad'] = 0;
             $_SESSION['coins'] = 0;
             $_SESSION['siliqas'] = 0;
@@ -41,7 +41,7 @@
         }
         else
         {
-            $_SESSION['notify'] = 2;
+            $_SESSION['status'] = 2;
         }
     }
     $_SESSION['saved'] = 0;
