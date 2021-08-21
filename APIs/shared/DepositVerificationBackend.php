@@ -47,8 +47,5 @@
     $_SESSION['saved'] = 0;
     $_SESSION['dependencies'] = "FRONTEND";
 
-     
-    
     returnToMainPage();
-    
 ?>
