@@ -368,20 +368,61 @@
 
         function purchaseMarketPriceShare($conn, $buyer, $artist, $buyer_new_balance, $artist_new_balance, $inital_pps, $new_pps, $buyer_new_share_amount, $shares_owned, $amount)
         {
+            $status = 0;
             $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET Shares = Shares + '$amount' WHERE username = '$artist'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$buyer'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET balance = '$artist_new_balance' WHERE username = '$artist'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             if($shares_owned == 0)
             {
@@ -389,29 +430,88 @@
                     VALUES(?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $inital_pps);
-                $stmt->execute();
+                if($stmt->execute() == TRUE)
+                {
+                    $status = "SUCCESS";
+                }
+                else
+                {
+                    $status = "ERROR";
+                    return $status;
+                }
             }
 
             $sql = "UPDATE user_artist_share SET no_of_share_bought = '$buyer_new_share_amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
+
+            return $status;
         }
 
         function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount)
         {
+            $status = 0;
             $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = '$seller'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$buyer'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET balance = '$seller_new_balance' WHERE username = '$seller'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             if($shares_owned == 0)
             {
@@ -419,44 +519,142 @@
                     VALUES(?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $initial_pps);
-                $stmt->execute();
+                if($stmt->execute() == TRUE)
+                {
+                    $status = "SUCCESS";
+                }
+                else
+                {
+                    $status = "ERROR";
+                    return $status;
+                }
             }
 
             $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought + '$amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought - '$amount' WHERE user_username = '$seller' AND artist_username = '$artist'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share - $amount WHERE user_username = '$seller' AND artist_username = '$artist'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
+
+            return $status;
         }
 
         function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $new_share_distributed, $new_artist_shares_bought, $new_pps, $amount_bought)
         {
             $sql = "UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET balance = '$seller_new_balance' WHERE username = '$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = '$seller_username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username = '$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET Shares = '$new_artist_shares_bought' WHERE username = '$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought - '$amount_bought' WHERE user_username = '$seller_username' AND artist_username = '$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
 
             $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share - '$amount_bought' WHERE user_username = '$seller_username' AND artist_username = '$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }   
+            else
+            {
+                $status = "ERROR";
+                return $status;
+            }
         }
 
         function updateExistedSellingShare($conn, $user_username, $artist_username, $quantity, $asked_price, $old_asked_price, $old_quantity)
@@ -470,17 +668,35 @@
 
         function adjustExistedAskedPriceQuantity($conn, $user_username, $artist_username, $asked_price, $new_quantity)
         {
+            $status = 0;
             $sql = "UPDATE user_artist_sell_share SET no_of_share = '$new_quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                $status = "ERROR";
+            }
+            return $status;
         }
 
         function insertUserArtistSellShareTuple($conn, $user_username, $artist_username, $quantity, $asked_price)
         {
+            $status = 0;
             $sql = "INSERT INTO user_artist_sell_share (user_username, artist_username, selling_price, no_of_share)
                     VALUES(?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ssdd', $user_username, $artist_username, $asked_price, $quantity);
-            $stmt->execute();
+            if($stmt->execute() == TRUE)
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                $status = "ERROR";
+            }
+            return $status;
         }
 
         function removeUserArtistSellShareTuple($conn, $user_username, $artist_username, $selling_price, $no_of_share)

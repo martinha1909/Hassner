@@ -208,4 +208,25 @@
             ';
         }
     }
+
+    function canCreateSellOrder($user_username, $artist_username)
+    {
+        $conn = connect();
+
+        $res = searchSpecificInvestment($conn, $user_username, $artist_username);
+        $total_share_bought = $res->fetch_assoc();
+
+        $res = getSpecificAskedPrice($conn, $user_username, $artist_username);
+        $share_being_sold = 0;
+        while($row = $res->fetch_assoc())
+        {
+            $share_being_sold += $row['no_of_share'];
+        }
+        if($share_being_sold < $total_share_bought['no_of_share_bought'])
+        {
+            return true;
+        }
+
+        return false;
+    }
 ?>

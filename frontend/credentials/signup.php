@@ -107,10 +107,6 @@
                 }
               ?>
 
-              <div class="form-group">
-                <p style="color: red;"><?php echo $status; ?></p>
-              </div>
-
               <!-- account type -->
               <h6 style = "color: orange;">Account Type</h6>
               <div>

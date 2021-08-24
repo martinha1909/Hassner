@@ -29,9 +29,10 @@
         }
         else if($_SESSION['status'] == "SUCCESS")
         {
-            echo '<p style="color: green;">'.$err_msg.'</p>';
+            echo '<p style="color: green;">'.$suc_msg.'</p>';
         }
         $_SESSION['status'] = 0;
+        $_SESSION['logging_mode'] = 0;
     }
 
     function getAccount($username)

@@ -73,7 +73,7 @@
               </div>
 
               <div class="form-group">
-                <p style="color: red;"><?php echo getStatusMessage("Your credentials do not match", "Account created successfully"); ?></p>
+                <p style="color: red;"><?php getStatusMessage("Your credentials do not match", "Account created successfully"); ?></p>
               </div>
 
 
