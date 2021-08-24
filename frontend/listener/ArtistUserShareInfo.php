@@ -96,7 +96,7 @@
                     <thead>
                         <tr>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Owned Shares</th>
-                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Shares in sell order</th>
+                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Shares selling</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Artist</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Current price per share (q̶)</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Selling profit per share (q̶)</th>
