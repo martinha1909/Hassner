@@ -38,14 +38,6 @@
       </div>
     </section>
 
-    <?php
-    if($_SESSION['status'] == 1)
-    echo "<script>alert('Account created sucessfully');</script>";
-    if($_SESSION['status'] == 2)
-    echo "<script>alert('Failed to create account');</script>";
-    $_SESSION['status'] = 0;
-    ?>
-
 <!--signup functionality-->
     <section class="py-7 py-md-0 bg-dark" id="login">
       <div class="container">
@@ -89,6 +81,34 @@
               <div class="form-group">
                 <h5>Password</h5>
                 <input type="password" name = "password" class="form-control" style="border-color: white;" id="exampleInputPassword1" placeholder="Password">
+              </div>
+
+              <?php
+                $status = "";
+                if($_SESSION['status'] == "USERNAME_ERR")
+                {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Username already taken", "");
+                }
+                else if($_SESSION['status'] == "SERVER_ERR")
+                {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Server error, cannot create account", "");
+                }
+                else if($_SESSION['status'] == "EMPTY_ERR")
+                {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Please fill out all fields", "");
+                }
+                else if($_SESSION['status'] == "EMAIL_ERR")
+                {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Email already taken", "");
+                }
+              ?>
+
+              <div class="form-group">
+                <p style="color: red;"><?php echo $status; ?></p>
               </div>
 
               <!-- account type -->

@@ -21,6 +21,16 @@
             return $result;
         }
 
+        function searchEmail($conn, $email)
+        {
+            $sql = "SELECT username FROM account WHERE email = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result;
+        }
+
         function searchAccountType($conn, $type)
         {
             $sql = "SELECT * FROM account WHERE account_type = ?";
@@ -251,9 +261,9 @@
                                                            $swift, $price_per_share, $monthly_shareholder, 
                                                            $income, $market_cap, $lower_bound, $deposit);
             if ($stmt->execute() === TRUE) {
-                $status = 1;
+                $status = "SUCCESS";
             } else {
-                $status = 2;
+                $status = "ERROR";
             }
             return $status;
         }
@@ -316,9 +326,9 @@
             $status = 0;
             $sql = "UPDATE account SET balance = balance + $coins WHERE username = '$username'";
             if ($conn->query($sql) === TRUE) {
-                $status = 1;
+                $status = "SUCCESS";
             } else {
-                $status = 2;
+                $status = "ERROR";
             }  
             return $status;
         }
@@ -328,9 +338,9 @@
             $status = 0;
             $sql = "UPDATE account SET balance = balance - $coins WHERE username = '$username'";
             if ($conn->query($sql) === TRUE) {
-                $status = 1;
+                $status = "SUCCESS";
             } else {
-                $status = 2;
+                $status = "ERROR";
             }  
             return $status;
         }

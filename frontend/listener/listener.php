@@ -447,7 +447,7 @@
                                 $balance = getUserBalance($_SESSION['username']);
 
                                 //status
-                                if($_SESSION['status'] == 1)
+                                if($_SESSION['status'] == "SUCCESS")
                                     echo "<script>alert('Siliqas bought successfully');</script>";
                                 if($_SESSION['status'] == 2)
                                     echo "<script>alert('Please fill out all forms');</script>";

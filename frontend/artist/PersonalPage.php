@@ -26,15 +26,6 @@
       $account_info = getAccount($_SESSION['username']);
       if($account_info['Share_Distributed'] == 0)
       {
-          $status = "";
-          if($_SESSION['status'] == 1)
-          {
-            $status = "Please enter in number format";
-          }
-          else if($_SESSION['status'] == 2)
-          {
-            $status = "Your price per share cannot be below 0.5q̶/share";
-          }
           echo '
                 <form action="../../APIs/artist/DistributeShareBackend.php" method="post">
 
@@ -56,17 +47,6 @@
                     <h5>How many shares are you distributing?</h5>
                     <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
                   </div>';
-          if($_SESSION['status'] == 1)
-          {
-            echo '<h6 style="color: red;">'.$status.'</h6>';
-          }
-          else if($_SESSION['status'] == 2)
-          {
-            echo '
-                  <h6 style="color: red;">'.$status.'</h6>
-                  <h6 style="color: red;">Current price per share: '.$_SESSION['lower_bound'].'q̶</h6>
-            ';
-          }
 
           echo '
 
@@ -76,7 +56,6 @@
 
                 </form>
               ';
-          $_SESSION['status'] = 0;
       }
       else
       {

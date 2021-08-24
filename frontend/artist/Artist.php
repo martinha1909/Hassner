@@ -240,31 +240,26 @@
                         //when users search for them and also on their portfolio tab
                         else if($_SESSION['display'] == 3)
                         {
-                        if($_SESSION['status'] == 3)
-                                {
-                                    echo "<script>alert('Incorrect Password');</script>";
-                                }
-                                $_SESSION['status'] = 0;
-                                echo '
-                                    <section id="login">
-                                    <div class="container">
-                                        <div">
-                                            <div class="col-12 mx-auto my-auto text-center">
-                                                <h3 style="color: orange;padding-top:150px;">Verify your password to access personal page</h3>
-                                                <form action="../../APIs/artist/PersonalPageBackend.php" method="post">
-                                                    <div class="form-group">
-                                                        <h5>Password</h5>
-                                                        <input name = "verify_password" type="password" style="border-color: white;" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
-                                                    </div>
-                                                    <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                                        <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
-                                                    </div>
-                                                </form>
+                            echo '
+                                <section id="login">
+                                <div class="container">
+                                    <div">
+                                        <div class="col-12 mx-auto my-auto text-center">
+                                            <h3 style="color: orange;padding-top:150px;">Verify your password to access personal page</h3>
+                                            <form action="../../APIs/artist/PersonalPageBackend.php" method="post">
+                                                <div class="form-group">
+                                                    <h5>Password</h5>
+                                                    <input name = "verify_password" type="password" style="border-color: white;" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
                                                 </div>
+                                                <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                    <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
+                                                </div>
+                                            </form>
                                             </div>
                                         </div>
-                                    </section>
-                                ';
+                                    </div>
+                                </section>
+                            ';
                         }
 
                         //Sell siliqas to USD/CAD/EURO

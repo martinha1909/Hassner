@@ -3,7 +3,6 @@
     {   
         $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['coins'] = 0;
-        $_SESSION['status'] =  0;
         $_SESSION['display'] = 0;
         $_SESSION['sort_type'] = 0;
         $_SESSION['cad'] = 0;
@@ -21,6 +20,20 @@
         $_SESSION['share_price_remove'] = 0;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
     }
+
+    function getStatusMessage($err_msg, $suc_msg)
+    {
+        if($_SESSION['status'] == "ERROR")
+        {
+            echo '<p style="color: red;">'.$err_msg.'</p>';
+        }
+        else if($_SESSION['status'] == "SUCCESS")
+        {
+            echo '<p style="color: green;">'.$err_msg.'</p>';
+        }
+        $_SESSION['status'] = 0;
+    }
+
     function getAccount($username)
     {
         $conn = connect();
