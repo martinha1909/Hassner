@@ -96,6 +96,7 @@
                     <thead>
                         <tr>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Owned Shares</th>
+                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Shares in sell order</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Artist</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Current price per share (q̶)</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Selling profit per share (q̶)</th>
@@ -107,12 +108,12 @@
                             <!-- displaying Amount of shares owned, selected artist name, 
                                 market price per share of artist, profit since last bought, 
                                 and amount of available shares for purchase, respectively -->
-                            <th scope="row"><?php 
-                                echo $_SESSION['shares_owned']; ?></th>
-                                <td><?php echo $_SESSION['selected_artist']; ?></td>
-                                <td><?php echo round($_SESSION['current_pps']['price_per_share'],2); ?></td>
-                                <td><?php echo $_SESSION['profit']; ?> (<?php echo $_SESSION['profit_rate']; ?>%)</td>
-                                <td><?php echo $_SESSION['available_shares']; ?></td>
+                            <th scope="row"><?php echo $_SESSION['shares_owned']; ?></th>
+                            <td><?php echo getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
+                            <td><?php echo $_SESSION['selected_artist']; ?></td>
+                            <td><?php echo round($_SESSION['current_pps']['price_per_share'],2); ?></td>
+                            <td><?php echo $_SESSION['profit']; ?> (<?php echo $_SESSION['profit_rate']; ?>%)</td>
+                            <td><?php echo $_SESSION['available_shares']; ?></td>
                         </tr>
                     </tbody>
                 </table>
