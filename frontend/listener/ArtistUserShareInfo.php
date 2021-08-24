@@ -123,7 +123,6 @@
                     //Sell shares button is only available if you own some shares
                     if($_SESSION['shares_owned'] > 0)
                     {
-                        echo canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']);
                         if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']) == TRUE)
                         {
                             echo '
