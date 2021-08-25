@@ -277,17 +277,48 @@
 
         function artistShareDistributionInit($conn, $artist_username, $share_distributing, $lower_bound, $initial_pps, $deposit)
         {
+            $status = 0;
             $sql = "UPDATE account SET lower_bound = '$lower_bound' WHERE username='$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql))
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                return "ERROR";
+            }
 
             $sql = "UPDATE account SET Share_Distributed = '$share_distributing' WHERE username='$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql))
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                return "ERROR";
+            }
 
             $sql = "UPDATE account SET price_per_share = '$initial_pps' WHERE username='$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql))
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                return "ERROR";
+            }
 
             $sql = "UPDATE account SET deposit = '$deposit' WHERE username='$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql))
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                return "ERROR";
+            }
+
+            return $status;
         }
 
         function updateArtistPPS($conn, $artist_username, $new_pps)
@@ -325,9 +356,12 @@
             $coins = round($coins, 2);
             $status = 0;
             $sql = "UPDATE account SET balance = balance + $coins WHERE username = '$username'";
-            if ($conn->query($sql) === TRUE) {
+            if ($conn->query($sql) === TRUE) 
+            {
                 $status = "SUCCESS";
-            } else {
+            } 
+            else 
+            {
                 $status = "ERROR";
             }  
             return $status;

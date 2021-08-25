@@ -123,7 +123,7 @@
                     //Sell shares button is only available if you own some shares
                     if($_SESSION['shares_owned'] > 0)
                     {
-                        if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']) == TRUE)
+                        if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
                         {
                             echo '
                                 <form action="../../APIs/listener/ToggleBuySellShareBackend.php" method="post">

@@ -446,19 +446,25 @@
                             {
                                 $balance = getUserBalance($_SESSION['username']);
 
-                                //status
-                                if($_SESSION['status'] == "SUCCESS")
-                                    echo "<script>alert('Siliqas bought successfully');</script>";
-                                if($_SESSION['status'] == 2)
-                                    echo "<script>alert('Please fill out all forms');</script>";
-                                $_SESSION['status'] = 0;
-
                                 echo '
                                     <section id="login" class="py-5";>
                                         <div class="container">
                                             <div class="col-12 mx-auto my-auto text-center">
                                                 <form action="../../APIs/shared/CurrencyBackend.php" method="post">
                                 ';
+
+                                if($_SESSION['logging_mode'] == "BUY_SILIQAS")
+                                {
+                                    if($_SESSION['status'] == "EMPTY_ERR")
+                                    {
+                                        $_SESSION['status'] = "ERROR";
+                                        getStatusMessage("Please fill out all fields and try again", "");
+                                    }
+                                    else
+                                    {
+                                        getStatusMessage("Failed to buy, an error occured", "Siliqas bought successfully");
+                                    }
+                                }
                                 if($_SESSION['currency']==0)
                                 {
                                     echo'
