@@ -371,11 +371,15 @@
             $coins = round($coins, 2);
             $status = 0;
             $sql = "UPDATE account SET balance = balance - $coins WHERE username = '$username'";
-            if ($conn->query($sql) === TRUE) {
+            if ($conn->query($sql) === TRUE) 
+            {
                 $status = "SUCCESS";
-            } else {
+            } 
+            else 
+            {
                 $status = "ERROR";
-            }  
+            }
+
             return $status;
         }
 

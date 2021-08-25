@@ -2,6 +2,8 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
 
+    $_SESSION['logging_mode'] = "SELL_SILIQAS";
+
     $conn = connect();
     $save_info = $_POST['save_info'];
     $transit_no = $_POST['transit_no'];
@@ -24,7 +26,7 @@
         }
         else
         {
-            $_SESSION['status'] = 2; 
+            $_SESSION['status'] = "EMPTY_ERR"; 
         }
     }
     else
@@ -41,10 +43,9 @@
         }
         else
         {
-            $_SESSION['status'] = 2;
+            $_SESSION['status'] = "EMPTY_ERR";
         }
     }
-    $_SESSION['saved'] = 0;
     $_SESSION['dependencies'] = "FRONTEND";
 
     returnToMainPage();

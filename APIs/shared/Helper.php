@@ -141,6 +141,25 @@
                     <div class="col-12 mx-auto my-auto text-center">
                         <form action="../../APIs/shared/CurrencyBackend.php" method="post">
         ';
+
+        if($_SESSION['logging_mode'] == "SELL_SILIQAS")
+        {
+            if($_SESSION['status'] == "EMPTY_ERR")
+            {
+                $_SESSION['status'] = "ERROR";
+                getStatusMessage("Please fill out all fields and try again", "");
+            }
+            else if($_SESSION['status'] == "NOT_ENOUGH_ERR")
+            {
+                $_SESSION['status'] = "ERROR";
+                getStatusMessage("Not enough siliqas", "");
+            }
+            else
+            {
+                getStatusMessage("An error occured", "Siliqas sold successfully");
+            }
+        }
+
         if($_SESSION['currency']==0)
         {
             echo'
