@@ -80,6 +80,11 @@
     }
 
     $_SESSION['dependencies'] = "FRONTEND";
+
+    if($_SESSION['account_type'] == "artist")
+    {
+        $_SESSION['display'] = 0;
+    }
      
     returnToMainPage();
 ?>

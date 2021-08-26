@@ -31,7 +31,7 @@
 
                   <div style="float:none;margin:auto;" class="select-dark">
                       <select name="currency" id="dark">
-                          <option selected disabled>Currency</option>
+                          <option value="Currency">Currency</option>
                           <option value="USD">USD</option>
                           <option value="CAD">CAD</option>
                           <option value="EURO">EURO</option>
@@ -47,6 +47,25 @@
                     <h5>How many shares are you distributing?</h5>
                     <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
                   </div>';
+          
+          if($_SESSION['logging_mode'] == "SHARE_DIST")
+          {
+            if($_SESSION['status'] == "NUM_ERR")
+            {
+              $_SESSION['status'] = "ERROR";
+              getStatusMessage("Please enter in number format", "");
+            }
+            else if($_SESSION['status'] == "CURRENCY_ERR")
+            {
+              $_SESSION['status'] = "ERROR";
+              getStatusMessage("Please choose a currency", "");
+            }
+            else if($_SESSION['status'] == "EMPTY_ERR")
+            {
+              $_SESSION['status'] = "ERROR";
+              getStatusMessage("Please fill out all fields", "");
+            }
+          }
 
           echo '
 

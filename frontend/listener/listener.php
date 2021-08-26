@@ -1,8 +1,7 @@
 <?php
     include '../../APIs/control/Dependencies.php';
     include '../../APIs/listener/ListenerBackend.php';
-    
-    $_SESSION['conversion_rate'] = -0.05;
+
     $_SESSION['coins'];
     $_SESSION['status'];
     $_SESSION['cad'];

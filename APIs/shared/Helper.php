@@ -18,6 +18,8 @@
         $_SESSION['buy_market_price'] = 0;
         $_SESSION['artist_share_remove'] = 0;
         $_SESSION['share_price_remove'] = 0;
+        //conversion rate from CAD to Siliqas, 1 CAD = 0.95 Sililqas (brute force for now)
+        $_SESSION['conversion_rate'] = -0.05;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
     }
 
@@ -50,6 +52,18 @@
         $result = searchAccount($conn, $user_username);
         $balance = $result->fetch_assoc();     
         return $balance['balance'];   
+    }
+
+    function convertToSiliqas($amount, $conversion_rate, $currency_type)
+    {
+        $ret = $amount;
+        $ret = $amount * (1 + $conversion_rate);
+        if($currency_type == "USD")
+            $ret *= 1.25;
+        else if($currency_type == "EURO")
+            $ret *= 1.47;
+
+        return $ret;
     }
     
     function getHighestOrLowestPPS($artist_username, $indicator)
