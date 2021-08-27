@@ -32,6 +32,7 @@
     else
     {
         $_SESSION['dependencies'] = "FRONTEND";
+        $_SESSION['status'] = "ERROR";
         header("Location: ../../frontend/credentials/login.php");
     }
 

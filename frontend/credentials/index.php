@@ -3,6 +3,9 @@
     include '../../APIs/shared/Helper.php';
     include '../../APIs/shared/TimeUtil.php';
 
+    $_SESSION['logging_mode'] = 0;
+    $_SESSION['status'] =  0;
+
     hassnerInit();
 ?>
 

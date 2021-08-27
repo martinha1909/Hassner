@@ -2,6 +2,8 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
 
+    $_SESSION['logging_mode'] = "BUY_SHARE";
+
     $conn = connect();
     $amount_bought = $_POST['purchase_quantity'];
     //not enough siliqas
@@ -10,6 +12,7 @@
         //disabling both options, forbids user from buying anything unless they purchase more siliqas
         $_SESSION['buy_market_price'] = 0;
         $_SESSION['buy_asked_price'] = 0;
+        $_SESSION['status'] = "SILIQAS_ERR";
         header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
     }
     else
@@ -36,7 +39,7 @@
                 //for now each time a share is bought its value is increased by 5%
                 $new_pps*=1.05;
             }
-            purchaseMarketPriceShare($conn, $_SESSION['username'], $_SESSION['selected_artist'], 
+            $_SESSION['status'] = purchaseMarketPriceShare($conn, $_SESSION['username'], $_SESSION['selected_artist'], 
                                      $buyer_new_balance, $artist_new_balance, 
                                      $_SESSION['current_pps']['price_per_share'], $new_pps, 
                                      $buyer_new_share_amount, $_SESSION['shares_owned'], $amount_bought);
@@ -76,7 +79,7 @@
                     //for now each time a share is bought its value is increased by 5%
                     $new_pps*=1.05;
                 }
-                purchaseAskedPriceShare($conn, $_SESSION['username'], $_SESSION['seller_toggle'], 
+                $_SESSION['status'] = purchaseAskedPriceShare($conn, $_SESSION['username'], $_SESSION['seller_toggle'], 
                                         $_SESSION['selected_artist'], $buyer_new_balance, $seller_new_balance, 
                                         $_SESSION['current_pps']['price_per_share'], $new_pps, 
                                         $buyer_new_share_amount, $seller_new_share_amount, 
@@ -101,7 +104,7 @@
                 $new_lower_bound = $deposit['deposit']/$new_share_distributed;
                 $new_pps = $_SESSION['current_pps']['price_per_share'] / ($amount_bought/$new_share_distributed);
 
-                buyBackShares($conn, $_SESSION['username'], $_SESSION['seller_toggle'], $buyer_new_balance, 
+                $_SESSION['status'] = buyBackShares($conn, $_SESSION['username'], $_SESSION['seller_toggle'], $buyer_new_balance, 
                              $seller_new_balance, $seller_new_share_amount, $new_share_distributed, 
                              $new_artist_shares_bought, $new_pps, $amount_bought);
             }

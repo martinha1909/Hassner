@@ -43,7 +43,7 @@
 </section>
 
 <?php
-  if($_SESSION['status'] == 1)
+  if($_SESSION['status'] == "SUCCESS")
     echo "<script>alert('Admin ID sent successfully');</script>";
   if($_SESSION['status'] == 2)
     echo "<script>alert('Failed');</script>";

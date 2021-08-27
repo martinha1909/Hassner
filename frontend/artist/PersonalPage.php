@@ -26,21 +26,12 @@
       $account_info = getAccount($_SESSION['username']);
       if($account_info['Share_Distributed'] == 0)
       {
-          $status = "";
-          if($_SESSION['status'] == 1)
-          {
-            $status = "Please enter in number format";
-          }
-          else if($_SESSION['status'] == 2)
-          {
-            $status = "Your price per share cannot be below 0.5q̶/share";
-          }
           echo '
                 <form action="../../APIs/artist/DistributeShareBackend.php" method="post">
 
                   <div style="float:none;margin:auto;" class="select-dark">
                       <select name="currency" id="dark">
-                          <option selected disabled>Currency</option>
+                          <option value="Currency">Currency</option>
                           <option value="USD">USD</option>
                           <option value="CAD">CAD</option>
                           <option value="EURO">EURO</option>
@@ -56,16 +47,24 @@
                     <h5>How many shares are you distributing?</h5>
                     <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
                   </div>';
-          if($_SESSION['status'] == 1)
+          
+          if($_SESSION['logging_mode'] == "SHARE_DIST")
           {
-            echo '<h6 style="color: red;">'.$status.'</h6>';
-          }
-          else if($_SESSION['status'] == 2)
-          {
-            echo '
-                  <h6 style="color: red;">'.$status.'</h6>
-                  <h6 style="color: red;">Current price per share: '.$_SESSION['lower_bound'].'q̶</h6>
-            ';
+            if($_SESSION['status'] == "NUM_ERR")
+            {
+              $_SESSION['status'] = "ERROR";
+              getStatusMessage("Please enter in number format", "");
+            }
+            else if($_SESSION['status'] == "CURRENCY_ERR")
+            {
+              $_SESSION['status'] = "ERROR";
+              getStatusMessage("Please choose a currency", "");
+            }
+            else if($_SESSION['status'] == "EMPTY_ERR")
+            {
+              $_SESSION['status'] = "ERROR";
+              getStatusMessage("Please fill out all fields", "");
+            }
           }
 
           echo '
@@ -76,7 +75,6 @@
 
                 </form>
               ';
-          $_SESSION['status'] = 0;
       }
       else
       {

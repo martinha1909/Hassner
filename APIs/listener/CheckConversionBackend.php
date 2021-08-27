@@ -1,16 +1,19 @@
 <?php
-    session_start();
+    $_SESSION['dependencies'] = "BACKEND";
+    include '../control/Dependencies.php';
+    
+    //Amount of money that user input in
     $_SESSION['siliqas'] = $_POST['currency'];
+    echo $_SESSION['siliqas'];
     if(!empty($_SESSION['siliqas']) && is_numeric($_SESSION['siliqas']))
     {
-        $_SESSION['coins'] = $_SESSION['siliqas'] * (1 + $_SESSION['conversion_rate']);
-        if($_SESSION['currency'] == "USD")
-            $_SESSION['coins'] = $_SESSION['coins'] * 1.25;
-        else if($_SESSION['currency'] == "EURO")
-            $_SESSION['coins'] = $_SESSION['coins'] * 1.47;
+        //amount of siliqas that will be converted into
+        $_SESSION['coins'] = convertToSiliqas($_SESSION['siliqas'], $_SESSION['conversion_rate'], $_SESSION['currency']);
         $_SESSION['btn_show'] = 1;
         
     }
+
+    $_SESSION['dependencies'] = "FRONTEND";
 
     header("Location: ../../frontend/listener/listener.php");
 ?>

@@ -17,7 +17,7 @@
   $conn = connect();
   $result = searchAccount($conn, $_SESSION['username']);
   $account_info = $result->fetch_assoc();
-  if($_SESSION['status'] == 1)
+  if($_SESSION['status'] == "SUCCESS")
     echo "<script>alert('Siliqas Sold Successfully');</script>";
   if($_SESSION['status'] == 2)
     echo "<script>alert('Please fill out all forms');</script>";

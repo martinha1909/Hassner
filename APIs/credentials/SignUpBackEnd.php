@@ -9,23 +9,49 @@
     $account_type = $_POST['account_type'];
 
     if(!empty($username) && !empty($password)){
-        if(empty($email))
-            $email = "";
-        $_SESSION['status'] = signup($conn,$username,$password,$account_type, $email);
-        if($_SESSION['status'] == 1)
+        $res = searchAccount($conn, $username);
+        if($res->num_rows > 0)
         {
+            $_SESSION['status'] = "USERNAME_ERR";
             $_SESSION['dependencies'] = "FRONTEND";
-            header("Location: ../../frontend/credentials/login.php");
+            header("Location: ../../frontend/credentials/signup.php");
         }
         else
         {
-            $_SESSION['dependencies'] = "FRONTEND";
-            header("Location: ../../frontend/credentials/signup.php");
+            if(empty($email))
+            {
+                $email = "";
+            }
+            else
+            {
+                $res = searchEmail($conn, $email);
+                if($res->num_rows > 0)
+                {
+                    $_SESSION['status'] = "EMAIL_ERR";
+                    $_SESSION['dependencies'] = "FRONTEND";
+                    header("Location: ../../frontend/credentials/signup.php");
+                }
+                else
+                {
+                    $_SESSION['status'] = signup($conn, $username, $password, $account_type, $email);
+                    if($_SESSION['status'] == "SUCCESS")
+                    {
+                        $_SESSION['dependencies'] = "FRONTEND";
+                        header("Location: ../../frontend/credentials/login.php");
+                    }
+                    else
+                    {
+                        $_SESSION['status'] = "SERVER_ERR";
+                        $_SESSION['dependencies'] = "FRONTEND";
+                        header("Location: ../../frontend/credentials/signup.php");
+                    }
+                }
+            }
         }
     }
     else
     {
-        $_SESSION['status'] = 2;
+        $_SESSION['status'] = "EMPTY_ERR";
         $_SESSION['dependencies'] = "FRONTEND";
         header("Location: ../../frontend/credentials/signup.php");
     }

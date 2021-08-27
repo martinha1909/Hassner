@@ -2,6 +2,8 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/dependencies.php';
 
+    $_SESSION['logging_mode'] = "BUY_SILIQAS";
+
     $conn = connect();
     $save_info = $_POST['save_info'];
     if($save_info == "Yes")
@@ -27,7 +29,7 @@
             }
             else if($_SESSION['account_type'] == "artist")
             {
-                artistShareDistributionInit($conn, $_SESSION['username'], $_SESSION['shares_distributing'], $_SESSION['lower_bound'], $_SESSION['initial_pps'], $_SESSION['deposit']);
+                $_SESSION['status'] = artistShareDistributionInit($conn, $_SESSION['username'], $_SESSION['shares_distributing'], $_SESSION['lower_bound'], $_SESSION['initial_pps'], $_SESSION['deposit']);
             }
             $_SESSION['btn_show'] = 0;
             $_SESSION['cad'] = 0;
@@ -38,7 +40,7 @@
         }
         else
         {
-            $_SESSION['status'] = 2; 
+            $_SESSION['status'] = "EMPTY_ERR";
         }
     }
     else
@@ -63,7 +65,7 @@
             }
             else if($_SESSION['account_type'] == "artist")
             {
-                artistShareDistributionInit($conn, $_SESSION['username'], $_SESSION['shares_distributing'], $_SESSION['lower_bound'], $_SESSION['initial_pps'], $_SESSION['deposit']);
+                $_SESSION['status'] = artistShareDistributionInit($conn, $_SESSION['username'], $_SESSION['shares_distributing'], $_SESSION['lower_bound'], $_SESSION['initial_pps'], $_SESSION['deposit']);
             }
             $_SESSION['cad'] = 0;
             $_SESSION['coins'] = 0;
@@ -73,11 +75,16 @@
         }
         else
         {
-            $_SESSION['status'] = 2;
+            $_SESSION['status'] = "EMPTY_ERR";
         }
     }
+
     $_SESSION['dependencies'] = "FRONTEND";
+
+    if($_SESSION['account_type'] == "artist")
+    {
+        $_SESSION['display'] = 0;
+    }
      
     returnToMainPage();
-    
 ?>

@@ -74,6 +74,20 @@
         <div class="row vh-md-100 align-items-start">
             <div class="mx-auto my-auto text-center col">             
                 <div class="py-4 text-center">
+                    <?php
+                        if($_SESSION['logging_mode'] == "BUY_SHARE")
+                        {
+                            if($_SESSION['status'] == "SILIQAS_ERR")
+                            {
+                                $_SESSION['status'] = "ERROR";
+                                getStatusMessage("Not enough siliqas", "");
+                            }
+                            else
+                            {
+                                getStatusMessage("An unexpected error occured", "Shares bought successfully");
+                            }
+                        }
+                    ?>
                     <h2>Your shares with <?php echo $_SESSION['selected_artist'];?> </h2>
                 </div>
 
@@ -82,6 +96,7 @@
                     <thead>
                         <tr>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Owned Shares</th>
+                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Shares selling</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Artist</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Current price per share (q̶)</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Selling profit per share (q̶)</th>
@@ -93,12 +108,12 @@
                             <!-- displaying Amount of shares owned, selected artist name, 
                                 market price per share of artist, profit since last bought, 
                                 and amount of available shares for purchase, respectively -->
-                            <th scope="row"><?php 
-                                echo $_SESSION['shares_owned']; ?></th>
-                                <td><?php echo $_SESSION['selected_artist']; ?></td>
-                                <td><?php echo round($_SESSION['current_pps']['price_per_share'],2); ?></td>
-                                <td><?php echo $_SESSION['profit']; ?> (<?php echo $_SESSION['profit_rate']; ?>%)</td>
-                                <td><?php echo $_SESSION['available_shares']; ?></td>
+                            <th scope="row"><?php echo $_SESSION['shares_owned']; ?></th>
+                            <td><?php echo getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
+                            <td><?php echo $_SESSION['selected_artist']; ?></td>
+                            <td><?php echo round($_SESSION['current_pps']['price_per_share'],2); ?></td>
+                            <td><?php echo $_SESSION['profit']; ?> (<?php echo $_SESSION['profit_rate']; ?>%)</td>
+                            <td><?php echo $_SESSION['available_shares']; ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -108,12 +123,28 @@
                     //Sell shares button is only available if you own some shares
                     if($_SESSION['shares_owned'] > 0)
                     {
-                        echo '
-                            <form action="../../APIs/listener/ToggleBuySellShareBackend.php" method="post">
-                                <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
-                            </form>
-                        ';
+                        if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
+                        {
+                            echo '
+                                <form action="../../APIs/listener/ToggleBuySellShareBackend.php" method="post">
+                                    <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
+                                </form>
+                            ';
+                        }
+                        else
+                        {
+                            $_SESSION['status'] = "ERROR";
+                            getStatusMessage("All shares are currently being sold", "");
+                        }
                         echo "<br>";
+                        if($_SESSION['logging_mode'] == "NON_EXIST")
+                        {
+                            getStatusMessage("", "Sell order created successfully");
+                        }
+                        else if($_SESSION['logging_mode'] == "EXIST")
+                        {
+                            getStatusMessage("", "Sell order updated successfully");
+                        }
                     }
                     //displaying sell shares button if user chooses the options
                     if($_SESSION['buy_sell'] == "SELL")

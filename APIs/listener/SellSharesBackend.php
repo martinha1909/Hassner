@@ -29,6 +29,7 @@
         //If the user has not been selling the same share, post a new order to sell
         if($existed == 0)
         {
+            $_SESSION['logging_mode'] = "NON_EXIST";
             $new_pps = $_SESSION['current_pps']['price_per_share'];
             
             for($i = 0; $i<$quantity; $i++)
@@ -48,13 +49,14 @@
                 $new_pps = $lower_bound['lower_bound'];
             }
 
-            insertUserArtistSellShareTuple($conn, $_SESSION['username'], $_SESSION['selected_artist'], $quantity, $asked_price);
+            $_SESSION['status'] = insertUserArtistSellShareTuple($conn, $_SESSION['username'], $_SESSION['selected_artist'], $quantity, $asked_price);
             updateArtistPPS($conn, $_SESSION['selected_artist'], $new_pps);
         }
 
         //If the user has already been selling the same share, simply just adjust the quantity to the new requested quantity
         else
         {
+            $_SESSION['logging_mode'] = "EXIST";
             $new_pps = $_SESSION['current_pps']['price_per_share'];
 
             for($i = 0; $i<$quantity; $i++)
@@ -80,7 +82,7 @@
                 if($row['selling_price'] == $asked_price)
                 {
                     $quantity += $row['no_of_share'];
-                    adjustExistedAskedPriceQuantity($conn, $_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
+                    $_SESSION['status'] = adjustExistedAskedPriceQuantity($conn, $_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
                     updateArtistPPS($conn, $_SESSION['selected_artist'], $new_pps);
                     $counter = 1;
                     break;
