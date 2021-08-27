@@ -134,7 +134,7 @@
 
     function printMyPortfolioChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share)
     {
-        echo '<form action="../../APIs/artist/ArtistShareInfoBackend.php" method="post">';
+        echo '<form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">';
         $id = 1;
         for($i=0; $i<sizeof($all_artists); $i++)
         {

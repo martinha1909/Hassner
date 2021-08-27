@@ -1,7 +1,7 @@
 <?php
-  include '../../APIs/control/Dependencies.php';
-  include '../../APIs/artist/ArtistBackend.php';
-  include '../../APIs/shared/MarketplaceBackend.php';
+  include '../../backend/control/Dependencies.php';
+  include '../../backend/artist/ArtistBackend.php';
+  include '../../backend/shared/MarketplaceBackend.php';
 
   $_SESSION['selected_artist'] = $_SESSION['username'];
   $_SESSION['lower_bound'] = 0.5;
@@ -68,7 +68,7 @@
                       if($_SESSION['display'] == 2 || $_SESSION['display'] == 0)
                       {
                           echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px #11171a; border-right-color: #11171a;">
-                              <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">';
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
                           echo '<input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="My Portfolio ->"';
                           echo '</form>';
                           echo '</li>';
@@ -76,7 +76,7 @@
                       else
                       {
                           echo '<li class="list-group-item-no-hover">
-                              <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">';
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
                           echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="My Portfolio">';
                           echo '</form>';
                           echo '</li>';
@@ -84,7 +84,7 @@
                       if($_SESSION['display'] == 1)
                       {
                           echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                              <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">';
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
                           echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Your Campaign ->">';
                           echo '</form>';
                           echo '</li>';
@@ -92,7 +92,7 @@
                       else
                       {
                           echo '<li class="list-group-item-no-hover">
-                              <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">';
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
                           echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Your Campaign">';
                           echo '</form>';
                           echo '</li>';
@@ -100,7 +100,7 @@
                       if($_SESSION['display'] == 3)
                       {
                           echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                              <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">';
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
                           echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Account ->">';
                           echo '</form>';
                           echo '</li>';
@@ -108,7 +108,7 @@
                       else
                       {
                           echo '<li class="list-group-item-no-hover">
-                              <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">';
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
                           echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Account">';
                           echo '</form>';
                           echo '</li>';
@@ -116,7 +116,7 @@
                       if($_SESSION['display'] == 4)
                       {
                           echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                              <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">';
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
                           echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Sell Siliqas ->">';
                           echo '</form>';
                           echo '</li>';
@@ -124,7 +124,7 @@
                       else
                       {
                           echo '<li class="list-group-item-no-hover">
-                              <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">';
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
                           echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Sell Siliqas">';
                           echo '</form>';
                           echo '</li>';
@@ -132,7 +132,7 @@
                       if($_SESSION['display'] == 5)
                       {
                           echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                              <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">';
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
                           echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Settings ->">';
                           echo '</form>';
                           echo '</li>';
@@ -140,7 +140,7 @@
                       else
                       {
                           echo '<li class="list-group-item-no-hover">
-                              <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">';
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
                           echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Settings">';
                           echo '</form>';
                           echo '</li>';
@@ -184,7 +184,7 @@
                                 $lower_bound = getLowerBound($_SESSION['username']);
                                 echo '<h6>Price Per Share: '.$account_info['price_per_share'].'</h6>';
                                 echo '
-                                    <form action="../../APIs/control/MenuDisplayArtistBackend.php" method="post">
+                                    <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
                                         <h6>Volumn: '.$account_info['Share_Distributed'].' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
                                     </form>
                                     ';
@@ -201,7 +201,7 @@
                                     <p>Drag the slider to display the current value.</p>
                                     
                                     <div class="slidecontainer">
-                                        <form action="../APIs/artist/IncreaseSharesDistributed.php" method ="post">
+                                        <form action="../backend/artist/IncreaseSharesDistributed.php" method ="post">
                                         <input name="share_added" type="range" min="0" max='.$max.' value="0" class="slider" id="myRange">
                                         <input type="submit" class="btn btn-primary py-2" value="Distribute">
                                         </form>
@@ -241,7 +241,7 @@
                                     <div">
                                         <div class="col-12 mx-auto my-auto text-center">
                                             <h3 style="color: orange;padding-top:150px;">Verify your password to access personal page</h3>
-                                            <form action="../../APIs/artist/PersonalPageBackend.php" method="post">
+                                            <form action="../../backend/artist/PersonalPageBackend.php" method="post">
                                                 <div class="form-group">
                                                     <h5>Password</h5>
                                                     <input name = "verify_password" type="password" style="border-color: white;" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">

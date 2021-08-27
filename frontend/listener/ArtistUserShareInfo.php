@@ -1,6 +1,6 @@
 <?php
-    include '../../APIs/control/dependencies.php';
-    include '../../APIs/shared/MarketplaceBackend.php';
+    include '../../backend/control/dependencies.php';
+    include '../../backend/shared/MarketplaceBackend.php';
     $_SESSION['conversion_rate'];
     $_SESSION['coins'] = 0;
     $_SESSION['status'];
@@ -38,7 +38,7 @@
                 <div class="container-searchbar">
                     <label>
                         <span class="screen-reader-text">Search for...</span>
-                        <form class="form-inline" action="../../APIs/listener/SearchPageBackend.php" method="post">
+                        <form class="form-inline" action="../../backend/listener/SearchPageBackend.php" method="post">
                             <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_name" />
                         </form>
                     </label>  
@@ -126,7 +126,7 @@
                         if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
                         {
                             echo '
-                                <form action="../../APIs/listener/ToggleBuySellShareBackend.php" method="post">
+                                <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
                                     <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
                                 </form>
                             ';
@@ -157,7 +157,7 @@
                             <div class="wrapper-searchbar">
                                 <div class="container-searchbar mx-auto">
                                     <label>
-                                        <form action="../../APIs/listener/SellSharesBackend.php" method="post">
+                                        <form action="../../backend/listener/SellSharesBackend.php" method="post">
                                             <input name = "purchase_quantity" type="range" min="1" max='.$_SESSION['shares_owned'].' value="1" class="slider" id="myRange">
                                             <p>Quantity: <span id="demo"></span></p>
                                             <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
@@ -219,7 +219,7 @@
                                             <th scope="row">'.$_SESSION['selected_artist'].'</th>
                                                 <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
                                                 <td>'.$_SESSION['available_shares'].'</td>
-                                                <form action="../../APIs/listener/ToggleBuyMarketPriceBackend.php" method="post">';
+                                                <form action="../../backend/listener/ToggleBuyMarketPriceBackend.php" method="post">';
                             if(hasEnoughSiliqas($_SESSION['current_pps']['price_per_share'], $_SESSION['user_balance']))
                             {
                                 echo'
@@ -264,12 +264,12 @@
                                                 <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
                                                 <td>'.$_SESSION['available_shares'].'</td>
                                                 <td>
-                                                    <form action="../../APIs/shared/BuySharesBackend.php" method="post">
+                                                    <form action="../../backend/shared/BuySharesBackend.php" method="post">
                                                         <input name = "purchase_quantity" type="range" min="1" max='.$_SESSION['available_shares'].' value="1" class="slider" id="myRange">
                                                         <p>Quantity: <span id="demo"></span></p>
                                                         <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->">
                                                     </form>
-                                                    <form action="../../APIs/listener/ToggleBuyMarketPriceBackend.php" method="post">
+                                                    <form action="../../backend/listener/ToggleBuyMarketPriceBackend.php" method="post">
                                                         <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
                                                     </form>
                                                 </td>

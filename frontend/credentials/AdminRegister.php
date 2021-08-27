@@ -67,7 +67,7 @@
             
 
                 <!-- signup form -->
-                <form action = "../APIs/AdminRegisterConnection.php" method = "post">
+                <form action = "../backend/AdminRegisterConnection.php" method = "post">
 
                     <!-- username field -->
                     <div class="form-group">
