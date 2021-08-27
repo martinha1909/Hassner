@@ -1,5 +1,5 @@
 <?php
-  include '../../APIs/control/Dependencies.php';
+  include '../../backend/control/Dependencies.php';
   $_SESSION['expmonth'] = 0;
   $_SESSION['expyear'] = 0;
 ?>
@@ -35,12 +35,12 @@
 <div style="padding-top:50px;" class="row">
   <div class="col-75">
     <div class="container">
-      <form action="../APIs/DepositConnection.php" method="post">
+      <form action="../backend/DepositConnection.php" method="post">
       
         <div class="row">
           <div class="col-50">
             <h3>Deposit Information</h3>
-            <h5 class="text-right"><a href="../APIs/UseSavedDepositInfoConnnection.php" onclick='window.location.reload();' class="btn btn-primary py-2">Use saved deposit info</a></h5>
+            <h5 class="text-right"><a href="../backend/UseSavedDepositInfoConnnection.php" onclick='window.location.reload();' class="btn btn-primary py-2">Use saved deposit info</a></h5>
             <label for="fname"><i class="fa fa-user"></i> Full Name</label>
             <?php
             if($_SESSION['saved'] == 1)

@@ -1,6 +1,6 @@
 <?php
-    include '../APIs/control/logic.php';
-    include '../APIs/control/connection.php';
+    include '../backend/control/logic.php';
+    include '../backend/control/connection.php';
 
     $conn = connect();
     cleanDatabase($conn);

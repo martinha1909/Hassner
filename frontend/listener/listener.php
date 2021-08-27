@@ -1,6 +1,6 @@
 <?php
-    include '../../APIs/control/Dependencies.php';
-    include '../../APIs/shared/MarketplaceBackend.php';
+    include '../../backend/control/Dependencies.php';
+    include '../../backend/shared/MarketplaceBackend.php';
 
     $_SESSION['coins'];
     $_SESSION['status'];
@@ -42,7 +42,7 @@
                         <div class="container-searchbar">
                             <label>
                                 <span class="screen-reader-text">Search for...</span>
-                                <form class="form-inline" action="../../APIs/listener/SearchPageBackend.php" method="post">
+                                <form class="form-inline" action="../../backend/listener/SearchPageBackend.php" method="post">
                                     <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_search" />
                                 </form>
                             </label>
@@ -68,7 +68,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px #11171a; border-right-color: #11171a;">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="My Portfolio ->"
                                         </form>
                                     </li>
@@ -78,7 +78,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="My Portfolio">
                                         </form>
                                     </li>
@@ -90,7 +90,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Top Invested Artists ->">
                                         </form>
                                     </li>
@@ -100,7 +100,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="Top Invested Artists">
                                         </form>
                                     </li>
@@ -112,7 +112,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Buy Siliqas ->">
                                         </form>
                                     </li>
@@ -122,7 +122,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold;border:1px orange; background-color: transparent;" value="Buy Siliqas">
                                         </form>
                                     </li>
@@ -134,7 +134,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Sell Siliqas ->">
                                         </form>
                                     </li>
@@ -144,7 +144,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Sell Siliqas">
                                         </form>
                                     </li>
@@ -156,7 +156,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Account ->">
                                         </form>
                                     </li>
@@ -166,7 +166,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Account">
                                         </form>
                                     </li>
@@ -178,7 +178,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Communities ->">
                                         </form>
                                     </li>
@@ -188,7 +188,7 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../../APIs/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Communities">
                                         </form>
                                     </li>
@@ -220,7 +220,7 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="color: white;" class="bg-dark">#</th>
-                                                <form action="../../APIs/listener/SortPortfolioArtistBackEnd.php">
+                                                <form action="../../backend/listener/SortPortfolioArtistBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
                                 ';
                                 //sort Artist ascending alphabetically
@@ -238,7 +238,7 @@
                                 echo '
                                                 </th>
                                                 </form>
-                                                <form action="../../APIs/listener/SortPortfolioShareBackEnd.php">
+                                                <form action="../../backend/listener/SortPortfolioShareBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
                                 //sort Shares bought ascending alphabetically
                                 if($_SESSION['sort_type'] == 2)
@@ -251,7 +251,7 @@
                                 echo '
                                                 </th>
                                                 </form>
-                                                <form action = "../../APIs/listener/SortPortfolioPPSBackEnd.php">
+                                                <form action = "../../backend/listener/SortPortfolioPPSBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
                                 //sort Price per share ascending alphabetically
                                 if($_SESSION['sort_type'] == 3)
@@ -265,7 +265,7 @@
                                 echo '
                                                 </th>
                                                 </form>
-                                                <form action = "../../APIs/listener/SortPortfolioRateBackEnd.php">
+                                                <form action = "../../backend/listener/SortPortfolioRateBackEnd.php">
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Rate" onclick="window.location.reload();">';
                                 //sort Rate ascending alphabetically
                                 if($_SESSION['sort_type'] == 0)
@@ -376,7 +376,7 @@
                                         $max_quantity = getMaxShareQuantity($_SESSION['username'], $artist_usernames[$i]);
                                         //seding old bid prices, old quantity of shares being sold, and new bid prices and new quatity of shares being sold
                                         echo '
-                                                    <form action="../../APIs/listener/ConfirmEditSellingShareBackend.php" method="post">
+                                                    <form action="../../backend/listener/ConfirmEditSellingShareBackend.php" method="post">
                                                         <td>
                                                             <input name = "new_quantity" type="range" min="0" max='.$max_quantity.' value="'.$share_amounts[$i].'" class="slider" id="myRange">
                                                             <p>New Quantity: <span id="demo"></span></p>
@@ -393,7 +393,7 @@
                                     else
                                     {
                                         echo '
-                                                    <form action="../../APIs/listener/EditSellingShareBackend.php" method="post">
+                                                    <form action="../../backend/listener/EditSellingShareBackend.php" method="post">
                                                         <td>
                                                             <input name="remove_share_artist['.$artist_usernames[$i].']" style="cursor: context-menu; border:1px transparent; background-color: transparent;">
                                                             <input name="remove_share_price['.$selling_prices[$i].']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="✏" onclick="window.location.reload();">
@@ -425,7 +425,7 @@
                                         </thead>
                                     <tbody>
                                 ';
-                                echo '<form action="../../APIs/artist/ArtistShareInfoBackend.php" method="post">';
+                                echo '<form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">';
                                 $result = query_account('artist');
                                 if($result->num_rows == 0)
                                 {
@@ -452,7 +452,7 @@
                                     <section id="login" class="py-5";>
                                         <div class="container">
                                             <div class="col-12 mx-auto my-auto text-center">
-                                                <form action="../../APIs/shared/CurrencyBackend.php" method="post">
+                                                <form action="../../backend/shared/CurrencyBackend.php" method="post">
                                 ';
 
                                 if($_SESSION['logging_mode'] == "BUY_SILIQAS")
@@ -510,7 +510,7 @@
                                 }
                                 echo '
                                             </form>
-                                            <form action = "../../APIs/listener/CheckConversionBackend.php" method = "post">
+                                            <form action = "../../backend/listener/CheckConversionBackend.php" method = "post">
                                                 <div class="form-group">
                                 ';
                                 if($_SESSION['currency'] == 0)
@@ -580,7 +580,7 @@
                                         <div class="container">
                                             <div class="col-12 mx-auto my-auto text-center">
                                                 <h3 style="color: orange;padding-top:150px;">Verify your password to access personal page</h3>
-                                                <form action="../../APIs/listener/PersonalPageBackend.php" method="post">
+                                                <form action="../../backend/listener/PersonalPageBackend.php" method="post">
                                                     <div class="form-group">
                                                         <h5>Password</h5>
                                                         <input name = "verify_password" type="password" style="border-color: white;" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">';

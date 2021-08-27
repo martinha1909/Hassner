@@ -6,7 +6,7 @@ Sources:
 - landing page template (https://webresourcesdepot.com/freebie/knight/#download)
 
 
-in APIs folder contains logic of all SQL query functions, their blueprints and definitions as well as handling data input and output.
+in backend folder contains logic of all SQL query functions, their blueprints and definitions as well as handling data input and output.
 frontend contains graphics and other display pages this project
 
 To run this project:;

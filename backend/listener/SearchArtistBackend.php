@@ -11,7 +11,7 @@
                 $id = 1;
                 echo '
                         <tr><th scope="row">'.$id.'</th>
-                                <form action="../../APIs/artist/ArtistShareInfoBackend.php" method="post">
+                                <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
                                         <td><input name = "artist_name" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$artist_name.'"></td></td>
                                 </form>
                                 <td style="color: white">'.$price_per_share.'</td>

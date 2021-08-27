@@ -1,6 +1,6 @@
 <?php
-    include '../../APIs/control/Dependencies.php';
-    include '../../APIs/listener/SearchArtistBackend.php';
+    include '../../backend/control/Dependencies.php';
+    include '../../backend/listener/SearchArtistBackend.php';
 ?>
 
 <!doctype html>
@@ -38,7 +38,7 @@
                         <div class="container-searchbar">
                             <label>
                                 <span class="screen-reader-text">Search for...</span>
-                                <form class="form-inline" action="../../APIs/listener/SearchPageBackend.php" method="post">
+                                <form class="form-inline" action="../../backend/listener/SearchPageBackend.php" method="post">
                                     <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_search" />
                                 </form>
                             </label>

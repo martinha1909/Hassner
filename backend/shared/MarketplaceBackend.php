@@ -1,5 +1,5 @@
 <?php
-    include '../../APIs/listener/ListenerBackend.php';
+    include '../../backend/listener/ListenerBackend.php';
 
     //fetching the market price, if current user has not invested in the selected artist, simply just populate default values
     //default values should be displayed on the table like this:
@@ -138,7 +138,7 @@
                                 <th scope="row">'.$user_usernames[0].'</th>
                                 <td>'.$asked_prices[0].'</td>
                                 <td>'.$quantities[0].'</td>
-                                <form action="../../APIs/shared/ToggleBuyAskedPriceBackend.php" method="post">
+                                <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
                 ';
                 if(hasEnoughSiliqas($asked_prices[0], $_SESSION['user_balance']))
                 {
@@ -190,12 +190,12 @@
                             $_SESSION['purchase_price'] = $asked_prices[0];
                             $_SESSION['seller_toggle'] = $user_usernames[0];
                             echo'
-                                    <form action="../../APIs/shared/BuySharesBackend.php" method="post">
+                                    <form action="../../backend/shared/BuySharesBackend.php" method="post">
                                         <input name = "purchase_quantity" type="range" min="1" max='.$quantities[0].' value="1" class="slider" id="myRange">
                                         <p>Quantity: <span id="demo"></span></p>
                                         <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
                                     </form>
-                                    <form action="../../APIs/shared/ToggleBuyAskedPriceBackend.php" method="post">
+                                    <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
                                         <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
                                     </form>
                             ';
@@ -203,7 +203,7 @@
                         else
                         {
                             echo'
-                                    <form action="../../APIs/shared/ToggleBuyAskedPriceBackend.php" method="post">
+                                    <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
                                         <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[0].'" onclick="window.location.reload();"></td>
                                     </form>
                                     </td>
@@ -332,7 +332,7 @@
             <section id="login" class="py-5";>
                 <div class="container">
                     <div class="col-12 mx-auto my-auto text-center">
-                        <form action="../../APIs/shared/CurrencyBackend.php" method="post">
+                        <form action="../../backend/shared/CurrencyBackend.php" method="post">
         ';
 
         if($_SESSION['logging_mode'] == "SELL_SILIQAS")
@@ -396,7 +396,7 @@
         }
         echo '
                     </form>
-                    <form action = "../../APIs/shared/CheckSellConversionBackend.php" method = "post">
+                    <form action = "../../backend/shared/CheckSellConversionBackend.php" method = "post">
                         <div class="form-group">
         ';
         if($_SESSION['currency'] == 0)
