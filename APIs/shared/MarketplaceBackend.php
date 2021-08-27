@@ -139,7 +139,25 @@
                                 <td>'.$asked_prices[0].'</td>
                                 <td>'.$quantities[0].'</td>
                                 <form action="../../APIs/shared/ToggleBuyAskedPriceBackend.php" method="post">
+                ';
+                if(hasEnoughSiliqas($asked_prices[0], $_SESSION['user_balance']))
+                {
+                    echo'
                                     <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[0].'" onclick="window.location.reload();"></td>
+                    ';
+                }
+                else
+                {
+                    $_SESSION['status'] = "ERROR";
+                    echo '
+                                    <td>
+                    '; 
+                                        getStatusMessage("Not enough siliqas", "");
+                    echo '
+                                    </td>
+                    ';
+                }
+                echo '
                                 </form>
                             </tr>
                         </tbody>

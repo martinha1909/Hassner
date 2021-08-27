@@ -77,4 +77,12 @@
             header("Location: ../../frontend/artist/Artist.php");
         }
     }
+
+    function hasEnoughSiliqas($amount_spending, $balance)
+    {
+        if($balance >= $amount_spending)
+            return true;
+        
+        return false;
+    }
 ?>

@@ -219,8 +219,25 @@
                                             <th scope="row">'.$_SESSION['selected_artist'].'</th>
                                                 <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
                                                 <td>'.$_SESSION['available_shares'].'</td>
-                                                <form action="../../APIs/listener/ToggleBuyMarketPriceBackend.php" method="post">
+                                                <form action="../../APIs/listener/ToggleBuyMarketPriceBackend.php" method="post">';
+                            if(hasEnoughSiliqas($_SESSION['current_pps']['price_per_share'], $_SESSION['user_balance']))
+                            {
+                                echo'
                                                     <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                                ';
+                            }
+                            else
+                            {
+                                $_SESSION['status'] = "ERROR";
+                                echo '
+                                                    <td>
+                                '; 
+                                                        getStatusMessage("Not enough siliqas", "");
+                                echo '
+                                                    </td>
+                                ';
+                            }
+                            echo'
                                                 </form>
                                         </tr>
                                     </tbody>
