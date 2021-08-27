@@ -37,12 +37,8 @@
                   HASSNER
               </a>
 
-              <div class="col text-right">
-                  <a href="../APIs/IncreaseSharesDistributed.php" onclick='window.location.reload();'>+</a>
-              </div>
-              <div class="col text-right">
-                  <a href="../APIs/DecreaseSharesDistributed.php" onclick='window.location.reload();'>-</a>
-              </div>
+              <!-- This line here is to prevent a bug where the account balance would move to the left -->
+              <div class="col text-right"></div>
 
               <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse"
                       data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
