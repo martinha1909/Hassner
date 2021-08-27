@@ -1,11 +1,14 @@
 <?php
     include '../../APIs/control/Dependencies.php';
-    include '../../APIs/listener/ListenerBackend.php';
+    include '../../APIs/shared/MarketplaceBackend.php';
 
     $_SESSION['coins'];
     $_SESSION['status'];
     $_SESSION['cad'];
     $_SESSION['btn_show'];
+
+    $account = getAccount($_SESSION['username']);
+    $_SESSION['user_balance'] = $account['balance'];
 ?>
 
 <!doctype html>
@@ -35,10 +38,6 @@
                         HASSNER
                     </a>
 
-                    <?php
-                        $account = getAccount($_SESSION['username']);
-                        $_SESSION['user_balance'] = $account['balance'];
-                    ?>
                     <div class="wrapper-searchbar">
                         <div class="container-searchbar">
                             <label>
@@ -572,27 +571,25 @@
                             //Account page functionality
                             else if($_SESSION['display'] == 5)
                             {
-                                if($_SESSION['status'] == 3)
-                                {
-                                    echo "<script>alert('Incorrect Password');</script>";
-                                }
-                                $_SESSION['status'] = 0;
                                 echo '
                                     <section id="login">
-                                    <div class="container">
-                                        <div">
+                                        <div class="container">
                                             <div class="col-12 mx-auto my-auto text-center">
                                                 <h3 style="color: orange;padding-top:150px;">Verify your password to access personal page</h3>
                                                 <form action="../../APIs/listener/PersonalPageBackend.php" method="post">
                                                     <div class="form-group">
                                                         <h5>Password</h5>
-                                                        <input name = "verify_password" type="password" style="border-color: white;" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
+                                                        <input name = "verify_password" type="password" style="border-color: white;" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">';
+                                if($_SESSION['logging_mode'] == "PERSONAL_PAGE")
+                                {
+                                    getStatusMessage("Incorrect Password, please try again", "");
+                                }
+                                echo'
                                                     </div>
                                                     <div class="col-md-8 col-12 mx-auto pt-5 text-center">
                                                         <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
                                                     </div>
                                                 </form>
-                                                </div>
                                             </div>
                                         </div>
                                     </section>
