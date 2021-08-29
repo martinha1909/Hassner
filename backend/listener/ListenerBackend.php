@@ -280,16 +280,22 @@
                 break;
             $price_per_share = getArtistPricePerShare($users[$i]);
             $rate = getArtistCurrentRate($users[$i]);
+            $high = getHighestOrLowestPPS($users[$i], "MAX");
+            $low = getHighestOrLowestPPS($users[$i], "MIN");
             echo '<tr><th scope="row">'.$id.'</th>
                         <td><input name = "artist_name" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$users[$i].'"></td></td>
                         <td style="color: white">'.$all_shares[$i].'</td>
                         <td style="color: white">'.$price_per_share.'</td>';
             if($rate > 0)
-                echo '<td class="increase">+'.$rate.'%</td></tr>';
+                echo '<td class="increase">+'.$rate.'%</td>';
             else if($rate == 0)
-                echo '<td>'.$rate.'%</td></tr>';
+                echo '<td>'.$rate.'%</td>';
             else
-                echo '<td class="decrease">'.$rate.'%</td></tr>';       
+                echo '<td class="decrease">'.$rate.'%</td>';    
+            // Highest and lowest sell prices
+            echo '<td>'.$high.'</td>';
+            echo '<td>'.$low.'</td>';
+            echo '</tr>';
             $id++;
         }        
     }
