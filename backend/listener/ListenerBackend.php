@@ -277,7 +277,9 @@
         for($i=0; $i<sizeof($all_shares); $i++)
         {
             if($id == 6)
+            {
                 break;
+            }
             $price_per_share = getArtistPricePerShare($users[$i]);
             $rate = getArtistCurrentRate($users[$i]);
             $high = getHighestOrLowestPPS($users[$i], "MAX");
@@ -287,15 +289,22 @@
                         <td style="color: white">'.$all_shares[$i].'</td>
                         <td style="color: white">'.$price_per_share.'</td>';
             if($rate > 0)
+            {
                 echo '<td class="increase">+'.$rate.'%</td>';
-            else if($rate == 0)
+            }
+                
+            else if($rate == 0){
                 echo '<td>'.$rate.'%</td>';
+            }
             else
-                echo '<td class="decrease">'.$rate.'%</td>';    
+            {
+                echo '<td class="decrease">'.$rate.'%</td>';
+            }
+        
             // Highest and lowest sell prices
-            echo '<td>'.$high.'</td>';
-            echo '<td>'.$low.'</td>';
-            echo '</tr>';
+            echo '<td>'.$high.'</td>
+                 <td>'.$low.'</td>
+                 </tr>';
             $id++;
         }        
     }
