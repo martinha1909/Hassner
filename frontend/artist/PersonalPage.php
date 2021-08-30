@@ -1,6 +1,6 @@
 <?php
-    include '../../backendend/control/Dependencies.php';
-    include '../../backendend/shared/PersonalPageFunctions.php';
+    include '../../backend/control/Dependencies.php';
+    include '../../backend/shared/PersonalPageFunctions.php';
 ?>
 <head>
   <meta charset="utf-8">
@@ -27,7 +27,7 @@
       if($account_info['Share_Distributed'] == 0)
       {
           echo '
-                <form action="../../backendend/artist/DistributeShareBackend.php" method="post">
+                <form action="../../backend/artist/DistributeShareBackend.php" method="post">
 
                   <div style="float:none;margin:auto;" class="select-dark">
                       <select name="currency" id="dark">
@@ -91,11 +91,11 @@
                 <p style="color: #ff9100">
           ';
         printUserImportantInfo($account_info['email']); 
-        echo '<a href="../../backendend/shared/EditEmailBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
+        echo '<a href="../../backend/shared/EditEmailBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
         if($_SESSION['edit'] == 2)
         {
           echo '
-              <form action="../../backendend/shared/UpdateEmailBackend.php" method="post">
+              <form action="../../backend/shared/UpdateEmailBackend.php" method="post">
                 <div class="form-group">
                   <input type="text" name = "email_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new email address">
                 </div>
@@ -120,11 +120,11 @@
               <p>
           ';
         printUserImportantInfo($account_info['password']); 
-        echo '<a href="../../backendend/shared/EditPasswordBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
+        echo '<a href="../../backend/shared/EditPasswordBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
         if($_SESSION['edit'] == 1)
         {
           echo '
-            <form action="../../backendend/shared/UpdatePasswordBackend.php" method="post">
+            <form action="../../backend/shared/UpdatePasswordBackend.php" method="post">
               <div class="form-group">
                 <input type="password" name = "pwd_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new password">
               </div>
@@ -216,12 +216,12 @@
       <p><i style="color: white;" class="fa fa-user"></i> Share Distributed: <?php
         echo $account_info['Share_Distributed'];
       ?></p>
-      <a href="../../backendend/artist/EditShareDistributedBackend.php" id="icon-btn">+</a>
+      <a href="../../backend/artist/EditShareDistributedBackend.php" id="icon-btn">+</a>
       <?php
         if($_SESSION['edit'] == 3)
         {
           echo '
-            <form action="../../backendend/artist/UpdateShareDistributedBackend.php" method="post">
+            <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
               <div class="form-group">
                 <h6>How many more shares would you like to distribute?</h6>
                 <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">

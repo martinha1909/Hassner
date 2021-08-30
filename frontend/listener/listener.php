@@ -234,7 +234,9 @@
                                     echo " ↓";
                                 }
                                 else
+                                {
                                     echo "";
+                                }
                                 echo '
                                                 </th>
                                                 </form>
@@ -242,12 +244,18 @@
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
                                 //sort Shares bought ascending alphabetically
                                 if($_SESSION['sort_type'] == 2)
-                                    echo " ↑";
+                                {
+                                    echo ' ↑';
+                                }
                                 //sort Shares bought descending alphabetically
                                 else if($_SESSION['sort_type'] == 5)
+                                {
                                     echo " ↓";
+                                }
                                 else
+                                {
                                     echo "";
+                                }
                                 echo '
                                                 </th>
                                                 </form>
@@ -255,12 +263,18 @@
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
                                 //sort Price per share ascending alphabetically
                                 if($_SESSION['sort_type'] == 3)
-                                    echo " ↑";
+                                {
+                                    echo ' ↑';
+                                }
                                 //sort Price per share descending alphabetically
                                 else if($_SESSION['sort_type'] == 6)
+                                {
                                     echo " ↓";
+                                }
                                 else
+                                {
                                     echo "";
+                                }
     
                                 echo '
                                                 </th>
@@ -269,12 +283,19 @@
                                                     <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Rate" onclick="window.location.reload();">';
                                 //sort Rate ascending alphabetically
                                 if($_SESSION['sort_type'] == 0)
+                                {
                                     echo ' ↑';
+                                }
                                 //sort Rate descending alphabetically
                                 else if($_SESSION['sort_type'] == 7)
+                                {
                                     echo " ↓";
+                                }
                                 else
+                                {
                                     echo "";
+                                }
+                                
                                 echo '
                                                 </th>
                                                 </form>
@@ -342,7 +363,7 @@
                                 $share_amounts = array();
                                 $profits = array();
 
-                                //update the sahres that the user is currently selling
+                                //update the shares that the user is currently selling
                                 fetchUserSellingShares($_SESSION['username'], $artist_usernames, $roi, $selling_prices, $share_amounts, $profits);
                                 echo'    
                                     <h3>Your active shares</h3>
@@ -421,6 +442,8 @@
                                                 <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Shares bought"></th>
                                                 <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Price per share (q̶)"></th>
                                                 <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Rate"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Max Price"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Min Price"></th>
                                             </tr>
                                         </thead>
                                     <tbody>

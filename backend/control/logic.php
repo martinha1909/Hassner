@@ -345,7 +345,7 @@
             $conn->query($sql);
         }
 
-        function saveUserAccountInfo($conn, $username, $transit_no, $inst_no, $account_no, $swift, )
+        function saveUserAccountInfo($conn, $username, $transit_no, $inst_no, $account_no, $swift)
         {
             $sql = "UPDATE account SET Transit_no = '$transit_no', Inst_no = '$inst_no', Account_no = '$account_no', Swift = '$swift' WHERE username='$username'";
             $conn->query($sql);

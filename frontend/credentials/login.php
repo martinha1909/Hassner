@@ -1,5 +1,5 @@
 <?php
-  include '../../backendend/control/Dependencies.php';
+  include '../../backend/control/Dependencies.php';
   
   hassnerInit();
 ?>
@@ -58,7 +58,7 @@
             </div>
 
           <!-- signup form -->
-            <form action="../../backendend/credentials/LoginBackend.php" method="post">
+            <form action="../../backend/credentials/LoginBackend.php" method="post">
 
               <!-- username field -->
               <div class="form-group">

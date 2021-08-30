@@ -2,10 +2,10 @@
     session_start();
     if($_SESSION['dependencies'] == "FRONTEND")
     {
-        include '../../backendend/control/logic.php';
-        include '../../backendend/control/connection.php';
-        include '../../backendend/shared/Helper.php';
-        include '../../backendend/shared/TimeUtil.php';
+        include '../../backend/control/logic.php';
+        include '../../backend/control/connection.php';
+        include '../../backend/shared/Helper.php';
+        include '../../backend/shared/TimeUtil.php';
     }
     else if($_SESSION['dependencies'] == "BACKEND")
     {
