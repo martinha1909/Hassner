@@ -6,6 +6,7 @@
   $_SESSION['selected_artist'] = $_SESSION['username'];
   $_SESSION['lower_bound'] = 0.5;
   $account_info = getArtistAccount($_SESSION['username'], "artist");
+  $_SESSION['user_balance'] = $account_info['balance'];
 ?> 
 
 <!doctype html>
