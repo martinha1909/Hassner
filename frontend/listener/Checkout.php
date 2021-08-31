@@ -27,7 +27,7 @@
 <div style="padding-top:50px;" class="row">
   <div class="col-75">
     <div class="container">
-      <form action="../../backend/shared/CardVerificationBackend.php" method="post">
+      <form action="../../backend/listener/CardVerificationBackend.php" method="post">
       
         <div class="row">
           <div class="col-50">

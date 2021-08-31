@@ -15,11 +15,7 @@
     $current_pps = $res_2->fetch_assoc();
     $new_pps = $current_pps['price_per_share'] * ($additional_shares/$new_shares_distributed);
 
-    $res_3 = getArtistIinitialDeposit($conn, $_SESSION['username']);
-    $deposit = $res_3->fetch_assoc();
-    $new_lower_bound = $deposit['deposit']/$new_shares_distributed;
-
-    updateShareDistributed($conn, $_SESSION['username'], $new_shares_distributed, $new_pps, $new_lower_bound);
+    updateShareDistributed($conn, $_SESSION['username'], $new_shares_distributed, $new_pps);
 
     $_SESSION['edit'] = 0;
     $_SESSION['dependencies'] = "FRONTEND";

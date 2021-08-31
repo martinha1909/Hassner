@@ -151,18 +151,6 @@
             return $result;
         }
 
-        function getArtistShareLowerBound($conn, $artist_username)
-        {
-            $type = "artist";
-            $sql = "SELECT lower_bound FROM account WHERE username = ? AND account_type = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ss', $artist_username, $type);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            return $result;
-        }
-
         function getAskedPrices($conn, $artist_username)
         {
             $sql = "SELECT * FROM user_artist_sell_share WHERE artist_username = ?";
@@ -207,17 +195,6 @@
             return $result;
         }
 
-        function getArtistIinitialDeposit($conn, $artist_username)
-        {
-            $sql = "SELECT deposit FROM account WHERE username = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('s', $artist_username);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            return $result;
-        }
-
         function signup($conn, $username, $password, $type, $email) //done2
         {
             $original_share= "";
@@ -239,8 +216,6 @@
             $monthly_shareholder = 0;
             $income = 0;
             $market_cap = 0;
-            $lower_bound = 0;
-            $deposit = 0;
             if($type == 'artist')
                 $price_per_share = 1;
             else
@@ -251,15 +226,15 @@
             $sql = "INSERT INTO account (username, password, account_type, id, Shares, balance, rate, 
                                          Share_Distributed, email, billing_address, Full_name, City, State, ZIP, 
                                          Card_number, Transit_no, Inst_no, Account_no, Swift, price_per_share, 
-                                         Monthly_shareholder, Income, Market_cap, lower_bound, deposit)
-                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                         Monthly_shareholder, Income, Market_cap)
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('sssiiddisssssssssssdidddd', $username, $password, $type, $id, $num_of_shares, 
                                                            $balance, $rate, $share_distributed, $email, 
                                                            $billing_address, $full_name, $city, $state, $zip, 
                                                            $card_number, $transit_no, $inst_no, $account_no, 
                                                            $swift, $price_per_share, $monthly_shareholder, 
-                                                           $income, $market_cap, $lower_bound, $deposit);
+                                                           $income, $market_cap);
             if ($stmt->execute() === TRUE) {
                 $status = "SUCCESS";
             } else {
@@ -275,18 +250,9 @@
             return $result;
         }
 
-        function artistShareDistributionInit($conn, $artist_username, $share_distributing, $lower_bound, $initial_pps, $deposit)
+        function artistShareDistributionInit($conn, $artist_username, $share_distributing, $initial_pps)
         {
             $status = 0;
-            $sql = "UPDATE account SET lower_bound = '$lower_bound' WHERE username='$artist_username'";
-            if($conn->query($sql))
-            {
-                $status = "SUCCESS";
-            }
-            else
-            {
-                return "ERROR";
-            }
 
             $sql = "UPDATE account SET Share_Distributed = '$share_distributing' WHERE username='$artist_username'";
             if($conn->query($sql))
@@ -308,16 +274,6 @@
                 return "ERROR";
             }
 
-            $sql = "UPDATE account SET deposit = '$deposit' WHERE username='$artist_username'";
-            if($conn->query($sql))
-            {
-                $status = "SUCCESS";
-            }
-            else
-            {
-                return "ERROR";
-            }
-
             return $status;
         }
 
@@ -327,15 +283,12 @@
             $conn->query($sql);
         }
 
-        function updateShareDistributed($conn, $artist_username, $new_share_distributed, $new_pps, $new_lower_bound)
+        function updateShareDistributed($conn, $artist_username, $new_share_distributed, $new_pps)
         {
             $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username='$artist_username'";
             $conn->query($sql);
 
             $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username='$artist_username'";
-            $conn->query($sql);
-
-            $sql = "UPDATE account SET lower_bound = '$new_lower_bound' WHERE username='$artist_username'";
             $conn->query($sql);
         }
 
@@ -807,12 +760,6 @@
                 $conn->query($query);
 
                 $query = "UPDATE account SET Market_cap = 0 WHERE username='$username'";
-                $conn->query($query);
-
-                $query = "UPDATE account SET lower_bound = 0 WHERE username='$username'";
-                $conn->query($query);
-
-                $query = "UPDATE account SET deposit = 0 WHERE username='$username'";
                 $conn->query($query);
 
                 deleteShareTables($conn, $account_type, $username);

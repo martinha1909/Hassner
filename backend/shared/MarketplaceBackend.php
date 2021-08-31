@@ -70,15 +70,6 @@
          
     }
 
-    function getLowerBound($artist_username)
-    {
-        $conn = connect();
-        $result = getArtistShareLowerBound($conn, $artist_username);
-        $lower_bound = $result->fetch_assoc();
-         
-        return $lower_bound['lower_bound'];
-    }
-
     //gets all the users that has lowest price listed with the passed artist_username param
     function fetchAskedPrice(&$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
     {
@@ -437,7 +428,7 @@
             if($_SESSION['btn_show'] == 1)
             {
                 echo '
-                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Buy this amount!" onclick="window.location.reload();">
+                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Sell this amount!" onclick="window.location.reload();">
                         </div>
                     </form>
                 ';

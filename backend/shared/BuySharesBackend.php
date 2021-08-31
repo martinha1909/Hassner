@@ -32,17 +32,18 @@
             //the user now owns more share of the artist
             $buyer_new_share_amount = $_SESSION['shares_owned'] + $amount_bought;
 
-            //since there is a buying mecahnism, demand has gone up so price per share is increased
+            //in the case of buying with market price, the price per share doesn't change
             $new_pps = $_SESSION['current_pps']['price_per_share'];
-            for($i = 0; $i<$amount_bought; $i++)
-            {
-                //for now each time a share is bought its value is increased by 5%
-                $new_pps*=1.05;
-            }
-            $_SESSION['status'] = purchaseMarketPriceShare($conn, $_SESSION['username'], $_SESSION['selected_artist'], 
-                                     $buyer_new_balance, $artist_new_balance, 
-                                     $_SESSION['current_pps']['price_per_share'], $new_pps, 
-                                     $buyer_new_share_amount, $_SESSION['shares_owned'], $amount_bought);
+            $_SESSION['status'] = purchaseMarketPriceShare($conn, 
+                                                           $_SESSION['username'], 
+                                                           $_SESSION['selected_artist'], 
+                                                           $buyer_new_balance, 
+                                                           $artist_new_balance, 
+                                                           $_SESSION['current_pps']['price_per_share'], 
+                                                           $new_pps, 
+                                                           $buyer_new_share_amount, 
+                                                           $_SESSION['shares_owned'], 
+                                                           $amount_bought);
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;
             $_SESSION['dependencies'] = "FRONTEND";
@@ -67,28 +68,27 @@
             $seller_new_share_amount = $seller_initial_share_amount['no_of_share_bought'] - $amount_bought;
             $buyer_new_share_amount = $_SESSION['shares_owned'] + $amount_bought;
 
-            //since there is a buying mecahnism, demand has gone up so price per share is increased
-            $new_pps = $_SESSION['current_pps']['price_per_share'];
+            //In the case of buying in asked price, the new market price will become the last purchased price
+            $new_pps = $_SESSION['purchase_price'];
 
             //only user will fluctuate demand, if artists buy back the share they simply just own back their 
             //portion and increase the price per share by the amount they bought back
             if($_SESSION['account_type'] == "user")
             {
-                for($i = 0; $i<$amount_bought; $i++)
-                {
-                    //for now each time a share is bought its value is increased by 5%
-                    $new_pps*=1.05;
-                }
-                $_SESSION['status'] = purchaseAskedPriceShare($conn, $_SESSION['username'], $_SESSION['seller_toggle'], 
-                                        $_SESSION['selected_artist'], $buyer_new_balance, $seller_new_balance, 
-                                        $_SESSION['current_pps']['price_per_share'], $new_pps, 
-                                        $buyer_new_share_amount, $seller_new_share_amount, 
-                                        $_SESSION['shares_owned'], $amount_bought);
+                $_SESSION['status'] = purchaseAskedPriceShare($conn, 
+                                                              $_SESSION['username'], 
+                                                              $_SESSION['seller_toggle'], 
+                                                              $_SESSION['selected_artist'], 
+                                                              $buyer_new_balance, 
+                                                              $seller_new_balance, 
+                                                              $_SESSION['current_pps']['price_per_share'], 
+                                                              $new_pps, 
+                                                              $buyer_new_share_amount, 
+                                                              $seller_new_share_amount, 
+                                                              $_SESSION['shares_owned'], $amount_bought);
             }
             else if($_SESSION['account_type'] == "artist")
             {
-                $res = getArtistIinitialDeposit($conn, $_SESSION['username']);
-                $deposit = $res->fetch_assoc();
 
                 $res = searchNumberOfShareDistributed($conn, $_SESSION['username']);
                 $share_distributed = $res->fetch_assoc();
@@ -96,17 +96,20 @@
                 $res = searchArtistSharesBought($conn, $_SESSION['username']);
                 $artist_shares_bought = $res->fetch_assoc();
 
-                $res = getArtistShareLowerBound($conn, $_SESSION['username']);
-                $lower_bound = $res->fetch_assoc();
-
                 $new_share_distributed = $share_distributed['Share_Distributed'] - $amount_bought;
                 $new_artist_shares_bought = $artist_shares_bought['Shares'] - $amount_bought;
-                $new_lower_bound = $deposit['deposit']/$new_share_distributed;
-                $new_pps = $_SESSION['current_pps']['price_per_share'] / ($amount_bought/$new_share_distributed);
+                $new_pps = $new_pps / ($amount_bought/$new_share_distributed);
 
-                $_SESSION['status'] = buyBackShares($conn, $_SESSION['username'], $_SESSION['seller_toggle'], $buyer_new_balance, 
-                             $seller_new_balance, $seller_new_share_amount, $new_share_distributed, 
-                             $new_artist_shares_bought, $new_pps, $amount_bought);
+                $_SESSION['status'] = buyBackShares($conn, 
+                                                    $_SESSION['username'], 
+                                                    $_SESSION['seller_toggle'], 
+                                                    $buyer_new_balance, 
+                                                    $seller_new_balance, 
+                                                    $seller_new_share_amount, 
+                                                    $new_share_distributed, 
+                                                    $new_artist_shares_bought, 
+                                                    $new_pps, 
+                                                    $amount_bought);
             }
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;

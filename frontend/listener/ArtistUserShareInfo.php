@@ -125,6 +125,14 @@
                     {
                         if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
                         {
+                            if($_SESSION['logging_mode'] == "SELL_SHARE")
+                            {
+                                if($_SESSION['status'] == "EMPTY_ERR")
+                                {
+                                    $_SESSION['status'] = "ERROR";
+                                    getStatusMessage("Please fill out all fields", "");
+                                }
+                            }
                             echo '
                                 <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
                                     <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
@@ -149,9 +157,6 @@
                     //displaying sell shares button if user chooses the options
                     if($_SESSION['buy_sell'] == "SELL")
                     {
-                        $lower_bound = getLowerBound($_SESSION['selected_artist']);
-                        //for now the user can ask for a price from the lower bound to 5 times more than the current price per share
-                        $upper_bound = $_SESSION['current_pps']['price_per_share'] * 5;
                         echo '
                             <h6>How many shares are you selling?</h6>
                             <div class="wrapper-searchbar">
@@ -161,7 +166,6 @@
                                             <input name = "purchase_quantity" type="range" min="1" max='.$_SESSION['shares_owned'].' value="1" class="slider" id="myRange">
                                             <p>Quantity: <span id="demo"></span></p>
                                             <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
-                                            <p>Minimum: '.$lower_bound.'q̶</p>
                                             <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
                                         </form>
                                     </label> 
