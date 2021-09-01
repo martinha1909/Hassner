@@ -14,6 +14,7 @@
     }
     else
     {
+        $_SESSION['logging_mode'] = 0;
         $quantity = $_POST['purchase_quantity'];
         $asked_price = $_POST['asked_price'];
 

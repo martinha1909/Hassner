@@ -280,7 +280,7 @@
                                                 </th>
                                                 </form>
                                                 <form action = "../../backend/listener/SortPortfolioRateBackEnd.php">
-                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Rate" onclick="window.location.reload();">';
+                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
                                 //sort Rate ascending alphabetically
                                 if($_SESSION['sort_type'] == 0)
                                 {
@@ -381,48 +381,19 @@
                                         <tbody>';
                                 for($i=0; $i<sizeof($selling_prices); $i++)
                                 {
+                                    //Allowing users to remove/cancek their share order
                                     echo'
-                                            <tr>
-                                                <th scope="row">'.$artist_usernames[$i].'</th>
-                                                    <td>'.$selling_prices[$i].'</td>
-                                                    <td>'.$share_amounts[$i].'</td>
+                                            <form action="../../backend/listener/EditSellingShareBackend.php" method="post">
+                                                <tr>
+                                                    <th scope="row"><input name="remove_artist_name" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$artist_usernames[$i].'"></th>
+                                                    <td><input name="remove_share_price" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$selling_prices[$i].'"></td>
+                                                    <td><input name="remove_share_quantity" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$share_amounts[$i].'"></td>
                                                     <td>'.$roi[$i].'%</td>
                                                     <td>'.$profits[$i].'</td>
+                                                    <td><input type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                                </tr>
+                                            </form>
                                     ';
-                                    //Edits sold shares where the suer can fix the bid price and the quantity
-                                    //If the user chooses the new quantity to be 0, the current selling share would be removed from the market 
-                                    //and other users can't buy the current share anymore. 
-                                    if((strcmp($_SESSION['artist_share_remove'], $artist_usernames[$i]) == 0) && ($_SESSION['share_price_remove'] == $selling_prices[$i]))
-                                    {
-                                        $max_quantity = getMaxShareQuantity($_SESSION['username'], $artist_usernames[$i]);
-                                        //seding old bid prices, old quantity of shares being sold, and new bid prices and new quatity of shares being sold
-                                        echo '
-                                                    <form action="../../backend/listener/ConfirmEditSellingShareBackend.php" method="post">
-                                                        <td>
-                                                            <input name = "new_quantity" type="range" min="0" max='.$max_quantity.' value="'.$share_amounts[$i].'" class="slider" id="myRange">
-                                                            <p>New Quantity: <span id="demo"></span></p>
-                                                            <p>New Asked Price: <span id="asked_value"></span></p>
-                                                            <input type="text" name="new_asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new amount">
-                                                            <input name="old_asked_price['.$selling_prices[$i].']" style="cursor: context-menu; border:1px transparent; background-color: transparent;">
-                                                            <input name="old_quantity['.$share_amounts[$i].']" style="cursor: context-menu; border:1px transparent; background-color: transparent;">
-                                                            <input name="artist_name['.$artist_usernames[$i].']"type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
-                                                        </td>
-                                                    </form>
-                                            </tr>
-                                        ';
-                                    }
-                                    else
-                                    {
-                                        echo '
-                                                    <form action="../../backend/listener/EditSellingShareBackend.php" method="post">
-                                                        <td>
-                                                            <input name="remove_share_artist['.$artist_usernames[$i].']" style="cursor: context-menu; border:1px transparent; background-color: transparent;">
-                                                            <input name="remove_share_price['.$selling_prices[$i].']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="✏" onclick="window.location.reload();">
-                                                        </td>
-                                                    </form>
-                                            </tr>
-                                        ';
-                                    }
                                 }
                                 echo '
                                         </tbody>
