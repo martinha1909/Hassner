@@ -170,7 +170,6 @@
                         //Artist's portfolio
                         else if($_SESSION['display'] == 2 || $_SESSION['display'] == 0)
                         {
-                            $_SESSION['add'] = 0;
                             if($account_info['Share_Distributed'] == 0)
                             {
                                 echo '<h3>Get started by distributing share in the account tab</h3>';

@@ -10,13 +10,10 @@
         $_SESSION['currency'] = 0;
         $_SESSION['btn_show'] = 0;
         $_SESSION['saved'] = 0;
-        $_SESSION['top_rating'] = 0;
         $_SESSION['buy_sell'] = 0;
-        $_SESSION['add'] = 0;
         $_SESSION['add_share'] = 0;
         $_SESSION['buy_asked_price'] = 0;
         $_SESSION['buy_market_price'] = 0;
-        $_SESSION['share_price_remove'] = 0;
         //conversion rate from CAD to Siliqas, 1 CAD = 0.95 Sililqas (brute force for now)
         $_SESSION['conversion_rate'] = -0.05;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
