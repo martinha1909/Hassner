@@ -283,12 +283,9 @@
             $conn->query($sql);
         }
 
-        function updateShareDistributed($conn, $artist_username, $new_share_distributed, $new_pps)
+        function updateShareDistributed($conn, $artist_username, $new_share_distributed)
         {
             $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username='$artist_username'";
-            $conn->query($sql);
-
-            $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username='$artist_username'";
             $conn->query($sql);
         }
 
