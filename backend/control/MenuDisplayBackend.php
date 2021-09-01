@@ -25,5 +25,9 @@
     {
         $_SESSION['display'] = 6;
     }
+    else if($type == "Siliqas")
+    {
+        $_SESSION['display'] = 7;
+    }
     header("Location: ../../frontend/listener/Listener.php");
 ?>

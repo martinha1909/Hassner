@@ -194,6 +194,27 @@
                                     </li>
                                 ';
                             }
+
+                            if($_SESSION['display'] == 7)
+                            {
+                                echo '
+                                    <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
+                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Siliqas ->">
+                                        </form>
+                                    </li>
+                                ';
+                            }
+                            else
+                            {
+                                echo '
+                                    <li class="list-group-item-no-hover">
+                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
+                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Siliqas">
+                                        </form>
+                                    </li>
+                                ';
+                            }
                             
                             //Logout option
                             echo '
@@ -593,6 +614,92 @@
                                 $balance = getUserBalance($_SESSION['username']);
 
                                 sellSiliqasInit($balance);
+                            }
+
+                            else if($_SESSION['display'] == 7)
+                            {
+                                $balance = getUserBalance($_SESSION['username']);
+
+                                echo '
+                                    <section id="login" class="py-5";>
+                                        <div class="container">
+                                            <div class="col-12 mx-auto my-auto text-center">
+                                                <form action="../../backend/shared/CurrencyBackend.php" method="post">
+                                ';
+
+                                if($_SESSION['logging_mode'] == "BUY_SILIQAS")
+                                {
+                                    if($_SESSION['status'] == "EMPTY_ERR")
+                                    {
+                                        $_SESSION['status'] = "ERROR";
+                                        getStatusMessage("Please fill out all fields and try again", "");
+                                    }
+                                    else
+                                    {
+                                        getStatusMessage("Failed to buy, an error occured", "Siliqas bought successfully");
+                                    }
+                                }
+                                if($_SESSION['currency']==0)
+                                {
+                                    echo'
+                                            <div style="float:none;margin:auto;" class="select-dark">
+                                                <select name="currency" id="dark" onchange="this.form.submit()">
+                                                    <option selected disabled>Currency</option>
+                                                    <option value="USD">USD</option>
+                                                    <option value="CAD">CAD</option>
+                                                    <option value="EURO">EURO</option>
+                                                </select>
+                                            </div>
+                                    ';
+                                }
+                                else
+                                {
+                                    echo '
+                                            <div style="float:none;margin:auto;" class="select-dark">
+                                                <select name="currency" id="dark" onchange="this.form.submit()">
+                                                    <option selected disabled>'.$_SESSION['currency'].'</option>
+                                                    <option value="USD">USD</option>
+                                                    <option value="CAD">CAD</option>
+                                                    <option value="EURO">EURO</option>
+                                                </select>
+                                            </div>
+                                    ';
+                                    echo "Account balance: " . $balance. "<br>";
+                                    $conversion_rate = $_SESSION['conversion_rate'] * 100;
+                                    if($conversion_rate < 0)
+                                    {
+                                        echo "↓ " .$conversion_rate. "%<br>";
+                                    }
+                                    else if($conversion_rate > 0)
+                                    {
+                                        echo "↑ " .$conversion_rate. "%<br>";
+                                    }
+                                    else 
+                                    {
+                                        echo $conversion_rate;
+                                        echo "%<br>";
+                                    }
+                                    echo '
+                                            </form>
+                                            <form action = "../../backend/shared/SiliqasOptionsBackend.php" method = "post">
+                                    ';
+                                    if($_SESSION['currency'] == 0)
+                                    {
+                                        echo '
+                                                <h5 style="padding-top:150px;"> Please choose a currency</h5>
+                                        ';
+                                    }
+                                    else
+                                    {
+                                        echo '
+                                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                    <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.$_SESSION['currency'].' to Siliqas" onclick="window.location.reload();"> 
+                                                    <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Siliqas to '.$_SESSION['currency'].'" onclick="window.location.reload();"> 
+                                                </div>
+                                            </form>
+                                        ';
+                                    }
+                                }
                             }
                             
                             //Account page functionality
