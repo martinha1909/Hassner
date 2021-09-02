@@ -117,7 +117,7 @@
                       {
                           echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
                               <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                          echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Sell Siliqas ->">';
+                          echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Siliqas ->">';
                           echo '</form>';
                           echo '</li>';
                       }
@@ -125,7 +125,7 @@
                       {
                           echo '<li class="list-group-item-no-hover">
                               <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                          echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Sell Siliqas">';
+                          echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Siliqas">';
                           echo '</form>';
                           echo '</li>';
                       }
@@ -258,9 +258,7 @@
                         //Sell siliqas to USD/CAD/EURO
                         else if($_SESSION['display'] == 4)
                         {
-                            $balance = getUserBalance($_SESSION['username']);
-
-                            sellSiliqasInit($balance);
+                            siliqasInit();
                         }
 
                         else if($_SESSION['display'] == 5)

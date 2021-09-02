@@ -30,6 +30,7 @@
         {
             echo '<p style="color: green;">'.$suc_msg.'</p>';
         }
+
         $_SESSION['status'] = 0;
         $_SESSION['logging_mode'] = 0;
     }
@@ -59,6 +60,18 @@
             $ret *= 1.25;
         else if($currency_type == "EURO")
             $ret *= 1.47;
+
+        return $ret;
+    }
+
+    function siliqasToFiat($amount, $conversion_rate, $currency_type)
+    {
+        $ret = $amount;
+        $ret = $amount / (1 + $conversion_rate);
+        if($currency_type == "USD")
+            $ret /= 1.25;
+        else if($currency_type == "EURO")
+            $ret /= 1.47;
 
         return $ret;
     }
