@@ -22,17 +22,22 @@
         if(!empty($full_name) && !empty($email) && !empty($address) && !empty($city) && !empty($state) && !empty($zip) && !empty($card_name) && !empty($card_number) && !empty($expmonth) && !empty($expyear) && !empty($cvv))
         {
             $_SESSION['coins'] = round($_SESSION['coins'], 2);
-            saveUserPaymentInfo($conn, $_SESSION['username'], $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number);
-            if($_SESSION['account_type'] == "user")
-            {
-                $_SESSION['status'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
-            }
+            saveUserPaymentInfo($conn, 
+                                $_SESSION['username'], 
+                                $full_name, 
+                                $email, 
+                                $address, 
+                                $city, 
+                                $state, 
+                                $zip, 
+                                $card_name, 
+                                $card_number);
+            $_SESSION['status'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
             $_SESSION['btn_show'] = 0;
             $_SESSION['cad'] = 0;
             $_SESSION['coins'] = 0;
             $_SESSION['saved'] = 0; 
             $_SESSION['siliqas'] = 0;
-            $_SESSION['currency'] = 0;
         }
         else
         {
@@ -55,15 +60,11 @@
         if(!empty($full_name) && !empty($email) && !empty($address) && !empty($city) && !empty($state) && !empty($zip) && !empty($card_name) && !empty($card_number) && !empty($expmonth) && !empty($expyear) && !empty($cvv))
         {
             $_SESSION['coins'] = round($_SESSION['coins'], 2);
-            if($_SESSION['account_type'] == "artist")
-            {
-                $_SESSION['status'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
-            }
+            $_SESSION['status'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
             $_SESSION['cad'] = 0;
             $_SESSION['coins'] = 0;
             $_SESSION['siliqas'] = 0;
-            $_SESSION['saved'] = 0; 
-            $_SESSION['currency'] = 0;
+            $_SESSION['saved'] = 0;
         }
         else
         {

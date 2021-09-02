@@ -321,6 +321,13 @@
     {
         $balance = getUserBalance($_SESSION['username']);
 
+        echo '
+            <section id="login" class="py-5";>
+                <div class="container">
+                    <div class="col-12 mx-auto my-auto text-center">
+                        <form action="../../backend/shared/CurrencyBackend.php" method="post">
+        ';
+
         if($_SESSION['logging_mode'] == "BUY_SILIQAS")
         {
             if($_SESSION['status'] == "EMPTY_ERR")
@@ -350,13 +357,6 @@
                 getStatusMessage("An error occured", "Siliqas sold successfully");
             }
         }
-
-        echo '
-            <section id="login" class="py-5";>
-                <div class="container">
-                    <div class="col-12 mx-auto my-auto text-center">
-                        <form action="../../backend/shared/CurrencyBackend.php" method="post">
-        ';
 
         if($_SESSION['currency'] == 0)
         {
@@ -495,15 +495,13 @@
             echo '
                         <form action = "../../backend/shared/CheckConversionBackend.php" method = "post">
                             <div class="form-group">
-            ';
-            echo '
-                            <h5 style="padding-top:150px;">Enter Amount in Siliqas (q̶)</h5>
-                            <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
-                        </div>
-                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
-                        </div>
-                    </form>
+                                <h5 style="padding-top:150px;">Enter Amount in Siliqas (q̶)</h5>
+                                <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
+                            </div>
+                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
+                            </div>
+                        </form>
                         <p class="navbar navbar-expand-lg navbar-light bg-dark">'.$_SESSION['currency'].' (q̶):
             ';
             
@@ -536,10 +534,6 @@
             </div>
         </div>
     </section>';
-
-            $_SESSION['btn_show'] = 0;
-            $_SESSION['currency'] = 0;
-            $_SESSION['siliqas_or_fiat'] = 0;
         }
 }
 ?>

@@ -22,7 +22,6 @@
             $_SESSION['coins'] = 0;
             $_SESSION['saved'] = 0; 
             $_SESSION['siliqas'] = 0;
-            $_SESSION['currency'] = 0;
         }
         else
         {
@@ -38,8 +37,7 @@
             $_SESSION['cad'] = 0;
             $_SESSION['coins'] = 0;
             $_SESSION['siliqas'] = 0;
-            $_SESSION['saved'] = 0; 
-            $_SESSION['currency'] = 0;
+            $_SESSION['saved'] = 0;
         }
         else
         {
