@@ -10,14 +10,11 @@
         $_SESSION['currency'] = 0;
         $_SESSION['btn_show'] = 0;
         $_SESSION['saved'] = 0;
-        $_SESSION['top_rating'] = 0;
         $_SESSION['buy_sell'] = 0;
-        $_SESSION['add'] = 0;
         $_SESSION['add_share'] = 0;
         $_SESSION['buy_asked_price'] = 0;
         $_SESSION['buy_market_price'] = 0;
-        $_SESSION['artist_share_remove'] = 0;
-        $_SESSION['share_price_remove'] = 0;
+        $_SESSION['siliqas_or_fiat'] = 0;
         //conversion rate from CAD to Siliqas, 1 CAD = 0.95 Sililqas (brute force for now)
         $_SESSION['conversion_rate'] = -0.05;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
@@ -33,6 +30,7 @@
         {
             echo '<p style="color: green;">'.$suc_msg.'</p>';
         }
+
         $_SESSION['status'] = 0;
         $_SESSION['logging_mode'] = 0;
     }
@@ -62,6 +60,18 @@
             $ret *= 1.25;
         else if($currency_type == "EURO")
             $ret *= 1.47;
+
+        return $ret;
+    }
+
+    function siliqasToFiat($amount, $conversion_rate, $currency_type)
+    {
+        $ret = $amount;
+        $ret = $amount / (1 + $conversion_rate);
+        if($currency_type == "USD")
+            $ret /= 1.25;
+        else if($currency_type == "EURO")
+            $ret /= 1.47;
 
         return $ret;
     }

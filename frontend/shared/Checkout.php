@@ -19,15 +19,30 @@
     <header class="smart-scroll">
         <div class="container-xxl">
             <nav class="navbar navbar-expand-md navbar-dark bg-orange d-flex justify-content-between">
-                <a id = "href-hover" style = "background: transparent;" class="navbar-brand" href="listener.php" onclick='window.location.reload();'>
-                    HASSNER
-                </a>
+              <?php
+                if($_SESSION['account_type'] == "user")
+                {
+                  echo '
+                        <a id = "href-hover" style = "background: transparent;" class="navbar-brand" href="../listener/listener.php" onclick="window.location.reload();">
+                            HASSNER
+                        </a>
+                  ';
+                }
+                else if($_SESSION['account_type'] == "artist")
+                {
+                  echo '
+                        <a id = "href-hover" style = "background: transparent;" class="navbar-brand" href="../artist/Artist.php" onclick="window.location.reload();">
+                            HASSNER
+                        </a>
+                  ';
+                }
+              ?>
         </div>
     </header>
 <div style="padding-top:50px;" class="row">
   <div class="col-75">
     <div class="container">
-      <form action="../../backend/listener/CardVerificationBackend.php" method="post">
+      <form action="../../backend/shared/CardVerificationBackend.php" method="post">
       
         <div class="row">
           <div class="col-50">
