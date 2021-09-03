@@ -459,7 +459,7 @@
                 <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
             ';
             
-            if($_SESSION['coins']!=0)
+            if($_SESSION['coins'] != 0)
             {
                 //rounding to 2 decimals
                 echo round($_SESSION['coins'], 2);
