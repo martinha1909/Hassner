@@ -366,7 +366,7 @@
                             <option selected disabled>Currency</option>
                             <option value="USD">USD</option>
                             <option value="CAD">CAD</option>
-                            <option value="EURO">EURO</option>
+                            <option value="EUR">EUR</option>
                         </select>
                     </div>
             ';
@@ -379,7 +379,7 @@
                             <option selected disabled>'.$_SESSION['currency'].'</option>
                             <option value="USD">USD</option>
                             <option value="CAD">CAD</option>
-                            <option value="EURO">EURO</option>
+                            <option value="EUR">EUR</option>
                         </select>
                     </div>
             ';
