@@ -2,6 +2,8 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
 
+    $_SESSION['logging_mode'] = "SELL_SILIQAS";
+
     $conn = connect();
     $save_info = $_POST['save_info'];
     $transit_no = $_POST['transit_no'];
@@ -20,11 +22,10 @@
             $_SESSION['coins'] = 0;
             $_SESSION['saved'] = 0; 
             $_SESSION['siliqas'] = 0;
-            $_SESSION['currency'] = 0;
         }
         else
         {
-            $_SESSION['status'] = 2; 
+            $_SESSION['status'] = "EMPTY_ERR"; 
         }
     }
     else
@@ -36,19 +37,14 @@
             $_SESSION['cad'] = 0;
             $_SESSION['coins'] = 0;
             $_SESSION['siliqas'] = 0;
-            $_SESSION['saved'] = 0; 
-            $_SESSION['currency'] = 0;
+            $_SESSION['saved'] = 0;
         }
         else
         {
-            $_SESSION['status'] = 2;
+            $_SESSION['status'] = "EMPTY_ERR";
         }
     }
-    $_SESSION['saved'] = 0;
     $_SESSION['dependencies'] = "FRONTEND";
 
-     
-    
     returnToMainPage();
-    
 ?>

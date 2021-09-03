@@ -43,7 +43,7 @@
 </section>
 
 <?php
-  if($_SESSION['status'] == 1)
+  if($_SESSION['status'] == "SUCCESS")
     echo "<script>alert('Admin ID sent successfully');</script>";
   if($_SESSION['status'] == 2)
     echo "<script>alert('Failed');</script>";
@@ -67,7 +67,7 @@
             
 
                 <!-- signup form -->
-                <form action = "../APIs/AdminRegisterConnection.php" method = "post">
+                <form action = "../backend/AdminRegisterConnection.php" method = "post">
 
                     <!-- username field -->
                     <div class="form-group">

@@ -13,7 +13,7 @@
     {
         $_SESSION['display'] = 3;
     }
-    else if($type == "Sell Siliqas")
+    else if($type == "Siliqas")
     {
         $_SESSION['display'] = 4;
     }

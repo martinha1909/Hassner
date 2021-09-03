@@ -1,5 +1,5 @@
 <?php
-  include '../../APIs/control/Dependencies.php';
+  include '../../backend/control/Dependencies.php';
   
   hassnerInit();
 ?>
@@ -38,14 +38,6 @@
       </div>
     </section>
 
-    <?php
-    if($_SESSION['status'] == 1)
-    echo "<script>alert('Account created sucessfully');</script>";
-    if($_SESSION['status'] == 2)
-    echo "<script>alert('Failed to create account');</script>";
-    $_SESSION['status'] = 0;
-    ?>
-
 <!--signup functionality-->
     <section class="py-7 py-md-0 bg-dark" id="login">
       <div class="container">
@@ -71,7 +63,7 @@
             </div>
 
             <!-- signup form -->
-            <form action = "../../APIs/credentials/SignUpBackend.php" method = "post">
+            <form action = "../../backend/credentials/SignUpBackend.php" method = "post">
 
             <!-- username field -->
 
@@ -90,6 +82,30 @@
                 <h5>Password</h5>
                 <input type="password" name = "password" class="form-control" style="border-color: white;" id="exampleInputPassword1" placeholder="Password">
               </div>
+
+              <?php
+                $status = "";
+                if($_SESSION['status'] == "USERNAME_ERR")
+                {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Username already taken", "");
+                }
+                else if($_SESSION['status'] == "SERVER_ERR")
+                {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Server error, cannot create account", "");
+                }
+                else if($_SESSION['status'] == "EMPTY_ERR")
+                {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Please fill out all fields", "");
+                }
+                else if($_SESSION['status'] == "EMAIL_ERR")
+                {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Email already taken", "");
+                }
+              ?>
 
               <!-- account type -->
               <h6 style = "color: orange;">Account Type</h6>

@@ -1,6 +1,6 @@
 <?php
-    include '../../APIs/control/Dependencies.php';
-    include '../../APIs/shared/PersonalPageFunctions.php';
+    include '../../backend/control/Dependencies.php';
+    include '../../backend/shared/PersonalPageFunctions.php';
 ?>
 <head>
   <meta charset="utf-8">
@@ -26,46 +26,31 @@
       $account_info = getAccount($_SESSION['username']);
       if($account_info['Share_Distributed'] == 0)
       {
-          $status = "";
-          if($_SESSION['status'] == 1)
-          {
-            $status = "Please enter in number format";
-          }
-          else if($_SESSION['status'] == 2)
-          {
-            $status = "Your price per share cannot be below 0.5q̶/share";
-          }
           echo '
-                <form action="../../APIs/artist/DistributeShareBackend.php" method="post">
-
-                  <div style="float:none;margin:auto;" class="select-dark">
-                      <select name="currency" id="dark">
-                          <option selected disabled>Currency</option>
-                          <option value="USD">USD</option>
-                          <option value="CAD">CAD</option>
-                          <option value="EURO">EURO</option>
-                      </select>
-                  </div>
+                <form action="../../backend/artist/DistributeShareBackend.php" method="post">
 
                   <div class="form-group">
-                    <h5>Deposit</h5>
-                    <input name = "deposit" type="text" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
+                    <h5>How much siliqas are you raising</h5>
+                    <input name = "siliqas_raising" type="text" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
                   </div>
 
                   <div class="form-group">
                     <h5>How many shares are you distributing?</h5>
                     <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
                   </div>';
-          if($_SESSION['status'] == 1)
+          
+          if($_SESSION['logging_mode'] == "SHARE_DIST")
           {
-            echo '<h6 style="color: red;">'.$status.'</h6>';
-          }
-          else if($_SESSION['status'] == 2)
-          {
-            echo '
-                  <h6 style="color: red;">'.$status.'</h6>
-                  <h6 style="color: red;">Current price per share: '.$_SESSION['lower_bound'].'q̶</h6>
-            ';
+            if($_SESSION['status'] == "NUM_ERR")
+            {
+              $_SESSION['status'] = "ERROR";
+              getStatusMessage("Please enter in number format", "");
+            }
+            else if($_SESSION['status'] == "EMPTY_ERR")
+            {
+              $_SESSION['status'] = "ERROR";
+              getStatusMessage("Please fill out all fields", "");
+            }
           }
 
           echo '
@@ -76,7 +61,6 @@
 
                 </form>
               ';
-          $_SESSION['status'] = 0;
       }
       else
       {
@@ -93,11 +77,11 @@
                 <p style="color: #ff9100">
           ';
         printUserImportantInfo($account_info['email']); 
-        echo '<a href="../../APIs/shared/EditEmailBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
+        echo '<a href="../../backend/shared/EditEmailBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
         if($_SESSION['edit'] == 2)
         {
           echo '
-              <form action="../../APIs/shared/UpdateEmailBackend.php" method="post">
+              <form action="../../backend/shared/UpdateEmailBackend.php" method="post">
                 <div class="form-group">
                   <input type="text" name = "email_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new email address">
                 </div>
@@ -122,11 +106,11 @@
               <p>
           ';
         printUserImportantInfo($account_info['password']); 
-        echo '<a href="../../APIs/shared/EditPasswordBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
+        echo '<a href="../../backend/shared/EditPasswordBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
         if($_SESSION['edit'] == 1)
         {
           echo '
-            <form action="../../APIs/shared/UpdatePasswordBackend.php" method="post">
+            <form action="../../backend/shared/UpdatePasswordBackend.php" method="post">
               <div class="form-group">
                 <input type="password" name = "pwd_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new password">
               </div>
@@ -182,8 +166,6 @@
       ?></p>
     </section>
 
-    <!-- This section displays deposit info (sell siliqas) of personal page -->
-
     <!-- Displaying transit number -->
     <section class="middle-card">
       <h1 id="h1-sm">Deposit info</h1>
@@ -218,12 +200,12 @@
       <p><i style="color: white;" class="fa fa-user"></i> Share Distributed: <?php
         echo $account_info['Share_Distributed'];
       ?></p>
-      <a href="../../APIs/artist/EditShareDistributedBackend.php" id="icon-btn">+</a>
+      <a href="../../backend/artist/EditShareDistributedBackend.php" id="icon-btn">+</a>
       <?php
         if($_SESSION['edit'] == 3)
         {
           echo '
-            <form action="../../APIs/artist/UpdateShareDistributedBackend.php" method="post">
+            <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
               <div class="form-group">
                 <h6>How many more shares would you like to distribute?</h6>
                 <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">

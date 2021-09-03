@@ -1,5 +1,5 @@
 <?php
-    include '../../APIs/control/Dependencies.php';
+    include '../../backend/control/Dependencies.php';
 
     $result = getUserBalance($conn, $_SESSION['username']);
     $balance = $result->fetch_assoc();
@@ -35,7 +35,7 @@
                 <div class="container-searchbar">
                         <label>
                             <span class="screen-reader-text">Search for...</span>
-                            <form class="form-inline" action="../../APIs/listener/SearchPageBackend.php" method="post">
+                            <form class="form-inline" action="../../backend/listener/SearchPageBackend.php" method="post">
                                 <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_name" />
                             </form>
                         </label>
@@ -86,7 +86,7 @@
                     </thead>
                     <tbody>
               <!-- view song form -->
-              <form action="../APIs/SongDisplayUser.php" method="post">
+              <form action="../backend/SongDisplayUser.php" method="post">
                   <?php
                     $conn = connect();
                     $id = 1;

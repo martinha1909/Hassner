@@ -1,5 +1,5 @@
 <?php
-  include '../../APIs/control/Dependencies.php';
+  include '../../backend/control/Dependencies.php';
   
   hassnerInit();
 ?>
@@ -37,14 +37,6 @@
       </div>
     </section>
 
-    <?php
-    if($_SESSION['status'] == 1)
-    echo "<script>alert('Account created sucessfully');</script>";
-    if($_SESSION['status'] == 2)
-    echo "<script>alert('Failed to create account');</script>";
-    $_SESSION['status'] = 0;
-    ?>
-
     <!--signup functionality-->
     <section class="py-7 py-md-0 bg-dark" id="login">
       <div class="container">
@@ -66,7 +58,7 @@
             </div>
 
           <!-- signup form -->
-            <form action="../../APIs/credentials/LoginBackend.php" method="post">
+            <form action="../../backend/credentials/LoginBackend.php" method="post">
 
               <!-- username field -->
               <div class="form-group">
@@ -78,6 +70,10 @@
               <div class="form-group">
                 <h5>Password</h5>
                 <input name = "password" type="password" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              </div>
+
+              <div class="form-group">
+                <p style="color: red;"><?php getStatusMessage("Your credentials do not match", "Account created successfully"); ?></p>
               </div>
 
 

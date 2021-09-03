@@ -1,5 +1,5 @@
 <?php
-  include '../../APIs/control/Dependencies.php';
+  include '../../backend/control/Dependencies.php';
   
   $account_info = getAccount($_SESSION['username']);
   $_SESSION['expmonth'] = 0;
@@ -42,14 +42,14 @@
 <div style="padding-top:50px;" class="row">
   <div class="col-75">
     <div class="container">
-      <form action="../../APIs/shared/DepositVerificationBackend.php" method="post">
+      <form action="../../backend/shared/DepositVerificationBackend.php" method="post">
       
         <div class="row">
           
           </div>
           <div class="col-50">
             <h3>Sellout</h3>
-            <h5 class="text-right"><a href="../../APIs/shared/UseSavedAccountInfoBackend.php" onclick='window.location.reload();' class="btn btn-primary py-2">Use saved account info</a></h5>
+            <h5 class="text-right"><a href="../../backend/shared/UseSavedAccountInfoBackend.php" onclick='window.location.reload();' class="btn btn-primary py-2">Use saved account info</a></h5>
             <label for="cname">Transit No. : </label>
             <?php
                 if($_SESSION['saved'] == 1) // change this to transit num 

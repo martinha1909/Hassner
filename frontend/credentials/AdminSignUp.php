@@ -60,7 +60,7 @@
             
 
                 <!-- signup form -->
-                <form action = "../APIs/EmailVerification.php" method = "post">
+                <form action = "../backend/EmailVerification.php" method = "post">
 
                     <!-- username field -->
                     <div class="form-group">

@@ -1,6 +1,6 @@
 <?php
-    include '../../APIs/control/Dependencies.php';
-    include '../../APIs/listener/SearchArtistBackend.php';
+    include '../../backend/control/Dependencies.php';
+    include '../../backend/listener/SearchArtistBackend.php';
 ?>
 
 <!doctype html>
@@ -38,7 +38,7 @@
                         <div class="container-searchbar">
                             <label>
                                 <span class="screen-reader-text">Search for...</span>
-                                <form class="form-inline" action="../../APIs/listener/SearchPageBackend.php" method="post">
+                                <form class="form-inline" action="../../backend/listener/SearchPageBackend.php" method="post">
                                     <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_search" />
                                 </form>
                             </label>
@@ -72,7 +72,6 @@
                                                 <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Artist"></th>
                                                 <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Price Per Share"></th>
                                                 <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Market Cap"></th>
-                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Lower Bound"></th>
                                                 <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Monthly Shareholders"></th>
                                             </tr>
                                         </thead>
