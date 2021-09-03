@@ -9,21 +9,17 @@
     {
         $_SESSION['display'] = 2;
     }
-    else if($type == "Buy Siliqas")
+    else if($type == "Siliqas")
     {
         $_SESSION['display'] = 3;
     }
-    else if($type == "Sell Siliqas")
+    else if($type == "Account")
     {
         $_SESSION['display'] = 4;
     }
-    else if($type == "Account")
-    {
-        $_SESSION['display'] = 5;
-    }
     else if($type == "Communities")
     {
-        $_SESSION['display'] = 6;
+        $_SESSION['display'] = 5;
     }
     header("Location: ../../frontend/listener/Listener.php");
 ?>

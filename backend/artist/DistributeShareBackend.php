@@ -5,43 +5,29 @@
     $_SESSION['logging_mode'] = "SHARE_DIST";
 
     $conn = connect();
-    $_SESSION['shares_distributing'] = 0;
-    $_SESSION['shares_distributing'] = $_POST['distribute_share'];
-    $_SESSION['deposit'] = $_POST['deposit'];
+    $shares_distributing = 0;
+    $shares_distributing = $_POST['distribute_share'];
+    $siliqas_raising = $_POST['siliqas_raising'];
 
-    if(empty($_SESSION['shares_distributing']) || empty($_SESSION['deposit']))
+    if(empty($shares_distributing) || empty($siliqas_raising))
     {
         $_SESSION['status'] = "EMPTY_ERR";
         header("Location: ../../frontend/artist/PersonalPage.php");
     }
-    else if(!is_numeric($_SESSION['shares_distributing']) || !is_numeric($_SESSION['deposit']))
+    else if(!is_numeric($shares_distributing) || !is_numeric($siliqas_raising))
     {
         $_SESSION['status'] = "NUM_ERR";
         header("Location: ../../frontend/artist/PersonalPage.php");
     }
     else
     {
-        $_SESSION['currency'] = $_POST['currency'];
-        if($_SESSION['currency'] == "Currency")
-        {
-            $_SESSION['status'] = "CURRENCY_ERR";
-            header("Location: ../../frontend/artist/PersonalPage.php");
-        }
-        else
-        {
-            $_SESSION['deposit'] = convertToSiliqas($_SESSION['deposit'], $_SESSION['conversion_rate'], $_SESSION['currency']);
-            echo $_SESSION['deposit'];
-            $_SESSION['lower_bound'] = $_SESSION['deposit']/$_SESSION['shares_distributing'];
-            if($_SESSION['lower_bound'] < 0.5)
-            {
-                header("Location: ../../frontend/artist/PersonalPage.php");
-            }
+        $initial_pps = $siliqas_raising/$shares_distributing;
 
-            $_SESSION['initial_pps'] = $_SESSION['lower_bound'];
+        artistShareDistributionInit($conn, $_SESSION['username'], $shares_distributing, $initial_pps);
 
-            $_SESSION['dependencies'] = "FRONTEND";
+        $_SESSION['display'] = 0;
+        $_SESSION['dependencies'] = "FRONTEND";
 
-            header("Location: ../../frontend/artist/Checkout.php");
-        }
+        header("Location: ../../frontend/artist/Artist.php");
     }
 ?>

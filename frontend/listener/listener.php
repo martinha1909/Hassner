@@ -2,11 +2,6 @@
     include '../../backend/control/Dependencies.php';
     include '../../backend/shared/MarketplaceBackend.php';
 
-    $_SESSION['coins'];
-    $_SESSION['status'];
-    $_SESSION['cad'];
-    $_SESSION['btn_show'];
-
     $account = getAccount($_SESSION['username']);
     $_SESSION['user_balance'] = $account['balance'];
 ?>
@@ -106,14 +101,14 @@
                                     </li>
                                 ';
                             }
-
-                            //When Buy Siliqas is selected
+                            
+                            //When Siliqas option is selected
                             if($_SESSION['display'] == 3)
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
                                         <form action="../../backend/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Buy Siliqas ->">
+                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Siliqas ->">
                                         </form>
                                     </li>
                                 ';
@@ -123,36 +118,14 @@
                                 echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold;border:1px orange; background-color: transparent;" value="Buy Siliqas">
-                                        </form>
-                                    </li>
-                                ';
-                            }
-
-                            //When Sell Siliqas is selected
-                            if($_SESSION['display'] == 4)
-                            {
-                                echo '
-                                    <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Sell Siliqas ->">
-                                        </form>
-                                    </li>
-                                ';
-                            }
-                            else
-                            {
-                                echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Sell Siliqas">
+                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Siliqas">
                                         </form>
                                     </li>
                                 ';
                             }
 
                             //When Account is selected
-                            if($_SESSION['display'] == 5)
+                            if($_SESSION['display'] == 4)
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
@@ -174,7 +147,7 @@
                             }
 
                             //When settings is selected
-                            if($_SESSION['display'] == 6)
+                            if($_SESSION['display'] == 5)
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
@@ -280,7 +253,7 @@
                                                 </th>
                                                 </form>
                                                 <form action = "../../backend/listener/SortPortfolioRateBackEnd.php">
-                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Rate" onclick="window.location.reload();">';
+                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
                                 //sort Rate ascending alphabetically
                                 if($_SESSION['sort_type'] == 0)
                                 {
@@ -381,48 +354,19 @@
                                         <tbody>';
                                 for($i=0; $i<sizeof($selling_prices); $i++)
                                 {
+                                    //Allowing users to remove/cancek their share order
                                     echo'
-                                            <tr>
-                                                <th scope="row">'.$artist_usernames[$i].'</th>
-                                                    <td>'.$selling_prices[$i].'</td>
-                                                    <td>'.$share_amounts[$i].'</td>
+                                            <form action="../../backend/listener/EditSellingShareBackend.php" method="post">
+                                                <tr>
+                                                    <th scope="row"><input name="remove_artist_name" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$artist_usernames[$i].'"></th>
+                                                    <td><input name="remove_share_price" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$selling_prices[$i].'"></td>
+                                                    <td><input name="remove_share_quantity" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$share_amounts[$i].'"></td>
                                                     <td>'.$roi[$i].'%</td>
                                                     <td>'.$profits[$i].'</td>
+                                                    <td><input type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                                </tr>
+                                            </form>
                                     ';
-                                    //Edits sold shares where the suer can fix the bid price and the quantity
-                                    //If the user chooses the new quantity to be 0, the current selling share would be removed from the market 
-                                    //and other users can't buy the current share anymore. 
-                                    if((strcmp($_SESSION['artist_share_remove'], $artist_usernames[$i]) == 0) && ($_SESSION['share_price_remove'] == $selling_prices[$i]))
-                                    {
-                                        $max_quantity = getMaxShareQuantity($_SESSION['username'], $artist_usernames[$i]);
-                                        //seding old bid prices, old quantity of shares being sold, and new bid prices and new quatity of shares being sold
-                                        echo '
-                                                    <form action="../../backend/listener/ConfirmEditSellingShareBackend.php" method="post">
-                                                        <td>
-                                                            <input name = "new_quantity" type="range" min="0" max='.$max_quantity.' value="'.$share_amounts[$i].'" class="slider" id="myRange">
-                                                            <p>New Quantity: <span id="demo"></span></p>
-                                                            <p>New Asked Price: <span id="asked_value"></span></p>
-                                                            <input type="text" name="new_asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new amount">
-                                                            <input name="old_asked_price['.$selling_prices[$i].']" style="cursor: context-menu; border:1px transparent; background-color: transparent;">
-                                                            <input name="old_quantity['.$share_amounts[$i].']" style="cursor: context-menu; border:1px transparent; background-color: transparent;">
-                                                            <input name="artist_name['.$artist_usernames[$i].']"type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
-                                                        </td>
-                                                    </form>
-                                            </tr>
-                                        ';
-                                    }
-                                    else
-                                    {
-                                        echo '
-                                                    <form action="../../backend/listener/EditSellingShareBackend.php" method="post">
-                                                        <td>
-                                                            <input name="remove_share_artist['.$artist_usernames[$i].']" style="cursor: context-menu; border:1px transparent; background-color: transparent;">
-                                                            <input name="remove_share_price['.$selling_prices[$i].']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="✏" onclick="window.location.reload();">
-                                                        </td>
-                                                    </form>
-                                            </tr>
-                                        ';
-                                    }
                                 }
                                 echo '
                                         </tbody>
@@ -466,137 +410,13 @@
                                 echo '</table>';
                             }
 
-                            //displaying Buy Siliqas functionality
                             else if($_SESSION['display'] == 3)
                             {
-                                $balance = getUserBalance($_SESSION['username']);
-
-                                echo '
-                                    <section id="login" class="py-5";>
-                                        <div class="container">
-                                            <div class="col-12 mx-auto my-auto text-center">
-                                                <form action="../../backend/shared/CurrencyBackend.php" method="post">
-                                ';
-
-                                if($_SESSION['logging_mode'] == "BUY_SILIQAS")
-                                {
-                                    if($_SESSION['status'] == "EMPTY_ERR")
-                                    {
-                                        $_SESSION['status'] = "ERROR";
-                                        getStatusMessage("Please fill out all fields and try again", "");
-                                    }
-                                    else
-                                    {
-                                        getStatusMessage("Failed to buy, an error occured", "Siliqas bought successfully");
-                                    }
-                                }
-                                if($_SESSION['currency']==0)
-                                {
-                                    echo'
-                                            <div style="float:none;margin:auto;" class="select-dark">
-                                                <select name="currency" id="dark" onchange="this.form.submit()">
-                                                    <option selected disabled>Currency</option>
-                                                    <option value="USD">USD</option>
-                                                    <option value="CAD">CAD</option>
-                                                    <option value="EURO">EURO</option>
-                                                </select>
-                                            </div>
-                                    ';
-                                }
-                                else
-                                {
-                                    echo '
-                                            <div style="float:none;margin:auto;" class="select-dark">
-                                                <select name="currency" id="dark" onchange="this.form.submit()">
-                                                    <option selected disabled>'.$_SESSION['currency'].'</option>
-                                                    <option value="USD">USD</option>
-                                                    <option value="CAD">CAD</option>
-                                                    <option value="EURO">EURO</option>
-                                                </select>
-                                            </div>
-                                    ';
-                                }
-                                echo "Account balance: " . $balance. "<br>";
-                                $conversion_rate = $_SESSION['conversion_rate'] * 100;
-                                if($conversion_rate < 0)
-                                {
-                                    echo "↓ " .$conversion_rate. "%<br>";
-                                }
-                                else if($conversion_rate > 0)
-                                {
-                                    echo "↑ " .$conversion_rate. "%<br>";
-                                }
-                                else 
-                                {
-                                    echo $conversion_rate;
-                                    echo "%<br>";
-                                }
-                                echo '
-                                            </form>
-                                            <form action = "../../backend/listener/CheckConversionBackend.php" method = "post">
-                                                <div class="form-group">
-                                ';
-                                if($_SESSION['currency'] == 0)
-                                {
-                                    echo '
-                                            <h5 style="padding-top:150px;"> Please choose a currency</h5>
-                                    ';
-                                }
-                                else
-                                {
-                                    echo '
-                                            <h5 style="padding-top:150px;">Enter Amount in '.$_SESSION['currency'].'</h5>
-                                            <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
-                                        </div>
-                                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
-                                        </div>
-                                        </form>
-                                        <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
-                                    ';
-                                    
-                                    if($_SESSION['coins']!=0)
-                                    {
-                                        //rounding to 2 decimals
-                                        echo round($_SESSION['coins'], 2);
-                                    }
-                                    else
-                                    {
-                                        echo " ";
-                                        echo 0;
-                                    }
-                                    echo '
-                                        </p>
-                                        </form>
-                                        <form action = "Checkout.php" method = "post">
-                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                    ';
-                                    if($_SESSION['btn_show'] == 1)
-                                    {
-                                        echo '
-                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Buy this amount!" onclick="window.location.reload();">
-                                            </div>
-                                        </form>
-                                        ';
-                                    }
-                                    echo'
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>';
-                                    $_SESSION['btn_show'] = 0;
-                                }
-                            }
-                            //displaying Sell Siliqas functionality
-                            else if($_SESSION['display'] == 4)
-                            {
-                                $balance = getUserBalance($_SESSION['username']);
-
-                                sellSiliqasInit($balance);
+                                siliqasInit();
                             }
                             
                             //Account page functionality
-                            else if($_SESSION['display'] == 5)
+                            else if($_SESSION['display'] == 4)
                             {
                                 echo '
                                     <section id="login">

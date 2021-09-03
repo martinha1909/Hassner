@@ -29,18 +29,9 @@
           echo '
                 <form action="../../backend/artist/DistributeShareBackend.php" method="post">
 
-                  <div style="float:none;margin:auto;" class="select-dark">
-                      <select name="currency" id="dark">
-                          <option value="Currency">Currency</option>
-                          <option value="USD">USD</option>
-                          <option value="CAD">CAD</option>
-                          <option value="EURO">EURO</option>
-                      </select>
-                  </div>
-
                   <div class="form-group">
-                    <h5>Deposit</h5>
-                    <input name = "deposit" type="text" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
+                    <h5>How much siliqas are you raising</h5>
+                    <input name = "siliqas_raising" type="text" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
                   </div>
 
                   <div class="form-group">
@@ -54,11 +45,6 @@
             {
               $_SESSION['status'] = "ERROR";
               getStatusMessage("Please enter in number format", "");
-            }
-            else if($_SESSION['status'] == "CURRENCY_ERR")
-            {
-              $_SESSION['status'] = "ERROR";
-              getStatusMessage("Please choose a currency", "");
             }
             else if($_SESSION['status'] == "EMPTY_ERR")
             {
@@ -179,8 +165,6 @@
         echo $account_info['ZIP'];
       ?></p>
     </section>
-
-    <!-- This section displays deposit info (sell siliqas) of personal page -->
 
     <!-- Displaying transit number -->
     <section class="middle-card">

@@ -70,15 +70,6 @@
          
     }
 
-    function getLowerBound($artist_username)
-    {
-        $conn = connect();
-        $result = getArtistShareLowerBound($conn, $artist_username);
-        $lower_bound = $result->fetch_assoc();
-         
-        return $lower_bound['lower_bound'];
-    }
-
     //gets all the users that has lowest price listed with the passed artist_username param
     function fetchAskedPrice(&$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
     {
@@ -326,8 +317,10 @@
         }
     }
 
-    function sellSiliqasInit($balance)
+    function siliqasInit()
     {
+        $balance = getUserBalance($_SESSION['username']);
+
         echo '
             <section id="login" class="py-5";>
                 <div class="container">
@@ -335,7 +328,19 @@
                         <form action="../../backend/shared/CurrencyBackend.php" method="post">
         ';
 
-        if($_SESSION['logging_mode'] == "SELL_SILIQAS")
+        if($_SESSION['logging_mode'] == "BUY_SILIQAS")
+        {
+            if($_SESSION['status'] == "EMPTY_ERR")
+            {
+                $_SESSION['status'] = "ERROR";
+                getStatusMessage("Please fill out all fields and try again", "");
+            }
+            else
+            {
+                getStatusMessage("Failed to buy, an error occured", "Siliqas bought successfully");
+            }
+        }
+        else if($_SESSION['logging_mode'] == "SELL_SILIQAS")
         {
             if($_SESSION['status'] == "EMPTY_ERR")
             {
@@ -353,7 +358,7 @@
             }
         }
 
-        if($_SESSION['currency']==0)
+        if($_SESSION['currency'] == 0)
         {
             echo'
                     <div style="float:none;margin:auto;" class="select-dark">
@@ -368,54 +373,136 @@
         }
         else
         {
-        echo '
-                <div style="float:none;margin:auto;" class="select-dark">
-                    <select name="currency" id="dark" onchange="this.form.submit()">
-                        <option selected disabled>'.$_SESSION['currency'].'</option>
-                        <option value="USD">USD</option>
-                        <option value="CAD">CAD</option>
-                        <option value="EURO">EURO</option>
-                    </select>
-                </div>
-        ';
-        }
-        echo "Account balance: " . $balance. "<br>";
-        $conversion_rate = $_SESSION['conversion_rate'] * 100;
-        if($conversion_rate < 0)
-        {
-            echo "↓ " .$conversion_rate. "%<br>";
-        }
-        else if($conversion_rate > 0)
-        {
-            echo "↑ " .$conversion_rate. "%<br>";
-        }
-        else 
-        {
-            echo $conversion_rate;
-            echo "%<br>";
-        }
-        echo '
-                    </form>
-                    <form action = "../../backend/shared/CheckSellConversionBackend.php" method = "post">
-                        <div class="form-group">
-        ';
-        if($_SESSION['currency'] == 0)
-        {
             echo '
-                            <h5 style="padding-top:150px;"> Please choose a currency</h5>
+                    <div style="float:none;margin:auto;" class="select-dark">
+                        <select name="currency" id="dark" onchange="this.form.submit()">
+                            <option selected disabled>'.$_SESSION['currency'].'</option>
+                            <option value="USD">USD</option>
+                            <option value="CAD">CAD</option>
+                            <option value="EURO">EURO</option>
+                        </select>
+                    </div>
             ';
+            echo "Account balance: " . $balance. "<br>";
+            $conversion_rate = $_SESSION['conversion_rate'] * 100;
+            if($conversion_rate < 0)
+            {
+                echo "↓ " .$conversion_rate. "%<br>";
+            }
+            else if($conversion_rate > 0)
+            {
+                echo "↑ " .$conversion_rate. "%<br>";
+            }
+            else 
+            {
+                echo $conversion_rate;
+                echo "%<br>";
+            }
+            echo '
+                    </form>
+                    <form action = "../../backend/shared/SiliqasOptionsBackend.php" method = "post">
+            ';
+            if($_SESSION['currency'] == 0)
+            {
+                echo '
+                        <h5 style="padding-top:150px;"> Please choose a currency</h5>
+                ';
+            }
+            else
+            {
+                if($_SESSION['siliqas_or_fiat'] == 0)
+                {
+                    echo '
+                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.$_SESSION['currency'].' to Siliqas" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Siliqas to '.$_SESSION['currency'].'" onclick="window.location.reload();"> 
+                            </div>
+                        </form>
+                    ';
+                }
+                else if($_SESSION['siliqas_or_fiat'] == "BUY_SILIQAS")
+                {
+                    echo '
+                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.$_SESSION['currency'].' to Siliqas" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Siliqas to '.$_SESSION['currency'].'" onclick="window.location.reload();"> 
+                            </div>
+                        </form>
+                    ';
+                }
+                else if($_SESSION['siliqas_or_fiat'] == "SELL_SILIQAS")
+                {
+                    echo '
+                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.$_SESSION['currency'].' to Siliqas" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Siliqas to '.$_SESSION['currency'].'" onclick="window.location.reload();"> 
+                            </div>
+                        </form>
+                    ';
+                }
+            }
         }
-        else
+        if($_SESSION['siliqas_or_fiat'] == "BUY_SILIQAS")
         {
             echo '
-                            <h5 style="padding-top:150px;">Enter Amount in Siliqas (q̶)</h5>
-                            <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
-                        </div>
-                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
-                        </div>
-                    </form>
-                        <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
+                    <form action = "../../backend/shared/CheckConversionBackend.php" method = "post">
+                        <div class="form-group">
+            ';
+            echo '
+                    <h5 style="padding-top:150px;">Enter Amount in '.$_SESSION['currency'].'</h5>
+                    <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
+                </div>
+                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                        <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
+                </div>
+                </form>
+                <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
+            ';
+            
+            if($_SESSION['coins']!=0)
+            {
+                //rounding to 2 decimals
+                echo round($_SESSION['coins'], 2);
+            }
+            else
+            {
+                echo " ";
+                echo 0;
+            }
+            echo '
+                </p>
+                </form>
+                <form action = "../shared/Checkout.php" method = "post">
+                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+            ';
+            if($_SESSION['btn_show'] == 1)
+            {
+                echo '
+                        <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Buy this amount!" onclick="window.location.reload();">
+                    </div>
+                </form>
+                ';
+            }
+            echo'
+                </div>
+            </div>
+        </div>
+    </section>';
+            $_SESSION['btn_show'] = 0;
+        }
+        else if($_SESSION['siliqas_or_fiat'] == "SELL_SILIQAS")
+        {
+            echo '
+                        <form action = "../../backend/shared/CheckConversionBackend.php" method = "post">
+                            <div class="form-group">
+                                <h5 style="padding-top:150px;">Enter Amount in Siliqas (q̶)</h5>
+                                <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
+                            </div>
+                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
+                            </div>
+                        </form>
+                        <p class="navbar navbar-expand-lg navbar-light bg-dark">'.$_SESSION['currency'].' (q̶):
             ';
             
             if($_SESSION['coins']!=0)
@@ -437,7 +524,7 @@
             if($_SESSION['btn_show'] == 1)
             {
                 echo '
-                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Buy this amount!" onclick="window.location.reload();">
+                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Sell this amount!" onclick="window.location.reload();">
                         </div>
                     </form>
                 ';
@@ -447,7 +534,6 @@
             </div>
         </div>
     </section>';
-            $_SESSION['btn_show'] = 0;
         }
-    }
+}
 ?>

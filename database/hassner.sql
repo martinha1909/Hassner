@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 17, 2021 at 04:27 AM
+-- Generation Time: Sep 01, 2021 at 12:49 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -50,22 +50,20 @@ CREATE TABLE `account` (
   `price_per_share` float NOT NULL,
   `Monthly_shareholder` int(11) NOT NULL,
   `Income` float NOT NULL,
-  `Market_cap` float NOT NULL,
-  `lower_bound` float NOT NULL,
-  `deposit` float NOT NULL
+  `Market_cap` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `lower_bound`, `deposit`) VALUES
-('21 Savage', 'artist', 'artist', 6, 0, 0, 0, 0, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 1, 0, 0, 0, 0, 0),
-('88Glam', 'artist', 'artist', 2, 16, 958.967, 0, 50, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0.43137, 0, 0, 0, 2, 100),
-('kai', 'user', 'user', 4, 6, 539.652, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, 0),
-('martin', 'user', 'user', 1, 14, 7968.08, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '1', '1', '1', '1', 0, 0, 0, 0, 0, 0),
-('NAV', 'artist', 'artist', 3, 9, 1203.98, 0.013, 10, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 126.784, 0, 0, 0, 0, 0),
-('vitor', 'user', 'user', 5, 2, 244.256, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0, 0);
+INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`) VALUES
+('21 Savage', 'artist', 'artist', 6, 0, 0, 0, 0, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0),
+('88Glam', 'artist', 'artist', 2, 6, 570, 0, 10, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 130, 0, 0, 0),
+('kai', 'user', 'user', 4, 0, 0, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0),
+('martin', 'user', 'user', 1, 5, 9031.43, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '1', '1', '1', '1', 0, 0, 0, 0),
+('NAV', 'artist', 'artist', 3, 2, 28.5714, 0, 7, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 14.2857, 0, 0, 0),
+('vitor', 'user', 'user', 5, 1, 870, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -76,7 +74,7 @@ INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `
 CREATE TABLE `user_artist_sell_share` (
   `user_username` varchar(50) NOT NULL,
   `artist_username` varchar(50) NOT NULL,
-  `selling_price` int(11) NOT NULL,
+  `selling_price` float NOT NULL,
   `no_of_share` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -85,11 +83,8 @@ CREATE TABLE `user_artist_sell_share` (
 --
 
 INSERT INTO `user_artist_sell_share` (`user_username`, `artist_username`, `selling_price`, `no_of_share`) VALUES
-('kai', 'NAV', 100, 0),
-('martin', '88Glam', 1, 4),
-('martin', '88Glam', 4, 2),
-('martin', '88Glam', 10, 3),
-('vitor', '88Glam', 10, 1);
+('martin', '88Glam', 130, 1),
+('martin', '88Glam', 145, 1);
 
 -- --------------------------------------------------------
 
@@ -109,11 +104,9 @@ CREATE TABLE `user_artist_share` (
 --
 
 INSERT INTO `user_artist_share` (`user_username`, `artist_username`, `no_of_share_bought`, `price_per_share_when_bought`) VALUES
-('kai', 'NAV', 6, 70.9525),
-('martin', '88Glam', 14, 5),
-('martin', 'NAV', 0, 64.356),
-('vitor', '88Glam', 2, 7.2954),
-('vitor', 'NAV', 3, 109.521);
+('martin', '88Glam', 5, 95),
+('martin', 'NAV', 2, 14.2857),
+('vitor', '88Glam', 2, 114.896);
 
 --
 -- Indexes for dumped tables
