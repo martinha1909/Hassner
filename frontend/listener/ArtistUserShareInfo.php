@@ -139,7 +139,7 @@
                                 </form>
                             ';
                         }
-                        else
+                        else if($_SESSION['logging_mode'] == "SELL_SHARE")
                         {
                             $_SESSION['status'] = "ERROR";
                             getStatusMessage("All shares are currently being sold", "");
