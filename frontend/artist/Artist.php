@@ -254,7 +254,7 @@
                             ';
                         }
 
-                        //Sell siliqas to USD/CAD/EURO
+                        //Sell siliqas to USD/CAD/EUR
                         else if($_SESSION['display'] == 4)
                         {
                             siliqasInit();

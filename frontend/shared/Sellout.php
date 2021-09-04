@@ -108,7 +108,7 @@
       <?php 
        if($_SESSION['currency'] == "USD" || $_SESSION['currency'] == "CAD") 
        echo "$";
-     else if($_SESSION['currency'] == "EURO")
+     else if($_SESSION['currency'] == "EUR")
        echo "€";
      echo $_SESSION['siliqas'];
       ?>

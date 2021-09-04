@@ -366,7 +366,7 @@
                             <option selected disabled>Currency</option>
                             <option value="USD">USD</option>
                             <option value="CAD">CAD</option>
-                            <option value="EURO">EURO</option>
+                            <option value="EUR">EUR</option>
                         </select>
                     </div>
             ';
@@ -379,7 +379,7 @@
                             <option selected disabled>'.$_SESSION['currency'].'</option>
                             <option value="USD">USD</option>
                             <option value="CAD">CAD</option>
-                            <option value="EURO">EURO</option>
+                            <option value="EUR">EUR</option>
                         </select>
                     </div>
             ';
@@ -459,7 +459,7 @@
                 <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
             ';
             
-            if($_SESSION['coins']!=0)
+            if($_SESSION['coins'] != 0)
             {
                 //rounding to 2 decimals
                 echo round($_SESSION['coins'], 2);

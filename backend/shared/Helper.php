@@ -58,7 +58,7 @@
         $ret = $amount * (1 + $conversion_rate);
         if($currency_type == "USD")
             $ret *= 1.25;
-        else if($currency_type == "EURO")
+        else if($currency_type == "EUR")
             $ret *= 1.47;
 
         return $ret;
@@ -70,7 +70,7 @@
         $ret = $amount / (1 + $conversion_rate);
         if($currency_type == "USD")
             $ret /= 1.25;
-        else if($currency_type == "EURO")
+        else if($currency_type == "EUR")
             $ret /= 1.47;
 
         return $ret;

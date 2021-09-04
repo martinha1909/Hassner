@@ -228,7 +228,7 @@
       {
         echo "$";
       }
-      else if($_SESSION['currency'] == "EURO")
+      else if($_SESSION['currency'] == "EUR")
       {
         echo "€";
       }
@@ -240,7 +240,7 @@
         {
             echo "$";
         }
-        else if($_SESSION['currency'] == "EURO")
+        else if($_SESSION['currency'] == "EUR")
         {
             echo "€";
         }
