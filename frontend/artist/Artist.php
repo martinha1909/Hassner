@@ -196,23 +196,68 @@
                                 {
                                     echo '
                                         <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
+                                            <p>How many shares would you like to inject?</p>
                                             <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">
+                                            <p>Comments</p>
+                                            <input type="text" name = "inject_comment" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter comment">
                                             <div class="col-md-8 col-12 mx-auto pt-5 text-center">
                                             <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Save">  
                                             </div>
                                         </form>
                                     ';
                                 }
-                                echo '<h6>Current Shareholders: '.$shareholder_list->num_rows.'</h6>';
-                                echo '<h6>Market cap (q̶): '.$market_cap.'</h6>';
-                                echo '<h6>Day High (q̶): '.$high.'</h6>';
-                                echo '<h6>Day Low (q̶): '.$low.'</h6>';
                                 echo '
+                                        <h6>Current Shareholders: '.$shareholder_list->num_rows.'</h6>
+                                        <h6>Market cap (q̶): '.$market_cap.'</h6>
+                                        <h6>Day High (q̶): '.$high.'</h6>
+                                        <h6>Day Low (q̶): '.$low.'</h6>
                                         <br>
                                         <h2>Buy Back Shares</h2>
                                 ';
 
                                 askedPriceInit();
+                                echo '
+                                            </tbody>
+                                        </table>
+                                ';
+
+                                $comments = array();
+                                $amount_injected = array();
+                                $date_injected = array();
+                                $time_injected = array();
+
+                                fetchInjectionHistory($_SESSION['username'], 
+                                                      $comments, 
+                                                      $amount_injected, 
+                                                      $date_injected, 
+                                                      $time_injected);
+
+                                echo '
+                                        <h3>Inject history</h3>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Ethos amount</th>
+                                                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Comment</th>
+                                                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Date Injected</th>
+                                                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Injected</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                ';
+
+                                for($i = 0; $i < sizeof($amount_injected); $i++)
+                                {
+                                    echo '
+                                            <tr>
+                                                <th scope="row">'.$amount_injected[$i].'</th>
+                                                <td>'.$comments[$i].'</td>
+                                                <td>'.$date_injected[$i].'</td>
+                                                <td>'.$time_injected[$i].'</td>
+                                            </tr>
+                                    ';
+                                }
+
                                 echo '
                                             </tbody>
                                         </table>
