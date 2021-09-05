@@ -186,7 +186,7 @@
                     <ul class="list-group col">
                         <?php                    
                             //displaying My Portfolio
-                            if($_SESSION['display'] == 0 || $_SESSION['display'] == 2)
+                            if($_SESSION['display'] == 0 || $_SESSION['display'] == "PORTFOLIO")
                             {  
                                 echo '
                                     <table class="table">
@@ -375,7 +375,7 @@
                             }
 
                             //displaying Top Invested Artist
-                            else if($_SESSION['display'] == 1)
+                            else if($_SESSION['display'] == "ARTISTS")
                             {
                                 echo '
                                     <table class="table">
@@ -410,13 +410,13 @@
                                 echo '</table>';
                             }
 
-                            else if($_SESSION['display'] == 3)
+                            else if($_SESSION['display'] == "SILIQAS")
                             {
                                 siliqasInit();
                             }
                             
                             //Account page functionality
-                            else if($_SESSION['display'] == 4)
+                            else if($_SESSION['display'] == "ACCOUNT")
                             {
                                 echo '
                                     <section id="login">

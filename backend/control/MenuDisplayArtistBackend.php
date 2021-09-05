@@ -1,5 +1,7 @@
 <?php
-    session_start();
+    $_SESSION['dependencies'] = "BACKEND";
+    include '../control/Dependencies.php';
+
     $type = $_POST['display_type'];
     if($type == "Campaign")
     {
@@ -25,5 +27,8 @@
     {
         $_SESSION['display'] = 3;
     }
-    header("Location: ../../frontend/artist/Artist.php");
+
+    $_SESSION['dependencies'] = "FRONTEND";
+
+    returnToMainPage();
 ?>

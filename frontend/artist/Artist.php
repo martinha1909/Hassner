@@ -168,13 +168,13 @@
                   <div class="col">
                     <?php
                         //Artist campaigns, including benchmark, raffle, and give aways.
-                        if($_SESSION['display'] == 1)
+                        if($_SESSION['display'] == "CAMPAIGN")
                         {  
                         //nothing to do now as it's not part of vital functionality
                         }
 
                         //Artist's portfolio
-                        else if($_SESSION['display'] == 2 || $_SESSION['display'] == 0)
+                        else if($_SESSION['display'] == "ETHOS" || $_SESSION['display'] == 0)
                         {
                             if($account_info['Share_Distributed'] == 0)
                             {
@@ -236,7 +236,7 @@
 
                         //brings to Artist personal account page, where they can input their metrics, which are shown
                         //when users search for them and also on their portfolio tab
-                        else if($_SESSION['display'] == 3)
+                        else if($_SESSION['display'] == "ACCOUNT")
                         {
                             echo '
                                 <section id="login">
@@ -261,12 +261,12 @@
                         }
 
                         //Sell siliqas to USD/CAD/EUR
-                        else if($_SESSION['display'] == 4)
+                        else if($_SESSION['display'] == "SILIQAS")
                         {
                             siliqasInit();
                         }
 
-                        else if($_SESSION['display'] == 5)
+                        else if($_SESSION['display'] == "ARTISTS")
                         {
                         
                         }
