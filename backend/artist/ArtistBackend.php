@@ -50,29 +50,4 @@
         }
          
     }
-
-    function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, &$date_injected, &$time_injected)
-    {
-        $conn = connect();
-
-        $res = getInjectionHistory($conn, $artist_username);
-
-        while($row = $res->fetch_assoc())
-        {
-            $date = dateParser($row['date_injected']);
-            $time = timeParser($row['time_injected']);
-
-            $day = dayToText($date[0]);
-            $month = monthToText($date[1]);
-            $year = "20".$date[2];
-
-            $inject_date = $month." ".$day.", ".$year;
-            $inject_time = timeToText($time[0], $time[1]);
-
-            array_push($comments, $row['comment']);
-            array_push($amount_injected, $row['amount']);
-            array_push($date_injected, $inject_date);
-            array_push($time_injected, $inject_time);
-        }
-    }
 ?>

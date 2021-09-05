@@ -221,47 +221,9 @@
                                         </table>
                                 ';
 
-                                $comments = array();
-                                $amount_injected = array();
-                                $date_injected = array();
-                                $time_injected = array();
+                                echo '<h3>Inject history</h3>';
 
-                                fetchInjectionHistory($_SESSION['username'], 
-                                                      $comments, 
-                                                      $amount_injected, 
-                                                      $date_injected, 
-                                                      $time_injected);
-
-                                echo '
-                                        <h3>Inject history</h3>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Ethos amount</th>
-                                                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Comment</th>
-                                                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Date Injected</th>
-                                                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Injected</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                ';
-
-                                for($i = 0; $i < sizeof($amount_injected); $i++)
-                                {
-                                    echo '
-                                            <tr>
-                                                <th scope="row">'.$amount_injected[$i].'</th>
-                                                <td>'.$comments[$i].'</td>
-                                                <td>'.$date_injected[$i].'</td>
-                                                <td>'.$time_injected[$i].'</td>
-                                            </tr>
-                                    ';
-                                }
-
-                                echo '
-                                            </tbody>
-                                        </table>
-                                ';
+                                injectionHistoryInit($_SESSION['username']);
                             }
                         }
 
