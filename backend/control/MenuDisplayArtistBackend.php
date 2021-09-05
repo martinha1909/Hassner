@@ -1,25 +1,25 @@
 <?php
     session_start();
     $type = $_POST['display_type'];
-    if($type == "Your Campaign")
+    if($type == "Campaign")
     {
-        $_SESSION['display'] = 1;
+        $_SESSION['display'] = "CAMPAIGN";
     }
-    else if($type == "My Portfolio")
+    else if($type == "Ethos")
     {
-        $_SESSION['display'] = 2;
+        $_SESSION['display'] = "ETHOS";
     }
     else if($type == "Account")
     {
-        $_SESSION['display'] = 3;
+        $_SESSION['display'] = "ACCOUNT";
     }
     else if($type == "Siliqas")
     {
-        $_SESSION['display'] = 4;
+        $_SESSION['display'] = "SILIQAS";
     }
-    else if($type == "Settings")
+    else if($type == "Artists")
     {
-        $_SESSION['display'] = 5;
+        $_SESSION['display'] = "ARTISTS";
     }
     else if($type == "+")
     {

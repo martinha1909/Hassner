@@ -59,12 +59,12 @@
                         <?php
                             //By default My Portfolio is selected
                             //When My Portfolio is selected
-                            if($_SESSION['display'] == 0 || $_SESSION['display'] == 2)
+                            if($_SESSION['display'] == 0 || $_SESSION['display'] == "PORTFOLIO")
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px #11171a; border-right-color: #11171a;">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="My Portfolio ->"
+                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                            <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="Portfolio ->"
                                         </form>
                                     </li>
                                 ';
@@ -73,20 +73,20 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="My Portfolio">
+                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="Portfolio">
                                         </form>
                                     </li>
                                 ';
                             }
 
-                            //When Top Invested Artist is selected
-                            if($_SESSION['display'] == 1)
+                            //When settings is selected
+                            if($_SESSION['display'] == "CAMPAIGN")
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Top Invested Artists ->">
+                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Campaign ->">
                                         </form>
                                     </li>
                                 ';
@@ -95,19 +95,19 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="Top Invested Artists">
+                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Campaign">
                                         </form>
                                     </li>
                                 ';
                             }
-                            
+
                             //When Siliqas option is selected
-                            if($_SESSION['display'] == 3)
+                            if($_SESSION['display'] == "SILIQAS")
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Siliqas ->">
                                         </form>
                                     </li>
@@ -117,19 +117,41 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Siliqas">
                                         </form>
                                     </li>
                                 ';
                             }
 
-                            //When Account is selected
-                            if($_SESSION['display'] == 4)
+                            //When Artists is selected
+                            if($_SESSION['display'] == "ARTISTS")
                             {
                                 echo '
                                     <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Artists ->">
+                                        </form>
+                                    </li>
+                                ';
+                            }
+                            else
+                            {
+                                echo '
+                                    <li class="list-group-item-no-hover">
+                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="Artists">
+                                        </form>
+                                    </li>
+                                ';
+                            }
+
+                            //When Account is selected
+                            if($_SESSION['display'] == "ACCOUNT")
+                            {
+                                echo '
+                                    <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
+                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Account ->">
                                         </form>
                                     </li>
@@ -139,30 +161,8 @@
                             {
                                 echo '
                                     <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
+                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
                                             <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Account">
-                                        </form>
-                                    </li>
-                                ';
-                            }
-
-                            //When settings is selected
-                            if($_SESSION['display'] == 5)
-                            {
-                                echo '
-                                    <li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Communities ->">
-                                        </form>
-                                    </li>
-                                ';
-                            }
-                            else
-                            {
-                                echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Communities">
                                         </form>
                                     </li>
                                 ';
