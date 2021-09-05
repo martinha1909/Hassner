@@ -23,13 +23,14 @@
     <link rel="stylesheet" href="../css/default.css" id="theme-color">
     <link rel="stylesheet" href="../css/searchbar.css" id="theme-color">
     <link rel="stylesheet" href="../css/slidebar.css" id="theme-color">
+    <link rel="stylesheet" href="../css/menu.css" id="theme-color">
 </head>
 <body class="bg-dark">
 
 <!--navigation-->
 <section class="smart-scroll">
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-md navbar-dark bg-orange justify-content-between">
+        <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan justify-content-between">
             <a id="href-hover" class="navbar-brand heading-black" href="listener.php">
                 HASSNER
             </a>

@@ -28,20 +28,12 @@
     <body class="bg-dark">
         <section class="smart-scroll">
             <div class="container-xxl">
-                <nav class="navbar navbar-expand-md navbar-dark bg-orange">
+                <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
                     <a id = "href-hover" class="navbar-brand heading-black" href="#" onclick='window.location.reload();'>
                         HASSNER
                     </a>
 
-<<<<<<< HEAD
-                    <?php
-                        $account = getAccount($_SESSION['username']);
-                        $_SESSION['user_balance'] = $account['balance'];
-                    ?>
-                    <div style="float:none;margin:auto;" class="wrapper-searchbar">
-=======
-                    <div class="wrapper-searchbar">
->>>>>>> 8c92d8aa9ea43f3a70fc3f506747ab975c587174
+                    <div class="wrapper-searchbar mx-auto">
                         <div class="container-searchbar">
                             <label>
                                 <span class="screen-reader-text">Search for...</span>
@@ -191,7 +183,8 @@
                             ';
                         ?>
                     </ul>
-                    <ul class="list-group col">
+                    <div class="container my-auto mx-auto col-6">
+                    <ul class="list-group">
                         <?php                    
                             //displaying My Portfolio
                             if($_SESSION['display'] == 0 || $_SESSION['display'] == 2)
@@ -347,16 +340,18 @@
                                 //update the shares that the user is currently selling
                                 fetchUserSellingShares($_SESSION['username'], $artist_usernames, $roi, $selling_prices, $share_amounts, $profits);
                                 echo'    
-                                    <h3>Your active shares</h3>
+                                
+                                <div class="container py-6 my-auto mx-auto">    
+                                <h3>Your sell orders</h3>
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Artist</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Selling for (q̶)</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Return on investment</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Profit/Loss (q̶)</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col"></th>
+                                                <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Artist</th>
+                                                <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Selling for (q̶)</th>
+                                                <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Quantity</th>
+                                                <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">ROI</th>
+                                                <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Gain/Loss (q̶)</th>
+                                                <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Remove Order</th>
                                             </tr>
                                         </thead>
                                         <tbody>';
@@ -371,7 +366,7 @@
                                                     <td><input name="remove_share_quantity" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$share_amounts[$i].'"></td>
                                                     <td>'.$roi[$i].'%</td>
                                                     <td>'.$profits[$i].'</td>
-                                                    <td><input type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                                    <td><input type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
                                                 </tr>
                                             </form>
                                     ';
@@ -379,9 +374,11 @@
                                 echo '
                                         </tbody>
                                     </table>
+                                    </div>
                                 ';
+                                
                             }
-
+                            
                             //displaying Top Invested Artist
                             else if($_SESSION['display'] == 1)
                             {
@@ -429,7 +426,7 @@
                                 echo '
                                     <section id="login">
                                         <div class="container">
-                                            <div class="col-12 mx-auto my-auto text-center">
+                                            <div class="col-4 mx-auto my-auto text-center">
                                                 <h3 style="color: orange;padding-top:150px;">Verify your password to access personal page</h3>
                                                 <form action="../../backend/listener/PersonalPageBackend.php" method="post">
                                                     <div class="form-group">
@@ -452,6 +449,7 @@
                             }
                         ?>
                     </ul>
+                    </div>
                 </div>
             </div>
         </section>

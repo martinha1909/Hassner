@@ -25,7 +25,7 @@
     <body class="bg-dark">
     <section class="smart-scroll">
             <div class="container-xxl">
-                <nav class="navbar navbar-expand-md navbar-dark bg-orange">
+                <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
                 
                     <a id = "href-hover" class="navbar-brand heading-black" href="../../frontend/listener/listener.php" onclick=redirectToListener();>
                         HASSNER
@@ -53,7 +53,8 @@
             </div>
         </section>
         
-        <section class="py-4 mx-8" id="login">
+        <div class="container my-auto mx-auto col-6">
+        <section class="py-6 mx-auto" id="login">
             <div class="container-fluid">
                 <div class="row">
                     <ul class="list-group col">
@@ -88,6 +89,7 @@
                 </div>
             </div>
         </section>
+        </div>
 
         <!--scroll to top-->
         <div class="scroll-top">
