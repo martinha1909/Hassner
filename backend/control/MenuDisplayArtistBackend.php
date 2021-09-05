@@ -23,10 +23,6 @@
     {
         $_SESSION['display'] = "ARTISTS";
     }
-    else if($type == "+")
-    {
-        $_SESSION['display'] = 3;
-    }
 
     $_SESSION['dependencies'] = "FRONTEND";
 

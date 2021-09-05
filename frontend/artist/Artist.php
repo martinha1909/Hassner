@@ -186,41 +186,27 @@
                                 $market_cap = calculateMarketCap($_SESSION['username']);
                                 $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
                                 $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
-                                echo '<h6>Price Per Share (q̶): '.$account_info['price_per_share'].'</h6>';
                                 echo '
-                                    <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                        <h6>Volumn: '.$account_info['Share_Distributed'].' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
-                                    </form>
+                                        <h6>Price Per Share (q̶): '.$account_info['price_per_share'].'</h6>
+                                        <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
+                                            <h6>Volumn: '.$account_info['Share_Distributed'].' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
+                                        </form>
+                                ';
+                                if($_SESSION['share_distribute'] != 0)
+                                {
+                                    echo '
+                                        <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
+                                            <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">
+                                            <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Save">  
+                                            </div>
+                                        </form>
                                     ';
+                                }
                                 echo '<h6>Current Shareholders: '.$shareholder_list->num_rows.'</h6>';
                                 echo '<h6>Market cap (q̶): '.$market_cap.'</h6>';
                                 echo '<h6>Day High (q̶): '.$high.'</h6>';
                                 echo '<h6>Day Low (q̶): '.$low.'</h6>';
-                                if($_SESSION['add_share'] == 1)
-                                {
-                                $max = $account_info['Share_Distributed'];
-                                echo'  
-                                    <h1>Distribute more shares</h1>
-                                    <p>Drag the slider to display the current value.</p>
-                                    
-                                    <div class="slidecontainer">
-                                        <form action="../backend/artist/IncreaseSharesDistributed.php" method ="post">
-                                        <input name="share_added" type="range" min="0" max='.$max.' value="0" class="slider" id="myRange">
-                                        <input type="submit" class="btn btn-primary py-2" value="Distribute">
-                                        </form>
-                                        <h6>Value: <span id="demo"></span></h6>
-                                    </div>
-                                    <script>
-                                        var slider = document.getElementById("myRange");
-                                        var output = document.getElementById("demo");
-                                        output.innerHTML = slider.value;
-                                        
-                                        slider.oninput = function() {
-                                        output.innerHTML = this.value;
-                                        }
-                                    </script>
-                                    ';
-                                }
                                 echo '
                                         <br>
                                         <h2>Buy Back Shares</h2>

@@ -16,8 +16,8 @@
 
     updateShareDistributed($conn, $_SESSION['username'], $new_shares_distributed);
 
-    $_SESSION['edit'] = 0;
+    $_SESSION['share_distribute'] = 0;
     $_SESSION['dependencies'] = "FRONTEND";
     
-    header("Location: ../../frontend/artist/PersonalPage.php");
+    returnToMainPage();
 ?>
