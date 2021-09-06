@@ -25,13 +25,14 @@
     <link rel="stylesheet" href="../css/default.css" id="theme-color">
     <link rel="stylesheet" href="../css/searchbar.css" id="theme-color">
     <link rel="stylesheet" href="../css/slidebar.css" id="theme-color">
+    <link rel="stylesheet" href="../css/menu.css" id="theme-color">
 </head>
 <body class="bg-dark">
 
 <!--navigation-->
 <section class="smart-scroll">
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-md navbar-dark bg-orange justify-content-between">
+        <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan justify-content-between">
             <a id="href-hover" class="navbar-brand heading-black" href="listener.php">
                 HASSNER
             </a>
@@ -55,7 +56,7 @@
             
             <!-- displaying user account info (i.e balance) -->
             <?php
-            echo '<div style="color: #11171a; font-weight: bold; background-color:white; border-left: 4px solid #11171a; border-right: 10px solid white;">';
+            echo '<div class="rounded" style="color: #11171a; font-weight: bold; background-color:white; border-left: 4px solid #11171a; border-right: 4px solid white;">';
             echo "&nbsp;(q̶): ";
             echo round($_SESSION['user_balance'], 2);
             echo '  <br>

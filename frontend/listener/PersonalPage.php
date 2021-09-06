@@ -13,12 +13,13 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/app.css" type="text/css">
   <link rel="stylesheet" href="../css/default.css" type="text/css">
+  <link rel="stylesheet" href="../css/menu.css" id="theme-color">
 
 </head>
 <body class="bg-dark">
     <header class="smart-scroll">
         <div class="container-xxl">
-            <nav class="navbar navbar-expand-md navbar-dark bg-orange d-flex justify-content-between">
+            <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan d-flex justify-content-between">
                 <a id = "href-hover" style = "background: transparent;" class="navbar-brand" href="listener.php" onclick='window.location.reload();'>
                     HASSNER
                 </a>
