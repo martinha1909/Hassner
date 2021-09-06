@@ -179,7 +179,7 @@
             }
         }
         insertionSort($selling_prices, $artist_usernames, $roi, $share_amounts, "Descending");
-        singleSort($profits);
+        singleSort($profits, "Descending");
     }
 
     //gets the total amount of share that the user holds corresponds to the $artist_username
@@ -231,24 +231,47 @@
         }        
     }
 
-    function singleSort(&$arr)
+    function singleSort(&$arr, $indicator)
     {
-        for ($i = 1; $i < sizeof($arr); $i++)
+        if($indicator == "Descending")
         {
-            $key = $arr[$i];
-            $j = $i-1;
-        
-            // Move elements of arr[0..i-1],
-            // that are    greater than key, to
-            // one position ahead of their
-            // current position
-            while ($j >= 0 && $arr[$j] > $key)
+            for ($i = 1; $i < sizeof($arr); $i++)
             {
-                $arr[$j + 1] = $arr[$j];
-                $j = $j - 1;
-            }
+                $key = $arr[$i];
+                $j = $i-1;
             
-            $arr[$j + 1] = $key;
+                // Move elements of arr[0..i-1],
+                // that are    greater than key, to
+                // one position ahead of their
+                // current position
+                while ($j >= 0 && $arr[$j] > $key)
+                {
+                    $arr[$j + 1] = $arr[$j];
+                    $j = $j - 1;
+                }
+                
+                $arr[$j + 1] = $key;
+            }
+        }
+        else
+        {
+            for ($i = 1; $i < sizeof($arr); $i++)
+            {
+                $key = $arr[$i];
+                $j = $i-1;
+            
+                // Move elements of arr[0..i-1],
+                // that are    greater than key, to
+                // one position ahead of their
+                // current position
+                while ($j >= 0 && $arr[$j] < $key)
+                {
+                    $arr[$j + 1] = $arr[$j];
+                    $j = $j - 1;
+                }
+                
+                $arr[$j + 1] = $key;
+            }
         }
     }
 

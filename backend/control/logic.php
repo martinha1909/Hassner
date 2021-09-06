@@ -254,15 +254,25 @@
             return $status;
         }
 
-        function getMaxID($conn){
+        function getMaxID($conn)
+        {
             $sql = "SELECT MAX(id) AS max_id FROM account";
             $result = mysqli_query($conn,$sql);
             
             return $result;
         }
 
-        function getMaxInjectionID($conn){
+        function getMaxInjectionID($conn)
+        {
             $sql = "SELECT MAX(id) AS max_id FROM inject_history";
+            $result = mysqli_query($conn,$sql);
+            
+            return $result;
+        }
+
+        function getMaxSellOrderID($conn)
+        {
+            $sql = "SELECT MAX(id) AS max_id FROM user_artist_sell_share";
             $result = mysqli_query($conn,$sql);
             
             return $result;
@@ -725,10 +735,18 @@
         function insertUserArtistSellShareTuple($conn, $user_username, $artist_username, $quantity, $asked_price)
         {
             $status = 0;
-            $sql = "INSERT INTO user_artist_sell_share (user_username, artist_username, selling_price, no_of_share)
-                    VALUES(?, ?, ?, ?)";
+            $sell_order_id = 0;
+
+            $res = getMaxSellOrderID($conn);
+            if($res->num_rows != 0)
+            {
+                $max_id = $res->fetch_assoc();
+                $sell_order_id = $max_id['max_id'] + 1;
+            }
+            $sql = "INSERT INTO user_artist_sell_share (id, user_username, artist_username, selling_price, no_of_share)
+                    VALUES(?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdd', $user_username, $artist_username, $asked_price, $quantity);
+            $stmt->bind_param('issdd', $sell_order_id, $user_username, $artist_username, $asked_price, $quantity);
             if($stmt->execute() == TRUE)
             {
                 $status = "SUCCESS";

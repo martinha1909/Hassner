@@ -71,7 +71,7 @@
     }
 
     //gets all the users that has lowest price listed with the passed artist_username param
-    function fetchAskedPrice(&$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
+    function fetchAskedPrice(&$ids, &$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
     {
         $conn = connect();
         $result = getAskedPrices($conn, $artist_username);
@@ -80,6 +80,7 @@
         {
             if($row['no_of_share'] > 0 && (strcmp($row['user_username'], $_SESSION['username']) != 0))
             {
+                array_push($ids, $row['id']);
                 array_push($asked_prices, $row['selling_price']);
                 array_push($user_usernames, $row['user_username']);
                 array_push($artist_usernames, $row['artist_username']);
@@ -88,7 +89,7 @@
         }
         //using insertion sort in MyPortfiolioBackend.php file
         insertionSort($asked_prices, $user_usernames, $artist_usernames, $quantities, "Descending");
-         
+        singleSort($ids, "Descending");
     }
 
     function askedPriceInit()
@@ -101,56 +102,66 @@
         $artist_usernames = array();
         //displaying the quantity that are being sold
         $quantities = array();
+        //storing unique id of sell orders
+        $ids = array();
         //sorting asked_price in a descending order, so the first index would be the lowest value, then swaps the other arrays 
         //to match with asked_price indices
-        fetchAskedPrice($asked_prices, $user_usernames, $artist_usernames, $quantities, $_SESSION['selected_artist']);
+        fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $_SESSION['selected_artist']);
             echo '
                 <div class="py-4 text-left">
-                    <h3>Lowest Asked Price </h3>
+                    <h3>Asked Price</h3>
                 </div>';
         if(sizeof($asked_prices) > 0)
         {
+            echo $_SESSION['buy_asked_price'];
             //displays the buy button when user has not clicked on it
-            //always displays first index, which is lowest bid price
             if($_SESSION['buy_asked_price'] == 0)
             {
                 echo'
                     <table class="table">
                         <thead>
                             <tr>
+                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">#</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody>';
+                for($i = 0; $i < sizeof($artist_usernames); $i++)
+                {
+                    echo '
                             <tr>
-                                <th scope="row">'.$user_usernames[0].'</th>
-                                <td>'.$asked_prices[0].'</td>
-                                <td>'.$quantities[0].'</td>
+                                <th scope="row">'.$ids[$i].'</th>
+                                <td>'.$user_usernames[$i].'</td>
+                                <td>'.$asked_prices[$i].'</td>
+                                <td>'.$quantities[$i].'</td>
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                ';
-                if(hasEnoughSiliqas($asked_prices[0], $_SESSION['user_balance']))
-                {
-                    echo'
-                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[0].'" onclick="window.location.reload();"></td>
+                    ';
+                    if(hasEnoughSiliqas($asked_prices[0], $_SESSION['user_balance']))
+                    {
+                        echo'
+                                        <td><input name="buy_user_selling_price['.$ids[$i].']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                        ';
+                    }
+                    else
+                    {
+                        $_SESSION['status'] = "ERROR";
+                        echo '
+                                        <td>
+                        '; 
+                                            getStatusMessage("Not enough siliqas", "");
+                        echo '
+                                        </td>
+                        ';
+                    }
+                    echo '
+                                    </form>
+                                </tr>
                     ';
                 }
-                else
-                {
-                    $_SESSION['status'] = "ERROR";
-                    echo '
-                                    <td>
-                    '; 
-                                        getStatusMessage("Not enough siliqas", "");
-                    echo '
-                                    </td>
-                    ';
-                }
-                echo '
-                                </form>
-                            </tr>
+                echo'
                         </tbody>
                     </table>
                 ';
@@ -162,6 +173,7 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">#</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
@@ -169,38 +181,43 @@
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody>';
+                for($i = 0; $i < sizeof($artist_usernames); $i++)
+                {
+                    echo '
                             <tr>
-                                <th scope="row">'.$user_usernames[0].'</th>
-                                <td>'.$asked_prices[0].'</td>
-                                <td>'.$quantities[0].'</td>
+                                <th scope="row">'.$ids[$i].'</th>
+                                <td>'.$user_usernames[$i].'</td>
+                                <td>'.$asked_prices[$i].'</td>
+                                <td>'.$quantities[$i].'</td>
                                 <td>
                     ';
-                        if(strcmp($_SESSION['seller'], $user_usernames[0]) == 0)
-                        {
-                            $_SESSION['purchase_price'] = $asked_prices[0];
-                            $_SESSION['seller_toggle'] = $user_usernames[0];
-                            echo'
-                                    <form action="../../backend/shared/BuySharesBackend.php" method="post">
-                                        <input name = "purchase_quantity" type="range" min="1" max='.$quantities[0].' value="1" class="slider" id="myRange">
-                                        <p>Quantity: <span id="demo"></span></p>
-                                        <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
-                                    </form>
-                                    <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                                        <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
-                                    </form>
-                            ';
-                        }
-                        else
-                        {
-                            echo'
-                                    <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                                        <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[0].'" onclick="window.location.reload();"></td>
-                                    </form>
-                                    </td>
-                                </tr>
-                            ';
-                        }
+                    if(strcmp($_SESSION['seller'], $ids[$i]) == 0)
+                    {
+                        $_SESSION['purchase_price'] = $asked_prices[$i];
+                        $_SESSION['seller_toggle'] = $ids[$i];
+                        echo'
+                                <form action="../../backend/shared/BuySharesBackend.php" method="post">
+                                    <input name = "purchase_quantity" type="range" min="1" max='.$quantities[$i].' value="1" class="slider" id="myRange">
+                                    <p>Quantity: <span id="demo"></span></p>
+                                    <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
+                                </form>
+                                <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
+                                    <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                </form>
+                        ';
+                    }
+                    else
+                    {
+                        echo'
+                                <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
+                                <td><input name="buy_user_selling_price['.$ids[$i].']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                                </form>
+                                </td>
+                            </tr>
+                        ';
+                    }
+                }
                 echo '
                         </tbody>
                     </table>
