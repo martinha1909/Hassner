@@ -107,13 +107,13 @@
         //sorting asked_price in a descending order, so the first index would be the lowest value, then swaps the other arrays 
         //to match with asked_price indices
         fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $_SESSION['selected_artist']);
-            echo '
-                <div class="py-4 text-left">
-                    <h3>Asked Price</h3>
-                </div>';
+        echo '
+            <div class="py-4 text-left">
+                <h3>Asked Price</h3>
+            </div>
+        ';
         if(sizeof($asked_prices) > 0)
         {
-            echo $_SESSION['buy_asked_price'];
             //displays the buy button when user has not clicked on it
             if($_SESSION['buy_asked_price'] == 0)
             {
@@ -192,7 +192,7 @@
                                 <td>'.$quantities[$i].'</td>
                                 <td>
                     ';
-                    if(strcmp($_SESSION['seller'], $ids[$i]) == 0)
+                    if($_SESSION['seller'] == $ids[$i])
                     {
                         $_SESSION['purchase_price'] = $asked_prices[$i];
                         $_SESSION['seller_toggle'] = $ids[$i];
@@ -203,7 +203,7 @@
                                     <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
                                 </form>
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                                    <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                    <td><input name="buy_user_selling_price['.$ids[$i].']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
                                 </form>
                         ';
                     }
@@ -222,7 +222,7 @@
                         </tbody>
                     </table>
                 ';
-            }
+        }
         }
         //If other users are selling shares, displays nothing
         else
@@ -233,6 +233,8 @@
                 </div>
             ';
         }
+
+
     }
 
     function canCreateSellOrder($user_username, $artist_username)

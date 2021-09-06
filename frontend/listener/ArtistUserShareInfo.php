@@ -4,6 +4,8 @@
     $_SESSION['conversion_rate'];
     $_SESSION['coins'] = 0;
     $_SESSION['status'];
+
+    $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
 ?>
 
 <!doctype html>
@@ -154,6 +156,20 @@
                             getStatusMessage("", "Sell order updated successfully");
                         }
                     }
+
+                    if($available_share > 0)
+                    {
+                        echo '
+                            <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
+                                <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="+Buy shares">
+                            </form>
+                        ';
+                        echo '
+                            <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
+                                <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="+Create buy order">
+                            </form>
+                        ';
+                    }
                     //displaying sell shares button if user chooses the options
                     if($_SESSION['buy_sell'] == "SELL")
                     {
@@ -173,6 +189,16 @@
                             </div>
                         ';
                         $_SESSION['buy_sell'] = 0;
+                    }
+                    else if($_SESSION['buy_sell'] == "BUY")
+                    {
+                        echo '
+                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                    <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.$_SESSION['currency'].' to Siliqas" onclick="window.location.reload();"> 
+                                    <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Siliqas to '.$_SESSION['currency'].'" onclick="window.location.reload();"> 
+                                </div>
+                            </form>
+                        ';
                     }
                 ?>
             </div>

@@ -95,4 +95,18 @@
         
         return false;
     }
+
+    function calculateArtistAvailableShares($artist_name)
+    {
+        $ret = 0;
+
+        $conn = connect();
+
+        $res = searchAccount($conn, $artist_name);
+        $account_info = $res->fetch_assoc();
+
+        $ret = $account_info['Share_Distributed'] - $account_info['Shares'];
+
+        return $ret;
+    }
 ?>
