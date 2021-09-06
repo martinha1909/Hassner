@@ -12,6 +12,8 @@
         //disabling both options, forbids user from buying anything unless they purchase more siliqas
         $_SESSION['buy_market_price'] = 0;
         $_SESSION['buy_asked_price'] = 0;
+        $_SESSION['buy_sell'] = 0;
+        $_SESSION['buy_options'] = 0;
         $_SESSION['status'] = "SILIQAS_ERR";
         header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
     }
@@ -46,6 +48,8 @@
                                                            $amount_bought);
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;
+            $_SESSION['buy_sell'] = 0;
+            $_SESSION['buy_options'] = 0;
             $_SESSION['dependencies'] = "FRONTEND";
              
             header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
@@ -53,15 +57,17 @@
         //if the user chooses a seller from bid price section
         else if($_SESSION['buy_asked_price'] == 1)
         {
-            $result = searchAccount($conn, $_SESSION['seller_toggle']);
+            $res = searchSellOrderByID($conn, $_SESSION['seller_toggle']);
+            $account_info = $res->fetch_assoc();
+            $result = searchAccount($conn, $account_info['user_username']);
             $seller_initial_balance = $result->fetch_assoc();
-            
+
             //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
             $seller_new_balance = $seller_initial_balance['balance'] + ($amount_bought * $_SESSION['purchase_price']); 
 
             //subtracts siliqas from the user
             $buyer_new_balance = $_SESSION['user_balance'] - ($amount_bought * $_SESSION['purchase_price']);
-            $result = searchSpecificInvestment($conn, $_SESSION['seller_toggle'], $_SESSION['selected_artist']);
+            $result = searchSpecificInvestment($conn, $account_info['user_username'], $_SESSION['selected_artist']);
             
             //the owned share of the seller is now transfered to the buyer
             $seller_initial_share_amount = $result->fetch_assoc();
@@ -77,7 +83,7 @@
             {
                 $_SESSION['status'] = purchaseAskedPriceShare($conn, 
                                                               $_SESSION['username'], 
-                                                              $_SESSION['seller_toggle'], 
+                                                              $account_info['user_username'], 
                                                               $_SESSION['selected_artist'], 
                                                               $buyer_new_balance, 
                                                               $seller_new_balance, 
@@ -85,7 +91,8 @@
                                                               $new_pps, 
                                                               $buyer_new_share_amount, 
                                                               $seller_new_share_amount, 
-                                                              $_SESSION['shares_owned'], $amount_bought);
+                                                              $_SESSION['shares_owned'], 
+                                                              $amount_bought);
             }
             else if($_SESSION['account_type'] == "artist")
             {
@@ -102,17 +109,20 @@
 
                 $_SESSION['status'] = buyBackShares($conn, 
                                                     $_SESSION['username'], 
-                                                    $_SESSION['seller_toggle'], 
+                                                    $account_info['user_username'], 
                                                     $buyer_new_balance, 
                                                     $seller_new_balance, 
                                                     $seller_new_share_amount, 
                                                     $new_share_distributed, 
                                                     $new_artist_shares_bought, 
                                                     $new_pps, 
-                                                    $amount_bought);
+                                                    $amount_bought,
+                                                    $account_info['selling_price']);
             }
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;
+            $_SESSION['buy_sell'] = 0;
+            $_SESSION['buy_options'] = 0;
             $_SESSION['dependencies'] = "FRONTEND";
              
             if($_SESSION['account_type'] == "user")

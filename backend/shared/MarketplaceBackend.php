@@ -109,7 +109,7 @@
         fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $_SESSION['selected_artist']);
         echo '
             <div class="py-4 text-left">
-                <h3>Asked Price</h3>
+                <h3>Bid Price</h3>
             </div>
         ';
         if(sizeof($asked_prices) > 0)

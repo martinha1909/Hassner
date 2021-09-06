@@ -191,16 +191,6 @@
                         ';
                         $_SESSION['buy_sell'] = 0;
                     }
-                    else if($_SESSION['buy_sell'] == "BUY")
-                    {
-                        echo '
-                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                    <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.$_SESSION['currency'].' to Siliqas" onclick="window.location.reload();"> 
-                                    <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Siliqas to '.$_SESSION['currency'].'" onclick="window.location.reload();"> 
-                                </div>
-                            </form>
-                        ';
-                    }
                 ?>
             </div>
         </div>
@@ -211,112 +201,137 @@
     <div class="container-fluid">
         <div class="row vh-md-100 align-items-start">
             <div class="mx-auto my-auto text-center col">
-                <div class="py-4 text-center">
-                    <h2> 
-                        <?php
-                            echo $_SESSION['selected_artist'];
-                        ?>
-                        's Marketplace
-                    </h2>
-                </div>
                 <?php
-                   askedPriceInit();
-
-                   echo '
-                        <div class="py-4 text-left">
-                            <h3>Market Price</h3>
-                        </div>
-                    ';
-                    
-                    //If the amount of artist shares has not sold out or the artist has distributed some shares, makes Buy option available 
-                    if($_SESSION['available_shares'] > 0)
+                    if($_SESSION['buy_sell'] == "BUY" && $_SESSION['buy_options'] == 0)
                     {
-                        //replaces the Buy button with a slide bar ranging from 0 to the quantity that is equivalent to the maximum available share for purchase
-                        if($_SESSION['buy_market_price'] == 0)
+                        echo '
+                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                    <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method = "post">
+                                        <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();"> 
+                                        <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
+                                    </form>
+                                </div>
+                        ';
+                    }
+                    else if($_SESSION['buy_sell'] == "BUY" && $_SESSION['buy_options'] == "BID")
+                    {
+                        echo '
+                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                    <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method = "post">
+                                        <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();"> 
+                                        <input name = "buy_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
+                                    </form>
+                                </div>
+                        ';
+                        askedPriceInit();
+                    }
+                    else if($_SESSION['buy_sell'] == "BUY" && $_SESSION['buy_options'] == "MARKET")
+                    {
+                        echo '
+                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                    <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method="post"> 
+                                        <input name = "buy_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();">
+                                        <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
+                                    </form>
+                                </div>
+                        ';
+                        echo '
+                            <div class="py-4 text-left">
+                                <h3>Market Price</h3>
+                            </div>
+                        ';
+                        
+                        //If the amount of artist shares has not sold out or the artist has distributed some shares, makes Buy option available 
+                        if($_SESSION['available_shares'] > 0)
                         {
-                            echo '
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">'.$_SESSION['selected_artist'].'</th>
-                                                <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
-                                                <td>'.$_SESSION['available_shares'].'</td>
-                                                <form action="../../backend/listener/ToggleBuyMarketPriceBackend.php" method="post">';
-                            if(hasEnoughSiliqas($_SESSION['current_pps']['price_per_share'], $_SESSION['user_balance']))
+                            //replaces the Buy button with a slide bar ranging from 0 to the quantity that is equivalent to the maximum available share for purchase
+                            if($_SESSION['buy_market_price'] == 0)
                             {
+                                echo '
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">'.$_SESSION['selected_artist'].'</th>
+                                                    <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
+                                                    <td>'.$_SESSION['available_shares'].'</td>
+                                ';
+                                if(hasEnoughSiliqas($_SESSION['current_pps']['price_per_share'], $_SESSION['user_balance']))
+                                {
+                                    echo'
+                                                    <form action="../../backend/listener/ToggleBuyMarketPriceBackend.php" method="post">
+                                                        <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"></td>
+                                                    </form>
+                                    ';
+                                }
+                                else
+                                {
+                                    $_SESSION['status'] = "ERROR";
+                                    echo '
+                                                        <td>
+                                    '; 
+                                                            getStatusMessage("Not enough siliqas", "");
+                                    echo '
+                                                        </td>
+                                    ';
+                                }
                                 echo'
-                                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 ';
                             }
                             else
                             {
-                                $_SESSION['status'] = "ERROR";
+                                $_SESSION['seller_toggle'] = $_SESSION['selected_artist'];
+                                $_SESSION['purchase_price'] = $_SESSION['current_pps']['price_per_share'];
                                 echo '
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">'.$_SESSION['selected_artist'].'</th>
+                                                    <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
+                                                    <td>'.$_SESSION['available_shares'].'</td>
                                                     <td>
-                                '; 
-                                                        getStatusMessage("Not enough siliqas", "");
-                                echo '
+                                                        <form action="../../backend/shared/BuySharesBackend.php" method="post">
+                                                            <input name = "purchase_quantity" type="range" min="1" max='.$_SESSION['available_shares'].' value="1" class="slider" id="myRange">
+                                                            <p>Quantity: <span id="demo"></span></p>
+                                                            <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->">
+                                                        </form>
+                                                        <form action="../../backend/listener/ToggleBuyMarketPriceBackend.php" method="post">
+                                                            <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                                        </form>
                                                     </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 ';
                             }
-                            echo'
-                                                </form>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            ';
                         }
                         else
                         {
-                            $_SESSION['seller_toggle'] = $_SESSION['selected_artist'];
-                            $_SESSION['purchase_price'] = $_SESSION['current_pps']['price_per_share'];
                             echo '
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
-                                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">'.$_SESSION['selected_artist'].'</th>
-                                                <td>'.$_SESSION['current_pps']['price_per_share'].'</td>
-                                                <td>'.$_SESSION['available_shares'].'</td>
-                                                <td>
-                                                    <form action="../../backend/shared/BuySharesBackend.php" method="post">
-                                                        <input name = "purchase_quantity" type="range" min="1" max='.$_SESSION['available_shares'].' value="1" class="slider" id="myRange">
-                                                        <p>Quantity: <span id="demo"></span></p>
-                                                        <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->">
-                                                    </form>
-                                                    <form action="../../backend/listener/ToggleBuyMarketPriceBackend.php" method="post">
-                                                        <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
-                                                    </form>
-                                                </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="py-4 text-center">
+                                    <h4>No shares are currently available from '.$_SESSION['selected_artist'].'</h4>
+                                </div>
                             ';
                         }
-                    }
-                    else
-                    {
-                        echo '
-                            <div class="py-4 text-center">
-                                <h4>No shares are currently available from '.$_SESSION['selected_artist'].'</h4>
-                            </div>
-                        ';
                     }
 
                     echo '<h3>Inject history</h3>';

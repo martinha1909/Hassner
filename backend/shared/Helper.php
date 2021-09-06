@@ -15,6 +15,7 @@
         $_SESSION['buy_market_price'] = 0;
         $_SESSION['siliqas_or_fiat'] = 0;
         $_SESSION['share_distribute'] = 0;
+        $_SESSION['buy_options'] = 0;
         //conversion rate from CAD to Siliqas, 1 CAD = 0.95 Sililqas (brute force for now)
         $_SESSION['conversion_rate'] = -0.05;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
