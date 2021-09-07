@@ -6,6 +6,8 @@
 
     $conn = connect();
     $amount_bought = $_POST['purchase_quantity'];
+    $current_date_time = getCurrentDate("America/Edmonton");
+    $date_parser = currentTimeParser($current_date_time);
     //not enough siliqas
     if($_SESSION['user_balance'] < ($amount_bought * $_SESSION['purchase_price']))
     {
@@ -45,7 +47,9 @@
                                                            $new_pps, 
                                                            $buyer_new_share_amount, 
                                                            $_SESSION['shares_owned'], 
-                                                           $amount_bought);
+                                                           $amount_bought,
+                                                           $date_parser[0],
+                                                           $date_parser[1]);
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;
             $_SESSION['buy_sell'] = 0;
@@ -70,12 +74,15 @@
             $result = searchSpecificInvestment($conn, $account_info['user_username'], $_SESSION['selected_artist']);
             
             //the owned share of the seller is now transfered to the buyer
-            $seller_initial_share_amount = $result->fetch_assoc();
-            $seller_new_share_amount = $seller_initial_share_amount['no_of_share_bought'] - $amount_bought;
+            $investment_info = $result->fetch_assoc();
+            $seller_new_share_amount = $investment_info['no_of_share_bought'] - $amount_bought;
             $buyer_new_share_amount = $_SESSION['shares_owned'] + $amount_bought;
 
             //In the case of buying in asked price, the new market price will become the last purchased price
             $new_pps = $_SESSION['purchase_price'];
+
+            $seller_date_purchased = $investment_info['date_purchased'];
+            $seller_time_purchased = $investment_info['time_purchased'];
 
             //only user will fluctuate demand, if artists buy back the share they simply just own back their 
             //portion and increase the price per share by the amount they bought back
@@ -92,7 +99,11 @@
                                                               $buyer_new_share_amount, 
                                                               $seller_new_share_amount, 
                                                               $_SESSION['shares_owned'], 
-                                                              $amount_bought);
+                                                              $amount_bought,
+                                                              $date_parser[0],
+                                                              $date_parser[1],
+                                                              $seller_date_purchased,
+                                                              $seller_time_purchased);
             }
             else if($_SESSION['account_type'] == "artist")
             {
@@ -125,14 +136,14 @@
             $_SESSION['buy_options'] = 0;
             $_SESSION['dependencies'] = "FRONTEND";
              
-            if($_SESSION['account_type'] == "user")
-            {
-                header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
-            }
-            else if($_SESSION['account_type'] == "artist")
-            {
-                returnToMainPage();
-            }
+            // if($_SESSION['account_type'] == "user")
+            // {
+            //     header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+            // }
+            // else if($_SESSION['account_type'] == "artist")
+            // {
+            //     returnToMainPage();
+            // }
         }
     }
 ?>

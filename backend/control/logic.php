@@ -54,7 +54,7 @@
 
         function searchSpecificInvestment($conn, $user_username, $invested_artist)
         {
-            $sql = "SELECT no_of_share_bought FROM user_artist_share WHERE user_username = ? AND artist_username = ?";
+            $sql = "SELECT * FROM user_artist_share WHERE user_username = ? AND artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ss', $user_username, $invested_artist);
             $stmt->execute();
@@ -401,7 +401,7 @@
             header("Location: ../../frontend/listener/listener.php");
         }
 
-        function purchaseMarketPriceShare($conn, $buyer, $artist, $buyer_new_balance, $artist_new_balance, $inital_pps, $new_pps, $buyer_new_share_amount, $shares_owned, $amount)
+        function purchaseMarketPriceShare($conn, $buyer, $artist, $buyer_new_balance, $artist_new_balance, $inital_pps, $new_pps, $buyer_new_share_amount, $shares_owned, $amount, $date_purchased, $time_purchased)
         {
             $status = 0;
             $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";
@@ -459,28 +459,41 @@
                 return $status;
             }
 
-            if($shares_owned == 0)
-            {
-                $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought)
-                    VALUES(?, ?, ?, ?)";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $inital_pps);
-                if($stmt->execute() == TRUE)
-                {
-                    $status = "SUCCESS";
-                }
-                else
-                {
-                    $status = "ERROR";
-                    return $status;
-                }
-            }
+            // if($shares_owned == 0)
+            // {
+            //     $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought)
+            //         VALUES(?, ?, ?, ?)";
+            //     $stmt = $conn->prepare($sql);
+            //     $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $inital_pps);
+            //     if($stmt->execute() == TRUE)
+            //     {
+            //         $status = "SUCCESS";
+            //     }
+            //     else
+            //     {
+            //         $status = "ERROR";
+            //         return $status;
+            //     }
+            // }
 
-            $sql = "UPDATE user_artist_share SET no_of_share_bought = '$buyer_new_share_amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
-            if($conn->query($sql) == TRUE)
+            // $sql = "UPDATE user_artist_share SET no_of_share_bought = '$buyer_new_share_amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
+            // if($conn->query($sql) == TRUE)
+            // {
+            //     $status = "SUCCESS";
+            // }   
+            // else
+            // {
+            //     $status = "ERROR";
+            //     return $status;
+            // }
+            $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
+                    VALUES(?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssidss', $buyer, $artist, $buyer_new_share_amount, $inital_pps, $date_purchased, $time_purchased);
+            if($stmt->execute() == TRUE)
             {
                 $status = "SUCCESS";
-            }   
+            }
             else
             {
                 $status = "ERROR";
@@ -490,7 +503,7 @@
             return $status;
         }
 
-        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount)
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $date_purchased, $time_purchased, $seller_date_purchased, $seller_time_purchased)
         {
             $status = 0;
             $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";
@@ -547,36 +560,50 @@
                 $status = "ERROR";
                 return $status;
             }
+            // if($shares_owned == 0)
+            // {
+                // $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought)
+                //     VALUES(?, ?, ?, ?)";
+                // $stmt = $conn->prepare($sql);
+                // $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $initial_pps);
+                // if($stmt->execute() == TRUE)
+                // {
+                //     $status = "SUCCESS";
+                // }
+                // else
+                // {
+                //     $status = "ERROR";
+                //     return $status;
+                // }
+            // }
 
-            if($shares_owned == 0)
-            {
-                $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought)
-                    VALUES(?, ?, ?, ?)";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $initial_pps);
-                if($stmt->execute() == TRUE)
-                {
-                    $status = "SUCCESS";
-                }
-                else
-                {
-                    $status = "ERROR";
-                    return $status;
-                }
-            }
+            // $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought + '$amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
+            // if($conn->query($sql) == TRUE)
+            // {
+            //     $status = "SUCCESS";
+            // }   
+            // else
+            // {
+            //     $status = "ERROR";
+            //     return $status;
+            // }
 
-            $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought + '$amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
-            if($conn->query($sql) == TRUE)
+            $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
+                    VALUES(?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssidss', $buyer, $artist, $buyer_new_share_amount, $initial_pps, $date_purchased, $time_purchased);
+            if($stmt->execute() == TRUE)
             {
                 $status = "SUCCESS";
-            }   
+            }
             else
             {
                 $status = "ERROR";
                 return $status;
             }
 
-            $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought - '$amount' WHERE user_username = '$seller' AND artist_username = '$artist'";
+
+            $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought - '$amount' WHERE user_username = '$seller' AND artist_username = '$artist' AND date_purchased = '$seller_date_purchased' AND time_purchased = '$seller_time_purchased'";
             if($conn->query($sql) == TRUE)
             {
                 $status = "SUCCESS";

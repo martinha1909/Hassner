@@ -10,17 +10,16 @@
     //  Available Shares: grabs current shares available for purchase in the database in case the user wants to purchase their first share
     function fetchMarketPrice($artist_username)
     {
+        $_SESSION['shares_owned'] = 0;
+
         $conn = connect();
         $search_1 = searchSpecificInvestment($conn, $_SESSION['username'], $_SESSION['selected_artist']);
         if($search_1->num_rows > 0)
         {
-            //number of share that current user has bought from selected artist
-            $shares_owned = $search_1->fetch_assoc();
-            $_SESSION['shares_owned'] = $shares_owned['no_of_share_bought'];
-        }
-        else
-        {
-            $_SESSION['shares_owned'] = 0;
+            while($row = $search_1->fetch_assoc())
+            {
+                $_SESSION['shares_owned'] += $row['no_of_share_bought'];
+            }
         }
         
         $search_2 = searchArtistCurrentPricePerShare($conn, $_SESSION['selected_artist']);
