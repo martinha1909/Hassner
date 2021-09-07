@@ -5,6 +5,8 @@
     $_SESSION['coins'] = 0;
     $_SESSION['status'];
 
+    refreshUserArtistShareTable();
+
     $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
 ?>
 
@@ -174,13 +176,14 @@
                     //displaying sell shares button if user chooses the options
                     if($_SESSION['buy_sell'] == "SELL")
                     {
+                        $max = $_SESSION['shares_owned'] - getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']);
                         echo '
                             <h6>How many shares are you selling?</h6>
                             <div class="wrapper-searchbar">
                                 <div class="container-searchbar mx-auto">
                                     <label>
                                         <form action="../../backend/listener/SellSharesBackend.php" method="post">
-                                            <input name = "purchase_quantity" type="range" min="1" max='.$_SESSION['shares_owned'].' value="1" class="slider" id="myRange">
+                                            <input name = "purchase_quantity" type="range" min="1" max='.$max.' value="1" class="slider" id="myRange">
                                             <p>Quantity: <span id="demo"></span></p>
                                             <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
                                             <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">

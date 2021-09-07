@@ -63,6 +63,16 @@
             return $result;
         }
 
+        function searchAllInvestments($conn)
+        {
+            $sql = "SELECT * FROM user_artist_share";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchUserSellingShares($conn, $user_username)
         {
             $sql = "SELECT * FROM user_artist_sell_share WHERE user_username = ?";
@@ -503,7 +513,7 @@
             return $status;
         }
 
-        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $date_purchased, $time_purchased, $seller_date_purchased, $seller_time_purchased)
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $date_purchased, $time_purchased, $seller_date_purchased, $seller_time_purchased)
         {
             $status = 0;
             $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";
@@ -614,7 +624,7 @@
                 return $status;
             }
 
-            $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share - $amount WHERE user_username = '$seller' AND artist_username = '$artist'";
+            $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share - '$amount' WHERE user_username = '$seller' AND artist_username = '$artist' AND selling_price = '$price'";
             if($conn->query($sql) == TRUE)
             {
                 $status = "SUCCESS";
@@ -830,6 +840,14 @@
                 $stmt->bind_param('s', $username);
                 $stmt->execute();
             }
+        }
+
+        function removeUserArtistShareZeroTuples($conn, $user_username, $artist_username, $price_per_share_when_bought, $date_purchased, $time_purchased)
+        {
+            $sql = "DELETE FROM user_artist_share WHERE user_username = ? AND artist_username = ? AND price_per_share_when_bought = ? AND date_purchased = ? AND time_purchased = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssdss', $user_username, $artist_username, $price_per_share_when_bought, $date_purchased, $time_purchased);
+            $stmt->execute();
         }
 
         function deleteInjectionHistory($conn, $username)

@@ -9,6 +9,7 @@
 
     function populateVars(&$all_shares_bought, &$all_artists, &$artist_name, &$rate, &$all_profits, &$all_rates, &$all_price_per_share, &$result)
     {
+        $no_of_shares_bought = 0;
         $conn = connect();
         while($row = $result->fetch_assoc())
         {
@@ -22,9 +23,7 @@
             $all_profits += $rate;
             array_push($all_rates, $rate);
             array_push($all_price_per_share, $account_info['price_per_share']);
-        }
-        
-         
+        } 
     }
 
     //performing insertionSort to targeted arrays with $indicator being either ascending or descending

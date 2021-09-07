@@ -199,7 +199,7 @@
                                 <form action="../../backend/shared/BuySharesBackend.php" method="post">
                                     <input name = "purchase_quantity" type="range" min="1" max='.$quantities[$i].' value="1" class="slider" id="myRange">
                                     <p>Quantity: <span id="demo"></span></p>
-                                    <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
+                                    <input name="asked_price['.$asked_prices[$i].']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
                                 </form>
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
                                     <td><input name="buy_user_selling_price['.$ids[$i].']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
@@ -238,13 +238,18 @@
 
     function canCreateSellOrder($user_username, $artist_username)
     {
+        $total_share_bought = 0;
         $conn = connect();
 
         $res = searchSpecificInvestment($conn, $user_username, $artist_username);
-        $total_share_bought = $res->fetch_assoc();
+
+        while($row = $res->fetch_assoc())
+        {
+            $total_share_bought += $row['no_of_share_bought'];   
+        }
 
         $share_being_sold = getAmountSharesSelling($user_username, $artist_username);
-        if($share_being_sold < $total_share_bought['no_of_share_bought'])
+        if($share_being_sold < $total_share_bought)
         {
             return true;
         }
@@ -621,5 +626,25 @@
                     </tbody>
                 </table>
         ';
+    }
+
+    function refreshUserArtistShareTable()
+    {
+        $conn = connect();
+
+        $res = searchAllInvestments($conn);
+        while($row = $res->fetch_assoc())
+        {
+            if($row['no_of_share_bought'] <= 0)
+            {
+                removeUserArtistShareZeroTuples($conn, 
+                                                $row['user_username'], 
+                                                $row['artist_username'], 
+                                                $row['price_per_share_when_bought'],
+                                                $row['date_purchased'],
+                                                $row['time_purchased']);
+            }
+        }
+
     }
 ?>

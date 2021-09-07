@@ -1,11 +1,13 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
+    include 'MarketplaceBackend.php';
 
     $_SESSION['logging_mode'] = "BUY_SHARE";
 
     $conn = connect();
     $amount_bought = $_POST['purchase_quantity'];
+    $asked_price = key($_POST['asked_price']);
     $current_date_time = getCurrentDate("America/Edmonton");
     $date_parser = currentTimeParser($current_date_time);
     //not enough siliqas
@@ -74,6 +76,7 @@
             $result = searchSpecificInvestment($conn, $account_info['user_username'], $_SESSION['selected_artist']);
             
             //the owned share of the seller is now transfered to the buyer
+            //return the first occurence in user_artist_share
             $investment_info = $result->fetch_assoc();
             $seller_new_share_amount = $investment_info['no_of_share_bought'] - $amount_bought;
             $buyer_new_share_amount = $_SESSION['shares_owned'] + $amount_bought;
@@ -100,10 +103,12 @@
                                                               $seller_new_share_amount, 
                                                               $_SESSION['shares_owned'], 
                                                               $amount_bought,
+                                                              $asked_price,
                                                               $date_parser[0],
                                                               $date_parser[1],
                                                               $seller_date_purchased,
                                                               $seller_time_purchased);
+                refreshUserArtistShareTable();
             }
             else if($_SESSION['account_type'] == "artist")
             {
@@ -136,14 +141,14 @@
             $_SESSION['buy_options'] = 0;
             $_SESSION['dependencies'] = "FRONTEND";
              
-            // if($_SESSION['account_type'] == "user")
-            // {
-            //     header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
-            // }
-            // else if($_SESSION['account_type'] == "artist")
-            // {
-            //     returnToMainPage();
-            // }
+            if($_SESSION['account_type'] == "user")
+            {
+                header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+            }
+            else if($_SESSION['account_type'] == "artist")
+            {
+                returnToMainPage();
+            }
         }
     }
 ?>
