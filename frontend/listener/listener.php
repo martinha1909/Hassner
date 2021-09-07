@@ -327,6 +327,7 @@
                                     {
                                         sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Descending");
                                     }
+                                    combineDuplicateRows($all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
                                     printMyPortfolioChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
                                 }
                                 echo '</tbody>

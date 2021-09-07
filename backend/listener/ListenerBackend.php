@@ -26,6 +26,94 @@
         } 
     }
 
+    function combineDuplicateRows(&$all_artists, &$all_shares_bought, &$all_rates, &$all_price_per_share)
+    {
+        $counter = 0;
+        $all_artists_simplified = array();
+        $all_shares_bought_simplified = array();
+        $all_rates_simplified = array();
+        $all_price_per_share_simplified = array();
+
+        //First index won't be duplicate, so always add the first index
+        array_push($all_artists_simplified, $all_artists[0]);
+        array_push($all_shares_bought_simplified, $all_shares_bought[0]);
+        array_push($all_rates_simplified, $all_rates[0]);
+        array_push($all_price_per_share_simplified, $all_price_per_share[0]);
+
+        $no_of_shares_bought = 0;
+
+        for($i = 1; $i < sizeof($all_artists); $i++)
+        {
+            if($all_artists[$i] == $all_artists[$i-1])
+            {
+                $no_of_shares_bought += $all_shares_bought[$i];
+                if($i == (sizeof($all_artists) - 1))
+                {
+                    array_push($all_shares_bought_simplified, $no_of_shares_bought);
+                }
+                $counter++;
+            }
+            else
+            {
+
+                array_push($all_artists_simplified, $all_artists[$i]);
+                if($counter != 0)
+                {
+                    array_push($all_shares_bought_simplified, $no_of_shares_bought);
+                    $counter = 0;
+                }
+                $no_of_shares_bought = $all_shares_bought[$i];
+                array_push($all_rates_simplified, $all_rates[$i]);
+                array_push($all_price_per_share_simplified, $all_price_per_share[$i]);
+            }
+        }
+
+        $all_artists = $all_artists_simplified;
+        $all_shares_bought = $all_shares_bought_simplified;
+        $all_rates = $all_rates_simplified;
+        $all_price_per_share = $all_price_per_share_simplified;
+    }
+
+    function indexExisted(&$arr, $index_name)
+    {
+        if(sizeof($arr) == 0)
+        {
+            return false;
+        }
+        for($i = 0; $i < sizeof($arr); $i++)
+        {
+            if($arr[$i] == $index_name)
+                return true;
+        }
+
+        return false;
+        // if (sizeof($arr) === 0) return false;
+        // $low = 0;
+        // $high = sizeof($arr) - 1;
+        // while ($low <= $high) 
+        // {
+        //     // compute middle index
+        //     $mid = floor(($low + $high) / 2);
+
+        //     // element found at mid
+        //     if($arr[$mid] == $index_name) {
+        //         return true;
+        //     }
+
+        //     if (strcmp($index_name, $arr[$mid]) < 0) {
+        //         // search the left side of the array
+        //         $high = $mid -1;
+        //     }
+        //     else {
+        //         // search the right side of the array
+        //         $low = $mid + 1;
+        //     }
+        // }
+          
+        // // If we reach here element x doesnt exist
+        // return false;
+    }
+
     //performing insertionSort to targeted arrays with $indicator being either ascending or descending
     //guide_arr is the leading array to sort with indixes correspond to other array indices
     function insertionSort(&$guide_arr, &$arr1, &$arr2, &$arr3, $indicator)
