@@ -153,7 +153,7 @@
 
         function getInjectionHistory($conn, $artist_username)
         {
-            $sql = "SELECT * FROM inject_history WHERE artist_username = ?";
+            $sql = "SELECT amount, date_injected, time_injected, comment FROM inject_history WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
