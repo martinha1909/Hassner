@@ -293,10 +293,6 @@
             }
 
             $status = addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date, $time);
-            if($status == "ERROR")
-            {
-                return "ERROR";
-            }
 
             return $status;
         }
