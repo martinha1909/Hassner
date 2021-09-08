@@ -591,7 +591,6 @@
                               $date_injected, 
                               $time_injected);
         echo '
-            <h3>Inject history</h3>
             <table class="table">
                 <thead>
                     <tr>
