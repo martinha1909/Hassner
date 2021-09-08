@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 06, 2021 at 01:32 AM
+-- Generation Time: Sep 08, 2021 at 06:45 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -87,6 +87,7 @@ CREATE TABLE `inject_history` (
 --
 
 CREATE TABLE `user_artist_sell_share` (
+  `id` int(11) NOT NULL,
   `user_username` varchar(50) NOT NULL,
   `artist_username` varchar(50) NOT NULL,
   `selling_price` float NOT NULL,
@@ -101,9 +102,12 @@ CREATE TABLE `user_artist_sell_share` (
 
 CREATE TABLE `user_artist_share` (
   `user_username` varchar(50) NOT NULL,
+  `seller_username` varchar(50) NOT NULL,
   `artist_username` varchar(50) NOT NULL,
   `no_of_share_bought` int(255) NOT NULL,
-  `price_per_share_when_bought` float NOT NULL
+  `price_per_share_when_bought` float NOT NULL,
+  `date_purchased` varchar(20) NOT NULL,
+  `time_purchased` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -135,7 +139,7 @@ ALTER TABLE `user_artist_sell_share`
 -- Indexes for table `user_artist_share`
 --
 ALTER TABLE `user_artist_share`
-  ADD PRIMARY KEY (`user_username`,`artist_username`),
+  ADD PRIMARY KEY (`user_username`,`artist_username`,`date_purchased`,`time_purchased`),
   ADD KEY `artist_share_key` (`artist_username`);
 
 --
