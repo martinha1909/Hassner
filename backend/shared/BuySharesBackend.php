@@ -7,7 +7,10 @@
 
     $conn = connect();
     $amount_bought = $_POST['purchase_quantity'];
-    $asked_price = key($_POST['asked_price']);
+    if($_SESSION['buy_asked_price'] == 1)
+    {
+        $asked_price = key($_POST['asked_price']);
+    }
     $current_date_time = getCurrentDate("America/Edmonton");
     $date_parser = currentTimeParser($current_date_time);
     //not enough siliqas
@@ -94,7 +97,7 @@
                 $_SESSION['status'] = purchaseAskedPriceShare($conn, 
                                                               $_SESSION['username'], 
                                                               $account_info['user_username'], 
-                                                              $_SESSION['selected_artist'], 
+                                                              $_SESSION['selected_artist'],
                                                               $buyer_new_balance, 
                                                               $seller_new_balance, 
                                                               $_SESSION['current_pps']['price_per_share'], 

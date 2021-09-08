@@ -418,4 +418,21 @@
             $id++;
         }        
     }
+
+    function buyHistoryInit($sellers, $prices, $date_purchase, $time_purchase, $username)
+    {
+        $conn = connect();
+
+        $res = searchUsersInvestment($conn, $username);
+
+        while($row = $res->fetch_assoc())
+        {
+            $date = dateParser($row['date_purchased']);
+            $time = timeParser($row['time_purchased']);
+
+            array_push($sellers, $row['seller_username']);
+            array_push($date_purchase, $date);
+            array_push($time_purchase, $time);
+        }
+    }
 ?>

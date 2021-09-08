@@ -469,37 +469,10 @@
                 return $status;
             }
 
-            // if($shares_owned == 0)
-            // {
-            //     $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought)
-            //         VALUES(?, ?, ?, ?)";
-            //     $stmt = $conn->prepare($sql);
-            //     $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $inital_pps);
-            //     if($stmt->execute() == TRUE)
-            //     {
-            //         $status = "SUCCESS";
-            //     }
-            //     else
-            //     {
-            //         $status = "ERROR";
-            //         return $status;
-            //     }
-            // }
-
-            // $sql = "UPDATE user_artist_share SET no_of_share_bought = '$buyer_new_share_amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
-            // if($conn->query($sql) == TRUE)
-            // {
-            //     $status = "SUCCESS";
-            // }   
-            // else
-            // {
-            //     $status = "ERROR";
-            //     return $status;
-            // }
-            $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
-                    VALUES(?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO user_artist_share (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
+                    VALUES(?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssidss', $buyer, $artist, $buyer_new_share_amount, $inital_pps, $date_purchased, $time_purchased);
+            $stmt->bind_param('sssidss', $buyer, $artist, $artist, $buyer_new_share_amount, $inital_pps, $date_purchased, $time_purchased);
             if($stmt->execute() == TRUE)
             {
                 $status = "SUCCESS";
@@ -570,38 +543,11 @@
                 $status = "ERROR";
                 return $status;
             }
-            // if($shares_owned == 0)
-            // {
-                // $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought)
-                //     VALUES(?, ?, ?, ?)";
-                // $stmt = $conn->prepare($sql);
-                // $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $initial_pps);
-                // if($stmt->execute() == TRUE)
-                // {
-                //     $status = "SUCCESS";
-                // }
-                // else
-                // {
-                //     $status = "ERROR";
-                //     return $status;
-                // }
-            // }
 
-            // $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought + '$amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
-            // if($conn->query($sql) == TRUE)
-            // {
-            //     $status = "SUCCESS";
-            // }   
-            // else
-            // {
-            //     $status = "ERROR";
-            //     return $status;
-            // }
-
-            $sql = "INSERT INTO user_artist_share (user_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
-                    VALUES(?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO user_artist_share (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
+                    VALUES(?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssidss', $buyer, $artist, $buyer_new_share_amount, $initial_pps, $date_purchased, $time_purchased);
+            $stmt->bind_param('sssidss', $buyer, $seller, $artist, $buyer_new_share_amount, $initial_pps, $date_purchased, $time_purchased);
             if($stmt->execute() == TRUE)
             {
                 $status = "SUCCESS";

@@ -337,6 +337,27 @@
                         }
                     }
 
+                    $sellers = array();
+                    $prices = array();
+                    $date_purchase = array();
+                    $time_purchase = array();
+
+                    buyHistoryInit($sellers, $prices, $date_purchase, $time_purchase, $_SESSION['username']);
+
+                    echo '
+                            <h3>Buy History</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller</th>
+                                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price</th>
+                                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Date Purchased</th>
+                                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Purchased</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    ';
+
                     echo '<h3>Inject history</h3>';
 
                     injectionHistoryInit($_SESSION['selected_artist']);

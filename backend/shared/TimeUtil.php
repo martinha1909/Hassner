@@ -23,7 +23,15 @@
     //Third index: year(YY)
     function dateParser($date)
     {
-        return explode("-", $date);
+        // return explode("-", $date);
+        $date_parser = explode("-", $date);
+        $day = dayToText($date_parser[0]);
+        $month = monthToText($date_parser[1]);
+        $year = "20".$date_parser[2];
+
+        $ret = $month." ".$day.", ".$year;
+
+        return $ret;
     }
 
     //return array will have:
@@ -32,7 +40,9 @@
     //Third index: second
     function timeParser($time)
     {
-        return explode(":", $time);
+        $time_parser = explode(":", $time);
+
+        return timeToText($time_parser[0], $time_parser[1]);
     }
 
     function dayToText($day)
