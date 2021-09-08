@@ -591,16 +591,17 @@
                               $date_injected, 
                               $time_injected);
         echo '
-        <table class="table">
-            <thead>
-                <tr>
-                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Ethos amount</th>
-                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Comment</th>
-                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Date Injected</th>
-                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Injected</th>
-                </tr>
-            </thead>
-            <tbody>
+            <h3>Inject history</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Ethos amount</th>
+                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Comment</th>
+                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Date Injected</th>
+                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Injected</th>
+                    </tr>
+                </thead>
+                <tbody>
         ';
 
         for($i = 0; $i < sizeof($amount_injected); $i++)

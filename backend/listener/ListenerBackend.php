@@ -419,7 +419,7 @@
         }        
     }
 
-    function buyHistoryInit($sellers, $prices, $date_purchase, $time_purchase, $username)
+    function buyHistoryInit(&$sellers, &$prices, &$date_purchase, &$time_purchase, $username)
     {
         $conn = connect();
 
@@ -430,6 +430,7 @@
             $date = dateParser($row['date_purchased']);
             $time = timeParser($row['time_purchased']);
 
+            array_push($prices, $row['price_per_share_when_bought']);
             array_push($sellers, $row['seller_username']);
             array_push($date_purchase, $date);
             array_push($time_purchase, $time);

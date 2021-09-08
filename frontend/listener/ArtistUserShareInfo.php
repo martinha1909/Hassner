@@ -337,13 +337,6 @@
                         }
                     }
 
-                    $sellers = array();
-                    $prices = array();
-                    $date_purchase = array();
-                    $time_purchase = array();
-
-                    buyHistoryInit($sellers, $prices, $date_purchase, $time_purchase, $_SESSION['username']);
-
                     echo '
                             <h3>Buy History</h3>
                             <table class="table">
@@ -358,7 +351,29 @@
                                 <tbody>
                     ';
 
-                    echo '<h3>Inject history</h3>';
+                    $sellers = array();
+                    $prices = array();
+                    $date_purchase = array();
+                    $time_purchase = array();
+
+                    buyHistoryInit($sellers, $prices, $date_purchase, $time_purchase, $_SESSION['username']);
+
+                    for($i = 0; $i < sizeof($sellers); $i++)
+                    {
+                        echo '
+                                    <tr>
+                                        <td>'.$sellers[$i].'</td>
+                                        <td>'.$prices[$i].'</td>
+                                        <td>'.$date_purchase[$i].'</td>
+                                        <td>'.$time_purchase[$i].'</td>
+                                    </tr>
+                        ';
+                    }
+
+                    echo '
+                                </tbody>
+                            </table>
+                    ';
 
                     injectionHistoryInit($_SESSION['selected_artist']);
                 ?>
