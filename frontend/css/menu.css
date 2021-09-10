@@ -80,7 +80,7 @@ select::-ms-expand {
   top: 0;
   right: 0;
   padding: 0 1em;
-  color: #f39c12;
+  color: #e2cda9ff;
   background: #11171a;
   cursor: pointer;
   pointer-events: none;
@@ -90,7 +90,7 @@ select::-ms-expand {
 }
 
 .select-dark:hover::after {
-  color: #f39c12;
+  color: #e2cda9ff;
   background-color: #11171a;
   /* border-color: #11171a; */
 }

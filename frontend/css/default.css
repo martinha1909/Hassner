@@ -5169,7 +5169,6 @@ input[type="button"].btn-block {
   background-color: #11171a;
   border-right: 2px solid white;
   /* border: 0px solid white; */
-  min-width: 250px;
 }
 
 .list-group-item-no-hover {
@@ -5177,9 +5176,8 @@ input[type="button"].btn-block {
   display: block;
   padding: 1.5rem;
   background-color: #11171a;
-  border-right: 2px solid white;
+  border-right: 0px solid white;
   /* border: 0px solid white; */
-  min-width: 250px;
 }
 
 .list-group-item-no-hover:hover {
@@ -5189,7 +5187,6 @@ input[type="button"].btn-block {
   background-color: #11171a;
   border-right: 2px solid white;
   /* border: 0px solid white; */
-  min-width: 250px;
 }
 
 .new-releases {
@@ -5198,7 +5195,6 @@ input[type="button"].btn-block {
   color: white;
   position: relative;
   display: block;
-  min-width: 250px;
 }
 
 .new-releases:hover {
@@ -5207,15 +5203,13 @@ input[type="button"].btn-block {
   color: white;
   position: relative;
   display: block;
-  min-width: 250px;
 }
 .list-group-item-search-bar {
   position: relative;
   display: block;
-  padding: 1px;
+  padding: 0px;
   background-color: #ffffff;
   border: 5px solid white;
-  min-width: 250px;
 }
 .list-group-item:first-child {
   border-top-left-radius: 0.3rem;
@@ -10531,20 +10525,17 @@ input#abc {
 
 input#abc:hover {
   cursor: pointer;
-  color: #ff9100;
-  transform: scale(1.01);
-  text-decoration: underline;
+  color: rgb(255, 255, 255);
 }
 
 input#abc-no-underline {
-  color: #ffffff;
+  color: #e2cda9ff;
   padding: 0px 0px;
 }
 
 input#abc-no-underline:hover {
   cursor: pointer;
-  color: #ff9100;
-  transform: scale(1.01);
+  color: rgb(255, 255, 255);
   /* text-decoration: underline; */
 }
 
@@ -10564,14 +10555,14 @@ input#menu-style-invert:hover {
 input#menu-style {
   font-weight: 500;
   /* background-color: #4c9ed9; */
-  color: white;
+  color: rgb(255, 255, 255);
   padding: 0px 0px;
 }
 
 input#menu-style:hover {
   font-weight: 500;
-  cursor: pointer;
-  color: #ff9100;
+  cursor: default;
+  color: rgb(255, 255, 255);
 }
 
 input#href-hover {
@@ -10602,7 +10593,7 @@ a#href-hover-orange {
 
 a#href-hover-orange:hover {
   cursor: pointer;
-  color: #ff9100;
+  color: #134f5cff;
 }
 
 a#dashboard-hover {
@@ -10615,7 +10606,7 @@ a#dashboard-hover {
 
 a#dashboard-hover:hover {
   cursor: pointer;
-  color: var(--orange);
+  color: #134f5cff;
   border: 1px transparent;
   font-weight: bold;
   background-color: transparent;
