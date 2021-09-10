@@ -6,19 +6,44 @@
 
     $conn = connect();
     $save_info = $_POST['save_info'];
-    if($save_info == "Yes")
+
+    $full_name = $_POST['firstname'];
+    $email = $_POST['email'];
+    $address=$_POST['address'];
+    $city = $_POST['city'];
+    $state = $_POST['state'];
+    $zip = $_POST['zip'];
+    $card_name = $_POST['cardname'];
+    $card_number = $_POST['cardnumber'];
+    $expmonth = $_POST['expmonth'];
+    $expyear = $_POST['expyear'];
+    $cvv = $_POST['cvv'];
+
+    # Basic CC verification. This would be done by a payment processor in the future
+    if((strlen($card_number) < 14) || (strlen($card_number) > 16))
     {
-        $full_name = $_POST['firstname'];
-        $email = $_POST['email'];
-        $address=$_POST['address'];
-        $city = $_POST['city'];
-        $state = $_POST['state'];
-        $zip = $_POST['zip'];
-        $card_name = $_POST['cardname'];
-        $card_number = $_POST['cardnumber'];
-        $expmonth = $_POST['expmonth'];
-        $expyear = $_POST['expyear'];
-        $cvv = $_POST['cvv'];
+        $_SESSION['status'] = "EMPTY_ERR";
+    }
+
+    # Validation algo from https://web.archive.org/web/20040904082039/http://www.semaphorecorp.com/misc/cc.html
+    $mult = 1;
+    $sum = 0;
+    for($i = strlen($card_number); $i > 0; $i--)
+    {
+        $char = $card_number[$i];
+        $num = (int) $card_number[$i];
+        $product = $num * $mult;
+        $sum += ($product / 10) + $product % 10;
+        $mult = 3 - $mult;
+    }
+
+    # Card failed checksum
+    if($sum % 10 != 0)
+    {
+        $_SESSION['status'] = "EMPTY_ERR";
+    } 
+    else if($save_info == "Yes")
+    {
         if(!empty($full_name) && !empty($email) && !empty($address) && !empty($city) && !empty($state) && !empty($zip) && !empty($card_name) && !empty($card_number) && !empty($expmonth) && !empty($expyear) && !empty($cvv))
         {
             $_SESSION['coins'] = round($_SESSION['coins'], 2);
@@ -46,17 +71,6 @@
     }
     else
     {
-        $full_name = $_POST['firstname'];
-        $email = $_POST['email'];
-        $address=$_POST['address'];
-        $city = $_POST['city'];
-        $state = $_POST['state'];
-        $zip = $_POST['zip'];
-        $card_name = $_POST['cardname'];
-        $card_number = $_POST['cardnumber'];
-        $expmonth = $_POST['expmonth'];
-        $expyear = $_POST['expyear'];
-        $cvv = $_POST['cvv'];
         if(!empty($full_name) && !empty($email) && !empty($address) && !empty($city) && !empty($state) && !empty($zip) && !empty($card_name) && !empty($card_number) && !empty($expmonth) && !empty($expyear) && !empty($cvv))
         {
             $_SESSION['coins'] = round($_SESSION['coins'], 2);

@@ -8,7 +8,12 @@
     $email = $_POST['email'];
     $account_type = $_POST['account_type'];
 
-    if(!empty($username) && !empty($password)){
+    // Email Verification
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
+    {
+        $_SESSION['status'] = "EMAIL_FORMAT_ERR";
+    }
+    else if(!empty($username) && !empty($password)){
         $res = searchAccount($conn, $username);
         if($res->num_rows > 0)
         {
