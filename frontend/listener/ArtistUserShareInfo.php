@@ -194,6 +194,25 @@
                         ';
                         $_SESSION['buy_sell'] = 0;
                     }
+                    else if($_SESSION['buy_sell'] == "BUY_ORDER" && $available_share > 0) 
+                    {
+                        echo '
+                            <h6>How many shares are you buying?</h6>
+                            <div class="wrapper-searchbar">
+                                <div class="container-searchbar mx-auto">
+                                    <label>
+                                        <form action="../../backend/listener/BuyOrderBackend.php" method="post">
+                                            <input name = "request_quantity" type="range" min="1" max='.$available_share.' value="1" class="slider" id="myRange">
+                                            <p>Quantity: <span id="demo"></span></p>
+                                            <input type="text" name="request_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
+                                            <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
+                                        </form>
+                                    </label> 
+                                </div>
+                            </div>
+                        ';
+                        $_SESSION['buy_sell'] = 0;
+                    }
                 ?>
             </div>
         </div>

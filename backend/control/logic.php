@@ -75,7 +75,7 @@
 
         function searchUserSellingShares($conn, $user_username)
         {
-            $sql = "SELECT * FROM user_artist_sell_share WHERE user_username = ?";
+            $sql = "SELECT * FROM sell_order WHERE user_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $user_username);
             $stmt->execute();
@@ -86,7 +86,7 @@
 
         function searchSellOrderByID($conn, $id)
         {
-            $sql = "SELECT * FROM user_artist_sell_share WHERE id = ?";
+            $sql = "SELECT * FROM sell_order WHERE id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('i', $id);
             $stmt->execute();
@@ -130,7 +130,7 @@
 
         function searchArtistHighestPrice($conn, $artist_username)
         {
-            $sql = "SELECT MAX(selling_price) AS maximum FROM user_artist_sell_share WHERE artist_username = ?";
+            $sql = "SELECT MAX(selling_price) AS maximum FROM sell_order WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -141,7 +141,7 @@
 
         function searchArtistLowestPrice($conn, $artist_username)
         {
-            $sql = "SELECT MIN(selling_price) AS minimum FROM user_artist_sell_share WHERE artist_username = ?";
+            $sql = "SELECT MIN(selling_price) AS minimum FROM sell_order WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -185,7 +185,7 @@
 
         function getAskedPrices($conn, $artist_username)
         {
-            $sql = "SELECT * FROM user_artist_sell_share WHERE artist_username = ?";
+            $sql = "SELECT * FROM sell_order WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -196,7 +196,7 @@
 
         function getSpecificAskedPrice($conn, $user_username, $artist_username)
         {
-            $sql = "SELECT * FROM user_artist_sell_share WHERE artist_username = ? AND user_username = ?";
+            $sql = "SELECT * FROM sell_order WHERE artist_username = ? AND user_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ss', $artist_username, $user_username);
             $stmt->execute();
@@ -293,7 +293,15 @@
 
         function getMaxSellOrderID($conn)
         {
-            $sql = "SELECT MAX(id) AS max_id FROM user_artist_sell_share";
+            $sql = "SELECT MAX(id) AS max_id FROM sell_order";
+            $result = mysqli_query($conn,$sql);
+            
+            return $result;
+        }
+
+        function getMaxBuyOrderID($conn)
+        {
+            $sql = "SELECT MAX(id) AS max_id FROM buy_order";
             $result = mysqli_query($conn,$sql);
             
             return $result;
@@ -570,7 +578,7 @@
                 return $status;
             }
 
-            $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share - '$amount' WHERE user_username = '$seller' AND artist_username = '$artist' AND selling_price = '$price'";
+            $sql = "UPDATE sell_order SET no_of_share = no_of_share - '$amount' WHERE user_username = '$seller' AND artist_username = '$artist' AND selling_price = '$price'";
             if($conn->query($sql) == TRUE)
             {
                 $status = "SUCCESS";
@@ -663,7 +671,7 @@
                 return $status;
             }
 
-            $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share - '$amount_bought' WHERE user_username = '$seller_username' AND artist_username = '$artist_username' AND selling_price = '$selling_price'";
+            $sql = "UPDATE sell_order SET no_of_share = no_of_share - '$amount_bought' WHERE user_username = '$seller_username' AND artist_username = '$artist_username' AND selling_price = '$selling_price'";
             if($conn->query($sql) == TRUE)
             {
                 $status = "SUCCESS";
@@ -677,17 +685,17 @@
 
         function updateExistedSellingShare($conn, $user_username, $artist_username, $quantity, $asked_price, $old_asked_price, $old_quantity)
         {
-            $sql = "UPDATE user_artist_sell_share SET no_of_share = '$quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$old_asked_price' AND no_of_share = '$old_quantity'";
+            $sql = "UPDATE sell_order SET no_of_share = '$quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$old_asked_price' AND no_of_share = '$old_quantity'";
             $conn->query($sql);
 
-            $sql = "UPDATE user_artist_sell_share SET selling_price = '$asked_price' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$old_asked_price' AND no_of_share = '$old_quantity'";
+            $sql = "UPDATE sell_order SET selling_price = '$asked_price' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$old_asked_price' AND no_of_share = '$old_quantity'";
             $conn->query($sql);
         }
 
         function adjustExistedAskedPriceQuantity($conn, $user_username, $artist_username, $asked_price, $new_quantity)
         {
             $status = 0;
-            $sql = "UPDATE user_artist_sell_share SET no_of_share = '$new_quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
+            $sql = "UPDATE sell_order SET no_of_share = '$new_quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
             if($conn->query($sql) == TRUE)
             {
                 $status = "SUCCESS";
@@ -737,7 +745,7 @@
                 $max_id = $res->fetch_assoc();
                 $sell_order_id = $max_id['max_id'] + 1;
             }
-            $sql = "INSERT INTO user_artist_sell_share (id, user_username, artist_username, selling_price, no_of_share)
+            $sql = "INSERT INTO sell_order (id, user_username, artist_username, selling_price, no_of_share)
                     VALUES(?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('issdd', $sell_order_id, $user_username, $artist_username, $asked_price, $quantity);
@@ -752,9 +760,35 @@
             return $status;
         }
 
+        function postBuyOrder($conn, $user_username, $artist_username, $quantity, $request_price, $date_posted, $time_posted)
+        {
+            $buy_order_id = 0;
+
+            $res = getMaxBuyOrderID($conn);
+            if($res->num_rows != 0)
+            {
+                $max_id = $res->fetch_assoc();
+                $buy_order_id = $max_id['max_id'] + 1;
+            }
+            $status = 0;
+            $sql = "INSERT INTO buy_order (id, user_username, artist_username, quantity, siliqas_requested, date_posted, time_posted)
+                    VALUES(?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('issidss', $buy_order_id, $user_username, $artist_username, $quantity, $request_price, $date_posted, $time_posted);
+            if($stmt->execute() == TRUE)
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                $status = "ERROR";
+            }
+            return $status;
+        }
+
         function removeUserArtistSellShareTuple($conn, $user_username, $artist_username, $selling_price, $no_of_share)
         {
-            $sql = "DELETE FROM user_artist_sell_share WHERE user_username = ? AND artist_username = ? AND selling_price = ? AND no_of_share = ?";
+            $sql = "DELETE FROM sell_order WHERE user_username = ? AND artist_username = ? AND selling_price = ? AND no_of_share = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ssdi', $user_username, $artist_username, $selling_price, $no_of_share);
             $stmt->execute();
@@ -764,7 +798,7 @@
         {
             if($account_type == "artist")
             {
-                $sql = "DELETE FROM user_artist_sell_share WHERE artist_username = ?";
+                $sql = "DELETE FROM sell_order WHERE artist_username = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('s', $username);
                 $stmt->execute();
@@ -776,7 +810,7 @@
             }
             else if($account_type == "user")
             {
-                $sql = "DELETE FROM user_artist_sell_share WHERE user_username = ?";
+                $sql = "DELETE FROM sell_order WHERE user_username = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('s', $username);
                 $stmt->execute();
@@ -869,7 +903,7 @@
             $sql = "DROP TABLE user_artist_share";
             $conn->query($sql);
 
-            $sql = "DROP TABLE user_artist_sell_share";
+            $sql = "DROP TABLE sell_order";
             $conn->query($sql);
 
             $sql = "DROP TABLE inject_history";
