@@ -434,4 +434,42 @@
             array_push($time_purchase, $time);
         }
     }
+
+    function autoPurchase($conn, $user_username, $artist_username, $request_quantity, $request_price)
+    {
+        $ret = 0;
+
+        $res = getAskedPrices($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            //Skip your own sell order
+            if($row['user_username'] == $user_username)
+            {
+                continue;
+            }
+            else
+            {
+                if($request_price == $row['selling_price'])
+                {
+                    if($request_quantity > $row['no_of_share'])
+                    {
+
+                    }
+                    else if($request_quantity < $row['no_of_share'])
+                    {
+
+                    }
+                    else
+                    {
+                        
+                    }
+                }
+                //Skip the sell orders that do not meet the requested price
+                else
+                {
+                    continue;
+                }
+            }
+        }
+    }
 ?>

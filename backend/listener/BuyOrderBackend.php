@@ -11,6 +11,12 @@
     $current_date = getCurrentDate("America/Edmonton");
     $date_parser = dayAndTimeSplitter($current_date);
 
+    $new_quantity = autoPurchase($conn, 
+                                 $_SESSION['username'], 
+                                 $_SESSION['selected_artist'], 
+                                 $request_quantity, 
+                                 $request_price);
+
     postBuyOrder($conn, 
                  $_SESSION['username'], 
                  $_SESSION['selected_artist'], 
