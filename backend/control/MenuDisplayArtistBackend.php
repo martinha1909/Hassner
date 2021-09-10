@@ -1,29 +1,15 @@
 <?php
-    session_start();
+    $_SESSION['dependencies'] = "BACKEND";
+    include '../control/Dependencies.php';
+
     $type = $_POST['display_type'];
-    if($type == "Your Campaign")
+
+    if(in_array($type, ["Artists", "Ethos", "Siliqas", "Account", "Campaign"]))
     {
-        $_SESSION['display'] = 1;
+        $_SESSION['display'] = strtoupper($type);
     }
-    else if($type == "My Portfolio")
-    {
-        $_SESSION['display'] = 2;
-    }
-    else if($type == "Account")
-    {
-        $_SESSION['display'] = 3;
-    }
-    else if($type == "Siliqas")
-    {
-        $_SESSION['display'] = 4;
-    }
-    else if($type == "Settings")
-    {
-        $_SESSION['display'] = 5;
-    }
-    else if($type == "+")
-    {
-        $_SESSION['display'] = 3;
-    }
-    header("Location: ../../frontend/artist/Artist.php");
+
+    $_SESSION['dependencies'] = "FRONTEND";
+
+    returnToMainPage();
 ?>
