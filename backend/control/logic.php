@@ -151,6 +151,17 @@
             return $result;
         }
 
+        function getInjectionHistory($conn, $artist_username)
+        {
+            $sql = "SELECT amount, date_injected, time_injected, comment FROM inject_history WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function getAskedPrices($conn, $artist_username)
         {
             $sql = "SELECT * FROM user_artist_sell_share WHERE artist_username = ?";
@@ -250,7 +261,14 @@
             return $result;
         }
 
-        function artistShareDistributionInit($conn, $artist_username, $share_distributing, $initial_pps)
+        function getMaxInjectionID($conn){
+            $sql = "SELECT MAX(id) AS max_id FROM inject_history";
+            $result = mysqli_query($conn,$sql);
+            
+            return $result;
+        }
+
+        function artistShareDistributionInit($conn, $artist_username, $share_distributing, $initial_pps, $comment, $date, $time)
         {
             $status = 0;
 
@@ -274,6 +292,8 @@
                 return "ERROR";
             }
 
+            $status = addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date, $time);
+
             return $status;
         }
 
@@ -283,10 +303,12 @@
             $conn->query($sql);
         }
 
-        function updateShareDistributed($conn, $artist_username, $new_share_distributed)
+        function updateShareDistributed($conn, $artist_username, $new_share_distributed, $added_shares, $comment, $date, $time)
         {
             $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username='$artist_username'";
             $conn->query($sql);
+
+            addToInjectionHistory($conn, $artist_username, $added_shares, $comment, $date, $time);
         }
 
         function saveUserPaymentInfo($conn, $username, $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number)
@@ -669,6 +691,33 @@
             return $status;
         }
 
+        function addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date, $time)
+        {
+            $status = 0;
+            $injection_id = 0;
+
+            $res = getMaxInjectionID($conn);
+            if($res->num_rows > 0)
+            {
+                $max_id = $res->fetch_assoc();
+                $injection_id = $max_id["max_id"] + 1;
+            }
+
+            $sql = "INSERT INTO inject_history (id, artist_username, amount, date_injected, time_injected, comment)
+                    VALUES(?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('isisss', $injection_id, $artist_username, $share_distributing, $date, $time, $comment);
+            if($stmt->execute() == TRUE)
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                $status = "ERROR";
+            }
+            return $status;
+        }
+
         function insertUserArtistSellShareTuple($conn, $user_username, $artist_username, $quantity, $asked_price)
         {
             $status = 0;
@@ -723,6 +772,14 @@
             }
         }
 
+        function deleteInjectionHistory($conn, $username)
+        {
+            $sql = "DELETE FROM inject_history WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+        }
+
         function cleanDatabase($conn)
         {
             $sql = "SELECT * FROM account";
@@ -760,6 +817,7 @@
                 $conn->query($query);
 
                 deleteShareTables($conn, $account_type, $username);
+                deleteInjectionHistory($conn, $username);
             }
         }
 
@@ -776,6 +834,7 @@
                 $account_type = $row['account_type'];
 
                 deleteShareTables($conn, $account_type, $username);
+                deleteInjectionHistory($conn, $username);
 
                 $sql = "DELETE FROM account WHERE username = ?";
                 $stmt = $conn->prepare($sql);
@@ -787,6 +846,9 @@
             $conn->query($sql);
 
             $sql = "DROP TABLE user_artist_sell_share";
+            $conn->query($sql);
+
+            $sql = "DROP TABLE inject_history";
             $conn->query($sql);
 
             $sql = "DROP TABLE account";
