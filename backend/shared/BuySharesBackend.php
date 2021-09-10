@@ -12,7 +12,7 @@
         $asked_price = key($_POST['asked_price']);
     }
     $current_date_time = getCurrentDate("America/Edmonton");
-    $date_parser = currentTimeParser($current_date_time);
+    $date_parser = dayAndTimeSplitter($current_date_time);
     //not enough siliqas
     if($_SESSION['user_balance'] < ($amount_bought * $_SESSION['purchase_price']))
     {

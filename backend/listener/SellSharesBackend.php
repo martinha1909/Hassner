@@ -44,7 +44,7 @@
         {
             $_SESSION['logging_mode'] = "EXIST";
 
-            $res = searchUserSellingShares($conn, $_SESSION['username']);
+            $res = searchUserSellOrders($conn, $_SESSION['username']);
             while($row = $res->fetch_assoc())
             {
                 if($row['selling_price'] == $asked_price)

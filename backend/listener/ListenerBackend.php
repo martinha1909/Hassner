@@ -87,31 +87,6 @@
         }
 
         return false;
-        // if (sizeof($arr) === 0) return false;
-        // $low = 0;
-        // $high = sizeof($arr) - 1;
-        // while ($low <= $high) 
-        // {
-        //     // compute middle index
-        //     $mid = floor(($low + $high) / 2);
-
-        //     // element found at mid
-        //     if($arr[$mid] == $index_name) {
-        //         return true;
-        //     }
-
-        //     if (strcmp($index_name, $arr[$mid]) < 0) {
-        //         // search the left side of the array
-        //         $high = $mid -1;
-        //     }
-        //     else {
-        //         // search the right side of the array
-        //         $low = $mid + 1;
-        //     }
-        // }
-          
-        // // If we reach here element x doesnt exist
-        // return false;
     }
 
     //performing insertionSort to targeted arrays with $indicator being either ascending or descending
@@ -242,15 +217,15 @@
 
     //retrieves from the database all the rows that contains all selling shares accrossed all artists of $user_username
     //If notices a row that has quantity of 0, simply just removes it from the database
-    function fetchUserSellingShares($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits)
+    function fetchSellOrders($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits)
     {
         $conn = connect();
-        $result = searchUserSellingShares($conn, $user_username);
+        $result = searchUserSellOrders($conn, $user_username);
         while($row = $result->fetch_assoc())
         {
             if($row['no_of_share'] == 0)
             {
-                removeUserArtistSellShareTuple($conn, $row['user_username'], $row['artist_username'], $row['selling_price'], $row['no_of_share']);
+                removeSellOrder($conn, $row['user_username'], $row['artist_username'], $row['selling_price'], $row['no_of_share']);
             }
             else
             {
@@ -267,6 +242,29 @@
         }
         insertionSort($selling_prices, $artist_usernames, $roi, $share_amounts, "Descending");
         singleSort($profits, "Descending");
+    }
+
+    function fetchBuyOrders($user_username, &$artist_usernames, &$quantities_requested, &$siliqas_requested, &$date_posted, &$time_posted, &$buy_order_ids)
+    {
+        $conn = connect();
+        $res = searchUserBuyOrders($conn, $user_username);
+        while($row = $res->fetch_assoc())
+        {
+            if($row['quantity'] == 0)
+            {
+                removeBuyOrder($conn, 
+                               $row['id']);
+            }
+            else
+            {
+                array_push($artist_usernames, $row['artist_username']);
+                array_push($quantities_requested, $row['quantity']);
+                array_push($siliqas_requested, $row['siliqas_requested']);
+                array_push($date_posted, $row['date_posted']);
+                array_push($time_posted, $row['time_posted']);
+                array_push($buy_order_ids, $row['id']);
+            }
+        }
     }
 
     //gets the total amount of share that the user holds corresponds to the $artist_username

@@ -12,7 +12,7 @@
 
     //first index of return array will contain current date, second index will contain current time
     //date will have format of DD-MM-YY
-    function currentTimeParser($date)
+    function dayAndTimeSplitter($date)
     {
         return explode(" ", $date);
     }
@@ -51,19 +51,19 @@
 
         if($last_char == "1")
         {
-            $day = $last_char."st";
+            $day = $day."st";
         }
         else if($last_char == "2")
         {
-            $day = $last_char."nd";
+            $day = $day."nd";
         }
         else if($last_char == "3")
         {
-            $day = $last_char."rd";
+            $day = $day."rd";
         }
         else
         {
-            $day = $last_char."th";
+            $day = $day."th";
         }
 
         return $day;

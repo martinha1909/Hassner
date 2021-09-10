@@ -73,9 +73,20 @@
             return $result;
         }
 
-        function searchUserSellingShares($conn, $user_username)
+        function searchUserSellOrders($conn, $user_username)
         {
             $sql = "SELECT * FROM sell_order WHERE user_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchUserBuyOrders($conn, $user_username)
+        {
+            $sql = "SELECT * FROM buy_order WHERE user_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $user_username);
             $stmt->execute();
@@ -786,11 +797,19 @@
             return $status;
         }
 
-        function removeUserArtistSellShareTuple($conn, $user_username, $artist_username, $selling_price, $no_of_share)
+        function removeSellOrder($conn, $user_username, $artist_username, $selling_price, $no_of_share)
         {
             $sql = "DELETE FROM sell_order WHERE user_username = ? AND artist_username = ? AND selling_price = ? AND no_of_share = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ssdi', $user_username, $artist_username, $selling_price, $no_of_share);
+            $stmt->execute();
+        }
+
+        function removeBuyOrder($conn, $buy_order_id)
+        {
+            $sql = "DELETE FROM buy_order WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $buy_order_id);
             $stmt->execute();
         }
 
