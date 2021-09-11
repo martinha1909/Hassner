@@ -31,3 +31,7 @@ Coding Standards
     3.3 No SQL queries should be happening in the frontend files. 
 
     3.4 Backend files should be used as the intermediary between frontend and the database
+
+4. Queries:
+    4.1 Avoid arbitrary query identifier *. Should just select the columns that are needed to query instead of 
+        doing *. (i.e SELECT username FROM account instead of SELECT * from account)
