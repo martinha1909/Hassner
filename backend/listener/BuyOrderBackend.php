@@ -19,7 +19,7 @@
                  $date_parser[0], 
                  $date_parser[1]);
 
-    $_SESSION['display'] == "PORTFOLIO";
+    $_SESSION['display'] = "PORTFOLIO";
     $_SESSION['dependencies'] = "FRONTEND";
     returnToMainPage();
 ?>

@@ -703,10 +703,30 @@
             $conn->query($sql);
         }
 
-        function adjustExistedAskedPriceQuantity($conn, $user_username, $artist_username, $asked_price, $new_quantity)
+        function adjustExistedAskedPriceQuantity($conn, $user_username, $artist_username, $asked_price, $new_quantity, $new_date, $new_time)
         {
             $status = 0;
             $sql = "UPDATE sell_order SET no_of_share = '$new_quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                $status = "ERROR";
+            }
+
+            $sql = "UPDATE sell_order SET date_posted = '$new_date' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
+            if($conn->query($sql) == TRUE)
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                $status = "ERROR";
+            }
+
+            $sql = "UPDATE sell_order SET time_posted = '$new_time' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
             if($conn->query($sql) == TRUE)
             {
                 $status = "SUCCESS";
@@ -745,7 +765,7 @@
             return $status;
         }
 
-        function insertUserArtistSellShareTuple($conn, $user_username, $artist_username, $quantity, $asked_price)
+        function postSellOrder($conn, $user_username, $artist_username, $quantity, $asked_price, $date_posted, $time_posted)
         {
             $status = 0;
             $sell_order_id = 0;
@@ -756,10 +776,10 @@
                 $max_id = $res->fetch_assoc();
                 $sell_order_id = $max_id['max_id'] + 1;
             }
-            $sql = "INSERT INTO sell_order (id, user_username, artist_username, selling_price, no_of_share)
-                    VALUES(?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO sell_order (id, user_username, artist_username, selling_price, no_of_share, date_posted, time_posted)
+                    VALUES(?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('issdd', $sell_order_id, $user_username, $artist_username, $asked_price, $quantity);
+            $stmt->bind_param('issddss', $sell_order_id, $user_username, $artist_username, $asked_price, $quantity, $date_posted, $time_posted);
             if($stmt->execute() == TRUE)
             {
                 $status = "SUCCESS";
@@ -797,11 +817,11 @@
             return $status;
         }
 
-        function removeSellOrder($conn, $user_username, $artist_username, $selling_price, $no_of_share)
+        function removeSellOrder($conn, $order_id)
         {
-            $sql = "DELETE FROM sell_order WHERE user_username = ? AND artist_username = ? AND selling_price = ? AND no_of_share = ?";
+            $sql = "DELETE FROM sell_order WHERE id = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdi', $user_username, $artist_username, $selling_price, $no_of_share);
+            $stmt->bind_param('i', $order_id);
             $stmt->execute();
         }
 
