@@ -437,11 +437,13 @@
 
     function autoPurchase($conn, $user_username, $artist_username, $request_quantity, $request_price)
     {
-        $ret = 0;
-
         $res = getAskedPrices($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
+            if($request_quantity == 0)
+            {
+                break;
+            }
             //Skip your own sell order
             if($row['user_username'] == $user_username)
             {
@@ -453,7 +455,51 @@
                 {
                     if($request_quantity > $row['no_of_share'])
                     {
+                        //The return value should be the amount of share requested subtracted by the amount that 
+                        //is automatically bought
+                        $request_quantity = $request_quantity - $row['no_of_share'];
 
+                        $current_date_time = getCurrentDate("America/Edmonton");
+                        $date_parser = dayAndTimeSplitter($current_date_time);
+
+                        $result = searchAccount($conn, $row['user_username']);
+                        $seller_initial_balance = $result->fetch_assoc();
+
+                        //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
+                        $seller_new_balance = $seller_initial_balance['balance'] + ($row['no_of_share'] * $row['selling_price']); 
+
+                        //subtracts siliqas from the user
+                        $buyer_new_balance = $_SESSION['user_balance'] - ($row['no_of_share'] * $row['selling_price']);
+                        $result = searchSpecificInvestment($conn, $row['user_username'], $_SESSION['selected_artist']);
+                        
+                        //the owned share of the seller is now transfered to the buyer
+                        //return the first occurence in user_artist_share
+                        $investment_info = $result->fetch_assoc();
+                        $seller_new_share_amount = $investment_info['no_of_share_bought'] - $row['no_of_share'];
+                        $buyer_new_share_amount = $_SESSION['shares_owned'] + $row['no_of_share'];
+
+                        //In the case of buying in asked price, the new market price will become the last purchased price
+                        $new_pps = $row['selling_price'];
+
+                        $seller_date_purchased = $investment_info['date_purchased'];
+                        $seller_time_purchased = $investment_info['time_purchased'];
+                        purchaseAskedPriceShare($conn, 
+                                                $_SESSION['username'], 
+                                                $row['user_username'], 
+                                                $_SESSION['selected_artist'],
+                                                $buyer_new_balance, 
+                                                $seller_new_balance, 
+                                                $_SESSION['current_pps']['price_per_share'], 
+                                                $new_pps, 
+                                                $buyer_new_share_amount, 
+                                                $seller_new_share_amount, 
+                                                $_SESSION['shares_owned'], 
+                                                $row['no_of_share'],
+                                                $row['selling_price'],
+                                                $date_parser[0],
+                                                $date_parser[1],
+                                                $seller_date_purchased,
+                                                $seller_time_purchased);
                     }
                     else if($request_quantity < $row['no_of_share'])
                     {

@@ -11,6 +11,7 @@
     $current_date = getCurrentDate("America/Edmonton");
     $date_parser = dayAndTimeSplitter($current_date);
 
+    //Before posting the order, we check if there is any matching sell orders to be executed immediately
     $new_quantity = autoPurchase($conn, 
                                  $_SESSION['username'], 
                                  $_SESSION['selected_artist'], 
