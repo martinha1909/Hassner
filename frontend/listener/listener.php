@@ -339,6 +339,9 @@
                                 $selling_prices = array();
                                 $share_amounts = array();
                                 $profits = array();
+                                $date_posted = array();
+                                $time_posted = array();
+                                $ids = array();
 
                                 //update the shares that the user is currently selling
                                 fetchSellOrders($_SESSION['username'], 
@@ -346,7 +349,10 @@
                                                 $roi, 
                                                 $selling_prices, 
                                                 $share_amounts, 
-                                                $profits);
+                                                $profits,
+                                                $date_posted,
+                                                $time_posted,
+                                                $ids);
 
                                 if(sizeof($selling_prices) > 0)
                                 {
@@ -357,11 +363,14 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Order ID</th>
                                                     <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Artist</th>
                                                     <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Selling for (q̶)</th>
                                                     <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Quantity</th>
                                                     <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">ROI</th>
                                                     <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Gain/Loss (q̶)</th>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Date Posted</th>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Time Posted</th>
                                                     <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Remove Order</th>
                                                 </tr>
                                             </thead>
@@ -372,11 +381,14 @@
                                         echo'
                                                 <form action="../../backend/listener/RemoveSellOrderBackend.php" method="post">
                                                     <tr>
-                                                        <th scope="row"><input name="remove_artist_name" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$artist_usernames[$i].'"></th>
-                                                        <td><input name="remove_share_price" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$selling_prices[$i].'"></td>
-                                                        <td><input name="remove_share_quantity" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$share_amounts[$i].'"></td>
+                                                        <th scope="row"><input name="remove_id" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$ids[$i].'"></th>
+                                                        <td>'.$artist_usernames[$i].'</th>
+                                                        <td>'.$selling_prices[$i].'</td>
+                                                        <td>'.$share_amounts[$i].'</td>
                                                         <td>'.$roi[$i].'%</td>
                                                         <td>'.$profits[$i].'</td>
+                                                        <td>'.dateParser($date_posted[$i]).'</td>
+                                                        <td>'.timeParser($time_posted[$i]).'</td>
                                                         <td><input type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
                                                     </tr>
                                                 </form>
