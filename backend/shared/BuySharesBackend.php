@@ -39,7 +39,7 @@
             $buyer_new_balance = $_SESSION['user_balance'] - ($amount_bought * $_SESSION['purchase_price']);
 
             //the user now owns more share of the artist
-            $buyer_new_share_amount = $_SESSION['shares_owned'] + $amount_bought;
+            $buyer_new_share_amount = $amount_bought;
 
             //in the case of buying with market price, the price per share doesn't change
             $new_pps = $_SESSION['current_pps']['price_per_share'];
@@ -107,6 +107,7 @@
                                                               $_SESSION['shares_owned'], 
                                                               $amount_bought,
                                                               $asked_price,
+                                                              $_SESSION['seller_toggle'],
                                                               $date_parser[0],
                                                               $date_parser[1],
                                                               $seller_date_purchased,

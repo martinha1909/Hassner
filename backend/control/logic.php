@@ -73,6 +73,16 @@
             return $result;
         }
 
+        function searchAllSellOrders($conn)
+        {
+            $sql = "SELECT * FROM sell_order";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchUserSellOrders($conn, $user_username)
         {
             $sql = "SELECT * FROM sell_order WHERE user_username = ?";
@@ -505,7 +515,7 @@
             return $status;
         }
 
-        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $date_purchased, $time_purchased, $seller_date_purchased, $seller_time_purchased)
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $sell_order_id, $date_purchased, $time_purchased, $seller_date_purchased, $seller_time_purchased)
         {
             $status = 0;
             $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";
@@ -577,19 +587,65 @@
                 return $status;
             }
 
+            $res = searchSpecificInvestment($conn, $seller, $artist);
+            $temp = $amount;
+            while($row = $res->fetch_assoc())
+            {
+                $uname = $row['user_username'];
+                $sname = $row['seller_username'];
+                $aname = $row['artist_username'];
+                $pps = $row['price_per_share_when_bought'];
+                $d = $row['date_purchased'];
+                $t = $row['time_purchased'];
 
-            $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought - '$amount' WHERE user_username = '$seller' AND artist_username = '$artist' AND date_purchased = '$seller_date_purchased' AND time_purchased = '$seller_time_purchased'";
-            if($conn->query($sql) == TRUE)
-            {
-                $status = "SUCCESS";
-            }   
-            else
-            {
-                $status = "ERROR";
-                return $status;
+                //Since there could be many rows of user_artist_share with the same user_username and artist_username,
+                //we want to recursively check all of the tuples until amount is 0
+                if($row['no_of_share_bought'] > $temp)
+                {
+                    $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought - '$temp' WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
+                    if($conn->query($sql) == TRUE)
+                    {
+                        $status = "SUCCESS";
+                    }   
+                    else
+                    {
+                        $status = "ERROR";
+                        return $status;
+                    }
+                    break;
+                }
+                else if($row['no_of_share_bought'] == $temp)
+                {
+                    $sql = "UPDATE user_artist_share SET no_of_share_bought = 0 WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
+                    if($conn->query($sql) == TRUE)
+                    {
+                        $status = "SUCCESS";
+                    }   
+                    else
+                    {
+                        $status = "ERROR";
+                        return $status;
+                    }
+                    break;
+                }
+                else
+                {
+                    $sql = "UPDATE user_artist_share SET no_of_share_bought = 0 WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
+                    if($conn->query($sql) == TRUE)
+                    {
+                        $status = "SUCCESS";
+                    }   
+                    else
+                    {
+                        $status = "ERROR";
+                        return $status;
+                    }
+                    
+                    $temp -= $row['no_of_share_bought'];
+                }
             }
 
-            $sql = "UPDATE sell_order SET no_of_share = no_of_share - '$amount' WHERE user_username = '$seller' AND artist_username = '$artist' AND selling_price = '$price'";
+            $sql = "UPDATE sell_order SET no_of_share = no_of_share - '$amount' WHERE id = '$sell_order_id'";
             if($conn->query($sql) == TRUE)
             {
                 $status = "SUCCESS";
@@ -850,6 +906,11 @@
             else if($account_type == "user")
             {
                 $sql = "DELETE FROM sell_order WHERE user_username = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('s', $username);
+                $stmt->execute();
+
+                $sql = "DELETE FROM buy_order WHERE user_username = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('s', $username);
                 $stmt->execute();

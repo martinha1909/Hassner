@@ -1,5 +1,12 @@
 <?php
-    include '../../backend/listener/ListenerBackend.php';
+    if($_SESSION['dependencies'] == "FRONTEND")
+    {
+        include '../../backend/listener/ListenerBackend.php';
+    }
+    else if($_SESSION['dependencies'] == "BACKEND")
+    {
+        include '../listener/ListenerBackend.php';
+    }
 
     //fetching the market price, if current user has not invested in the selected artist, simply just populate default values
     //default values should be displayed on the table like this:
@@ -638,6 +645,5 @@
                                                 $row['time_purchased']);
             }
         }
-
     }
 ?>

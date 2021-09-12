@@ -149,6 +149,7 @@
                             $_SESSION['status'] = "ERROR";
                             getStatusMessage("All shares are currently being sold", "");
                         }
+
                         echo "<br>";
                         if($_SESSION['logging_mode'] == "NON_EXIST")
                         {
@@ -158,21 +159,24 @@
                         {
                             getStatusMessage("", "Sell order updated successfully");
                         }
-                    }
 
-                    if($available_share > 0)
-                    {
-                        echo '
-                            <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
-                                <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="+Buy shares">
-                            </form>
-                        ';
-                        echo '
-                            <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
-                                <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="+Create buy order">
-                            </form>
-                        ';
+                        if($_SESSION['logging_mode'] == "BUY_ORDER")
+                        {
+                            if($_SESSION['status'] == "NOT_ENOUGH_SILIQAS")
+                            {
+                                $_SESSION['status'] = "ERROR";
+                                getStatusMessage("Not enough siliqas for requested amout", "");
+                            }
+                        }
                     }
+                    echo '
+                        <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
+                            <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="+Buy shares">
+                        </form>
+                        <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
+                            <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="+Create buy order">
+                        </form>
+                    ';
                     //displaying sell shares button if user chooses the options
                     if($_SESSION['buy_sell'] == "SELL")
                     {
@@ -194,7 +198,7 @@
                         ';
                         $_SESSION['buy_sell'] = 0;
                     }
-                    else if($_SESSION['buy_sell'] == "BUY_ORDER" && $available_share > 0) 
+                    else if($_SESSION['buy_sell'] == "BUY_ORDER") 
                     {
                         echo '
                             <h6>How many shares are you buying?</h6>
@@ -202,7 +206,7 @@
                                 <div class="container-searchbar mx-auto">
                                     <label>
                                         <form action="../../backend/listener/BuyOrderBackend.php" method="post">
-                                            <input name = "request_quantity" type="range" min="1" max='.$available_share.' value="1" class="slider" id="myRange">
+                                            <input name = "request_quantity" type="range" min="1" max='.totalShareDistributed($_SESSION['selected_artist']).' value="1" class="slider" id="myRange">
                                             <p>Quantity: <span id="demo"></span></p>
                                             <input type="text" name="request_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
                                             <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">

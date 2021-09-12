@@ -215,6 +215,16 @@
         echo '</form>';        
     }
 
+    function totalShareDistributed($artist_username)
+    {
+        $conn = connect();
+        $res = searchNumberOfShareDistributed($conn, $artist_username);
+
+        $ret = $res->fetch_assoc();
+
+        return $ret['Share_Distributed'];
+    }
+
     //retrieves from the database all the rows that contains all selling shares accrossed all artists of $user_username
     //If notices a row that has quantity of 0, simply just removes it from the database
     function fetchSellOrders($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits, &$date_posted, &$time_posted, &$ids)
@@ -225,7 +235,7 @@
         {
             if($row['no_of_share'] == 0)
             {
-                removeSellOrder($conn, $row['user_username'], $row['artist_username'], $row['selling_price'], $row['no_of_share']);
+                removeSellOrder($conn, $row['id']);
             }
             else
             {
@@ -456,10 +466,6 @@
                 {
                     if($request_quantity > $row['no_of_share'])
                     {
-                        //The return value should be the amount of share requested subtracted by the amount that 
-                        //is automatically bought
-                        $request_quantity = $request_quantity - $row['no_of_share'];
-
                         $current_date_time = getCurrentDate("America/Edmonton");
                         $date_parser = dayAndTimeSplitter($current_date_time);
 
@@ -497,10 +503,15 @@
                                                 $_SESSION['shares_owned'], 
                                                 $row['no_of_share'],
                                                 $row['selling_price'],
+                                                $row['id'],
                                                 $date_parser[0],
                                                 $date_parser[1],
                                                 $seller_date_purchased,
                                                 $seller_time_purchased);
+
+                        //The return value should be the amount of share requested subtracted by the amount that 
+                        //is automatically bought
+                        $request_quantity = $request_quantity - $row['no_of_share'];
                     }
                     else if($request_quantity < $row['no_of_share'])
                     {
@@ -516,6 +527,21 @@
                 {
                     continue;
                 }
+            }
+        }
+        return $request_quantity;
+    }
+
+    function refreshSellOrderTable()
+    {
+        $conn = connect();
+
+        $res = searchAllSellOrders($conn);
+        while($row = $res->fetch_assoc())
+        {
+            if($row['no_of_share'] <= 0)
+            {
+                removeSellOrder($conn, $row['id']);
             }
         }
     }
