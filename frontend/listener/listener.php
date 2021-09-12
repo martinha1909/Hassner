@@ -60,7 +60,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When My Portfolio is selected
                     if ($_SESSION['display'] == 0 || $_SESSION['display'] == "PORTFOLIO") {
                         echo '
-                                    <li class="list-group-item-no-hover">
+                                    <li class="list-group-item-no-hover" style="border-right: 2px solid white;">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent;" value="❖ Portfolio"
                                         </form>
@@ -79,7 +79,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When settings is selected
                     if ($_SESSION['display'] == "CAMPAIGN") {
                         echo '
-                                    <li class="list-group-item-no-hover">
+                                    <li class="list-group-item-no-hover" style="border-right: 2px solid white;">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent;" value="◔ Campaign">
                                         </form>
@@ -98,7 +98,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When Siliqas option is selected
                     if ($_SESSION['display'] == "SILIQAS") {
                         echo '
-                                    <li class="list-group-item-no-hover">
+                                    <li class="list-group-item-no-hover" style="border-right: 2px solid white;">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent;" value="※ Siliqas">
                                         </form>
@@ -117,7 +117,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When Artists is selected
                     if ($_SESSION['display'] == "ARTISTS") {
                         echo '
-                                    <li class="list-group-item-no-hover">
+                                    <li class="list-group-item-no-hover" style="border-right: 2px solid white;">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent;" value="◈ Artists">
                                         </form>
@@ -136,7 +136,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When Account is selected
                     if ($_SESSION['display'] == "ACCOUNT") {
                         echo '
-                                    <li class="list-group-item-no-hover">
+                                    <li class="list-group-item-no-hover" style="border-right: 2px solid white;">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent;" value="▤ Account">
                                         </form>
@@ -154,7 +154,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     ?>
                 </ul>
 
-                <div class="container my-auto mx-auto col-6">
+                <div class="container py-5 col-6">
                     <ul class="list-group">
                         <?php
                         //displaying My Portfolio

@@ -5165,7 +5165,7 @@ input[type="button"].btn-block {
 .list-group-item {
   position: relative;
   display: block;
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: #11171a;
   border-right: 2px solid white;
   /* border: 0px solid white; */
