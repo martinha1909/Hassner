@@ -200,22 +200,7 @@
       <p><i style="color: white;" class="fa fa-user"></i> Share Distributed: <?php
         echo $account_info['Share_Distributed'];
       ?></p>
-      <a href="../../backend/artist/EditShareDistributedBackend.php" id="icon-btn">+</a>
       <?php
-        if($_SESSION['edit'] == 3)
-        {
-          echo '
-            <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
-              <div class="form-group">
-                <h6>How many more shares would you like to distribute?</h6>
-                <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">
-              </div>
-              <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                <input type = "submit" class="my_btn edit-btn" role="button" aria-pressed="true" name = "button" value = "Save">  
-              </div>
-            </form>
-          ';
-        }
         echo '</section>';
       ?>
     </section>

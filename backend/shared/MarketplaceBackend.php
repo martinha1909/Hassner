@@ -535,5 +535,73 @@
         </div>
     </section>';
         }
-}
+    }
+
+    function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, &$date_injected, &$time_injected)
+    {
+        $conn = connect();
+
+        $res = getInjectionHistory($conn, $artist_username);
+
+        while($row = $res->fetch_assoc())
+        {
+            $date = dateParser($row['date_injected']);
+            $time = timeParser($row['time_injected']);
+
+            $day = dayToText($date[0]);
+            $month = monthToText($date[1]);
+            $year = "20".$date[2];
+
+            $inject_date = $month." ".$day.", ".$year;
+            $inject_time = timeToText($time[0], $time[1]);
+
+            array_push($comments, $row['comment']);
+            array_push($amount_injected, $row['amount']);
+            array_push($date_injected, $inject_date);
+            array_push($time_injected, $inject_time);
+        }
+    }
+
+    function injectionHistoryInit($artist_username)
+    {
+        $comments = array();
+        $amount_injected = array();
+        $date_injected = array();
+        $time_injected = array();
+
+        fetchInjectionHistory($artist_username, 
+                              $comments, 
+                              $amount_injected, 
+                              $date_injected, 
+                              $time_injected);
+        echo '
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Ethos amount</th>
+                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Comment</th>
+                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Date Injected</th>
+                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Injected</th>
+                </tr>
+            </thead>
+            <tbody>
+        ';
+
+        for($i = 0; $i < sizeof($amount_injected); $i++)
+        {
+            echo '
+                    <tr>
+                        <th scope="row">'.$amount_injected[$i].'</th>
+                        <td>'.$comments[$i].'</td>
+                        <td>'.$date_injected[$i].'</td>
+                        <td>'.$time_injected[$i].'</td>
+                    </tr>
+            ';
+        }
+
+        echo '
+                    </tbody>
+                </table>
+        ';
+    }
 ?>

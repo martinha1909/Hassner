@@ -291,6 +291,10 @@
                             </div>
                         ';
                     }
+
+                    echo '<h3>Inject history</h3>';
+
+                    injectionHistoryInit($_SESSION['selected_artist']);
                 ?>
             </div>
         </div>

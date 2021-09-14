@@ -65,11 +65,11 @@
           <div class="row">
               <ul class="list-group bg-dark">
                   <?php
-                      if($_SESSION['display'] == 2 || $_SESSION['display'] == 0)
+                      if($_SESSION['display'] == "ETHOS" || $_SESSION['display'] == 0)
                       {
                           echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px #11171a; border-right-color: #11171a;">
                               <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                          echo '<input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="My Portfolio ->"';
+                          echo '<input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="Ethos ->"';
                           echo '</form>';
                           echo '</li>';
                       }
@@ -77,15 +77,16 @@
                       {
                           echo '<li class="list-group-item-no-hover">
                               <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                          echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="My Portfolio">';
+                          echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="Ethos">';
                           echo '</form>';
                           echo '</li>';
                       }
-                      if($_SESSION['display'] == 1)
+
+                      if($_SESSION['display'] == "CAMPAIGN")
                       {
                           echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
                               <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                          echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Your Campaign ->">';
+                          echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Campaign ->">';
                           echo '</form>';
                           echo '</li>';
                       }
@@ -93,27 +94,12 @@
                       {
                           echo '<li class="list-group-item-no-hover">
                               <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                          echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Your Campaign">';
+                          echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Campaign">';
                           echo '</form>';
                           echo '</li>';
                       }
-                      if($_SESSION['display'] == 3)
-                      {
-                          echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                          echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Account ->">';
-                          echo '</form>';
-                          echo '</li>';
-                      }
-                      else
-                      {
-                          echo '<li class="list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                          echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Account">';
-                          echo '</form>';
-                          echo '</li>';
-                      }
-                      if($_SESSION['display'] == 4)
+
+                      if($_SESSION['display'] == "SILIQAS")
                       {
                           echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
                               <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
@@ -121,6 +107,7 @@
                           echo '</form>';
                           echo '</li>';
                       }
+
                       else
                       {
                           echo '<li class="list-group-item-no-hover">
@@ -129,11 +116,12 @@
                           echo '</form>';
                           echo '</li>';
                       }
-                      if($_SESSION['display'] == 5)
+
+                      if($_SESSION['display'] == "ARTISTS")
                       {
                           echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
                               <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                          echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Settings ->">';
+                          echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Artists ->">';
                           echo '</form>';
                           echo '</li>';
                       }
@@ -141,7 +129,25 @@
                       {
                           echo '<li class="list-group-item-no-hover">
                               <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                          echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Settings">';
+                          echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Artists">';
+                          echo '</form>';
+                          echo '</li>';
+                      }
+
+                      if($_SESSION['display'] == "ACCOUNT")
+                      {
+                          echo '<li class="list-group-item-no-hover" style="border-color: white; border-bottom: 2px solid white; border-top: 2px solid white; border-right-color: #11171a;">
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
+                          echo '<input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Account ->">';
+                          echo '</form>';
+                          echo '</li>';
+                      }
+
+                      else
+                      {
+                          echo '<li class="list-group-item-no-hover">
+                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
+                          echo '<input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Account">';
                           echo '</form>';
                           echo '</li>';
                       }
@@ -162,13 +168,13 @@
                   <div class="col">
                     <?php
                         //Artist campaigns, including benchmark, raffle, and give aways.
-                        if($_SESSION['display'] == 1)
+                        if($_SESSION['display'] == "CAMPAIGN")
                         {  
                         //nothing to do now as it's not part of vital functionality
                         }
 
                         //Artist's portfolio
-                        else if($_SESSION['display'] == 2 || $_SESSION['display'] == 0)
+                        else if($_SESSION['display'] == "ETHOS" || $_SESSION['display'] == 0)
                         {
                             if($account_info['Share_Distributed'] == 0)
                             {
@@ -180,42 +186,31 @@
                                 $market_cap = calculateMarketCap($_SESSION['username']);
                                 $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
                                 $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
-                                echo '<h6>Price Per Share (q̶): '.$account_info['price_per_share'].'</h6>';
                                 echo '
-                                    <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                        <h6>Volumn: '.$account_info['Share_Distributed'].' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
-                                    </form>
-                                    ';
-                                echo '<h6>Current Shareholders: '.$shareholder_list->num_rows.'</h6>';
-                                echo '<h6>Market cap (q̶): '.$market_cap.'</h6>';
-                                echo '<h6>Day High (q̶): '.$high.'</h6>';
-                                echo '<h6>Day Low (q̶): '.$low.'</h6>';
-                                if($_SESSION['add_share'] == 1)
-                                {
-                                $max = $account_info['Share_Distributed'];
-                                echo'  
-                                    <h1>Distribute more shares</h1>
-                                    <p>Drag the slider to display the current value.</p>
-                                    
-                                    <div class="slidecontainer">
-                                        <form action="../backend/artist/IncreaseSharesDistributed.php" method ="post">
-                                        <input name="share_added" type="range" min="0" max='.$max.' value="0" class="slider" id="myRange">
-                                        <input type="submit" class="btn btn-primary py-2" value="Distribute">
+                                        <h6>Price Per Share (q̶): '.$account_info['price_per_share'].'</h6>
+                                        <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
+                                            <h6>Volumn: '.$account_info['Share_Distributed'].' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
                                         </form>
-                                        <h6>Value: <span id="demo"></span></h6>
-                                    </div>
-                                    <script>
-                                        var slider = document.getElementById("myRange");
-                                        var output = document.getElementById("demo");
-                                        output.innerHTML = slider.value;
-                                        
-                                        slider.oninput = function() {
-                                        output.innerHTML = this.value;
-                                        }
-                                    </script>
+                                ';
+                                if($_SESSION['share_distribute'] != 0)
+                                {
+                                    echo '
+                                        <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
+                                            <p>How many shares would you like to inject?</p>
+                                            <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">
+                                            <p>Comments</p>
+                                            <input type="text" name = "inject_comment" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter comment">
+                                            <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Save">  
+                                            </div>
+                                        </form>
                                     ';
                                 }
                                 echo '
+                                        <h6>Current Shareholders: '.$shareholder_list->num_rows.'</h6>
+                                        <h6>Market cap (q̶): '.$market_cap.'</h6>
+                                        <h6>Day High (q̶): '.$high.'</h6>
+                                        <h6>Day Low (q̶): '.$low.'</h6>
                                         <br>
                                         <h2>Buy Back Shares</h2>
                                 ';
@@ -225,12 +220,16 @@
                                             </tbody>
                                         </table>
                                 ';
+
+                                echo '<h3>Inject history</h3>';
+
+                                injectionHistoryInit($_SESSION['username']);
                             }
                         }
 
                         //brings to Artist personal account page, where they can input their metrics, which are shown
                         //when users search for them and also on their portfolio tab
-                        else if($_SESSION['display'] == 3)
+                        else if($_SESSION['display'] == "ACCOUNT")
                         {
                             echo '
                                 <section id="login">
@@ -255,12 +254,12 @@
                         }
 
                         //Sell siliqas to USD/CAD/EUR
-                        else if($_SESSION['display'] == 4)
+                        else if($_SESSION['display'] == "SILIQAS")
                         {
                             siliqasInit();
                         }
 
-                        else if($_SESSION['display'] == 5)
+                        else if($_SESSION['display'] == "ARTISTS")
                         {
                         
                         }
