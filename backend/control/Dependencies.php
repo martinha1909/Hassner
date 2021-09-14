@@ -1,5 +1,6 @@
 <?php
     session_start();
+    
     // Chance these are missing
     if(!array_key_exists('dependencies', $_SESSION))
     {
