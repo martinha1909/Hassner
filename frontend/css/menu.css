@@ -120,3 +120,12 @@ select#dark {
   color: #f39c12;
   background-color: #11171a;
 }
+
+/* New Colours */
+.bg-tan {
+  background-color: #e2cda9ff;
+}
+
+.bg-darkcyan {
+  background-color: #134f5cff;
+}
