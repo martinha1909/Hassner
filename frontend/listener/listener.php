@@ -351,7 +351,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                             <section id="login">
                                                 <div class="container">
                                                     <div class="col-4 mx-auto my-auto text-center">
-                                                        <h3 style="color: orange;padding-top:150px;">Verify your password to access personal page</h3>
+                                                        <h3 style="color: #e2cda9ff;padding-top:150px;">Verify your password to access personal page</h3>
                                                         <form action="../../backend/listener/PersonalPageBackend.php" method="post">
                                                             <div class="form-group">
                                                                 <h5>Password</h5>

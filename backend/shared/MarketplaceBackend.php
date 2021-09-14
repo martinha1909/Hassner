@@ -431,8 +431,16 @@ function siliqasInit()
                                 <h5 style="padding-top:50px;">Enter Amount in Siliqas (q̶)</h5>
                                 <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm col-6 mx-auto" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
                             </div>
-                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
+                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">';
+        if ($balance > 0) {
+            echo '
+                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();">
+            ';
+        } else {
+            $_SESSION['status'] = "ERROR";
+            getStatusMessage("Not enough siliqas", "");
+        }
+        echo '
                             </div>
                         </form>
                         <p class="py-4 bg-dark mx-auto">' . $_SESSION['currency'] . ' (q̶):
