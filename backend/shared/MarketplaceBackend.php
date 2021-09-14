@@ -264,15 +264,44 @@
         return false;
     }
 
+    function canCreateBuyOrder($user_username, $artist_username, $shares_requesting)
+    {
+        $conn = connect();
+
+        $res = searchNumberOfShareDistributed($conn, $artist_username);
+        $total_share_dist = $res->fetch_assoc();
+
+        if($shares_requesting >= $total_share_dist['Share_Distributed'])
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     function getAmountSharesSelling($user_username, $artist_username)
     {
         $conn = connect();
         
         $ret = 0;
-        $res = getSpecificAskedPrice($conn, $user_username, $artist_username);
+        $res = searchSharesSelling($conn, $user_username, $artist_username);
         while($row = $res->fetch_assoc())
         {
             $ret += $row['no_of_share'];
+        }
+
+        return $ret;
+    }
+
+    function getAmountSharesRequesting($user_username, $artist_username)
+    {
+        $conn = connect();
+        
+        $ret = 0;
+        $res = searchSharesRequested($conn, $user_username, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            $ret += $row['quantity'];
         }
 
         return $ret;

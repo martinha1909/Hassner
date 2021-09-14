@@ -105,6 +105,28 @@
             return $result;
         }
 
+        function searchSharesRequested($conn, $user_username, $artist_username)
+        {
+            $sql = "SELECT quantity FROM buy_order WHERE user_username = ? AND artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $user_username, $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchSharesSelling($conn, $user_username, $artist_username)
+        {
+            $sql = "SELECT no_of_share FROM sell_order WHERE user_username = ? AND artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $user_username, $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchSellOrderByID($conn, $id)
         {
             $sql = "SELECT * FROM sell_order WHERE id = ?";
