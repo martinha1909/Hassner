@@ -100,7 +100,7 @@
                   $_SESSION['status'] = "ERROR";
                   $status = getStatusMessage("Please fill out all fields", "");
                 }
-                else if($_SESSION['status'] == "EMAIL_ERR")
+                else if($_SESSION['status'] == "DUPL_EMAIL_ERR")
                 {
                   $_SESSION['status'] = "ERROR";
                   $status = getStatusMessage("Email already taken", "");
