@@ -113,6 +113,8 @@
                                                               $seller_date_purchased,
                                                               $seller_time_purchased);
                 refreshUserArtistShareTable();
+                refreshSellOrderTable();
+                refreshBuyOrderTable();
             }
             else if($_SESSION['account_type'] == "artist")
             {
@@ -138,6 +140,10 @@
                                                     $new_pps, 
                                                     $amount_bought,
                                                     $account_info['selling_price']);
+                
+                refreshUserArtistShareTable();
+                refreshSellOrderTable();
+                refreshBuyOrderTable();
             }
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;

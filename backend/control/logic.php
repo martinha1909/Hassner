@@ -608,7 +608,7 @@
             $sql = "INSERT INTO user_artist_share (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                     VALUES(?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sssidss', $buyer, $seller, $artist, $buyer_new_share_amount, $initial_pps, $date_purchased, $time_purchased);
+            $stmt->bind_param('sssidss', $buyer, $seller, $artist, $amount, $initial_pps, $date_purchased, $time_purchased);
             if($stmt->execute() == TRUE)
             {
                 $status = "SUCCESS";

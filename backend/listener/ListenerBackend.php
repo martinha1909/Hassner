@@ -448,6 +448,8 @@
 
     function autoPurchase($conn, $user_username, $artist_username, $request_quantity, $request_price)
     {
+        $static_quantity_var = $request_quantity;
+
         $res = searchSellOrderByArtist($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
@@ -464,7 +466,7 @@
             {
                 if($request_price == $row['selling_price'])
                 {
-                    if($request_quantity > $row['no_of_share'])
+                    if($request_quantity >= $row['no_of_share'])
                     {
                         $current_date_time = getCurrentDate("America/Edmonton");
                         $date_parser = dayAndTimeSplitter($current_date_time);
@@ -499,7 +501,7 @@
                                                 $_SESSION['current_pps']['price_per_share'], 
                                                 $new_pps, 
                                                 $buyer_new_share_amount, 
-                                                $seller_new_share_amount, 
+                                                $seller_new_share_amount,
                                                 $_SESSION['shares_owned'], 
                                                 $row['no_of_share'],
                                                 $row['selling_price'],
@@ -516,10 +518,6 @@
                     else if($request_quantity < $row['no_of_share'])
                     {
 
-                    }
-                    else
-                    {
-                        
                     }
                 }
                 //Skip the sell orders that do not meet the requested price
