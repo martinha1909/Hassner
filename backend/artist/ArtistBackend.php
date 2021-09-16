@@ -40,7 +40,7 @@
         $res_1 = getArtistShareHoldersInfo($conn, $artist_username);
         while($row = $res_1->fetch_assoc())
         {
-            $res_2 = getSpecificAskedPrice($conn, $row['user_username'], $_SESSION['username']);
+            $res_2 = searchSellOrderByArtistAndUser($conn, $row['user_username'], $_SESSION['username']);
             while($row_2 = $res_2->fetch_assoc())
             {
                 array_push($shareholder_shares_sold, $row_2['no_of_share']);

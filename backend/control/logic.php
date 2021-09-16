@@ -83,11 +83,21 @@
             return $result;
         }
 
-        function searchUserSellOrders($conn, $user_username)
+        function searchSellOrderByUser($conn, $user_username)
         {
             $sql = "SELECT * FROM sell_order WHERE user_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchAllBuyOrders($conn)
+        {
+            $sql = "SELECT * FROM buy_order";
+            $stmt = $conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -226,7 +236,7 @@
             return $result;
         }
 
-        function getAskedPrices($conn, $artist_username)
+        function searchSellOrderByArtist($conn, $artist_username)
         {
             $sql = "SELECT * FROM sell_order WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
@@ -237,7 +247,7 @@
             return $result;
         }
 
-        function getSpecificAskedPrice($conn, $user_username, $artist_username)
+        function searchSellOrderByArtistAndUser($conn, $user_username, $artist_username)
         {
             $sql = "SELECT * FROM sell_order WHERE artist_username = ? AND user_username = ?";
             $stmt = $conn->prepare($sql);

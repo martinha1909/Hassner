@@ -32,6 +32,7 @@
 
         refreshUserArtistShareTable();
         refreshSellOrderTable();
+        refreshBuyOrderTable();
 
         postBuyOrder($conn, 
                      $_SESSION['username'], 

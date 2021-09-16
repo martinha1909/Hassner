@@ -230,7 +230,7 @@
     function fetchSellOrders($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits, &$date_posted, &$time_posted, &$ids)
     {
         $conn = connect();
-        $result = searchUserSellOrders($conn, $user_username);
+        $result = searchSellOrderByUser($conn, $user_username);
         while($row = $result->fetch_assoc())
         {
             if($row['no_of_share'] == 0)
@@ -448,10 +448,10 @@
 
     function autoPurchase($conn, $user_username, $artist_username, $request_quantity, $request_price)
     {
-        $res = getAskedPrices($conn, $artist_username);
+        $res = searchSellOrderByArtist($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
-            if($request_quantity == 0)
+            if($request_quantity <= 0)
             {
                 break;
             }
@@ -542,6 +542,20 @@
             if($row['no_of_share'] <= 0)
             {
                 removeSellOrder($conn, $row['id']);
+            }
+        }
+    }
+
+    function refreshBuyOrderTable()
+    {
+        $conn = connect();
+
+        $res = searchAllBuyOrders($conn);
+        while($row = $res->fetch_assoc())
+        {
+            if($row['quantity'] <= 0)
+            {
+                removeBuyOrder($conn, $row['id']);
             }
         }
     }

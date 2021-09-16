@@ -20,7 +20,7 @@
         $quantity = $_POST['purchase_quantity'];
         $asked_price = $_POST['asked_price'];
 
-        $result = getSpecificAskedPrice($conn, $_SESSION['username'], $_SESSION['selected_artist']);
+        $result = searchSellOrderByArtistAndUser($conn, $_SESSION['username'], $_SESSION['selected_artist']);
         $existed = 0;
 
         //queries to see if the user has already been selling this share of the same artist or not
@@ -52,7 +52,7 @@
         {
             $_SESSION['logging_mode'] = "EXIST";
 
-            $res = searchUserSellOrders($conn, $_SESSION['username']);
+            $res = searchSellOrderByUser($conn, $_SESSION['username']);
             while($row = $res->fetch_assoc())
             {
                 if($row['selling_price'] == $asked_price)

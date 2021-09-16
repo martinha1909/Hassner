@@ -80,7 +80,7 @@
     function fetchAskedPrice(&$ids, &$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
     {
         $conn = connect();
-        $result = getAskedPrices($conn, $artist_username);
+        $result = searchSellOrderByArtist($conn, $artist_username);
         //loading up data so all the arrays have corresponding indices that map to the database
         while($row = $result->fetch_assoc())
         {
@@ -342,7 +342,7 @@
             $res1 = searchArtistCurrentPricePerShare($conn, $artist_username);
             $market_price = $res1->fetch_assoc();
 
-            $res2 = getAskedPrices($conn, $_SESSION['username']);
+            $res2 = searchSellOrderByArtist($conn, $_SESSION['username']);
 
             //If there are no users that are selling this artist's shares other than himself, 
             //return the market price per share 
