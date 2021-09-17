@@ -32,15 +32,19 @@
 
         refreshUserArtistShareTable();
         refreshSellOrderTable();
-        refreshBuyOrderTable();
 
-        postBuyOrder($conn, 
-                     $_SESSION['username'], 
-                     $_SESSION['selected_artist'], 
-                     $new_quantity, 
-                     $request_price, 
-                     $date_parser[0], 
-                     $date_parser[1]);
+        if($new_quantity > 0)
+        {
+            postBuyOrder($conn, 
+                         $_SESSION['username'], 
+                         $_SESSION['selected_artist'], 
+                         $new_quantity, 
+                         $request_price, 
+                         $date_parser[0], 
+                         $date_parser[1]);
+        }
+        
+        refreshBuyOrderTable();
 
         $_SESSION['display'] = "PORTFOLIO";
         $_SESSION['dependencies'] = "FRONTEND";
