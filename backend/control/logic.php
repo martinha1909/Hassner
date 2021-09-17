@@ -1,4 +1,6 @@
 <?php
+        include '../../backend/shared/Constants.php';
+        
         //logs in with provided user info and password, then use SQL query to query database 
         //after qurerying return the result
         function login($conn, $username, $pwd) // done2
