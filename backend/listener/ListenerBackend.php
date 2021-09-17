@@ -482,7 +482,7 @@
                         $result = searchSpecificInvestment($conn, $row['user_username'], $_SESSION['selected_artist']);
                         
                         //the owned share of the seller is now transfered to the buyer
-                        //return the first occurence in user_artist_share
+                        //return the first occurence in buy_history
                         $investment_info = $result->fetch_assoc();
                         $seller_new_share_amount = $investment_info['no_of_share_bought'] - $row['no_of_share'];
                         $buyer_new_share_amount = $_SESSION['shares_owned'] + $row['no_of_share'];
@@ -531,7 +531,7 @@
                         $result = searchSpecificInvestment($conn, $row['user_username'], $_SESSION['selected_artist']);
                         
                         //the owned share of the seller is now transfered to the buyer
-                        //return the first occurence in user_artist_share
+                        //return the first occurence in buy_history
                         $investment_info = $result->fetch_assoc();
                         $seller_new_share_amount = $investment_info['no_of_share_bought'] - $request_quantity;
                         $buyer_new_share_amount = $_SESSION['shares_owned'] + $request_quantity;
