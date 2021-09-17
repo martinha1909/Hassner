@@ -71,7 +71,13 @@
             }
         }
 
-        autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
+        // checkAutoPurchaseOrders($_SESSION['username'], $_SESSION['selected_artist']);
+
+        // autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
+
+        // refreshUserArtistShareTable();
+        // refreshSellOrderTable();
+        // refreshBuyOrderTable();
 
         $_SESSION['display'] = "PORTFOLIO";
         $_SESSION['dependencies'] = "FRONTEND";

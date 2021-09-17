@@ -109,9 +109,7 @@
                                                               $asked_price,
                                                               $_SESSION['seller_toggle'],
                                                               $date_parser[0],
-                                                              $date_parser[1],
-                                                              $seller_date_purchased,
-                                                              $seller_time_purchased);
+                                                              $date_parser[1]);
                 refreshUserArtistShareTable();
                 refreshSellOrderTable();
                 refreshBuyOrderTable();

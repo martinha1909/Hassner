@@ -115,6 +115,17 @@
             return $result;
         }
 
+        function searchBuyOrdersByArtist($conn, $artist_username)
+        {
+            $sql = "SELECT * FROM buy_order WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchSharesRequested($conn, $user_username, $artist_username)
         {
             $sql = "SELECT quantity FROM buy_order WHERE user_username = ? AND artist_username = ?";
@@ -547,7 +558,7 @@
             return $status;
         }
 
-        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $sell_order_id, $date_purchased, $time_purchased, $seller_date_purchased, $seller_time_purchased)
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $sell_order_id, $date_purchased, $time_purchased)
         {
             $status = 0;
             $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";

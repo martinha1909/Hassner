@@ -110,4 +110,104 @@
 
         return $ret;
     }
+    
+    //performing insertionSort to targeted arrays with $indicator being either ascending or descending
+    //guide_arr is the leading array to sort with indixes correspond to other array indices
+    function insertionSort(&$guide_arr, &$arr1, &$arr2, &$arr3, $indicator)
+    {
+        $i;
+        $key;
+        $key2;
+        $j;
+        if($indicator == "Ascending")
+        {
+            for($i=1; $i<sizeof($guide_arr); $i++)
+            {
+                $key = $guide_arr[$i];
+                $key2 = $arr1[$i];
+                $key3 = $arr2[$i];
+                $key4 = $arr3[$i];
+                $j = $i-1;
+                while($j >= 0 && $guide_arr[$j] < $key)
+                {
+                    $guide_arr[($j+1)] = $guide_arr[$j];
+                    $arr1[($j+1)] = $arr1[$j];
+                    $arr2[($j+1)] = $arr2[$j];
+                    $arr3[($j+1)] = $arr3[$j];
+                    $j = $j-1;
+                }
+                $guide_arr[($j+1)] = $key;
+                $arr1[($j+1)] = $key2;
+                $arr2[($j+1)] = $key3;
+                $arr3[($j+1)] = $key4;
+            }                    
+        }
+        else
+        {
+            for($i=1; $i<sizeof($guide_arr); $i++)
+            {
+                $key = $guide_arr[$i];
+                $key2 = $arr1[$i];
+                $key3 = $arr2[$i];
+                $key4 = $arr3[$i];
+                $j = $i-1;
+                while($j >= 0 && $guide_arr[$j] > $key)
+                {
+                    $guide_arr[($j+1)] = $guide_arr[$j];
+                    $arr1[($j+1)] = $arr1[$j];
+                    $arr2[($j+1)] = $arr2[$j];
+                    $arr3[($j+1)] = $arr3[$j];
+                    $j = $j-1;
+                }
+                $guide_arr[($j+1)] = $key;
+                $arr1[($j+1)] = $key2;
+                $arr2[($j+1)] = $key3;
+                $arr3[($j+1)] = $key4;
+            }                  
+        }
+    }
+
+    function singleSort(&$arr, $indicator)
+    {
+        if($indicator == "Descending")
+        {
+            for ($i = 1; $i < sizeof($arr); $i++)
+            {
+                $key = $arr[$i];
+                $j = $i-1;
+            
+                // Move elements of arr[0..i-1],
+                // that are    greater than key, to
+                // one position ahead of their
+                // current position
+                while ($j >= 0 && $arr[$j] > $key)
+                {
+                    $arr[$j + 1] = $arr[$j];
+                    $j = $j - 1;
+                }
+                
+                $arr[$j + 1] = $key;
+            }
+        }
+        else
+        {
+            for ($i = 1; $i < sizeof($arr); $i++)
+            {
+                $key = $arr[$i];
+                $j = $i-1;
+            
+                // Move elements of arr[0..i-1],
+                // that are    greater than key, to
+                // one position ahead of their
+                // current position
+                while ($j >= 0 && $arr[$j] < $key)
+                {
+                    $arr[$j + 1] = $arr[$j];
+                    $j = $j - 1;
+                }
+                
+                $arr[$j + 1] = $key;
+            }
+        }
+    }
 ?>
