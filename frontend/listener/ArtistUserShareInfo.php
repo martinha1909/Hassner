@@ -379,6 +379,7 @@
                                     <tr>
                                         <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller</th>
                                         <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price</th>
+                                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
                                         <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Date Purchased</th>
                                         <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Purchased</th>
                                     </tr>
@@ -388,10 +389,11 @@
 
                     $sellers = array();
                     $prices = array();
+                    $quantities = array();
                     $date_purchase = array();
                     $time_purchase = array();
 
-                    buyHistoryInit($sellers, $prices, $date_purchase, $time_purchase, $_SESSION['username']);
+                    buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $time_purchase, $_SESSION['username']);
 
                     for($i = 0; $i < sizeof($sellers); $i++)
                     {
@@ -399,6 +401,7 @@
                                     <tr>
                                         <td>'.$sellers[$i].'</td>
                                         <td>'.$prices[$i].'</td>
+                                        <td>'.$quantities[$i].'</td>
                                         <td>'.$date_purchase[$i].'</td>
                                         <td>'.$time_purchase[$i].'</td>
                                     </tr>

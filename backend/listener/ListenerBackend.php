@@ -74,21 +74,6 @@
         $all_price_per_share = $all_price_per_share_simplified;
     }
 
-    function indexExisted(&$arr, $index_name)
-    {
-        if(sizeof($arr) == 0)
-        {
-            return false;
-        }
-        for($i = 0; $i < sizeof($arr); $i++)
-        {
-            if($arr[$i] == $index_name)
-                return true;
-        }
-
-        return false;
-    }
-
     //performing insertionSort to targeted arrays with $indicator being either ascending or descending
     //guide_arr is the leading array to sort with indixes correspond to other array indices
     function insertionSort(&$guide_arr, &$arr1, &$arr2, &$arr3, $indicator)
@@ -428,7 +413,7 @@
         }        
     }
 
-    function buyHistoryInit(&$sellers, &$prices, &$date_purchase, &$time_purchase, $username)
+    function buyHistoryInit(&$sellers, &$prices, &$quantities, &$date_purchase, &$time_purchase, $username)
     {
         $conn = connect();
 
@@ -441,6 +426,7 @@
 
             array_push($prices, $row['price_per_share_when_bought']);
             array_push($sellers, $row['seller_username']);
+            array_push($quantities, $row['no_of_share_bought']);
             array_push($date_purchase, $date);
             array_push($time_purchase, $time);
         }
