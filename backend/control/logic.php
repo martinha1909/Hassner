@@ -249,9 +249,9 @@
                                                            $swift, $price_per_share, $monthly_shareholder, 
                                                            $income, $market_cap);
             if ($stmt->execute() === TRUE) {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             } else {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }
             return $status;
         }
@@ -277,21 +277,21 @@
             $sql = "UPDATE account SET Share_Distributed = '$share_distributing' WHERE username='$artist_username'";
             if($conn->query($sql))
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
-                return "ERROR";
+                return StatusCodes::ErrGeneric;
             }
 
             $sql = "UPDATE account SET price_per_share = '$initial_pps' WHERE username='$artist_username'";
             if($conn->query($sql))
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
-                return "ERROR";
+                return StatusCodes::ErrGeneric;
             }
 
             $status = addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date, $time);
@@ -332,11 +332,11 @@
             $sql = "UPDATE account SET balance = balance + $coins WHERE username = '$username'";
             if ($conn->query($sql) === TRUE) 
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             } 
             else 
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }  
             return $status;
         }
@@ -347,11 +347,11 @@
             $sql = "UPDATE account SET balance = balance - $coins WHERE username = '$username'";
             if ($conn->query($sql) === TRUE) 
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             } 
             else 
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }
 
             return $status;
@@ -384,55 +384,55 @@
             $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET Shares = Shares + '$amount' WHERE username = '$artist'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$buyer'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET balance = '$artist_new_balance' WHERE username = '$artist'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
@@ -444,11 +444,11 @@
                 $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $inital_pps);
                 if($stmt->execute() == TRUE)
                 {
-                    $status = "SUCCESS";
+                    $status = StatusCodes::Success;
                 }
                 else
                 {
-                    $status = "ERROR";
+                    $status = StatusCodes::ErrGeneric;
                     return $status;
                 }
             }
@@ -456,11 +456,11 @@
             $sql = "UPDATE user_artist_share SET no_of_share_bought = '$buyer_new_share_amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
@@ -473,55 +473,55 @@
             $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = '$seller'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$buyer'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET balance = '$seller_new_balance' WHERE username = '$seller'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
@@ -533,11 +533,11 @@
                 $stmt->bind_param('ssid', $buyer, $artist, $buyer_new_share_amount, $initial_pps);
                 if($stmt->execute() == TRUE)
                 {
-                    $status = "SUCCESS";
+                    $status = StatusCodes::Success;
                 }
                 else
                 {
-                    $status = "ERROR";
+                    $status = StatusCodes::ErrGeneric;
                     return $status;
                 }
             }
@@ -545,33 +545,33 @@
             $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought + '$amount' WHERE user_username = '$buyer' AND artist_username = '$artist'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought - '$amount' WHERE user_username = '$seller' AND artist_username = '$artist'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share - $amount WHERE user_username = '$seller' AND artist_username = '$artist'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
@@ -583,88 +583,88 @@
             $sql = "UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$artist_username'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET balance = '$seller_new_balance' WHERE username = '$artist_username'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = '$seller_username'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username = '$artist_username'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET Shares = '$new_artist_shares_bought' WHERE username = '$artist_username'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist_username'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE user_artist_share SET no_of_share_bought = no_of_share_bought - '$amount_bought' WHERE user_username = '$seller_username' AND artist_username = '$artist_username'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
 
             $sql = "UPDATE user_artist_sell_share SET no_of_share = no_of_share - '$amount_bought' WHERE user_username = '$seller_username' AND artist_username = '$artist_username'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }   
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
                 return $status;
             }
         }
@@ -684,11 +684,11 @@
             $sql = "UPDATE user_artist_sell_share SET no_of_share = '$new_quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }
             return $status;
         }
@@ -711,11 +711,11 @@
             $stmt->bind_param('isisss', $injection_id, $artist_username, $share_distributing, $date, $time, $comment);
             if($stmt->execute() == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }
             return $status;
         }
@@ -729,11 +729,11 @@
             $stmt->bind_param('ssdd', $user_username, $artist_username, $asked_price, $quantity);
             if($stmt->execute() == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }
             return $status;
         }

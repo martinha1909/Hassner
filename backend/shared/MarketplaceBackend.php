@@ -1,4 +1,5 @@
 <?php
+    include '../../backend/shared/Constants.php';
     include '../../backend/listener/ListenerBackend.php';
 
     //fetching the market price, if current user has not invested in the selected artist, simply just populate default values
@@ -139,7 +140,7 @@
                 }
                 else
                 {
-                    $_SESSION['status'] = "ERROR";
+                    $_SESSION['status'] = StatusCodes::ErrGeneric;
                     echo '
                                     <td>
                     '; 
@@ -332,7 +333,7 @@
         {
             if($_SESSION['status'] == "EMPTY_ERR")
             {
-                $_SESSION['status'] = "ERROR";
+                $_SESSION['status'] = StatusCodes::ErrGeneric;
                 getStatusMessage("Please fill out all fields and try again", "");
             }
             else
@@ -344,12 +345,12 @@
         {
             if($_SESSION['status'] == "EMPTY_ERR")
             {
-                $_SESSION['status'] = "ERROR";
+                $_SESSION['status'] = StatusCodes::ErrGeneric;
                 getStatusMessage("Please fill out all fields and try again", "");
             }
             else if($_SESSION['status'] == "NOT_ENOUGH_ERR")
             {
-                $_SESSION['status'] = "ERROR";
+                $_SESSION['status'] = StatusCodes::ErrGeneric;
                 getStatusMessage("Not enough siliqas", "");
             }
             else

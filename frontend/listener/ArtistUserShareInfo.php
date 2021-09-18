@@ -1,6 +1,8 @@
 <?php
     include '../../backend/control/dependencies.php';
     include '../../backend/shared/MarketplaceBackend.php';
+    include '../../backend/shared/Constants.php';
+
     $_SESSION['conversion_rate'];
     $_SESSION['coins'] = 0;
     $_SESSION['status'];
@@ -79,7 +81,7 @@
                         {
                             if($_SESSION['status'] == "SILIQAS_ERR")
                             {
-                                $_SESSION['status'] = "ERROR";
+                                $_SESSION['status'] = StatusCodes::ErrGeneric;
                                 getStatusMessage("Not enough siliqas", "");
                             }
                             else
@@ -129,7 +131,7 @@
                             {
                                 if($_SESSION['status'] == "EMPTY_ERR")
                                 {
-                                    $_SESSION['status'] = "ERROR";
+                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
                                     getStatusMessage("Please fill out all fields", "");
                                 }
                             }
@@ -141,7 +143,7 @@
                         }
                         else if($_SESSION['logging_mode'] == "SELL_SHARE")
                         {
-                            $_SESSION['status'] = "ERROR";
+                            $_SESSION['status'] = StatusCodes::ErrGeneric;
                             getStatusMessage("All shares are currently being sold", "");
                         }
                         echo "<br>";
@@ -232,7 +234,7 @@
                             }
                             else
                             {
-                                $_SESSION['status'] = "ERROR";
+                                $_SESSION['status'] = StatusCodes::ErrGeneric;
                                 echo '
                                                     <td>
                                 '; 

@@ -1,6 +1,8 @@
 <?php
   session_start();
   $_SESSION['status'];
+
+  include '../../backend/shared/Constants.php';
 ?>
 
 <!doctype html>
@@ -43,7 +45,7 @@
 </section>
 
 <?php
-  if($_SESSION['status'] == "SUCCESS")
+  if($_SESSION['status'] == StatusCodes::Success)
     echo "<script>alert('Admin ID sent successfully');</script>";
   if($_SESSION['status'] == 2)
     echo "<script>alert('Failed');</script>";

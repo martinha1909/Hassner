@@ -1,4 +1,7 @@
 <?php
+
+    include 'Constants.php';
+
     function hassnerInit()
     {   
         $_SESSION['dependencies'] = "FRONTEND";
@@ -22,11 +25,11 @@
 
     function getStatusMessage($err_msg, $suc_msg)
     {
-        if($_SESSION['status'] == "ERROR")
+        if($_SESSION['status'] == StatusCodes::ErrGeneric)
         {
             echo '<p style="color: red;">'.$err_msg.'</p>';
         }
-        else if($_SESSION['status'] == "SUCCESS")
+        else if($_SESSION['status'] == StatusCodes::Success)
         {
             echo '<p style="color: green;">'.$suc_msg.'</p>';
         }

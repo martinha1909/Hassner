@@ -1,6 +1,8 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
+
     include '../control/Dependencies.php';
+    include '../shared/Constants.php';
 
     $_SESSION['logging_mode'] = "PERSONAL_PAGE";
     $conn = connect();
@@ -14,7 +16,7 @@
     }
     else
     {
-        $_SESSION['status'] = "ERROR";
+        $_SESSION['status'] = StatusCodes::ErrGeneric;
         $_SESSION['dependencies'] = "FRONTEND";
         header("Location: ../../frontend/listener/listener.php");
     }

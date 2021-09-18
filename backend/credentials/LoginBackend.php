@@ -1,6 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php'; 
+    include '../shared/Constants.php'; 
 
     $conn = connect();
     $username = $_POST['username'];
@@ -32,7 +33,7 @@
     else
     {
         $_SESSION['dependencies'] = "FRONTEND";
-        $_SESSION['status'] = "ERROR";
+        $_SESSION['status'] = StatusCodes::ErrGeneric;
         header("Location: ../../frontend/credentials/login.php");
     }
 

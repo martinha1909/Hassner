@@ -1,6 +1,7 @@
 <?php
     include '../../backend/control/Dependencies.php';
     include '../../backend/shared/PersonalPageFunctions.php';
+    include '../../backend/shared/Constants.php';
 ?>
 <head>
   <meta charset="utf-8">
@@ -43,12 +44,12 @@
           {
             if($_SESSION['status'] == "NUM_ERR")
             {
-              $_SESSION['status'] = "ERROR";
+              $_SESSION['status'] = StatusCodes::ErrGeneric;
               getStatusMessage("Please enter in number format", "");
             }
             else if($_SESSION['status'] == "EMPTY_ERR")
             {
-              $_SESSION['status'] = "ERROR";
+              $_SESSION['status'] = StatusCodes::ErrGeneric;
               getStatusMessage("Please fill out all fields", "");
             }
           }
