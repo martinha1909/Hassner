@@ -100,11 +100,17 @@
                   $_SESSION['status'] = "ERROR";
                   $status = getStatusMessage("Please fill out all fields", "");
                 }
-                else if($_SESSION['status'] == "EMAIL_ERR")
+                else if($_SESSION['status'] == "DUPL_EMAIL_ERR")
                 {
                   $_SESSION['status'] = "ERROR";
                   $status = getStatusMessage("Email already taken", "");
                 }
+                else if($_SESSION['status'] == "EMAIL_FORMAT_ERR")
+                {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Invalid email format", "");
+                }
+
               ?>
 
               <!-- account type -->
@@ -144,6 +150,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <script src="../js/scripts.js"></script>
   </body>
 </html>

@@ -240,7 +240,7 @@
                                          Monthly_shareholder, Income, Market_cap)
                     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sssiiddisssssssssssdidddd', $username, $password, $type, $id, $num_of_shares, 
+            $stmt->bind_param('sssiiddisssssssssssdidd', $username, $password, $type, $id, $num_of_shares, 
                                                            $balance, $rate, $share_distributed, $email, 
                                                            $billing_address, $full_name, $city, $state, $zip, 
                                                            $card_number, $transit_no, $inst_no, $account_no, 
