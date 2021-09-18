@@ -1,5 +1,6 @@
 <?php
   include '../../backend/control/Dependencies.php';
+  include '../../backend/shared/Constants.php';
   
   $account_info = getAccount($_SESSION['username']);
   $_SESSION['expmonth'] = 0;
@@ -106,9 +107,9 @@
     <div class="container">
       <h4 style="color: #ff9100;">Payout <span class="price" style="color:white;">
       <?php 
-       if($_SESSION['currency'] == "USD" || $_SESSION['currency'] == "CAD") 
+       if($_SESSION['currency'] == Currency::USD || $_SESSION['currency'] == Currency::CAD) 
        echo "$";
-     else if($_SESSION['currency'] == "EUR")
+     else if($_SESSION['currency'] == Currency::EUR)
        echo "€";
      echo $_SESSION['siliqas'];
       ?>

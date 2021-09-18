@@ -748,7 +748,7 @@
 
         function deleteShareTables($conn, $account_type, $username)
         {
-            if($account_type == "artist")
+            if($account_type == AccountType::Artist)
             {
                 $sql = "DELETE FROM user_artist_sell_share WHERE artist_username = ?";
                 $stmt = $conn->prepare($sql);
@@ -760,7 +760,7 @@
                 $stmt->bind_param('s', $username);
                 $stmt->execute();
             }
-            else if($account_type == "user")
+            else if($account_type == AccountType::User)
             {
                 $sql = "DELETE FROM user_artist_sell_share WHERE user_username = ?";
                 $stmt = $conn->prepare($sql);

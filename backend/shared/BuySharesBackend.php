@@ -1,6 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
+    include '../shared/Constants.php';
 
     $_SESSION['logging_mode'] = "BUY_SHARE";
 
@@ -73,7 +74,7 @@
 
             //only user will fluctuate demand, if artists buy back the share they simply just own back their 
             //portion and increase the price per share by the amount they bought back
-            if($_SESSION['account_type'] == "user")
+            if($_SESSION['account_type'] == AccountType::User)
             {
                 $_SESSION['status'] = purchaseAskedPriceShare($conn, 
                                                               $_SESSION['username'], 
@@ -87,7 +88,7 @@
                                                               $seller_new_share_amount, 
                                                               $_SESSION['shares_owned'], $amount_bought);
             }
-            else if($_SESSION['account_type'] == "artist")
+            else if($_SESSION['account_type'] == AccountType::Artist)
             {
 
                 $res = searchNumberOfShareDistributed($conn, $_SESSION['username']);
@@ -115,11 +116,11 @@
             $_SESSION['buy_asked_price'] = 0;
             $_SESSION['dependencies'] = "FRONTEND";
              
-            if($_SESSION['account_type'] == "user")
+            if($_SESSION['account_type'] == AccountType::User)
             {
                 header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
             }
-            else if($_SESSION['account_type'] == "artist")
+            else if($_SESSION['account_type'] == AccountType::Artist)
             {
                 returnToMainPage();
             }
