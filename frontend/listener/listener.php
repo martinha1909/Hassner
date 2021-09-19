@@ -30,7 +30,7 @@ $_SESSION['user_balance'] = $account['balance'];
     <section class="smart-scroll">
         <div class="container-xxl">
             <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
-                <a id="href-hover" class="navbar-brand heading-black" href="#" onclick='window.location.reload();'>
+                <a class="navbar-brand heading-black" href="#" onclick='window.location.reload();'>
                     HASSNER
                 </a>
 
@@ -60,9 +60,9 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When My Portfolio is selected
                     if ($_SESSION['display'] == 0 || $_SESSION['display'] == "PORTFOLIO") {
                         echo '
-                                    <li class="list-group-item-no-hover" style="border-right: 2px solid white;">
+                                    <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent;" value="❖ Portfolio"
+                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="❖ Portfolio"
                                         </form>
                                     </li>
                                 ';
@@ -70,7 +70,7 @@ $_SESSION['user_balance'] = $account['balance'];
                         echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="border:1px transparent; background-color: transparent;" value="Portfolio">
+                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Portfolio">
                                         </form>
                                     </li>
                                 ';
@@ -79,9 +79,9 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When settings is selected
                     if ($_SESSION['display'] == "CAMPAIGN") {
                         echo '
-                                    <li class="list-group-item-no-hover" style="border-right: 2px solid white;">
+                                    <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent;" value="◔ Campaign">
+                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◔ Campaign">
                                         </form>
                                     </li>
                                 ';
@@ -89,7 +89,7 @@ $_SESSION['user_balance'] = $account['balance'];
                         echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="border:1px orange; background-color: transparent;" value="Campaign">
+                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Campaign">
                                         </form>
                                     </li>
                                 ';
@@ -98,9 +98,9 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When Siliqas option is selected
                     if ($_SESSION['display'] == "SILIQAS") {
                         echo '
-                                    <li class="list-group-item-no-hover" style="border-right: 2px solid white;">
+                                    <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent;" value="※ Siliqas">
+                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Siliqas">
                                         </form>
                                     </li>
                                 ';
@@ -108,7 +108,7 @@ $_SESSION['user_balance'] = $account['balance'];
                         echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="border:1px orange; background-color: transparent;" value="Siliqas">
+                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Siliqas">
                                         </form>
                                     </li>
                                 ';
@@ -117,9 +117,9 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When Artists is selected
                     if ($_SESSION['display'] == "ARTISTS") {
                         echo '
-                                    <li class="list-group-item-no-hover" style="border-right: 2px solid white;">
+                                    <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent;" value="◈ Artists">
+                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Artists">
                                         </form>
                                     </li>
                                 ';
@@ -127,7 +127,7 @@ $_SESSION['user_balance'] = $account['balance'];
                         echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="border:1px transparent; background-color: transparent;" value="Artists">
+                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Artists">
                                         </form>
                                     </li>
                                 ';
@@ -136,9 +136,9 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When Account is selected
                     if ($_SESSION['display'] == "ACCOUNT") {
                         echo '
-                                    <li class="list-group-item-no-hover" style="border-right: 2px solid white;">
+                                    <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent;" value="▤ Account">
+                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="▤ Account">
                                         </form>
                                     </li>
                                 ';
@@ -146,7 +146,7 @@ $_SESSION['user_balance'] = $account['balance'];
                         echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="border:1px orange; background-color: transparent;" value="Account">
+                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Account">
                                         </form>
                                     </li>
                                 ';
@@ -163,9 +163,9 @@ $_SESSION['user_balance'] = $account['balance'];
                                             <table class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col" style="color: white;" class="bg-dark">#</th>
+                                                        <th scope="col" class="bg-dark">#</th>
                                                         <form action="../../backend/listener/SortPortfolioArtistBackEnd.php">
-                                                            <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
+                                                            <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white;" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
                                         ';
                             //sort Artist ascending alphabetically
                             if ($_SESSION['sort_type'] == 1) {
