@@ -202,7 +202,7 @@
 
     //retrieves from the database all the rows that contains all selling shares accrossed all artists of $user_username
     //If notices a row that has quantity of 0, simply just removes it from the database
-    function fetchSellOrders($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits)
+    function fetchSellOrders($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits, &$date_posted, &$time_posted, &$ids)
     {
         $conn = connect();
         $result = searchUserSellOrders($conn, $user_username);
@@ -223,10 +223,11 @@
                 array_push($selling_prices, $row['selling_price']);
                 array_push($share_amounts, $row['no_of_share']);
                 array_push($profits, $profit);
+                array_push($date_posted, $row['date_posted']);
+                array_push($time_posted, $row['time_posted']);
+                array_push($ids, $row['id']);
             }
         }
-        insertionSort($selling_prices, $artist_usernames, $roi, $share_amounts, "Descending");
-        singleSort($profits, "Descending");
     }
 
     function fetchBuyOrders($user_username, &$artist_usernames, &$quantities_requested, &$siliqas_requested, &$date_posted, &$time_posted, &$buy_order_ids)
