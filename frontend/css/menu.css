@@ -127,5 +127,49 @@ select#dark {
 }
 
 .bg-darkcyan {
-  background-color: #134f5cff;
+  background-color: #d8d8d8;
+}
+
+/* Text Classes */
+
+.h1-tan {
+  font-size: 3rem;
+  color: #e2cda9ff;
+  font-weight: 800;
+}
+
+.h2-tan {
+  font-size: 2.5rem;
+  color: #e2cda9ff;
+}
+
+.h2-dark {
+  font-size: 2.5rem;
+  color: #11171a;
+}
+
+.h3-tan {
+  font-size: 1.5rem;
+  color: #e2cda9ff;
+}
+
+.h4-tan {
+  font-size: 1.375rem;
+  color: #e2cda9ff;
+}
+
+.h5-tan {
+  font-size: 1.25rem;
+  color: #e2cda9ff;
+}
+
+.h6-tan {
+  font-size: 1rem;
+  color: #e2cda9ff;
+}
+
+.lead-tan {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #e2cda9ff;
 }

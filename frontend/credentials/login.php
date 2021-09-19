@@ -11,7 +11,7 @@ hassnerInit();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Rateify - Login</title>
+  <title>Hassner - Login</title>
   <meta name="description" content="Hassner is a platform to raise music for artists" />
 
   <!--Inter UI font-->
@@ -28,7 +28,7 @@ hassnerInit();
   <section class="smart-scroll">
     <div class="container-fluid">
       <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
-        <a id="href-hover" style="background: transparent;" class="navbar-brand" href="index.php" onclick='window.location.reload();'>HASSNER</a>
+        <a class="navbar-brand" href="index.php" onclick='window.location.reload();'>HASSNER</a>
 
         <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span data-feather="grid"></span>
@@ -51,11 +51,11 @@ hassnerInit();
 
           <!-- hyperlinks -->
           <div class="col text-center">
-            <a style="color:#e2cda9ff;" href="index.php"> Return to landing page</a>
+            <a href="index.php"> Return to front page</a>
           </div>
 
           <div class="col text-center">
-            <a style="color:#e2cda9ff;" href="signup.php"> Need to register for an account?</a>
+            <a href="signup.php"> Need to register for an account?</a>
           </div>
 
           <!-- signup form -->
@@ -64,17 +64,17 @@ hassnerInit();
             <!-- username field -->
             <div class="form-group">
               <h5>Username</h5>
-              <input name="username" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter username">
+              <input name="username" type="text" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter username">
             </div>
 
             <!-- password field -->
             <div class="form-group">
               <h5>Password</h5>
-              <input name="password" type="password" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
             </div>
 
             <div class="form-group">
-              <p style="color: red;"><?php getStatusMessage("Your credentials do not match", "Account created successfully"); ?></p>
+              <p><?php getStatusMessage("Your credentials do not match", "Account created successfully"); ?></p>
             </div>
 
 

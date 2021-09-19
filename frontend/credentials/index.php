@@ -18,7 +18,7 @@ hassnerInit();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Hassner</title>
-    <meta name="description" content="Rateify is a music service that allows users to rate songs" />
+    <meta name="description" content="Hassner is a service to invest into artists." />
 
     <!--Inter UI font-->
     <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
@@ -34,11 +34,10 @@ hassnerInit();
     <section class="smart-scroll">
         <div class="container-fluid">
             <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
-                <a id="href-hover-orange" style="background: transparent;" class="navbar-brand" href="#" onclick='window.location.reload();'>
+                <a class="navbar-brand" href="#" onclick='window.location.reload();'>
                     HASSNER
                 </a>
                 <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span data-feather="grid"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav ml-auto">
@@ -59,9 +58,9 @@ hassnerInit();
         <div class="container">
             <div class="row vh-md-100">
                 <div class="col-md-8 col-sm-10 col-12 mx-auto my-auto text-center">
-                    <h1 style="color:#e2cda9ff;" class="heading-black">Investing&nbspis music&nbspto&nbspour&nbspears</h1>
+                    <h1 class="h1-tan">Investing&nbspis music&nbspto&nbspour&nbspears</h1>
                     <h5 class="lead">Hassner is creating new opportunities for both listeners and artists. Sign&nbspup&nbspfor&nbspfree.</h5>
-                    <a style="color:#e2cda9ff;" class="nav-link page-scroll" href="#signup" class="btn btn-primary d-inline-flex flex-row align-items-center" role="button" aria-pressed="true">
+                    <a class="page-scroll" href="#signup">
                         <!--It loss the green background, but it scrolls to the bottom of the page now (or we can make it go to the signup page automatically)-->
                         Get started now
                     </a>
@@ -75,7 +74,7 @@ hassnerInit();
         <div class="container">
             <div class="row">
                 <div class="col-md-12 mx-auto text-center">
-                    <h2 class="heading-black">Hassner is the new way to invest.</h2>
+                    <h2 class="h2-dark">Hassner is the new way to invest.</h2>
                     <p class="text-dark lead">Sign up as an Investor or an Artist!</p>
                 </div>
             </div>
@@ -111,7 +110,7 @@ hassnerInit();
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                    <h3 style="color: white;">Create a Hassner account</h3>
+                    <h3>Create a Hassner account</h3>
                     <form action="signup.php">
                         <input type="submit" role="button" value="Sign up!" class="btn btn-primary" aria-pressed="true">
                     </form>
@@ -125,7 +124,7 @@ hassnerInit();
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-12 mx-auto text-center py-5">
-                    <h3 style="color: white;">Sign in to your account</h3>
+                    <h3>Sign in to your account</h3>
                     <form action="login.php">
                         <input class="btn btn-primary" role="button" type="submit" aria-pressed="true" value="Log in">
                     </form>

@@ -27,7 +27,7 @@ hassnerInit();
     <div class="container-fluid">
       <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
 
-        <a id="href-hover" style="background: transparent;" class="navbar-brand" href="index.php" onclick='window.location.reload();'>
+        <a class="navbar-brand" href="index.php" onclick='window.location.reload();'>
           HASSNER
         </a>
 
@@ -52,15 +52,15 @@ hassnerInit();
 
           <!-- hyperlinks -->
           <div class="col text-center">
-            <a style="color:#e2cda9ff;" href="index.php"> Return to front page</a>
+            <a href="index.php"> Return to front page</a>
           </div>
 
           <div class="col text-center">
-            <a style="color:#e2cda9ff;" href="login.php"> Already have an account?</a>
+            <a href="login.php"> Already have an account?</a>
           </div>
 
           <div class="col text-center">
-            <a style="color:#e2cda9ff;" href="AdminSignUp.php"> Want to become an admin?</a>
+            <a href="AdminSignUp.php"> Want to become an admin?</a>
           </div>
 
           <!-- signup form -->
@@ -70,18 +70,18 @@ hassnerInit();
 
             <div class="form-group">
               <h5>Email Address</h5>
-              <input type="text" name="email" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter email address">
+              <input type="text" name="email" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter email address">
             </div>
 
             <div class="form-group">
               <h5>Username</h5>
-              <input type="text" name="username" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter username">
+              <input type="text" name="username" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter username">
             </div>
 
             <!-- password field -->
             <div class="form-group">
               <h5>Password</h5>
-              <input type="password" name="password" class="form-control" style="border-color: white;" id="exampleInputPassword1" placeholder="Password">
+              <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
             </div>
 
             <?php
@@ -102,7 +102,7 @@ hassnerInit();
             ?>
 
             <!-- account type -->
-            <h6 style="color:#e2cda9ff;">Account Type</h6>
+            <h6 class="h6-tan">Account Type</h6>
             <div>
               <input type="radio" name="account_type" value="user" checked>
               <label for="huey">Listener</label>
