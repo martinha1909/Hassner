@@ -1,4 +1,9 @@
 <?php
+
+    include '../../backend/constants/StatusCodes.php';
+    include '../../backend/constants/Currency.php';
+    include '../../backend/constants/LoggingModes.php';
+
     function hassnerInit()
     {   
         $_SESSION['dependencies'] = "FRONTEND";
@@ -22,17 +27,17 @@
 
     function getStatusMessage($err_msg, $suc_msg)
     {
-        if($_SESSION['status'] == "ERROR")
+        if($_SESSION['status'] == StatusCodes::ErrGeneric)
         {
             echo '<p style="color: red;">'.$err_msg.'</p>';
         }
-        else if($_SESSION['status'] == "SUCCESS")
+        else if($_SESSION['status'] == StatusCodes::Success)
         {
             echo '<p style="color: green;">'.$suc_msg.'</p>';
         }
 
         $_SESSION['status'] = 0;
-        $_SESSION['logging_mode'] = 0;
+        $_SESSION['logging_mode'] = LogModes::NONE;
     }
 
     function getAccount($username)
@@ -56,9 +61,9 @@
     {
         $ret = $amount;
         $ret = $amount * (1 + $conversion_rate);
-        if($currency_type == "USD")
+        if($currency_type == Currency::USD)
             $ret *= 1.25;
-        else if($currency_type == "EUR")
+        else if($currency_type == Currency::EUR)
             $ret *= 1.47;
 
         return $ret;
@@ -68,9 +73,9 @@
     {
         $ret = $amount;
         $ret = $amount / (1 + $conversion_rate);
-        if($currency_type == "USD")
+        if($currency_type == Currency::USD)
             $ret /= 1.25;
-        else if($currency_type == "EUR")
+        else if($currency_type == Currency::EUR)
             $ret /= 1.47;
 
         return $ret;
@@ -78,11 +83,11 @@
 
     function returnToMainPage()
     {
-        if($_SESSION['account_type'] == "user")
+        if($_SESSION['account_type'] == AccountType::User)
         {
             header("Location: ../../frontend/listener/listener.php");
         }
-        else if($_SESSION['account_type'] == "artist")
+        else if($_SESSION['account_type'] ==  AccountType::Artist)
         {
             header("Location: ../../frontend/artist/Artist.php");
         }

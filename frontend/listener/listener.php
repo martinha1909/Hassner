@@ -1,6 +1,7 @@
 <?php
     include '../../backend/control/Dependencies.php';
     include '../../backend/shared/MarketplaceBackend.php';
+    include '../../backend/constants/LoggingModes.php';
 
     $account = getAccount($_SESSION['username']);
     $_SESSION['user_balance'] = $account['balance'];
@@ -427,7 +428,7 @@
                                                     <div class="form-group">
                                                         <h5>Password</h5>
                                                         <input name = "verify_password" type="password" style="border-color: white;" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">';
-                                if($_SESSION['logging_mode'] == "PERSONAL_PAGE")
+                                if($_SESSION['logging_mode'] == LogModes::PERSONAL)
                                 {
                                     getStatusMessage("Incorrect Password, please try again", "");
                                 }

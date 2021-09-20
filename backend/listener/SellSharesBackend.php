@@ -1,8 +1,9 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
+    include '../constants/LoggingModes.php';
 
-    $_SESSION['logging_mode'] = "SELL_SHARE";
+    $_SESSION['logging_mode'] = LogModes::SELL_SHARE;
 
     $conn = connect();
 
@@ -14,7 +15,7 @@
     }
     else
     {
-        $_SESSION['logging_mode'] = 0;
+        $_SESSION['logging_mode'] = LogModes::NONE;
         $quantity = $_POST['purchase_quantity'];
         $asked_price = $_POST['asked_price'];
 
@@ -34,7 +35,7 @@
         //If the user has not been selling the same share, post a new order to sell
         if($existed == 0)
         {
-            $_SESSION['logging_mode'] = "NON_EXIST";
+            $_SESSION['logging_mode'] = LogModes::NON_EXIST;
 
             $_SESSION['status'] = insertUserArtistSellShareTuple($conn, $_SESSION['username'], $_SESSION['selected_artist'], $quantity, $asked_price);
         }
@@ -42,7 +43,7 @@
         //If the user has already been selling the same share, simply just adjust the quantity to the new requested quantity
         else
         {
-            $_SESSION['logging_mode'] = "EXIST";
+            $_SESSION['logging_mode'] = LogModes::EXIST;
 
             $res = searchUserSellingShares($conn, $_SESSION['username']);
             while($row = $res->fetch_assoc())

@@ -1,10 +1,11 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
-
+    include '../constants/StatusCodes.php';
+    include '../constants/LoggingModes.php';
     
 
-    $_SESSION['logging_mode'] = "SHARE_DIST";
+    $_SESSION['logging_mode'] = LogModes::SHARE_DIST;
 
     $conn = connect();
     $shares_distributing = 0;
@@ -18,12 +19,12 @@
 
     if(empty($shares_distributing) || empty($siliqas_raising))
     {
-        $_SESSION['status'] = "EMPTY_ERR";
+        $_SESSION['status'] = StatusCodes::ErrEmpty;
         header("Location: ../../frontend/artist/PersonalPage.php");
     }
     else if(!is_numeric($shares_distributing) || !is_numeric($siliqas_raising))
     {
-        $_SESSION['status'] = "NUM_ERR";
+        $_SESSION['status'] = StatusCodes::ErrNum;
         header("Location: ../../frontend/artist/PersonalPage.php");
     }
     else

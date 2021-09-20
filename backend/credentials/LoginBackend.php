@@ -1,6 +1,8 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php'; 
+    include '../constants/AccountTypes.php';
+    include '../constants/StatusCodes.php';
 
     $conn = connect();
     $username = $_POST['username'];
@@ -16,15 +18,15 @@
         $_SESSION['password'] = $row['password'];
         $_SESSION['id'] = $row['id'];
         $_SESSION['dependencies'] = "FRONTEND";
-        if($row['account_type'] == "user"){
+        if($row['account_type'] == AccountType::User){
             header("Location: ../../frontend/listener/Listener.php");
             die;
         }
-        else if($row['account_type'] == "artist"){
+        else if($row['account_type'] == AccountType::Artist){
             header("Location: ../../frontend/artist/Artist.php");
             die;
         }
-        else if($row['account_type'] == "admin"){
+        else if($row['account_type'] == AccountType::Admin){
             header("Location: ../../frontend/admin/Admin.php");
             die;
         }
@@ -32,7 +34,7 @@
     else
     {
         $_SESSION['dependencies'] = "FRONTEND";
-        $_SESSION['status'] = "ERROR";
+        $_SESSION['status'] = StatusCodes::ErrGeneric;
         header("Location: ../../frontend/credentials/login.php");
     }
 

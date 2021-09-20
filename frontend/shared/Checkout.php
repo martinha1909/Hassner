@@ -1,5 +1,6 @@
 <?php
   include '../../backend/control/Dependencies.php';
+  include '../../backend/constants/Currency.php';
 
   $account_info = getAccount($_SESSION['username']);
   $_SESSION['expmonth'] = 0;
@@ -224,7 +225,7 @@
       echo "(q̶): ";
       echo $_SESSION['coins']; ?></b></span></h4>
       <p><a><?php echo $_SESSION['currency']; ?></a> <span class="price"><?php
-      if($_SESSION['currency'] == "USD" || $_SESSION['currency'] == "CAD") 
+      if($_SESSION['currency'] == Currency::USD || $_SESSION['currency'] == Currency::CAD) 
       {
         echo "$";
       }
@@ -236,11 +237,11 @@
       ?></span></p>
       <hr>
       <p>Total <span class="price" style="color: white;"><b><?php 
-        if($_SESSION['currency'] == "USD" || $_SESSION['currency'] == "CAD") 
+        if($_SESSION['currency'] == Currency::USD || $_SESSION['currency'] == Currency::CAD) 
         {
             echo "$";
         }
-        else if($_SESSION['currency'] == "EUR")
+        else if($_SESSION['currency'] == Currency::EUR)
         {
             echo "€";
         }

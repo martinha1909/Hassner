@@ -2,8 +2,9 @@
     session_start();
     include '../../backend/shared/Helper.php';
     include '../../backend/shared/TimeUtil.php';
+    include '../../backend/constants/LoggingModes.php';
 
-    $_SESSION['logging_mode'] = 0;
+    $_SESSION['logging_mode'] = LogModes::NONE;
     $_SESSION['status'] =  0;
 
     hassnerInit();

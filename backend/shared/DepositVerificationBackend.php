@@ -1,8 +1,10 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
+    include '../constants/StatusCodes.php';
+    include '../constants/LoggingModes.php';
 
-    $_SESSION['logging_mode'] = "SELL_SILIQAS";
+    $_SESSION['logging_mode'] = LogModes::SELL_SILIQAS;
 
     $conn = connect();
     $save_info = $_POST['save_info'];
@@ -25,7 +27,7 @@
         }
         else
         {
-            $_SESSION['status'] = "EMPTY_ERR"; 
+            $_SESSION['status'] = StatusCodes::EMPTY_ERR; 
         }
     }
     else
@@ -41,7 +43,7 @@
         }
         else
         {
-            $_SESSION['status'] = "EMPTY_ERR";
+            $_SESSION['status'] = StatusCodes::EMPTY_ERR;
         }
     }
     $_SESSION['dependencies'] = "FRONTEND";

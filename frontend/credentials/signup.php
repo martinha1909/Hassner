@@ -1,6 +1,7 @@
 <?php
   include '../../backend/control/Dependencies.php';
-  
+  include '../../backend/constants/StatusCodes.php';
+
   hassnerInit();
 ?>
 
@@ -85,29 +86,29 @@
 
               <?php
                 $status = "";
-                if($_SESSION['status'] == "USERNAME_ERR")
+                if($_SESSION['status'] == StatusCodes::ErrUsername)
                 {
-                  $_SESSION['status'] = "ERROR";
+                  $_SESSION['status'] = StatusCodes::ErrGeneric;
                   $status = getStatusMessage("Username already taken", "");
                 }
-                else if($_SESSION['status'] == "SERVER_ERR")
+                else if($_SESSION['status'] == StatusCodes::ErrServer)
                 {
-                  $_SESSION['status'] = "ERROR";
+                  $_SESSION['status'] = StatusCodes::ErrGeneric;
                   $status = getStatusMessage("Server error, cannot create account", "");
                 }
-                else if($_SESSION['status'] == "EMPTY_ERR")
+                else if($_SESSION['status'] == StatusCodes::ErrEmpty)
                 {
-                  $_SESSION['status'] = "ERROR";
+                  $_SESSION['status'] = StatusCodes::ErrGeneric;
                   $status = getStatusMessage("Please fill out all fields", "");
                 }
-                else if($_SESSION['status'] == "DUPL_EMAIL_ERR")
+                else if($_SESSION['status'] == StatusCodes::ErrEmailDuplicate)
                 {
-                  $_SESSION['status'] = "ERROR";
+                  $_SESSION['status'] = StatusCodes::ErrGeneric;
                   $status = getStatusMessage("Email already taken", "");
                 }
-                else if($_SESSION['status'] == "EMAIL_FORMAT_ERR")
+                else if($_SESSION['status'] == StatusCodes::ErrEmailFormat)
                 {
-                  $_SESSION['status'] = "ERROR";
+                  $_SESSION['status'] = StatusCodes::ErrGeneric;
                   $status = getStatusMessage("Invalid email format", "");
                 }
 

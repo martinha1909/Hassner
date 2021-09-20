@@ -1,6 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
-    include '../control/Dependencies.php';   
+    include '../control/Dependencies.php';  
+    include '../constants/StatusCodes.php';
 
     $conn = connect();
     $username = $_POST['username'];
@@ -11,34 +12,34 @@
     // Email Verification
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
     {
-        $_SESSION['status'] = "EMAIL_FORMAT_ERR";
+        $_SESSION['status'] = StatusCodes::ErrEmailFormat;
     }
     else if(!empty($username) && !empty($password) && !empty($email)){
         $usr_res = searchAccount($conn, $username);
         $email_res = searchEmail($conn, $email);
         if($usr_res->num_rows > 0)
         {
-            $_SESSION['status'] = "USERNAME_ERR";
+            $_SESSION['status'] = StatusCodes::ErrUsername;
             $_SESSION['dependencies'] = "FRONTEND";
             header("Location: ../../frontend/credentials/signup.php");
         }
         else if($email_res->num_rows > 0)
         {
-            $_SESSION['status'] = "DUPL_EMAIL_ERR";
+            $_SESSION['status'] = StatusCodes::ErrEmailDuplicate;
             $_SESSION['dependencies'] = "FRONTEND";
             header("Location: ../../frontend/credentials/signup.php");
         }
         else
         {
             $_SESSION['status'] = signup($conn, $username, $password, $account_type, $email);
-            if($_SESSION['status'] == "SUCCESS")
+            if($_SESSION['status'] == StatusCodes::Success)
             {
                 $_SESSION['dependencies'] = "FRONTEND";
                 header("Location: ../../frontend/credentials/login.php");
             }
             else
             {
-                $_SESSION['status'] = "SERVER_ERR";
+                $_SESSION['status'] = StatusCodes::ErrServer;
                 $_SESSION['dependencies'] = "FRONTEND";
                 header("Location: ../../frontend/credentials/signup.php");
             }
@@ -46,7 +47,7 @@
     }
     else
     {
-        $_SESSION['status'] = "EMPTY_ERR";
+        $_SESSION['status'] = StatusCodes::ErrEmpty;
         $_SESSION['dependencies'] = "FRONTEND";
         header("Location: ../../frontend/credentials/signup.php");
     }
