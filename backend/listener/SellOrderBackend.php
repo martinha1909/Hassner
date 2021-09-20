@@ -1,6 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
+    include '../shared/MarketplaceBackend.php';
 
     $_SESSION['logging_mode'] = "SELL_SHARE";
 
@@ -20,7 +21,7 @@
         $quantity = $_POST['purchase_quantity'];
         $asked_price = $_POST['asked_price'];
 
-        $result = getSpecificAskedPrice($conn, $_SESSION['username'], $_SESSION['selected_artist']);
+        $result = searchSellOrderByArtistAndUser($conn, $_SESSION['username'], $_SESSION['selected_artist']);
         $existed = 0;
 
         //queries to see if the user has already been selling this share of the same artist or not
@@ -70,13 +71,11 @@
             }
         }
 
-        // checkAutoPurchaseOrders($_SESSION['username'], $_SESSION['selected_artist']);
+        autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
 
-        // autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
-
-        // refreshUserArtistShareTable();
-        // refreshSellOrderTable();
-        // refreshBuyOrderTable();
+        refreshUserArtistShareTable();
+        refreshSellOrderTable();
+        refreshBuyOrderTable();
 
         $_SESSION['display'] = "PORTFOLIO";
         $_SESSION['dependencies'] = "FRONTEND";

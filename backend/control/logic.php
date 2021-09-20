@@ -837,6 +837,12 @@
             return $status;
         }
 
+        function updateBuyOrderQuantity($conn, $buy_order_id, $new_quantity)
+        {
+            $sql = "UPDATE buy_order SET quantity = '$new_quantity' WHERE id = '$buy_order_id'";
+            $conn->query($sql);
+        }
+
         function addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date, $time)
         {
             $status = 0;
