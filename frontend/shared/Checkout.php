@@ -1,6 +1,6 @@
 <?php
   include '../../backend/control/Dependencies.php';
-  include '../../backend/shared/Constants.php';
+  include '../../backend/constants/Currency.php';
 
   $account_info = getAccount($_SESSION['username']);
   $_SESSION['expmonth'] = 0;

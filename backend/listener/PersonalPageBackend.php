@@ -2,7 +2,7 @@
     $_SESSION['dependencies'] = "BACKEND";
 
     include '../control/Dependencies.php';
-    include '../shared/Constants.php';
+    include '../constants/StatusCodes.php';
 
     $_SESSION['logging_mode'] = "PERSONAL_PAGE";
     $conn = connect();

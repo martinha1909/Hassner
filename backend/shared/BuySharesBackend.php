@@ -1,7 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
-    include '../shared/Constants.php';
+    include '../constants/AccountTypes.php';
 
     $_SESSION['logging_mode'] = "BUY_SHARE";
 

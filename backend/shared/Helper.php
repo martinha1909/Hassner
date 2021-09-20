@@ -1,6 +1,7 @@
 <?php
 
-    include 'Constants.php';
+    include '../constants/StatusCodes.php';
+    include '../constants/Currency.php';
 
     function hassnerInit()
     {   
@@ -59,9 +60,9 @@
     {
         $ret = $amount;
         $ret = $amount * (1 + $conversion_rate);
-        if($currency_type == "USD")
+        if($currency_type == Currency::USD)
             $ret *= 1.25;
-        else if($currency_type == "EUR")
+        else if($currency_type == Currency::EUR)
             $ret *= 1.47;
 
         return $ret;
@@ -71,9 +72,9 @@
     {
         $ret = $amount;
         $ret = $amount / (1 + $conversion_rate);
-        if($currency_type == "USD")
+        if($currency_type == Currency::USD)
             $ret /= 1.25;
-        else if($currency_type == "EUR")
+        else if($currency_type == Currency::EUR)
             $ret /= 1.47;
 
         return $ret;
@@ -81,11 +82,11 @@
 
     function returnToMainPage()
     {
-        if($_SESSION['account_type'] == "user")
+        if($_SESSION['account_type'] == AccountType::User)
         {
             header("Location: ../../frontend/listener/listener.php");
         }
-        else if($_SESSION['account_type'] == "artist")
+        else if($_SESSION['account_type'] ==  AccountType::Artist)
         {
             header("Location: ../../frontend/artist/Artist.php");
         }

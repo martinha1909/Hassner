@@ -1,7 +1,7 @@
 <?php
     include '../../backend/control/Dependencies.php';
     include '../../backend/shared/PersonalPageFunctions.php';
-    include '../../backend/shared/Constants.php';
+    include '../../backend/constants/StatusCodes.php';
 ?>
 <head>
   <meta charset="utf-8">

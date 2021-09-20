@@ -2,7 +2,7 @@
   session_start();
   $_SESSION['status'];
 
-  include '../../backend/shared/Constants.php';
+  include '../../backend/constants/StatusCodes.php';
 ?>
 
 <!doctype html>

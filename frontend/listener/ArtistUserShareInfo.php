@@ -1,7 +1,7 @@
 <?php
     include '../../backend/control/dependencies.php';
     include '../../backend/shared/MarketplaceBackend.php';
-    include '../../backend/shared/Constants.php';
+    include '../../backend/constants/StatusCodes.php';
 
     $_SESSION['conversion_rate'];
     $_SESSION['coins'] = 0;

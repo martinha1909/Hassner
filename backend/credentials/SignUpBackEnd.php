@@ -1,7 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';  
-    include '../shared/Constants.php'; 
+    include '../constants/StatusCodes.php';
 
     $conn = connect();
     $username = $_POST['username'];
