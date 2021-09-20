@@ -2,6 +2,7 @@
     include '../../backend/control/Dependencies.php';
     include '../../backend/shared/PersonalPageFunctions.php';
     include '../../backend/constants/StatusCodes.php';
+    include '../../backend/constants/LoggingModes.php';
 ?>
 <head>
   <meta charset="utf-8">
@@ -40,7 +41,7 @@
                     <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
                   </div>';
           
-          if($_SESSION['logging_mode'] == "SHARE_DIST")
+          if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
           {
             if($_SESSION['status'] == "NUM_ERR")
             {

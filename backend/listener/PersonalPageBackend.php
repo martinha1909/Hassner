@@ -3,8 +3,9 @@
 
     include '../control/Dependencies.php';
     include '../constants/StatusCodes.php';
+    include '../constants/LoggingModes.php';
 
-    $_SESSION['logging_mode'] = "PERSONAL_PAGE";
+    $_SESSION['logging_mode'] = LogModes::PERSONAL;
     $conn = connect();
     $pwd = $_POST['verify_password'];
     $result = login($conn, $_SESSION['username'], $pwd);

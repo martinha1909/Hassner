@@ -1,8 +1,9 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/dependencies.php';
+    include '../constants/LoggingModes.php';
 
-    $_SESSION['logging_mode'] = "BUY_SILIQAS";
+    $_SESSION['logging_mode'] = LogModes::BUY_SILIQAS;
 
     $conn = connect();
     $save_info = $_POST['save_info'];

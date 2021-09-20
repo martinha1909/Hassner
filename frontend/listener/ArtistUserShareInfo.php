@@ -2,6 +2,7 @@
     include '../../backend/control/dependencies.php';
     include '../../backend/shared/MarketplaceBackend.php';
     include '../../backend/constants/StatusCodes.php';
+    include '../../backend/constants/LoggingModes.php';
 
     $_SESSION['conversion_rate'];
     $_SESSION['coins'] = 0;
@@ -77,7 +78,7 @@
             <div class="mx-auto my-auto text-center col">             
                 <div class="py-4 text-center">
                     <?php
-                        if($_SESSION['logging_mode'] == "BUY_SHARE")
+                        if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
                         {
                             if($_SESSION['status'] == "SILIQAS_ERR")
                             {
@@ -127,7 +128,7 @@
                     {
                         if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
                         {
-                            if($_SESSION['logging_mode'] == "SELL_SHARE")
+                            if($_SESSION['logging_mode'] == LogModes::SELL_SHARE)
                             {
                                 if($_SESSION['status'] == "EMPTY_ERR")
                                 {
@@ -141,17 +142,17 @@
                                 </form>
                             ';
                         }
-                        else if($_SESSION['logging_mode'] == "SELL_SHARE")
+                        else if($_SESSION['logging_mode'] == LogModes::SELL_SHARE)
                         {
                             $_SESSION['status'] = StatusCodes::ErrGeneric;
                             getStatusMessage("All shares are currently being sold", "");
                         }
                         echo "<br>";
-                        if($_SESSION['logging_mode'] == "NON_EXIST")
+                        if($_SESSION['logging_mode'] == LogModes::NON_EXIST)
                         {
                             getStatusMessage("", "Sell order created successfully");
                         }
-                        else if($_SESSION['logging_mode'] == "EXIST")
+                        else if($_SESSION['logging_mode'] == LogModes::EXIST)
                         {
                             getStatusMessage("", "Sell order updated successfully");
                         }

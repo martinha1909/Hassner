@@ -2,8 +2,9 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
     include '../constants/AccountTypes.php';
+    include '../constants/LoggingModes.php';
 
-    $_SESSION['logging_mode'] = "BUY_SHARE";
+    $_SESSION['logging_mode'] = LogModes::BUY_SHARE;
 
     $conn = connect();
     $amount_bought = $_POST['purchase_quantity'];

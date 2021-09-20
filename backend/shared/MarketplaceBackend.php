@@ -1,7 +1,8 @@
 <?php
     include '../../backend/constants/StatusCodes.php';
+    include '../../backend/constants/LoggingModes.php';
     include '../../backend/listener/ListenerBackend.php';
-
+    
     //fetching the market price, if current user has not invested in the selected artist, simply just populate default values
     //default values should be displayed on the table like this:
     //  Owned Shares: 0
@@ -329,9 +330,9 @@
                         <form action="../../backend/shared/CurrencyBackend.php" method="post">
         ';
 
-        if($_SESSION['logging_mode'] == "BUY_SILIQAS")
+        if($_SESSION['logging_mode'] == LogModes::BUY_SILIQAS)
         {
-            if($_SESSION['status'] == "EMPTY_ERR")
+            if($_SESSION['status'] == StatusCodes::ErrEmpty)
             {
                 $_SESSION['status'] = StatusCodes::ErrGeneric;
                 getStatusMessage("Please fill out all fields and try again", "");
@@ -341,9 +342,9 @@
                 getStatusMessage("Failed to buy, an error occured", "Siliqas bought successfully");
             }
         }
-        else if($_SESSION['logging_mode'] == "SELL_SILIQAS")
+        else if($_SESSION['logging_mode'] == LogModes::SELL_SILIQAS)
         {
-            if($_SESSION['status'] == "EMPTY_ERR")
+            if($_SESSION['status'] == StatusCodes::ErrEmpty)
             {
                 $_SESSION['status'] = StatusCodes::ErrGeneric;
                 getStatusMessage("Please fill out all fields and try again", "");

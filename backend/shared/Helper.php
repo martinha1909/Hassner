@@ -1,7 +1,8 @@
 <?php
 
-    include '../constants/StatusCodes.php';
-    include '../constants/Currency.php';
+    include '../../backend/constants/StatusCodes.php';
+    include '../../backend/constants/Currency.php';
+    include '../../backend/constants/LoggingModes.php';
 
     function hassnerInit()
     {   
@@ -36,7 +37,7 @@
         }
 
         $_SESSION['status'] = 0;
-        $_SESSION['logging_mode'] = 0;
+        $_SESSION['logging_mode'] = LogModes::NONE;
     }
 
     function getAccount($username)
