@@ -1,12 +1,12 @@
 <?php
-session_start();
-include '../../backend/shared/Helper.php';
-include '../../backend/shared/TimeUtil.php';
+    session_start();
+    include '../../backend/shared/Helper.php';
+    include '../../backend/shared/TimeUtil.php';
 
-$_SESSION['logging_mode'] = 0;
-$_SESSION['status'] =  0;
+    $_SESSION['logging_mode'] = 0;
+    $_SESSION['status'] =  0;
 
-hassnerInit();
+    hassnerInit();
 ?>
 
 <!doctype html>
