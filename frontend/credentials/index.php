@@ -18,7 +18,7 @@ hassnerInit();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Hassner</title>
-    <meta name="description" content="Hassner is a service to invest into artists." />
+    <meta name="description" content="Hassner is a service to invest in artists." />
 
     <!--Inter UI font-->
     <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
