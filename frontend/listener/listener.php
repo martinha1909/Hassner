@@ -54,7 +54,7 @@ $_SESSION['user_balance'] = $account['balance'];
     <section id="login">
         <div class="container-fluid">
             <div class="row">
-                <ul class="list-group bg-dark">
+                <ul class="list-group">
                     <?php
                     //By default My Portfolio is selected
                     //When My Portfolio is selected
@@ -163,9 +163,9 @@ $_SESSION['user_balance'] = $account['balance'];
                                             <table class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col" class="bg-dark">#</th>
+                                                        <th scope="col">#</th>
                                                         <form action="../../backend/listener/SortPortfolioArtistBackEnd.php">
-                                                            <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white;" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
+                                                            <th scope="col"><input type = "submit" id="href-hover" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
                                         ';
                             //sort Artist ascending alphabetically
                             if ($_SESSION['sort_type'] == 1) {
@@ -181,7 +181,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                                         </th>
                                                         </form>
                                                         <form action="../../backend/listener/SortPortfolioShareBackEnd.php">
-                                                            <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
+                                                            <th scope="col" ><input type = "submit" id="href-hover" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
                             //sort Shares bought ascending alphabetically
                             if ($_SESSION['sort_type'] == 2) {
                                 echo ' ↑';
@@ -196,7 +196,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                                         </th>
                                                         </form>
                                                         <form action = "../../backend/listener/SortPortfolioPPSBackEnd.php">
-                                                            <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
+                                                            <th scope="col"><input type = "submit" id="href-hover" class="th-dark" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
                             //sort Price per share ascending alphabetically
                             if ($_SESSION['sort_type'] == 3) {
                                 echo ' ↑';
@@ -212,7 +212,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                                         </th>
                                                         </form>
                                                         <form action = "../../backend/listener/SortPortfolioRateBackEnd.php">
-                                                            <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
+                                                            <th scope="col"><input type = "submit" id="href-hover" class="th-dark" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
                             //sort Rate ascending alphabetically
                             if ($_SESSION['sort_type'] == 0) {
                                 echo ' ↑';
@@ -282,12 +282,12 @@ $_SESSION['user_balance'] = $account['balance'];
                                             <table class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Artist</th>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Selling for (q̶)</th>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Quantity</th>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">ROI</th>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Gain/Loss (q̶)</th>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Remove Order</th>
+                                                        <th class="th-tan" scope="col">Artist</th>
+                                                        <th class="th-tan" scope="col">Selling for (q̶)</th>
+                                                        <th class="th-tan" scope="col">Quantity</th>
+                                                        <th class="th-tan" scope="col">ROI</th>
+                                                        <th class="th-tan" scope="col">Gain/Loss (q̶)</th>
+                                                        <th class="th-tan" scope="col">Remove Order</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>';
@@ -296,12 +296,12 @@ $_SESSION['user_balance'] = $account['balance'];
                                 echo '
                                                     <form action="../../backend/listener/EditSellingShareBackend.php" method="post">
                                                         <tr>
-                                                            <th scope="row"><input name="remove_artist_name" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "' . $artist_usernames[$i] . '"></th>
-                                                            <td><input name="remove_share_price" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "' . $selling_prices[$i] . '"></td>
-                                                            <td><input name="remove_share_quantity" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "' . $share_amounts[$i] . '"></td>
+                                                            <th scope="row"><input name="remove_artist_name" class="cursor-context" value = "' . $artist_usernames[$i] . '"></th>
+                                                            <td><input name="remove_share_price" class="cursor-context" value = "' . $selling_prices[$i] . '"></td>
+                                                            <td><input name="remove_share_quantity" class="cursor-context" value = "' . $share_amounts[$i] . '"></td>
                                                             <td>' . $roi[$i] . '%</td>
                                                             <td>' . $profits[$i] . '</td>
-                                                            <td><input type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
+                                                            <td><input type="submit" id="abc" class="cursor-context" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
                                                         </tr>
                                                     </form>
                                             ';
@@ -316,15 +316,15 @@ $_SESSION['user_balance'] = $account['balance'];
                         else if ($_SESSION['display'] == "ARTISTS") {
                             echo '
                                             <table class="table">
-                                                <thead class="thead-orange">
+                                                <thead>
                                                     <tr>
-                                                        <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "#"></th>
-                                                        <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Artist"></th>
-                                                        <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Shares bought"></th>
-                                                        <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Price per share (q̶)"></th>
-                                                        <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Rate"></th>
-                                                        <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Max Price"></th>
-                                                        <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Min Price"></th>
+                                                        <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "#"></th>
+                                                        <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Artist"></th>
+                                                        <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Shares bought"></th>
+                                                        <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Price per share (q̶)"></th>
+                                                        <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Rate"></th>
+                                                        <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Max Price"></th>
+                                                        <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Min Price"></th>
                                                     </tr>
                                                 </thead>
                                             <tbody>
@@ -351,11 +351,11 @@ $_SESSION['user_balance'] = $account['balance'];
                                             <section id="login">
                                                 <div class="container">
                                                     <div class="col-4 mx-auto my-auto text-center">
-                                                        <h3 style="color: #e2cda9ff;padding-top:150px;">Verify your password to access personal page</h3>
+                                                        <h3 class="h3-tan py-4">Verify your password to access personal page</h3>
                                                         <form action="../../backend/listener/PersonalPageBackend.php" method="post">
                                                             <div class="form-group">
                                                                 <h5>Password</h5>
-                                                                <input name = "verify_password" type="password" style="border-color: white;" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">';
+                                                                <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">';
                             if ($_SESSION['logging_mode'] == "PERSONAL_PAGE") {
                                 getStatusMessage("Incorrect Password, please try again", "");
                             }
@@ -377,9 +377,9 @@ $_SESSION['user_balance'] = $account['balance'];
         </div>
     </section>
 
-    <li style="position:absolute; bottom:0; padding-bottom:20px;">
-        <a class="btn btn-secondary" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
-    </li>
+
+    <a class="li-bottom btn btn-secondary" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
+
 
     <!--scroll to top-->
     <div class="scroll-top">

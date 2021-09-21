@@ -192,3 +192,29 @@ select#dark {
   border: 1px transparent;
   background-color: transparent;
 }
+
+.th-dark {
+  border-color: transparent;
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
+}
+
+.th-tan {
+  border-color: #e2cda9ff;
+  background-color: #e2cda9ff;
+  color: #11171a;
+}
+
+.li-bottom {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 20px;
+}
+
+.cursor-context {
+  cursor: context-menu;
+  color: white;
+  border: 1px transparent;
+  background-color: transparent;
+}

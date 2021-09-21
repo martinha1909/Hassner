@@ -1799,9 +1799,9 @@ pre code {
 }
 
 .table .thead-light th {
-  color: #546e7a;
-  background-color: #ffffff;
-  border-color: #ffffff;
+  color: #ffffff;
+  background-color: #11171a;
+  border-color: #11171a;
 }
 
 .table-dark {
