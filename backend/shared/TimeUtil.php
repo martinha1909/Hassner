@@ -12,7 +12,7 @@
 
     //first index of return array will contain current date, second index will contain current time
     //date will have format of DD-MM-YY
-    function currentTimeParser($date)
+    function dayAndTimeSplitter($date)
     {
         return explode(" ", $date);
     }
@@ -23,7 +23,14 @@
     //Third index: year(YY)
     function dateParser($date)
     {
-        return explode("-", $date);
+        $date_parser = explode("-", $date);
+        $day = dayToText($date_parser[0]);
+        $month = monthToText($date_parser[1]);
+        $year = "20".$date_parser[2];
+
+        $ret = $month." ".$day.", ".$year;
+
+        return $ret;
     }
 
     //return array will have:
@@ -32,7 +39,9 @@
     //Third index: second
     function timeParser($time)
     {
-        return explode(":", $time);
+        $time_parser = explode(":", $time);
+
+        return timeToText($time_parser[0], $time_parser[1]);
     }
 
     function dayToText($day)
@@ -41,19 +50,19 @@
 
         if($last_char == "1")
         {
-            $day = $last_char."st";
+            $day = $day."st";
         }
         else if($last_char == "2")
         {
-            $day = $last_char."nd";
+            $day = $day."nd";
         }
         else if($last_char == "3")
         {
-            $day = $last_char."rd";
+            $day = $day."rd";
         }
         else
         {
-            $day = $last_char."th";
+            $day = $day."th";
         }
 
         return $day;

@@ -7,7 +7,9 @@
 
     $conn = connect();
 
-    $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
+    $current_date = getCurrentDate("America/Edmonton");
+    $date_parser = dayAndTimeSplitter($current_date);
+
     if(empty($_POST['asked_price']))
     {
         $_SESSION['status'] = "EMPTY_ERR";
@@ -37,7 +39,13 @@
         {
             $_SESSION['logging_mode'] = LogModes::NON_EXIST;
 
-            $_SESSION['status'] = insertUserArtistSellShareTuple($conn, $_SESSION['username'], $_SESSION['selected_artist'], $quantity, $asked_price);
+            $_SESSION['status'] = postSellOrder($conn, 
+                                                $_SESSION['username'], 
+                                                $_SESSION['selected_artist'], 
+                                                $quantity, 
+                                                $asked_price, 
+                                                $date_parser[0], 
+                                                $date_parser[1]);
         }
 
         //If the user has already been selling the same share, simply just adjust the quantity to the new requested quantity
@@ -45,19 +53,26 @@
         {
             $_SESSION['logging_mode'] = LogModes::EXIST;
 
-            $res = searchUserSellingShares($conn, $_SESSION['username']);
+            $res = searchUserSellOrders($conn, $_SESSION['username']);
             while($row = $res->fetch_assoc())
             {
                 if($row['selling_price'] == $asked_price)
                 {
                     $quantity += $row['no_of_share'];
-                    $_SESSION['status'] = adjustExistedAskedPriceQuantity($conn, $_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
+                    $_SESSION['status'] = adjustExistedAskedPriceQuantity($conn, 
+                                                                          $_SESSION['username'], 
+                                                                          $_SESSION['selected_artist'], 
+                                                                          $asked_price, 
+                                                                          $quantity, 
+                                                                          $date_parser[0], 
+                                                                          $date_parser[1]);
                     break;
                 }
             }
         }
 
+        $_SESSION['display'] = "PORTFOLIO";
         $_SESSION['dependencies'] = "FRONTEND";
-        header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+        returnToMainPage();
     }
 ?>

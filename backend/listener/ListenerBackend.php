@@ -9,6 +9,7 @@
 
     function populateVars(&$all_shares_bought, &$all_artists, &$artist_name, &$rate, &$all_profits, &$all_rates, &$all_price_per_share, &$result)
     {
+        $no_of_shares_bought = 0;
         $conn = connect();
         while($row = $result->fetch_assoc())
         {
@@ -22,9 +23,55 @@
             $all_profits += $rate;
             array_push($all_rates, $rate);
             array_push($all_price_per_share, $account_info['price_per_share']);
+        } 
+    }
+
+    function combineDuplicateRows(&$all_artists, &$all_shares_bought, &$all_rates, &$all_price_per_share)
+    {
+        $counter = 0;
+        $all_artists_simplified = array();
+        $all_shares_bought_simplified = array();
+        $all_rates_simplified = array();
+        $all_price_per_share_simplified = array();
+
+        //First index won't be duplicate, so always add the first index
+        array_push($all_artists_simplified, $all_artists[0]);
+        array_push($all_shares_bought_simplified, $all_shares_bought[0]);
+        array_push($all_rates_simplified, $all_rates[0]);
+        array_push($all_price_per_share_simplified, $all_price_per_share[0]);
+
+        $no_of_shares_bought = 0;
+
+        for($i = 1; $i < sizeof($all_artists); $i++)
+        {
+            if($all_artists[$i] == $all_artists[$i-1])
+            {
+                $no_of_shares_bought += $all_shares_bought[$i];
+                if($i == (sizeof($all_artists) - 1))
+                {
+                    array_push($all_shares_bought_simplified, $no_of_shares_bought);
+                }
+                $counter++;
+            }
+            else
+            {
+
+                array_push($all_artists_simplified, $all_artists[$i]);
+                if($counter != 0)
+                {
+                    array_push($all_shares_bought_simplified, $no_of_shares_bought);
+                    $counter = 0;
+                }
+                $no_of_shares_bought = $all_shares_bought[$i];
+                array_push($all_rates_simplified, $all_rates[$i]);
+                array_push($all_price_per_share_simplified, $all_price_per_share[$i]);
+            }
         }
-        
-         
+
+        $all_artists = $all_artists_simplified;
+        $all_shares_bought = $all_shares_bought_simplified;
+        $all_rates = $all_rates_simplified;
+        $all_price_per_share = $all_price_per_share_simplified;
     }
 
     //performing insertionSort to targeted arrays with $indicator being either ascending or descending
@@ -155,15 +202,15 @@
 
     //retrieves from the database all the rows that contains all selling shares accrossed all artists of $user_username
     //If notices a row that has quantity of 0, simply just removes it from the database
-    function fetchUserSellingShares($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits)
+    function fetchSellOrders($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits, &$date_posted, &$time_posted, &$ids)
     {
         $conn = connect();
-        $result = searchUserSellingShares($conn, $user_username);
+        $result = searchUserSellOrders($conn, $user_username);
         while($row = $result->fetch_assoc())
         {
             if($row['no_of_share'] == 0)
             {
-                removeUserArtistSellShareTuple($conn, $row['user_username'], $row['artist_username'], $row['selling_price'], $row['no_of_share']);
+                removeSellOrder($conn, $row['user_username'], $row['artist_username'], $row['selling_price'], $row['no_of_share']);
             }
             else
             {
@@ -176,10 +223,34 @@
                 array_push($selling_prices, $row['selling_price']);
                 array_push($share_amounts, $row['no_of_share']);
                 array_push($profits, $profit);
+                array_push($date_posted, $row['date_posted']);
+                array_push($time_posted, $row['time_posted']);
+                array_push($ids, $row['id']);
             }
         }
-        insertionSort($selling_prices, $artist_usernames, $roi, $share_amounts, "Descending");
-        singleSort($profits);
+    }
+
+    function fetchBuyOrders($user_username, &$artist_usernames, &$quantities_requested, &$siliqas_requested, &$date_posted, &$time_posted, &$buy_order_ids)
+    {
+        $conn = connect();
+        $res = searchUserBuyOrders($conn, $user_username);
+        while($row = $res->fetch_assoc())
+        {
+            if($row['quantity'] == 0)
+            {
+                removeBuyOrder($conn, 
+                               $row['id']);
+            }
+            else
+            {
+                array_push($artist_usernames, $row['artist_username']);
+                array_push($quantities_requested, $row['quantity']);
+                array_push($siliqas_requested, $row['siliqas_requested']);
+                array_push($date_posted, $row['date_posted']);
+                array_push($time_posted, $row['time_posted']);
+                array_push($buy_order_ids, $row['id']);
+            }
+        }
     }
 
     //gets the total amount of share that the user holds corresponds to the $artist_username
@@ -231,24 +302,47 @@
         }        
     }
 
-    function singleSort(&$arr)
+    function singleSort(&$arr, $indicator)
     {
-        for ($i = 1; $i < sizeof($arr); $i++)
+        if($indicator == "Descending")
         {
-            $key = $arr[$i];
-            $j = $i-1;
-        
-            // Move elements of arr[0..i-1],
-            // that are    greater than key, to
-            // one position ahead of their
-            // current position
-            while ($j >= 0 && $arr[$j] > $key)
+            for ($i = 1; $i < sizeof($arr); $i++)
             {
-                $arr[$j + 1] = $arr[$j];
-                $j = $j - 1;
-            }
+                $key = $arr[$i];
+                $j = $i-1;
             
-            $arr[$j + 1] = $key;
+                // Move elements of arr[0..i-1],
+                // that are    greater than key, to
+                // one position ahead of their
+                // current position
+                while ($j >= 0 && $arr[$j] > $key)
+                {
+                    $arr[$j + 1] = $arr[$j];
+                    $j = $j - 1;
+                }
+                
+                $arr[$j + 1] = $key;
+            }
+        }
+        else
+        {
+            for ($i = 1; $i < sizeof($arr); $i++)
+            {
+                $key = $arr[$i];
+                $j = $i-1;
+            
+                // Move elements of arr[0..i-1],
+                // that are    greater than key, to
+                // one position ahead of their
+                // current position
+                while ($j >= 0 && $arr[$j] < $key)
+                {
+                    $arr[$j + 1] = $arr[$j];
+                    $j = $j - 1;
+                }
+                
+                $arr[$j + 1] = $key;
+            }
         }
     }
 
@@ -307,5 +401,24 @@
                  </tr>';
             $id++;
         }        
+    }
+
+    function buyHistoryInit(&$sellers, &$prices, &$quantities, &$date_purchase, &$time_purchase, $username)
+    {
+        $conn = connect();
+
+        $res = searchUsersInvestment($conn, $username);
+
+        while($row = $res->fetch_assoc())
+        {
+            $date = dateParser($row['date_purchased']);
+            $time = timeParser($row['time_purchased']);
+
+            array_push($prices, $row['price_per_share_when_bought']);
+            array_push($sellers, $row['seller_username']);
+            array_push($quantities, $row['no_of_share_bought']);
+            array_push($date_purchase, $date);
+            array_push($time_purchase, $time);
+        }
     }
 ?>

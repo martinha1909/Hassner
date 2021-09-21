@@ -20,6 +20,7 @@
         $_SESSION['buy_market_price'] = 0;
         $_SESSION['siliqas_or_fiat'] = 0;
         $_SESSION['share_distribute'] = 0;
+        $_SESSION['buy_options'] = 0;
         //conversion rate from CAD to Siliqas, 1 CAD = 0.95 Sililqas (brute force for now)
         $_SESSION['conversion_rate'] = -0.05;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
@@ -99,5 +100,19 @@
             return true;
         
         return false;
+    }
+
+    function calculateArtistAvailableShares($artist_name)
+    {
+        $ret = 0;
+
+        $conn = connect();
+
+        $res = searchAccount($conn, $artist_name);
+        $account_info = $res->fetch_assoc();
+
+        $ret = $account_info['Share_Distributed'] - $account_info['Shares'];
+
+        return $ret;
     }
 ?>

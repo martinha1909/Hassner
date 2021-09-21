@@ -7,7 +7,11 @@
     $additional_shares = $_POST['share_distributing'];
     $comment = $_POST['inject_comment'];
     $current_date = getCurrentDate("America/Edmonton");
+<<<<<<< HEAD
     $date_parser = currentTimeParser($current_date);
+=======
+    $date_parser = dayAndTimeSplitter($current_date);
+>>>>>>> buy_share_refinement
 
     if(empty($comment))
     {

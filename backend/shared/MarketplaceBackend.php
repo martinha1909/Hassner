@@ -12,17 +12,16 @@
     //  Available Shares: grabs current shares available for purchase in the database in case the user wants to purchase their first share
     function fetchMarketPrice($artist_username)
     {
+        $_SESSION['shares_owned'] = 0;
+
         $conn = connect();
         $search_1 = searchSpecificInvestment($conn, $_SESSION['username'], $_SESSION['selected_artist']);
         if($search_1->num_rows > 0)
         {
-            //number of share that current user has bought from selected artist
-            $shares_owned = $search_1->fetch_assoc();
-            $_SESSION['shares_owned'] = $shares_owned['no_of_share_bought'];
-        }
-        else
-        {
-            $_SESSION['shares_owned'] = 0;
+            while($row = $search_1->fetch_assoc())
+            {
+                $_SESSION['shares_owned'] += $row['no_of_share_bought'];
+            }
         }
         
         $search_2 = searchArtistCurrentPricePerShare($conn, $_SESSION['selected_artist']);
@@ -73,7 +72,7 @@
     }
 
     //gets all the users that has lowest price listed with the passed artist_username param
-    function fetchAskedPrice(&$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
+    function fetchAskedPrice(&$ids, &$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
     {
         $conn = connect();
         $result = getAskedPrices($conn, $artist_username);
@@ -82,6 +81,7 @@
         {
             if($row['no_of_share'] > 0 && (strcmp($row['user_username'], $_SESSION['username']) != 0))
             {
+                array_push($ids, $row['id']);
                 array_push($asked_prices, $row['selling_price']);
                 array_push($user_usernames, $row['user_username']);
                 array_push($artist_usernames, $row['artist_username']);
@@ -90,7 +90,7 @@
         }
         //using insertion sort in MyPortfiolioBackend.php file
         insertionSort($asked_prices, $user_usernames, $artist_usernames, $quantities, "Descending");
-         
+        singleSort($ids, "Descending");
     }
 
     function askedPriceInit()
@@ -103,58 +103,68 @@
         $artist_usernames = array();
         //displaying the quantity that are being sold
         $quantities = array();
+        //storing unique id of sell orders
+        $ids = array();
         //sorting asked_price in a descending order, so the first index would be the lowest value, then swaps the other arrays 
         //to match with asked_price indices
-        fetchAskedPrice($asked_prices, $user_usernames, $artist_usernames, $quantities, $_SESSION['selected_artist']);
-            echo '
-                <div class="py-4 text-left">
-                    <h3>Lowest Asked Price </h3>
-                </div>';
+        fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $_SESSION['selected_artist']);
+        echo '
+            <div class="py-4 text-left">
+                <h3>Bid Price</h3>
+            </div>
+        ';
         if(sizeof($asked_prices) > 0)
         {
             //displays the buy button when user has not clicked on it
-            //always displays first index, which is lowest bid price
             if($_SESSION['buy_asked_price'] == 0)
             {
                 echo'
                     <table class="table">
                         <thead>
                             <tr>
+                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">#</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody>';
+                for($i = 0; $i < sizeof($artist_usernames); $i++)
+                {
+                    echo '
                             <tr>
-                                <th scope="row">'.$user_usernames[0].'</th>
-                                <td>'.$asked_prices[0].'</td>
-                                <td>'.$quantities[0].'</td>
+                                <th scope="row">'.$ids[$i].'</th>
+                                <td>'.$user_usernames[$i].'</td>
+                                <td>'.$asked_prices[$i].'</td>
+                                <td>'.$quantities[$i].'</td>
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                ';
-                if(hasEnoughSiliqas($asked_prices[0], $_SESSION['user_balance']))
-                {
-                    echo'
-                                    <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[0].'" onclick="window.location.reload();"></td>
+                    ';
+                    if(hasEnoughSiliqas($asked_prices[0], $_SESSION['user_balance']))
+                    {
+                        echo'
+                                        <td><input name="buy_user_selling_price['.$ids[$i].']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                        ';
+                    }
+                    else
+                    {
+                        $_SESSION['status'] = "ERROR";
+                        echo '
+                                        <td>
+                        '; 
+                                            getStatusMessage("Not enough siliqas", "");
+                        echo '
+                                        </td>
+                        ';
+                    }
+                    echo '
+                                    </form>
+                                </tr>
                     ';
                 }
-                else
-                {
-                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                    echo '
-                                    <td>
-                    '; 
-                                        getStatusMessage("Not enough siliqas", "");
-                    echo '
-                                    </td>
-                    ';
-                }
-                echo '
-                                </form>
-                            </tr>
-                        </tbody>
-                    </table>
+                echo'
+                    </tbody>
+                </table>
                 ';
             }
             //replaces the Buy button with a slide bar ranging from 0 to the quantity that other users are selling
@@ -164,6 +174,7 @@
                     <table class="table">
                         <thead>
                             <tr>
+                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">#</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
@@ -171,43 +182,48 @@
                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody>';
+                for($i = 0; $i < sizeof($artist_usernames); $i++)
+                {
+                    echo '
                             <tr>
-                                <th scope="row">'.$user_usernames[0].'</th>
-                                <td>'.$asked_prices[0].'</td>
-                                <td>'.$quantities[0].'</td>
+                                <th scope="row">'.$ids[$i].'</th>
+                                <td>'.$user_usernames[$i].'</td>
+                                <td>'.$asked_prices[$i].'</td>
+                                <td>'.$quantities[$i].'</td>
                                 <td>
                     ';
-                        if(strcmp($_SESSION['seller'], $user_usernames[0]) == 0)
-                        {
-                            $_SESSION['purchase_price'] = $asked_prices[0];
-                            $_SESSION['seller_toggle'] = $user_usernames[0];
-                            echo'
-                                    <form action="../../backend/shared/BuySharesBackend.php" method="post">
-                                        <input name = "purchase_quantity" type="range" min="1" max='.$quantities[0].' value="1" class="slider" id="myRange">
-                                        <p>Quantity: <span id="demo"></span></p>
-                                        <input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
-                                    </form>
-                                    <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                                        <td><input name="buy_user_selling_price" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
-                                    </form>
-                            ';
-                        }
-                        else
-                        {
-                            echo'
-                                    <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                                        <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy From '.$user_usernames[0].'" onclick="window.location.reload();"></td>
-                                    </form>
-                                    </td>
-                                </tr>
-                            ';
-                        }
+                    if($_SESSION['seller'] == $ids[$i])
+                    {
+                        $_SESSION['purchase_price'] = $asked_prices[$i];
+                        $_SESSION['seller_toggle'] = $ids[$i];
+                        echo'
+                                <form action="../../backend/shared/BuySharesBackend.php" method="post">
+                                    <input name = "purchase_quantity" type="range" min="1" max='.$quantities[$i].' value="1" class="slider" id="myRange">
+                                    <p>Quantity: <span id="demo"></span></p>
+                                    <input name="asked_price['.$asked_prices[$i].']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
+                                </form>
+                                <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
+                                    <td><input name="buy_user_selling_price['.$ids[$i].']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                </form>
+                        ';
+                    }
+                    else
+                    {
+                        echo'
+                                <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
+                                <td><input name="buy_user_selling_price['.$ids[$i].']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                                </form>
+                                </td>
+                            </tr>
+                        ';
+                    }
+                }
                 echo '
                         </tbody>
                     </table>
                 ';
-            }
+        }
         }
         //If other users are selling shares, displays nothing
         else
@@ -218,17 +234,24 @@
                 </div>
             ';
         }
+
+
     }
 
     function canCreateSellOrder($user_username, $artist_username)
     {
+        $total_share_bought = 0;
         $conn = connect();
 
         $res = searchSpecificInvestment($conn, $user_username, $artist_username);
-        $total_share_bought = $res->fetch_assoc();
+
+        while($row = $res->fetch_assoc())
+        {
+            $total_share_bought += $row['no_of_share_bought'];   
+        }
 
         $share_being_sold = getAmountSharesSelling($user_username, $artist_username);
-        if($share_being_sold < $total_share_bought['no_of_share_bought'])
+        if($share_being_sold < $total_share_bought)
         {
             return true;
         }
@@ -550,17 +573,10 @@
             $date = dateParser($row['date_injected']);
             $time = timeParser($row['time_injected']);
 
-            $day = dayToText($date[0]);
-            $month = monthToText($date[1]);
-            $year = "20".$date[2];
-
-            $inject_date = $month." ".$day.", ".$year;
-            $inject_time = timeToText($time[0], $time[1]);
-
             array_push($comments, $row['comment']);
             array_push($amount_injected, $row['amount']);
-            array_push($date_injected, $inject_date);
-            array_push($time_injected, $inject_time);
+            array_push($date_injected, $date);
+            array_push($time_injected, $time);
         }
     }
 
@@ -577,16 +593,16 @@
                               $date_injected, 
                               $time_injected);
         echo '
-        <table class="table">
-            <thead>
-                <tr>
-                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Ethos amount</th>
-                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Comment</th>
-                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Date Injected</th>
-                    <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Injected</th>
-                </tr>
-            </thead>
-            <tbody>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Ethos amount</th>
+                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Comment</th>
+                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Date Injected</th>
+                        <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Injected</th>
+                    </tr>
+                </thead>
+                <tbody>
         ';
 
         for($i = 0; $i < sizeof($amount_injected); $i++)
@@ -605,5 +621,25 @@
                     </tbody>
                 </table>
         ';
+    }
+
+    function refreshUserArtistShareTable()
+    {
+        $conn = connect();
+
+        $res = searchAllInvestments($conn);
+        while($row = $res->fetch_assoc())
+        {
+            if($row['no_of_share_bought'] <= 0)
+            {
+                removeUserArtistShareZeroTuples($conn, 
+                                                $row['user_username'], 
+                                                $row['artist_username'], 
+                                                $row['price_per_share_when_bought'],
+                                                $row['date_purchased'],
+                                                $row['time_purchased']);
+            }
+        }
+
     }
 ?>

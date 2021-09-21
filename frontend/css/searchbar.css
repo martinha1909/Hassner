@@ -16,7 +16,7 @@ input[type="form-text"] {
   background-color: white;
   vertical-align: middle;
   border-radius: 0.25rem;
-  border: 2px solid #ff9100;
+  border: 2px solid #e2cda9ff;
   font-size: 1rem;
   width: 50%;
   line-height: 2;
@@ -34,7 +34,7 @@ input[type="search"] {
   background-color: white;
   vertical-align: middle;
   border-radius: 0.25rem;
-  border: 2px solid #ff9100;
+  border: 2px solid #e2cda9ff;
   font-size: 1rem;
   width: 175%;
   line-height: 2;

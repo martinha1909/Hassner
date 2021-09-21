@@ -29,12 +29,12 @@
     <body class="bg-dark">
         <section class="smart-scroll">
             <div class="container-xxl">
-                <nav class="navbar navbar-expand-md navbar-dark bg-orange justify-content-between">
+                <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
                     <a id = "href-hover" class="navbar-brand heading-black" href="#" onclick='window.location.reload();'>
                         HASSNER
                     </a>
 
-                    <div class="wrapper-searchbar">
+                    <div class="wrapper-searchbar mx-auto">
                         <div class="container-searchbar">
                             <label>
                                 <span class="screen-reader-text">Search for...</span>
@@ -184,7 +184,8 @@
                             ';
                         ?>
                     </ul>
-                    <ul class="list-group col">
+                    <div class="container my-auto mx-auto col-6">
+                    <ul class="list-group">
                         <?php                    
                             //displaying My Portfolio
                             if($_SESSION['display'] == 0 || $_SESSION['display'] == "PORTFOLIO")
@@ -327,54 +328,145 @@
                                     {
                                         sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Descending");
                                     }
+                                    combineDuplicateRows($all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
                                     printMyPortfolioChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
                                 }
                                 echo '</tbody>
                                     </table>';
+
+                                //Displaying sell order section
                                 $artist_usernames = array();
                                 $roi = array();
                                 $selling_prices = array();
                                 $share_amounts = array();
                                 $profits = array();
+                                $date_posted = array();
+                                $time_posted = array();
+                                $ids = array();
 
                                 //update the shares that the user is currently selling
-                                fetchUserSellingShares($_SESSION['username'], $artist_usernames, $roi, $selling_prices, $share_amounts, $profits);
-                                echo'    
-                                    <h3>Your active shares</h3>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Artist</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Selling for (q̶)</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Return on investment</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Profit/Loss (q̶)</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>';
-                                for($i=0; $i<sizeof($selling_prices); $i++)
+                                fetchSellOrders($_SESSION['username'], 
+                                                $artist_usernames, 
+                                                $roi, 
+                                                $selling_prices, 
+                                                $share_amounts, 
+                                                $profits,
+                                                $date_posted,
+                                                $time_posted,
+                                                $ids);
+
+                                if(sizeof($selling_prices) > 0)
                                 {
-                                    //Allowing users to remove/cancek their share order
-                                    echo'
-                                            <form action="../../backend/listener/EditSellingShareBackend.php" method="post">
+                                    echo'    
+                                    
+                                    <div class="container py-6 my-auto mx-auto">    
+                                    <h3>Sell orders</h3>
+                                        <table class="table">
+                                            <thead>
                                                 <tr>
-                                                    <th scope="row"><input name="remove_artist_name" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$artist_usernames[$i].'"></th>
-                                                    <td><input name="remove_share_price" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$selling_prices[$i].'"></td>
-                                                    <td><input name="remove_share_quantity" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$share_amounts[$i].'"></td>
-                                                    <td>'.$roi[$i].'%</td>
-                                                    <td>'.$profits[$i].'</td>
-                                                    <td><input type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Order ID</th>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Artist</th>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Selling for (q̶)</th>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Quantity</th>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">ROI</th>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Gain/Loss (q̶)</th>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Date Posted</th>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Time Posted</th>
+                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Remove Order</th>
                                                 </tr>
-                                            </form>
+                                            </thead>
+                                            <tbody>';
+                                    for($i=0; $i<sizeof($selling_prices); $i++)
+                                    {
+                                        //Allowing users to remove/cancek their share order
+                                        echo'
+                                                <form action="../../backend/listener/RemoveSellOrderBackend.php" method="post">
+                                                    <tr>
+                                                        <th scope="row"><input name="remove_id" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$ids[$i].'"></th>
+                                                        <td>'.$artist_usernames[$i].'</th>
+                                                        <td>'.$selling_prices[$i].'</td>
+                                                        <td>'.$share_amounts[$i].'</td>
+                                                        <td>'.$roi[$i].'%</td>
+                                                        <td>'.$profits[$i].'</td>
+                                                        <td>'.dateParser($date_posted[$i]).'</td>
+                                                        <td>'.timeParser($time_posted[$i]).'</td>
+                                                        <td><input type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
+                                                    </tr>
+                                                </form>
+                                        ';
+                                    }
+                                    echo '
+                                            </tbody>
+                                        </table>
+                                        </div>
                                     ';
                                 }
-                                echo '
-                                        </tbody>
-                                    </table>
-                                ';
-                            }
 
+                                //Displaying buy order section
+
+                                //reusing some variable names since this comes after sell order
+                                $artist_usernames = array();
+                                $quantities_requested = array();
+                                $siliqas_requested = array();
+                                $date_posted = array();
+                                $time_posted = array();
+                                $buy_order_ids = array();
+
+                                
+                                fetchBuyOrders($_SESSION['username'], 
+                                                $artist_usernames, 
+                                                $quantities_requested, 
+                                                $siliqas_requested,
+                                                $date_posted,
+                                                $time_posted, 
+                                                $buy_order_ids);
+                                
+                                if(sizeof($artist_usernames) > 0)
+                                {
+                                    echo '
+                                        <div class="container py-6 my-auto mx-auto">    
+                                        <h3>Buy orders</h3>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Order ID</th>
+                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Artist</th>
+                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Siliqas Requested</th>
+                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Quantity</th>
+                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Date Posted</th>
+                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Time Posted</th>
+                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Remove Order</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                    ';
+
+                                    for($i = 0; $i < sizeof($artist_usernames); $i++)
+                                    {
+                                        echo'
+                                                <form action="../../backend/listener/RemoveBuyOrderBackend.php" method="post">
+                                                    <tr>
+                                                        <th scope="row"><input name="remove_id" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "'.$buy_order_ids[$i].'"></th>
+                                                        <td>'.$artist_usernames[$i].'</td>
+                                                        <td>'.$siliqas_requested[$i].'</td>
+                                                        <td>'.$quantities_requested[$i].'</td>
+                                                        <td>'.dateParser($date_posted[$i]).'</td>
+                                                        <td>'.timeParser($time_posted[$i]).'</td>
+                                                        <td><input type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
+                                                    </tr>
+                                                </form>
+                                        ';
+                                    }
+
+                                    echo '
+                                            </tbody>
+                                        </table>
+                                        </div>
+                                    ';
+                                }
+                                
+                            }
+                            
                             //displaying Top Invested Artist
                             else if($_SESSION['display'] == "ARTISTS")
                             {
@@ -422,7 +514,7 @@
                                 echo '
                                     <section id="login">
                                         <div class="container">
-                                            <div class="col-12 mx-auto my-auto text-center">
+                                            <div class="col-4 mx-auto my-auto text-center">
                                                 <h3 style="color: orange;padding-top:150px;">Verify your password to access personal page</h3>
                                                 <form action="../../backend/listener/PersonalPageBackend.php" method="post">
                                                     <div class="form-group">
@@ -445,6 +537,7 @@
                             }
                         ?>
                     </ul>
+                    </div>
                 </div>
             </div>
         </section>
