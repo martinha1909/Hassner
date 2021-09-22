@@ -1,6 +1,6 @@
 <?php
   include '../../backend/control/Dependencies.php';
-  include '../../backend/shared/PersonalPageFunctions.php';
+  include '../../backend/shared/PersonalPageHelpers.php';
 ?>
 <head>
   <meta charset="utf-8">

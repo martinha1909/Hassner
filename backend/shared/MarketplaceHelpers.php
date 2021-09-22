@@ -7,14 +7,14 @@
         //we want to limit the access of artist account to these functions
         if($_SESSION['account_type'] == "user")
         {
-            include '../../backend/listener/ListenerBackend.php';
+            include '../../backend/listener/ListenerHelpers.php';
         }
     }
     else if($_SESSION['dependencies'] == "BACKEND")
     {
         if($_SESSION['account_type'] == "user")
         {
-            include '../listener/ListenerBackend.php';
+            include '../listener/ListenerHelpers.php';
         }
     }
 

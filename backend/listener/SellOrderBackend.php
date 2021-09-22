@@ -2,7 +2,7 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
     include '../constants/LoggingModes.php';
-    include '../shared/MarketplaceBackend.php';
+    include '../shared/MarketplaceHelpers.php';
 
     $_SESSION['logging_mode'] = LogModes::SELL_SHARE;
 

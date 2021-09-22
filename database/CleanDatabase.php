@@ -1,5 +1,5 @@
 <?php
-    include '../backend/control/logic.php';
+    include '../backend/control/Queries.php';
     include '../backend/control/connection.php';
 
     $conn = connect();
