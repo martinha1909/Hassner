@@ -105,9 +105,11 @@
                         <tr>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Owned Shares</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Shares selling</th>
+                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Shares requesting</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Artist</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Current price per share (q̶)</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Selling profit per share (q̶)</th>
+                            <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Issued Shares</th>
                             <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Available Shares</th>
                         </tr>
                     </thead>
@@ -118,9 +120,11 @@
                                 and amount of available shares for purchase, respectively -->
                             <th scope="row"><?php echo $_SESSION['shares_owned']; ?></th>
                             <td><?php echo getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
+                            <td><?php echo getAmountSharesRequesting($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
                             <td><?php echo $_SESSION['selected_artist']; ?></td>
                             <td><?php echo round($_SESSION['current_pps']['price_per_share'],2); ?></td>
                             <td><?php echo $_SESSION['profit']; ?> (<?php echo $_SESSION['profit_rate']; ?>%)</td>
+                            <td><?php echo totalShareDistributed($_SESSION['selected_artist']); ?></td>
                             <td><?php echo $_SESSION['available_shares']; ?></td>
                         </tr>
                     </tbody>
@@ -152,6 +156,7 @@
                             $_SESSION['status'] = StatusCodes::ErrGeneric;
                             getStatusMessage("All shares are currently being sold", "");
                         }
+
                         echo "<br>";
                         if($_SESSION['logging_mode'] == LogModes::NON_EXIST)
                         {
@@ -161,16 +166,26 @@
                         {
                             getStatusMessage("", "Sell order updated successfully");
                         }
+
+                        if($_SESSION['logging_mode'] == "BUY_ORDER")
+                        {
+                            if($_SESSION['status'] == "NOT_ENOUGH_SILIQAS")
+                            {
+                                $_SESSION['status'] = "ERROR";
+                                getStatusMessage("Not enough siliqas for requested amout", "");
+                            }
+                        }
                     }
 
-                    if($available_share > 0)
+                    if(canCreateBuyOrder($_SESSION['username'], 
+                                         $_SESSION['selected_artist'], 
+                                         getAmountSharesRequesting($_SESSION['username'], 
+                                                                   $_SESSION['selected_artist'])))
                     {
                         echo '
                             <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
                                 <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="+Buy shares">
                             </form>
-                        ';
-                        echo '
                             <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
                                 <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="+Create buy order">
                             </form>
@@ -197,15 +212,16 @@
                         ';
                         $_SESSION['buy_sell'] = 0;
                     }
-                    else if($_SESSION['buy_sell'] == "BUY_ORDER" && $available_share > 0) 
+                    else if($_SESSION['buy_sell'] == "BUY_ORDER") 
                     {
+                        //Users can still request a buy order up to the max total of share distributed
                         echo '
                             <h6>How many shares are you buying?</h6>
                             <div class="wrapper-searchbar">
                                 <div class="container-searchbar mx-auto">
                                     <label>
                                         <form action="../../backend/listener/BuyOrderBackend.php" method="post">
-                                            <input name = "request_quantity" type="range" min="1" max='.$available_share.' value="1" class="slider" id="myRange">
+                                            <input name = "request_quantity" type="range" min="1" max='.totalShareDistributed($_SESSION['selected_artist']) - getAmountSharesRequesting($_SESSION['username'], $_SESSION['selected_artist']).' value="1" class="slider" id="myRange">
                                             <p>Quantity: <span id="demo"></span></p>
                                             <input type="text" name="request_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
                                             <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">

@@ -1,8 +1,23 @@
 <?php
     include '../../backend/constants/StatusCodes.php';
     include '../../backend/constants/LoggingModes.php';
-    include '../../backend/listener/ListenerBackend.php';
     
+    if($_SESSION['dependencies'] == "FRONTEND")
+    {
+        //we want to limit the access of artist account to these functions
+        if($_SESSION['account_type'] == "user")
+        {
+            include '../../backend/listener/ListenerBackend.php';
+        }
+    }
+    else if($_SESSION['dependencies'] == "BACKEND")
+    {
+        if($_SESSION['account_type'] == "user")
+        {
+            include '../listener/ListenerBackend.php';
+        }
+    }
+
     //fetching the market price, if current user has not invested in the selected artist, simply just populate default values
     //default values should be displayed on the table like this:
     //  Owned Shares: 0
@@ -75,7 +90,7 @@
     function fetchAskedPrice(&$ids, &$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
     {
         $conn = connect();
-        $result = getAskedPrices($conn, $artist_username);
+        $result = searchSellOrderByArtist($conn, $artist_username);
         //loading up data so all the arrays have corresponding indices that map to the database
         while($row = $result->fetch_assoc())
         {
@@ -259,15 +274,44 @@
         return false;
     }
 
+    function canCreateBuyOrder($user_username, $artist_username, $shares_requesting)
+    {
+        $conn = connect();
+
+        $res = searchNumberOfShareDistributed($conn, $artist_username);
+        $total_share_dist = $res->fetch_assoc();
+
+        if($shares_requesting >= $total_share_dist['Share_Distributed'])
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     function getAmountSharesSelling($user_username, $artist_username)
     {
         $conn = connect();
         
         $ret = 0;
-        $res = getSpecificAskedPrice($conn, $user_username, $artist_username);
+        $res = searchSharesSelling($conn, $user_username, $artist_username);
         while($row = $res->fetch_assoc())
         {
             $ret += $row['no_of_share'];
+        }
+
+        return $ret;
+    }
+
+    function getAmountSharesRequesting($user_username, $artist_username)
+    {
+        $conn = connect();
+        
+        $ret = 0;
+        $res = searchSharesRequested($conn, $user_username, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            $ret += $row['quantity'];
         }
 
         return $ret;
@@ -308,7 +352,7 @@
             $res1 = searchArtistCurrentPricePerShare($conn, $artist_username);
             $market_price = $res1->fetch_assoc();
 
-            $res2 = getAskedPrices($conn, $_SESSION['username']);
+            $res2 = searchSellOrderByArtist($conn, $_SESSION['username']);
 
             //If there are no users that are selling this artist's shares other than himself, 
             //return the market price per share 
@@ -640,6 +684,5 @@
                                                 $row['time_purchased']);
             }
         }
-
     }
 ?>
