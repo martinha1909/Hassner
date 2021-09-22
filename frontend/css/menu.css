@@ -80,7 +80,7 @@ select::-ms-expand {
   top: 0;
   right: 0;
   padding: 0 1em;
-  color: #f39c12;
+  color: #e2cda9ff;
   background: #11171a;
   cursor: pointer;
   pointer-events: none;
@@ -90,7 +90,7 @@ select::-ms-expand {
 }
 
 .select-dark:hover::after {
-  color: #f39c12;
+  color: #e2cda9ff;
   background-color: #11171a;
   /* border-color: #11171a; */
 }
@@ -119,6 +119,14 @@ select#dark {
 .select:hover::after {
   color: #f39c12;
   background-color: #11171a;
+}
+
+.bg-tan {
+  background-color: #e2cda9ff;
+}
+
+.bg-darkcyan {
+  background-color: #134f5cff;
 }
 
 /* New Colours */
@@ -172,4 +180,41 @@ select#dark {
   font-size: 1.2rem;
   font-weight: 500;
   color: #e2cda9ff;
+}
+
+/* Dashboard Classes */
+
+.selected-no-hover {
+  border-right: 2px solid white;
+}
+
+.menu-text {
+  border: 1px transparent;
+  background-color: transparent;
+}
+
+.th-dark {
+  border-color: transparent;
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
+}
+
+.th-tan {
+  border-color: #e2cda9ff;
+  background-color: #e2cda9ff;
+  color: #11171a;
+}
+
+.li-bottom {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 20px;
+}
+
+.cursor-context {
+  cursor: context-menu;
+  color: white;
+  border: 1px transparent;
+  background-color: transparent;
 }
