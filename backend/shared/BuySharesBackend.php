@@ -41,7 +41,7 @@
             $buyer_new_balance = $_SESSION['user_balance'] - ($amount_bought * $_SESSION['purchase_price']);
 
             //the user now owns more share of the artist
-            $buyer_new_share_amount = $_SESSION['shares_owned'] + $amount_bought;
+            $buyer_new_share_amount = $amount_bought;
 
             //in the case of buying with market price, the price per share doesn't change
             $new_pps = $_SESSION['current_pps']['price_per_share'];
@@ -81,7 +81,7 @@
             $result = searchSpecificInvestment($conn, $account_info['user_username'], $_SESSION['selected_artist']);
             
             //the owned share of the seller is now transfered to the buyer
-            //return the first occurence in user_artist_share
+            //return the first occurence in buy_history
             $investment_info = $result->fetch_assoc();
             $seller_new_share_amount = $investment_info['no_of_share_bought'] - $amount_bought;
             $buyer_new_share_amount = $_SESSION['shares_owned'] + $amount_bought;
@@ -109,11 +109,12 @@
                                                               $_SESSION['shares_owned'], 
                                                               $amount_bought,
                                                               $asked_price,
+                                                              $_SESSION['seller_toggle'],
                                                               $date_parser[0],
-                                                              $date_parser[1],
-                                                              $seller_date_purchased,
-                                                              $seller_time_purchased);
+                                                              $date_parser[1]);
                 refreshUserArtistShareTable();
+                refreshSellOrderTable();
+                refreshBuyOrderTable();
             }
             else if($_SESSION['account_type'] == AccountType::Artist)
             {
@@ -139,6 +140,10 @@
                                                     $new_pps, 
                                                     $amount_bought,
                                                     $account_info['selling_price']);
+                
+                refreshUserArtistShareTable();
+                refreshSellOrderTable();
+                refreshBuyOrderTable();
             }
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;
