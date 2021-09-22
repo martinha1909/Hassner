@@ -1,6 +1,6 @@
 <?php
     include '../../backend/control/Dependencies.php';
-    include '../../backend/listener/SearchArtistBackend.php';
+    include '../../backend/listener/SearchArtistHelpers.php';
 ?>
 
 <!doctype html>

@@ -1,6 +1,6 @@
 <?php
 include '../../backend/control/Dependencies.php';
-include '../../backend/shared/MarketplaceBackend.php';
+include '../../backend/shared/MarketplaceHelpers.php';
 include '../../backend/constants/LoggingModes.php';
 
 $account = getAccount($_SESSION['username']);
@@ -165,7 +165,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="color: white;" class="bg-dark">#</th>
-                                                <form action="../../backend/listener/SortPortfolioArtistBackEnd.php">
+                                                <form action="../../backend/listener/SortPortfolioArtistHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
                                 ';
                             //sort Artist ascending alphabetically
@@ -181,7 +181,7 @@ $_SESSION['user_balance'] = $account['balance'];
                             echo '
                                                 </th>
                                                 </form>
-                                                <form action="../../backend/listener/SortPortfolioShareBackEnd.php">
+                                                <form action="../../backend/listener/SortPortfolioShareHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
                             //sort Shares bought ascending alphabetically
                             if ($_SESSION['sort_type'] == 2) {
@@ -196,7 +196,7 @@ $_SESSION['user_balance'] = $account['balance'];
                             echo '
                                                 </th>
                                                 </form>
-                                                <form action = "../../backend/listener/SortPortfolioPPSBackEnd.php">
+                                                <form action = "../../backend/listener/SortPortfolioPPSHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
                             //sort Price per share ascending alphabetically
                             if ($_SESSION['sort_type'] == 3) {
@@ -212,7 +212,7 @@ $_SESSION['user_balance'] = $account['balance'];
                             echo '
                                                 </th>
                                                 </form>
-                                                <form action = "../../backend/listener/SortPortfolioRateBackEnd.php">
+                                                <form action = "../../backend/listener/SortPortfolioRateHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
                             //sort Rate ascending alphabetically
                             if ($_SESSION['sort_type'] == 0) {

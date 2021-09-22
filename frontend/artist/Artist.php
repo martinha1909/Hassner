@@ -1,7 +1,7 @@
 <?php
   include '../../backend/control/Dependencies.php';
-  include '../../backend/artist/ArtistBackend.php';
-  include '../../backend/shared/MarketplaceBackend.php';
+  include '../../backend/artist/ArtistHelpers.php';
+  include '../../backend/shared/MarketplaceHelpers.php';
 
   $_SESSION['selected_artist'] = $_SESSION['username'];
   $account_info = getArtistAccount($_SESSION['username'], "artist");
