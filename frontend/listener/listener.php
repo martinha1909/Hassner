@@ -31,7 +31,7 @@ $_SESSION['user_balance'] = $account['balance'];
     <section class="smart-scroll">
         <div class="container-xxl">
             <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
-                <a id="href-hover" class="navbar-brand heading-black" href="#" onclick='window.location.reload();'>
+                <a class="navbar-brand heading-black" href="#" onclick='window.location.reload();'>
                     HASSNER
                 </a>
 
