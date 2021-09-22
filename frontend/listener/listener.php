@@ -61,7 +61,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When My Portfolio is selected
                     if ($_SESSION['display'] == 0 || $_SESSION['display'] == "PORTFOLIO") {
                         echo '
-                                    <li class="list-group-item-no-hover">
+                                    <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
                                             <input name="display_type" type="submit" id="menu-style" class="menu-text" value="❖ Portfolio"
                                         </form>
@@ -71,7 +71,7 @@ $_SESSION['user_balance'] = $account['balance'];
                         echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="Portfolio">
+                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Portfolio">
                                         </form>
                                     </li>
                                 ';
@@ -80,9 +80,9 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When settings is selected
                     if ($_SESSION['display'] == "CAMPAIGN") {
                         echo '
-                                    <li class="list-group-item-no-hover">
+                                    <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Campaign ->">
+                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◔ Campaign">
                                         </form>
                                     </li>
                                 ';
@@ -90,7 +90,7 @@ $_SESSION['user_balance'] = $account['balance'];
                         echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Campaign">
+                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Campaign">
                                         </form>
                                     </li>
                                 ';
@@ -99,9 +99,9 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When Siliqas option is selected
                     if ($_SESSION['display'] == "SILIQAS") {
                         echo '
-                                    <li class="list-group-item-no-hover">
+                                    <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Siliqas ->">
+                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Siliqas">
                                         </form>
                                     </li>
                                 ';
@@ -109,7 +109,7 @@ $_SESSION['user_balance'] = $account['balance'];
                         echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Siliqas">
+                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Siliqas">
                                         </form>
                                     </li>
                                 ';
@@ -118,9 +118,9 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When Artists is selected
                     if ($_SESSION['display'] == "ARTISTS") {
                         echo '
-                                    <li class="list-group-item-no-hover">
+                                    <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Artists ->">
+                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Artists">
                                         </form>
                                     </li>
                                 ';
@@ -128,7 +128,7 @@ $_SESSION['user_balance'] = $account['balance'];
                         echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px transparent; background-color: transparent;" value="Artists">
+                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Artists">
                                         </form>
                                     </li>
                                 ';
@@ -137,9 +137,9 @@ $_SESSION['user_balance'] = $account['balance'];
                     //When Account is selected
                     if ($_SESSION['display'] == "ACCOUNT") {
                         echo '
-                                    <li class="list-group-item-no-hover">
+                                    <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" style="border:1px orange; background-color: transparent; color: #ff9100;" value="Account ->">
+                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="▤ Account">
                                         </form>
                                     </li>
                                 ';
@@ -147,25 +147,12 @@ $_SESSION['user_balance'] = $account['balance'];
                         echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" style="font-weight: bold; border:1px orange; background-color: transparent;" value="Account">
+                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Account">
                                         </form>
                                     </li>
                                 ';
                     }
 
-                    //Logout option
-                    echo '
-                                <li class="list-group-item-no-hover"></li>
-                                <li class="list-group-item-no-hover"></li>
-                                <li class="list-group-item-no-hover"></li>
-                                <li class="list-group-item-no-hover"></li>
-                                <li class="list-group-item-no-hover"></li>
-                                <li class="list-group-item-no-hover"></li>
-                                <li class="list-group-item-no-hover" style="padding-top: 52px;"></li>
-                                <li class="list-group-item-no-hover" style="border-bottom: 2px solid white;">
-                                    <a class="dropdown-item" id="dashboard-hover" style="background-color: transparent;" href="../credentials/login.php">Log out</a>
-                                </li>
-                            ';
                     ?>
                 </ul>
                 <div class="container my-auto mx-auto col-6">
@@ -179,7 +166,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                             <tr>
                                                 <th scope="col" style="color: white;" class="bg-dark">#</th>
                                                 <form action="../../backend/listener/SortPortfolioArtistBackEnd.php">
-                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
+                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
                                 ';
                             //sort Artist ascending alphabetically
                             if ($_SESSION['sort_type'] == 1) {
@@ -195,7 +182,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                                 </th>
                                                 </form>
                                                 <form action="../../backend/listener/SortPortfolioShareBackEnd.php">
-                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
+                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
                             //sort Shares bought ascending alphabetically
                             if ($_SESSION['sort_type'] == 2) {
                                 echo ' ↑';
@@ -210,7 +197,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                                 </th>
                                                 </form>
                                                 <form action = "../../backend/listener/SortPortfolioPPSBackEnd.php">
-                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
+                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
                             //sort Price per share ascending alphabetically
                             if ($_SESSION['sort_type'] == 3) {
                                 echo ' ↑';
@@ -226,7 +213,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                                 </th>
                                                 </form>
                                                 <form action = "../../backend/listener/SortPortfolioRateBackEnd.php">
-                                                    <th scope="col" class="bg-dark"><input type = "submit" id="href-hover" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
+                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
                             //sort Rate ascending alphabetically
                             if ($_SESSION['sort_type'] == 0) {
                                 echo ' ↑';
@@ -314,15 +301,15 @@ $_SESSION['user_balance'] = $account['balance'];
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Order ID</th>
-                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Artist</th>
-                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Selling for (q̶)</th>
-                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Quantity</th>
-                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">ROI</th>
-                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Gain/Loss (q̶)</th>
-                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Date Posted</th>
-                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Time Posted</th>
-                                                    <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Remove Order</th>
+                                                    <th class="th-tan" scope="col">Order ID</th>
+                                                    <th class="th-tan" scope="col">Artist</th>
+                                                    <th class="th-tan" scope="col">Selling for (q̶)</th>
+                                                    <th class="th-tan" scope="col">Quantity</th>
+                                                    <th class="th-tan" scope="col">ROI</th>
+                                                    <th class="th-tan" scope="col">Gain/Loss (q̶)</th>
+                                                    <th class="th-tan" scope="col">Date Posted</th>
+                                                    <th class="th-tan" scope="col">Time Posted</th>
+                                                    <th class="th-tan" scope="col">Remove Order</th>
                                                 </tr>
                                             </thead>
                                             <tbody>';
@@ -331,7 +318,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                     echo '
                                                 <form action="../../backend/listener/RemoveSellOrderBackend.php" method="post">
                                                     <tr>
-                                                        <th scope="row"><input name="remove_id" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "' . $ids[$i] . '"></th>
+                                                        <th scope="row"><input name="remove_id" class="cursor-context" value = "' . $ids[$i] . '"></th>
                                                         <td>' . $artist_usernames[$i] . '</th>
                                                         <td>' . $selling_prices[$i] . '</td>
                                                         <td>' . $share_amounts[$i] . '</td>
@@ -339,7 +326,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                                         <td>' . $profits[$i] . '</td>
                                                         <td>' . dateParser($date_posted[$i]) . '</td>
                                                         <td>' . timeParser($time_posted[$i]) . '</td>
-                                                        <td><input type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
+                                                        <td><input type="submit" id="abc" class="cursor-context" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
                                                     </tr>
                                                 </form>
                                         ';
@@ -379,13 +366,13 @@ $_SESSION['user_balance'] = $account['balance'];
                                             <table class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Order ID</th>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Artist</th>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Siliqas Requested</th>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Quantity</th>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Date Posted</th>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Time Posted</th>
-                                                        <th style="background-color: #e2cda9ff; border-color: #e2cda9ff; color: #11171a;" scope="col">Remove Order</th>
+                                                        <th class="th-tan" scope="col">Order ID</th>
+                                                        <th class="th-tan" scope="col">Artist</th>
+                                                        <th class="th-tan" scope="col">Siliqas Requested</th>
+                                                        <th class="th-tan" scope="col">Quantity</th>
+                                                        <th class="th-tan" scope="col">Date Posted</th>
+                                                        <th class="th-tan" scope="col">Time Posted</th>
+                                                        <th class="th-tan" scope="col">Remove Order</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -395,13 +382,13 @@ $_SESSION['user_balance'] = $account['balance'];
                                     echo '
                                                 <form action="../../backend/listener/RemoveBuyOrderBackend.php" method="post">
                                                     <tr>
-                                                        <th scope="row"><input name="remove_id" style="cursor: context-menu; color: white; border:1px transparent; background-color: transparent;" value = "' . $buy_order_ids[$i] . '"></th>
+                                                        <th scope="row"><input name="remove_id" class="cursor-context" value = "' . $buy_order_ids[$i] . '"></th>
                                                         <td>' . $artist_usernames[$i] . '</td>
                                                         <td>' . $siliqas_requested[$i] . '</td>
                                                         <td>' . $quantities_requested[$i] . '</td>
                                                         <td>' . dateParser($date_posted[$i]) . '</td>
                                                         <td>' . timeParser($time_posted[$i]) . '</td>
-                                                        <td><input type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
+                                                        <td><input type="submit" id="abc" class="cursor-context" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
                                                     </tr>
                                                 </form>
                                         ';
@@ -419,15 +406,15 @@ $_SESSION['user_balance'] = $account['balance'];
                         else if ($_SESSION['display'] == "ARTISTS") {
                             echo '
                                     <table class="table">
-                                        <thead class="thead-orange">
+                                        <thead>
                                             <tr>
-                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "#"></th>
-                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Artist"></th>
-                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Shares bought"></th>
-                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Price per share (q̶)"></th>
-                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Rate"></th>
-                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Max Price"></th>
-                                                <th scope="col" class="bg-dark" id="href-hover";"><input type = "submit" style="border:1px transparent; background-color: transparent; color: white; font-weight: bold;" aria-pressed="true" value = "Min Price"></th>
+                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "#"></th>
+                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Artist"></th>
+                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Shares bought"></th>
+                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Price per share (q̶)"></th>
+                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Rate"></th>
+                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Max Price"></th>
+                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Min Price"></th>
                                             </tr>
                                         </thead>
                                     <tbody>
@@ -455,11 +442,11 @@ $_SESSION['user_balance'] = $account['balance'];
                                     <section id="login">
                                         <div class="container">
                                             <div class="col-4 mx-auto my-auto text-center">
-                                                <h3 style="color: orange;padding-top:150px;">Verify your password to access personal page</h3>
+                                                <h3 class="h3-tan py-4">Verify your password to access personal page</h3>
                                                 <form action="../../backend/listener/PersonalPageBackend.php" method="post">
                                                     <div class="form-group">
                                                         <h5>Password</h5>
-                                                        <input name = "verify_password" type="password" style="border-color: white;" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">';
+                                                        <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">';
                             if ($_SESSION['logging_mode'] == LogModes::PERSONAL) {
                                 getStatusMessage("Incorrect Password, please try again", "");
                             }
@@ -480,6 +467,8 @@ $_SESSION['user_balance'] = $account['balance'];
             </div>
         </div>
     </section>
+
+    <a class="li-bottom btn btn-secondary" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
 
     <!--scroll to top-->
     <div class="scroll-top">
