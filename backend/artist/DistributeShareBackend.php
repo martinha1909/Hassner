@@ -3,15 +3,8 @@
     include '../control/Dependencies.php';
     include '../constants/StatusCodes.php';
     include '../constants/LoggingModes.php';
-    
 
-<<<<<<< HEAD
     $_SESSION['logging_mode'] = LogModes::SHARE_DIST;
-=======
-    
-
-    $_SESSION['logging_mode'] = "SHARE_DIST";
->>>>>>> buy_share_refinement
 
     $conn = connect();
     $shares_distributing = 0;
@@ -21,11 +14,7 @@
     //For now the first time artists distribute their share will just have this comment to keep things consistent
     $comment = "First IPO";
     $current_date = getCurrentDate("America/Edmonton");
-<<<<<<< HEAD
-    $date_parser = currentTimeParser($current_date);
-=======
     $date_parser = dayAndTimeSplitter($current_date);
->>>>>>> buy_share_refinement
 
     if(empty($shares_distributing) || empty($siliqas_raising))
     {

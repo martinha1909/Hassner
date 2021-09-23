@@ -24,7 +24,14 @@
         $_SESSION['buy_sell'] = 0;
         $_SESSION['buy_options'] = 0;
         $_SESSION['status'] = "SILIQAS_ERR";
-        header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+        if($_SESSION['account_type'] == AccountType::User)
+        {
+            header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+        }
+        else if($_SESSION['account_type'] == AccountType::Artist)
+        {
+            header("Location: ../../frontend/artist/Artist.php");
+        }
     }
     else
     {
@@ -69,28 +76,21 @@
         else if($_SESSION['buy_asked_price'] == 1)
         {
             $res = searchSellOrderByID($conn, $_SESSION['seller_toggle']);
-            $account_info = $res->fetch_assoc();
-            $result = searchAccount($conn, $account_info['user_username']);
-            $seller_initial_balance = $result->fetch_assoc();
+            $sell_order_info = $res->fetch_assoc();
+            $result = searchAccount($conn, $sell_order_info['user_username']);
+            $account_info = $result->fetch_assoc();
 
             //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
-            $seller_new_balance = $seller_initial_balance['balance'] + ($amount_bought * $_SESSION['purchase_price']); 
+            $seller_new_balance = $account_info['balance'] + ($amount_bought * $_SESSION['purchase_price']); 
 
             //subtracts siliqas from the user
             $buyer_new_balance = $_SESSION['user_balance'] - ($amount_bought * $_SESSION['purchase_price']);
-            $result = searchSpecificInvestment($conn, $account_info['user_username'], $_SESSION['selected_artist']);
-            
-            //the owned share of the seller is now transfered to the buyer
-            //return the first occurence in buy_history
-            $investment_info = $result->fetch_assoc();
-            $seller_new_share_amount = $investment_info['no_of_share_bought'] - $amount_bought;
+
+            $seller_new_share_amount = $account_info['Shares'] - $amount_bought;
             $buyer_new_share_amount = $_SESSION['shares_owned'] + $amount_bought;
 
             //In the case of buying in asked price, the new market price will become the last purchased price
             $new_pps = $_SESSION['purchase_price'];
-
-            $seller_date_purchased = $investment_info['date_purchased'];
-            $seller_time_purchased = $investment_info['time_purchased'];
 
             //only user will fluctuate demand, if artists buy back the share they simply just own back their 
             //portion and increase the price per share by the amount they bought back
@@ -118,28 +118,22 @@
             }
             else if($_SESSION['account_type'] == AccountType::Artist)
             {
-
-                $res = searchNumberOfShareDistributed($conn, $_SESSION['username']);
-                $share_distributed = $res->fetch_assoc();
-
-                $res = searchArtistSharesBought($conn, $_SESSION['username']);
-                $artist_shares_bought = $res->fetch_assoc();
-
-                $new_share_distributed = $share_distributed['Share_Distributed'] - $amount_bought;
-                $new_artist_shares_bought = $artist_shares_bought['Shares'] - $amount_bought;
-                $new_pps = $new_pps / ($amount_bought/$new_share_distributed);
+                $res_1 = searchArtistSharesBought($conn, $_SESSION['username']);
+                $artist_account_info = $res_1->fetch_assoc();
+                //we are subtracting here because we will add this amount to share_repurchase column
+                $buyer_new_share_amount = $artist_account_info['Shares'] - $amount_bought;
 
                 $_SESSION['status'] = buyBackShares($conn, 
                                                     $_SESSION['username'], 
-                                                    $account_info['user_username'], 
+                                                    $sell_order_info['user_username'], 
                                                     $buyer_new_balance, 
                                                     $seller_new_balance, 
                                                     $seller_new_share_amount, 
-                                                    $new_share_distributed, 
-                                                    $new_artist_shares_bought, 
+                                                    $buyer_new_share_amount,
                                                     $new_pps, 
                                                     $amount_bought,
-                                                    $account_info['selling_price']);
+                                                    $_SESSION['seller_toggle'],
+                                                    $sell_order_info['selling_price']);
                 
                 refreshUserArtistShareTable();
                 refreshSellOrderTable();

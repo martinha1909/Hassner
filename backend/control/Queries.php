@@ -315,6 +315,7 @@
             $monthly_shareholder = 0;
             $income = 0;
             $market_cap = 0;
+            $share_repurchase = 0;
             if($type == 'artist')
                 $price_per_share = 1;
             else
@@ -325,15 +326,15 @@
             $sql = "INSERT INTO account (username, password, account_type, id, Shares, balance, rate, 
                                          Share_Distributed, email, billing_address, Full_name, City, State, ZIP, 
                                          Card_number, Transit_no, Inst_no, Account_no, Swift, price_per_share, 
-                                         Monthly_shareholder, Income, Market_cap)
-                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                         Monthly_shareholder, Income, Market_cap, shares_repurchase)
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sssiiddisssssssssssdidd', $username, $password, $type, $id, $num_of_shares, 
+            $stmt->bind_param('sssiiddisssssssssssdiddi', $username, $password, $type, $id, $num_of_shares, 
                                                            $balance, $rate, $share_distributed, $email, 
                                                            $billing_address, $full_name, $city, $state, $zip, 
                                                            $card_number, $transit_no, $inst_no, $account_no, 
                                                            $swift, $price_per_share, $monthly_shareholder, 
-                                                           $income, $market_cap);
+                                                           $income, $market_cap, $share_repurchase);
             if ($stmt->execute() === TRUE) {
                 $status = StatusCodes::Success;
             } else {
@@ -705,7 +706,7 @@
             return $status;
         }
 
-        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $new_share_distributed, $new_artist_shares_bought, $new_pps, $amount_bought, $selling_price)
+        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $buyer_new_share_amount, $new_pps, $amount_bought, $sell_order_id, $selling_price)
         {
             $sql = "UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$artist_username'";
             if($conn->query($sql) == TRUE)
@@ -718,7 +719,7 @@
                 return $status;
             }
 
-            $sql = "UPDATE account SET balance = '$seller_new_balance' WHERE username = '$artist_username'";
+            $sql = "UPDATE account SET balance = '$seller_new_balance' WHERE username = '$seller_username'";
             if($conn->query($sql) == TRUE)
             {
                 $status = StatusCodes::Success;
@@ -740,18 +741,7 @@
                 return $status;
             }
 
-            $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username = '$artist_username'";
-            if($conn->query($sql) == TRUE)
-            {
-                $status = StatusCodes::Success;
-            }   
-            else
-            {
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            $sql = "UPDATE account SET Shares = '$new_artist_shares_bought' WHERE username = '$artist_username'";
+            $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$artist_username'";
             if($conn->query($sql) == TRUE)
             {
                 $status = StatusCodes::Success;
@@ -773,7 +763,7 @@
                 return $status;
             }
 
-            $sql = "UPDATE buy_history SET no_of_share_bought = no_of_share_bought - '$amount_bought' WHERE user_username = '$seller_username' AND artist_username = '$artist_username'";
+            $sql = "UPDATE account SET shares_repurchase = shares_repurchase + '$amount_bought' WHERE username = '$artist_username'";
             if($conn->query($sql) == TRUE)
             {
                 $status = StatusCodes::Success;
@@ -784,7 +774,65 @@
                 return $status;
             }
 
-            $sql = "UPDATE sell_order SET no_of_share = no_of_share - '$amount_bought' WHERE user_username = '$seller_username' AND artist_username = '$artist_username' AND selling_price = '$selling_price'";
+            $res = searchSpecificInvestment($conn, $seller_username, $artist_username);
+            $temp = $amount_bought;
+            while($row = $res->fetch_assoc())
+            {
+                $uname = $row['user_username'];
+                $sname = $row['seller_username'];
+                $aname = $row['artist_username'];
+                $pps = $row['price_per_share_when_bought'];
+                $d = $row['date_purchased'];
+                $t = $row['time_purchased'];
+
+                //Since there could be many rows of buy_history with the same user_username and artist_username,
+                //we want to recursively check all of the tuples until amount is 0
+                if($row['no_of_share_bought'] > $temp)
+                {
+                    $sql = "UPDATE buy_history SET no_of_share_bought = no_of_share_bought - '$temp' WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
+                    if($conn->query($sql) == TRUE)
+                    {
+                        $status = "SUCCESS";
+                    }   
+                    else
+                    {
+                        $status = "ERROR";
+                        return $status;
+                    }
+                    break;
+                }
+                else if($row['no_of_share_bought'] == $temp)
+                {
+                    $sql = "UPDATE buy_history SET no_of_share_bought = 0 WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
+                    if($conn->query($sql) == TRUE)
+                    {
+                        $status = "SUCCESS";
+                    }   
+                    else
+                    {
+                        $status = "ERROR";
+                        return $status;
+                    }
+                    break;
+                }
+                else
+                {
+                    $sql = "UPDATE buy_history SET no_of_share_bought = 0 WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
+                    if($conn->query($sql) == TRUE)
+                    {
+                        $status = "SUCCESS";
+                    }   
+                    else
+                    {
+                        $status = "ERROR";
+                        return $status;
+                    }
+                    
+                    $temp -= $row['no_of_share_bought'];
+                }
+            }
+
+            $sql = "UPDATE sell_order SET no_of_share = no_of_share - '$amount_bought' WHERE id = '$sell_order_id'";
             if($conn->query($sql) == TRUE)
             {
                 $status = StatusCodes::Success;
