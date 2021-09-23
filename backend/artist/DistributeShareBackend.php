@@ -3,7 +3,6 @@
     include '../control/Dependencies.php';
     include '../constants/StatusCodes.php';
     include '../constants/LoggingModes.php';
-    
 
     $_SESSION['logging_mode'] = LogModes::SHARE_DIST;
 
