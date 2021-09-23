@@ -1,5 +1,5 @@
 <?php
-    include '../backend/control/Queries.php';
+    include 'DatabaseHelpers.php';
     include '../backend/control/connection.php';
 
     $conn = connect();
