@@ -361,7 +361,8 @@
                                                 $row['selling_price'],
                                                 $row['id'],
                                                 $date_parser[0],
-                                                $date_parser[1]);
+                                                $date_parser[1],
+                                                "AUTO_PURCHASE");
 
                         //The return value should be the amount of share requested subtracted by the amount that 
                         //is automatically bought
@@ -406,7 +407,8 @@
                                                 $row['selling_price'],
                                                 $row['id'],
                                                 $date_parser[0],
-                                                $date_parser[1]);
+                                                $date_parser[1],
+                                                "AUTO_PURCHASE");
 
                         //The return value should be the amount of share requested subtracted by the amount that 
                         //is automatically bought

@@ -573,7 +573,7 @@
             return $status;
         }
 
-        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $sell_order_id, $date_purchased, $time_purchased)
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $time_purchased, $indicator)
         {
             $status = 0;
             $sql = "UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'";
@@ -722,15 +722,31 @@
                 }
             }
 
-            $sql = "UPDATE sell_order SET no_of_share = no_of_share - '$amount' WHERE id = '$sell_order_id'";
-            if($conn->query($sql) == TRUE)
+            if($indicator == "AUTO_PURCHASE")
             {
-                $status = StatusCodes::Success;
-            }   
-            else
+                $sql = "UPDATE sell_order SET no_of_share = no_of_share - '$amount' WHERE id = '$order_id'";
+                if($conn->query($sql) == TRUE)
+                {
+                    $status = StatusCodes::Success;
+                }   
+                else
+                {
+                    $status = StatusCodes::ErrGeneric;
+                    return $status;
+                }
+            }
+            else if($indicator == "AUTO_SELL")
             {
-                $status = StatusCodes::ErrGeneric;
-                return $status;
+                $sql = "UPDATE buy_order SET quantity = quantity - '$amount' WHERE id = '$order_id'";
+                if($conn->query($sql) == TRUE)
+                {
+                    $status = StatusCodes::Success;
+                }   
+                else
+                {
+                    $status = StatusCodes::ErrGeneric;
+                    return $status;
+                }
             }
 
             return $status;

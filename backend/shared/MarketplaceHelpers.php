@@ -873,7 +873,8 @@
                                             $row['siliqas_requested'],
                                             $row['id'],
                                             $date_parser[0],
-                                            $date_parser[1]);
+                                            $date_parser[1],
+                                            "AUTO_SELL");
 
                     updateBuyOrderQuantity($conn, $row['id'], 0);
 
@@ -919,11 +920,8 @@
                                             $row['siliqas_requested'],
                                             $row['id'],
                                             $date_parser[0],
-                                            $date_parser[1]);
-
-                    $new_buy_order_quantity = $row['quantity'] - $quantity;
-
-                    updateBuyOrderQuantity($conn, $row['id'], $new_buy_order_quantity);
+                                            $date_parser[1],
+                                            "AUTO_SELL");
 
                     //The return value should be the amount of share requested subtracted by the amount that 
                     //is automatically bought
