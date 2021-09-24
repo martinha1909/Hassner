@@ -270,73 +270,7 @@ $_SESSION['user_balance'] = $account['balance'];
                             echo '</tbody>
                                     </table>';
 
-                            //Displaying sell order section
-                            $artist_usernames = array();
-                            $roi = array();
-                            $selling_prices = array();
-                            $share_amounts = array();
-                            $profits = array();
-                            $date_posted = array();
-                            $time_posted = array();
-                            $ids = array();
-
-                            //update the shares that the user is currently selling
-                            fetchSellOrders(
-                                $_SESSION['username'],
-                                $artist_usernames,
-                                $roi,
-                                $selling_prices,
-                                $share_amounts,
-                                $profits,
-                                $date_posted,
-                                $time_posted,
-                                $ids
-                            );
-
-                            if (sizeof($selling_prices) > 0) {
-                                echo '    
-                                    
-                                    <div class="container py-6 my-auto mx-auto">    
-                                    <h3>Sell orders</h3>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="th-tan" scope="col">Order ID</th>
-                                                    <th class="th-tan" scope="col">Artist</th>
-                                                    <th class="th-tan" scope="col">Selling for (q̶)</th>
-                                                    <th class="th-tan" scope="col">Quantity</th>
-                                                    <th class="th-tan" scope="col">ROI</th>
-                                                    <th class="th-tan" scope="col">Gain/Loss (q̶)</th>
-                                                    <th class="th-tan" scope="col">Date Posted</th>
-                                                    <th class="th-tan" scope="col">Time Posted</th>
-                                                    <th class="th-tan" scope="col">Remove Order</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>';
-                                for ($i = 0; $i < sizeof($selling_prices); $i++) {
-                                    //Allowing users to remove/cancek their share order
-                                    echo '
-                                                <form action="../../backend/listener/RemoveSellOrderBackend.php" method="post">
-                                                    <tr>
-                                                        <th scope="row"><input name="remove_id" class="cursor-context" value = "' . $ids[$i] . '"></th>
-                                                        <td>' . $artist_usernames[$i] . '</th>
-                                                        <td>' . $selling_prices[$i] . '</td>
-                                                        <td>' . $share_amounts[$i] . '</td>
-                                                        <td>' . $roi[$i] . '%</td>
-                                                        <td>' . $profits[$i] . '</td>
-                                                        <td>' . dateParser($date_posted[$i]) . '</td>
-                                                        <td>' . timeParser($time_posted[$i]) . '</td>
-                                                        <td><input type="submit" id="abc" class="cursor-context" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
-                                                    </tr>
-                                                </form>
-                                        ';
-                                }
-                                echo '
-                                            </tbody>
-                                        </table>
-                                        </div>
-                                    ';
-                            }
+                            sellOrderInit();
 
                             //Displaying buy order section
 

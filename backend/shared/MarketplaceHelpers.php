@@ -253,6 +253,107 @@
 
     }
 
+    //retrieves from the database all the rows that contains all selling shares accrossed all artists of $user_username
+    //If notices a row that has quantity of 0, simply just removes it from the database
+    function fetchSellOrders($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits, &$date_posted, &$time_posted, &$ids)
+    {
+        $conn = connect();
+        $result = searchSellOrderByUser($conn, $user_username);
+        while($row = $result->fetch_assoc())
+        {
+            if($row['no_of_share'] == 0)
+            {
+                removeSellOrder($conn, $row['id']);
+            }
+            else
+            {
+                $result_2 = searchArtistCurrentPricePerShare($conn, $row['artist_username']);
+                $pps = $result_2->fetch_assoc();
+                $_roi = (($row['selling_price'] - $pps['price_per_share'])/($pps['price_per_share']))*100;
+                $profit = $row['selling_price'] - $pps['price_per_share'];
+                array_push($artist_usernames, $row['artist_username']);
+                array_push($roi, round($_roi, 2));
+                array_push($selling_prices, $row['selling_price']);
+                array_push($share_amounts, $row['no_of_share']);
+                array_push($profits, $profit);
+                array_push($date_posted, $row['date_posted']);
+                array_push($time_posted, $row['time_posted']);
+                array_push($ids, $row['id']);
+            }
+        }
+    }
+
+    function sellOrderInit()
+    {
+        //Displaying sell order section
+        $artist_usernames = array();
+        $roi = array();
+        $selling_prices = array();
+        $share_amounts = array();
+        $profits = array();
+        $date_posted = array();
+        $time_posted = array();
+        $ids = array();
+
+        //update the shares that the user is currently selling
+        fetchSellOrders(
+            $_SESSION['username'],
+            $artist_usernames,
+            $roi,
+            $selling_prices,
+            $share_amounts,
+            $profits,
+            $date_posted,
+            $time_posted,
+            $ids
+        );
+
+        if (sizeof($selling_prices) > 0) {
+            echo '    
+                
+                <div class="container py-6 my-auto mx-auto">    
+                <h3>Sell orders</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="th-tan" scope="col">Order ID</th>
+                                <th class="th-tan" scope="col">Artist</th>
+                                <th class="th-tan" scope="col">Selling for (q̶)</th>
+                                <th class="th-tan" scope="col">Quantity</th>
+                                <th class="th-tan" scope="col">ROI</th>
+                                <th class="th-tan" scope="col">Gain/Loss (q̶)</th>
+                                <th class="th-tan" scope="col">Date Posted</th>
+                                <th class="th-tan" scope="col">Time Posted</th>
+                                <th class="th-tan" scope="col">Remove Order</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+            for ($i = 0; $i < sizeof($selling_prices); $i++) {
+                //Allowing users to remove/cancek their share order
+                echo '
+                            <form action="../../backend/shared/RemoveSellOrderBackend.php" method="post">
+                                <tr>
+                                    <th scope="row"><input name="remove_id" class="cursor-context" value = "' . $ids[$i] . '"></th>
+                                    <td>' . $artist_usernames[$i] . '</th>
+                                    <td>' . $selling_prices[$i] . '</td>
+                                    <td>' . $share_amounts[$i] . '</td>
+                                    <td>' . $roi[$i] . '%</td>
+                                    <td>' . $profits[$i] . '</td>
+                                    <td>' . dateParser($date_posted[$i]) . '</td>
+                                    <td>' . timeParser($time_posted[$i]) . '</td>
+                                    <td><input type="submit" id="abc" class="cursor-context" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
+                                </tr>
+                            </form>
+                    ';
+            }
+            echo '
+                        </tbody>
+                    </table>
+                    </div>
+                ';
+        }
+    }
+
     function canCreateSellOrder($user_username, $artist_username)
     {
         $total_share_bought = 0;

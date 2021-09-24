@@ -154,36 +154,6 @@
         return $ret['Share_Distributed'];
     }
 
-    //retrieves from the database all the rows that contains all selling shares accrossed all artists of $user_username
-    //If notices a row that has quantity of 0, simply just removes it from the database
-    function fetchSellOrders($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits, &$date_posted, &$time_posted, &$ids)
-    {
-        $conn = connect();
-        $result = searchSellOrderByUser($conn, $user_username);
-        while($row = $result->fetch_assoc())
-        {
-            if($row['no_of_share'] == 0)
-            {
-                removeSellOrder($conn, $row['id']);
-            }
-            else
-            {
-                $result_2 = searchArtistCurrentPricePerShare($conn, $row['artist_username']);
-                $pps = $result_2->fetch_assoc();
-                $_roi = (($row['selling_price'] - $pps['price_per_share'])/($pps['price_per_share']))*100;
-                $profit = $row['selling_price'] - $pps['price_per_share'];
-                array_push($artist_usernames, $row['artist_username']);
-                array_push($roi, round($_roi, 2));
-                array_push($selling_prices, $row['selling_price']);
-                array_push($share_amounts, $row['no_of_share']);
-                array_push($profits, $profit);
-                array_push($date_posted, $row['date_posted']);
-                array_push($time_posted, $row['time_posted']);
-                array_push($ids, $row['id']);
-            }
-        }
-    }
-
     function fetchBuyOrders($user_username, &$artist_usernames, &$quantities_requested, &$siliqas_requested, &$date_posted, &$time_posted, &$buy_order_ids)
     {
         $conn = connect();

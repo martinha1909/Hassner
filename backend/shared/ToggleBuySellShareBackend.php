@@ -1,5 +1,8 @@
 <?php
-    session_start();
+    $_SESSION['dependencies'] = "BACKEND";
+    include '../control/Dependencies.php';
+    include '../constants/AccountTypes.php';
+
     $buy_or_sell = $_POST['buy_sell'];
     if($buy_or_sell == "-Sell your shares")
     {
@@ -34,5 +37,15 @@
             $_SESSION['buy_sell'] = 0;
         }
     }
-    header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+
+    $_SESSION['dependencies'] = "FRONTEND";
+
+    if($_SESSION['account_type'] == AccountType::User)
+    {
+        header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+    }
+    else if($_SESSION['account_type'] == AccountType::Artist)
+    {
+        returnToMainPage();
+    }
 ?>

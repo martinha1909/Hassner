@@ -50,4 +50,44 @@
         }
          
     }
+
+    function artistRepurchaseShares($artist_username)
+    {
+        $conn = connect();
+        $res = searchArtistRepurchaseShares($conn, $artist_username);
+        $ret = $res->fetch_assoc();
+
+        return $ret['shares_repurchase'];
+    }
+
+    function artistShareSelling($artist_username)
+    {
+        $conn = connect();
+        $shares_selling = 0;
+
+        $res = searchSellOrderByArtistAndUser($conn, $artist_username, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            $shares_selling += $row['no_of_share'];
+        }
+
+        return $shares_selling;
+    }
+
+    function artistCanCreateSellOrder($artist_username)
+    {
+        $ret = false;
+
+        if(artistRepurchaseShares($artist_username) > 0)
+        {
+            
+
+            if(artistShareSelling($artist_username) < artistRepurchaseShares($artist_username))
+            {
+                $ret = true;
+            }
+        }
+
+        return $ret;
+    }
 ?>

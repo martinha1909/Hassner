@@ -173,6 +173,17 @@
             return $result;
         }
 
+        function searchArtistRepurchaseShares($conn, $artist_username)
+        {
+            $sql = "SELECT shares_repurchase FROM account WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchInitialPriceWhenBought($conn, $user_username, $invested_artist)
         {
             $sql = "SELECT price_per_share_when_bought FROM buy_history WHERE user_username = ? AND artist_username = ?";
