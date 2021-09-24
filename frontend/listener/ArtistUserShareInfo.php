@@ -400,13 +400,34 @@
 
                     for($i = 0; $i < sizeof($sellers); $i++)
                     {
+                        // Timezone ignored and probably leap years and ever other time anomaly ever. 
+                        // This will be fixed when we use datetime throughout the project
+                        $combined_timestr = $date_purchase." ".$time_purchase;
+                        $dt_purchase = DateTime::createFromFormat("M j??, Y g:i", $combined_timestr); //Assume minute is 0 padded
+                        $diff = date_diff(new DateTime('NOW'), $dt_purchase, TRUE);
+                        
+                        if($diff->days < 7){
+                            if($diff->days > 1){
+                                $format_date_purchase = $diff->days." days ago";
+                                $format_time_purchase = $time_purchase[$i];
+                            }
+
+                            else {
+                                $format_time_purchase = $diff->h." hours ago";
+                                $format_date_purchase = "Just now"; // probably something better to put here
+                            }
+                        }
+                        else{
+                            $format_date_purchase = $date_purchase[$i];
+                            $format_time_purchase = $time_purchase[$i];
+                        }
                         echo '
                                     <tr>
                                         <td>'.$sellers[$i].'</td>
                                         <td>'.$prices[$i].'</td>
                                         <td>'.$quantities[$i].'</td>
-                                        <td>'.$date_purchase[$i].'</td>
-                                        <td>'.$time_purchase[$i].'</td>
+                                        <td>'.$format_date_purchase.'</td>
+                                        <td>'.$format_time_purchase.'</td>
                                     </tr>
                         ';
                     }
