@@ -238,7 +238,7 @@
                         </tbody>
                     </table>
                 ';
-        }
+            }
         }
         //If other users are selling shares, displays nothing
         else
@@ -811,6 +811,124 @@
             if($row['quantity'] <= 0)
             {
                 removeBuyOrder($conn, $row['id']);
+            }
+        }
+    }
+
+    function autoSell($user_username, $artist_username, $asked_price, $quantity)
+    {
+        $conn = connect();
+
+        $res = searchBuyOrdersByArtist($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            if($quantity <= 0)
+            {
+                break;
+            }
+
+            if($row['user_username'] == $user_username)
+            {
+                continue;
+            }
+
+            if($row['siliqas_requested'] == $asked_price)
+            {
+                //If the sell order is selling more shares than the posted buy order
+                if($quantity >= $row['quantity'])
+                {
+                    $current_date_time = getCurrentDate("America/Edmonton");
+                    $date_parser = dayAndTimeSplitter($current_date_time);
+
+                    $result = searchAccount($conn, $user_username);
+                    $account_info = $result->fetch_assoc();
+
+                    //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
+                    $seller_new_balance = $account_info['balance'] + ($row['quantity'] * $asked_price); 
+
+                    //subtracts siliqas from the user
+                    $buyer_new_balance = $_SESSION['user_balance'] - (($row['quantity'] * $asked_price)); 
+
+                    $seller_new_share_amount = $account_info['Shares'] - $row['quantity'];
+
+                    $res_1 = searchAccount($conn, $row['user_username']);
+                    $buyer_account_info = $res_1->fetch_assoc();
+                    $buyer_new_share_amount = $buyer_account_info['Shares'] + $row['quantity'];
+
+                    //In the case of buying in asked price, the new market price will become the last purchased price
+                    $new_pps = $asked_price;
+
+                    purchaseAskedPriceShare($conn, 
+                                            $row['user_username'],
+                                            $user_username,
+                                            $artist_username,
+                                            $buyer_new_balance, 
+                                            $seller_new_balance, 
+                                            $_SESSION['current_pps']['price_per_share'], 
+                                            $new_pps, 
+                                            $buyer_new_share_amount, 
+                                            $seller_new_share_amount,
+                                            $_SESSION['shares_owned'], 
+                                            $row['quantity'],
+                                            $row['siliqas_requested'],
+                                            $row['id'],
+                                            $date_parser[0],
+                                            $date_parser[1]);
+
+                    updateBuyOrderQuantity($conn, $row['id'], 0);
+
+                    //The return value should be the amount of share requested subtracted by the amount that 
+                    //is automatically bought
+                    $quantity = $quantity - $row['quantity'];
+                }
+                else if($quantity < $row['quantity'])
+                {
+                    $current_date_time = getCurrentDate("America/Edmonton");
+                    $date_parser = dayAndTimeSplitter($current_date_time);
+
+                    $result = searchAccount($conn, $user_username);
+                    $account_info = $result->fetch_assoc();
+
+                    //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
+                    $seller_new_balance = $account_info['balance'] + ($quantity * $asked_price); 
+
+                    //subtracts siliqas from the user
+                    $buyer_new_balance = $_SESSION['user_balance'] - (($quantity * $asked_price)); 
+
+                    $seller_new_share_amount = $account_info['Shares'] - $quantity;
+
+                    $res_1 = searchAccount($conn, $row['user_username']);
+                    $buyer_account_info = $res_1->fetch_assoc();
+                    $buyer_new_share_amount = $buyer_account_info['Shares'] + $quantity;
+
+                    //In the case of buying in asked price, the new market price will become the last purchased price
+                    $new_pps = $asked_price;
+
+                    purchaseAskedPriceShare($conn, 
+                                            $row['user_username'],
+                                            $user_username,
+                                            $artist_username,
+                                            $buyer_new_balance, 
+                                            $seller_new_balance, 
+                                            $_SESSION['current_pps']['price_per_share'], 
+                                            $new_pps, 
+                                            $buyer_new_share_amount, 
+                                            $seller_new_share_amount,
+                                            $_SESSION['shares_owned'], 
+                                            $quantity,
+                                            $row['siliqas_requested'],
+                                            $row['id'],
+                                            $date_parser[0],
+                                            $date_parser[1]);
+
+                    $new_buy_order_quantity = $row['quantity'] - $quantity;
+
+                    updateBuyOrderQuantity($conn, $row['id'], $new_buy_order_quantity);
+
+                    //The return value should be the amount of share requested subtracted by the amount that 
+                    //is automatically bought
+                    $quantity = $quantity - $row['quantity'];
+                }
             }
         }
     }

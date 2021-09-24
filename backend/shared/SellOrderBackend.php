@@ -138,6 +138,8 @@
                     }
                 }
             }
+
+            autoSell($_SESSION['username'], $_SESSION['username'], $asked_price, $quantity);
         }
         $_SESSION['dependencies'] = "FRONTEND";
         returnToMainPage();
