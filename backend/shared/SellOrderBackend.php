@@ -49,10 +49,12 @@
             {
                 $_SESSION['logging_mode'] = LogModes::NON_EXIST;
 
+                $new_quantity = autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
+
                 $_SESSION['status'] = postSellOrder($conn, 
                                                     $_SESSION['username'], 
                                                     $_SESSION['selected_artist'], 
-                                                    $quantity, 
+                                                    $new_quantity, 
                                                     $asked_price, 
                                                     $date_parser[0], 
                                                     $date_parser[1]);
@@ -69,19 +71,18 @@
                     if($row['selling_price'] == $asked_price)
                     {
                         $quantity += $row['no_of_share'];
+                        $new_quantity = autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
                         $_SESSION['status'] = adjustExistedAskedPriceQuantity($conn, 
                                                                             $_SESSION['username'], 
                                                                             $_SESSION['selected_artist'], 
                                                                             $asked_price, 
-                                                                            $quantity, 
+                                                                            $new_quantity, 
                                                                             $date_parser[0], 
                                                                             $date_parser[1]);
                         break;
                     }
                 }
             }
-
-            autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
 
             refreshUserArtistShareTable();
             refreshSellOrderTable();

@@ -929,5 +929,7 @@
                 }
             }
         }
+
+        return $quantity;
     }
 ?>
