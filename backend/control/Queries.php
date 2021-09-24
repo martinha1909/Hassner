@@ -1093,6 +1093,9 @@
                 $query = "UPDATE account SET Market_cap = 0 WHERE username='$username'";
                 $conn->query($query);
 
+                $query = "UPDATE account SET shares_repurchase = 0 WHERE username='$username'";
+                $conn->query($query);
+
                 deleteShareTables($conn, $account_type, $username);
                 deleteInjectionHistory($conn, $username);
             }
