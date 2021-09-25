@@ -239,7 +239,7 @@ $_SESSION['user_balance'] = $account['balance'];
                             $all_shares_bought = array();
                             $all_artists = array();
                             if ($my_investments->num_rows == 0) {
-                                echo '<h3> No results </h3>';
+                                echo '<h3 class="h3-blue"> No results </h3>';
                             } else {
                                 $artist_name = "";
                                 $rate = 0;
@@ -442,7 +442,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                     <section id="login">
                                         <div class="container">
                                             <div class="col-4 mx-auto my-auto text-center">
-                                                <h3 class="h3-tan py-4">Verify your password to access personal page</h3>
+                                                <h3 class="h3-blue py-4">Verify your password to access personal page</h3>
                                                 <form action="../../backend/listener/PersonalPageBackend.php" method="post">
                                                     <div class="form-group">
                                                         <h5>Password</h5>

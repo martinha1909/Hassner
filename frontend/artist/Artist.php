@@ -147,7 +147,7 @@ $_SESSION['user_balance'] = $account_info['balance'];
                     //Artist's portfolio
                     else if ($_SESSION['display'] == "ETHOS" || $_SESSION['display'] == 0) {
                         if ($account_info['Share_Distributed'] == 0) {
-                            echo '<h3>Get started by distributing share in the account tab</h3>';
+                            echo '<h3 class="h3-blue col-6 mx-auto py-6 text-center">Get started by distributing share in the account tab</h3>';
                         } else {
                             $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
                             $market_cap = calculateMarketCap($_SESSION['username']);
@@ -201,7 +201,7 @@ $_SESSION['user_balance'] = $account_info['balance'];
                                 <div class="container">
                                     <div">
                                         <div class="col-4 mx-auto my-auto text-center">
-                                            <h3 class="h3-tan py-4">Verify your password to access personal page</h3>
+                                            <h3 class="h3-blue py-4">Verify your password to access personal page</h3>
                                             <form action="../../backend/artist/PersonalPageBackend.php" method="post">
                                                 <div class="form-group">
                                                     <h5>Password</h5>
