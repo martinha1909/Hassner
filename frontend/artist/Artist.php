@@ -178,7 +178,41 @@
                         {
                             if($account_info['Share_Distributed'] == 0)
                             {
-                                echo '<h3>Get started by distributing share in the account tab</h3>';
+                                echo '
+                                        <form action="../../backend/artist/DistributeShareBackend.php" method="post">
+
+                                        <div class="form-group">
+                                            <h5>How much siliqas are you raising</h5>
+                                            <input name = "siliqas_raising" type="text" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <h5>How many shares are you distributing?</h5>
+                                            <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
+                                        </div>';
+                                
+                                if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
+                                {
+                                    if($_SESSION['status'] == "NUM_ERR")
+                                    {
+                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                    getStatusMessage("Please enter in number format", "");
+                                    }
+                                    else if($_SESSION['status'] == "EMPTY_ERR")
+                                    {
+                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                    getStatusMessage("Please fill out all fields", "");
+                                    }
+                                }
+
+                                echo '
+
+                                        <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
+                                        </div>
+
+                                        </form>
+                                    ';
                             }
                             else
                             {

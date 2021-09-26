@@ -26,103 +26,63 @@
   <main>
     <?php
       $account_info = getAccount($_SESSION['username']);
-      if($account_info['Share_Distributed'] == 0)
-      {
-          echo '
-                <form action="../../backend/artist/DistributeShareBackend.php" method="post">
-
-                  <div class="form-group">
-                    <h5>How much siliqas are you raising</h5>
-                    <input name = "siliqas_raising" type="text" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
-                  </div>
-
-                  <div class="form-group">
-                    <h5>How many shares are you distributing?</h5>
-                    <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
-                  </div>';
-          
-          if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
-          {
-            if($_SESSION['status'] == "NUM_ERR")
-            {
-              $_SESSION['status'] = StatusCodes::ErrGeneric;
-              getStatusMessage("Please enter in number format", "");
-            }
-            else if($_SESSION['status'] == "EMPTY_ERR")
-            {
-              $_SESSION['status'] = StatusCodes::ErrGeneric;
-              getStatusMessage("Please fill out all fields", "");
-            }
-          }
-
-          echo '
-
-                  <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                    <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
-                  </div>
-
-                </form>
-              ';
-      }
-      else
+      echo '
+            <section class="middle-card">
+              <div class="name">
+                  <h1>'.$_SESSION['username'].'</h1>
+              </div>
+            </section>
+          ';
+      echo '
+            <section class="middle-card">
+              <h1 id="h1-sm">Email Address</h1>
+              <p style="color: #ff9100">
+        ';
+      printUserImportantInfo($account_info['email']); 
+      echo '<a href="../../backend/shared/EditEmailBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
+      if($_SESSION['edit'] == 2)
       {
         echo '
-              <section class="middle-card">
-                <div class="name">
-                    <h1>'.$_SESSION['username'].'</h1>
-                </div>
-              </section>
-            ';
-        echo '
-              <section class="middle-card">
-                <h1 id="h1-sm">Email Address</h1>
-                <p style="color: #ff9100">
-          ';
-        printUserImportantInfo($account_info['email']); 
-        echo '<a href="../../backend/shared/EditEmailBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
-        if($_SESSION['edit'] == 2)
-        {
-          echo '
-              <form action="../../backend/shared/UpdateEmailBackend.php" method="post">
-                <div class="form-group">
-                  <input type="text" name = "email_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new email address">
-                </div>
-                <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                  <input type = "submit" class="my_btn edit-btn" role="button" aria-pressed="true" name = "button" value = "Save">  
-                </div>
-              </form>
-            ';
-        }
-        echo '
-              </section>
-              <section class="middle-card">
-              <h1 id="h1-sm">Country/Region</h1>
-              <p>Canada</p>
-              </section>
-              <section class="middle-card">
-              <h1 id="h1-sm">Username</h1>
-              <p>'.$_SESSION['username'].'</p>
-              </section>
-              <section class="middle-card">
-              <h1 id="h1-sm">Password</h1>
-              <p>
-          ';
-        printUserImportantInfo($account_info['password']); 
-        echo '<a href="../../backend/shared/EditPasswordBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
-        if($_SESSION['edit'] == 1)
-        {
-          echo '
-            <form action="../../backend/shared/UpdatePasswordBackend.php" method="post">
+            <form action="../../backend/shared/UpdateEmailBackend.php" method="post">
               <div class="form-group">
-                <input type="password" name = "pwd_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new password">
+                <input type="text" name = "email_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new email address">
               </div>
               <div class="col-md-8 col-12 mx-auto pt-5 text-center">
                 <input type = "submit" class="my_btn edit-btn" role="button" aria-pressed="true" name = "button" value = "Save">  
               </div>
             </form>
           ';
-        }
-        echo '</section>';
+      }
+      echo '
+            </section>
+            <section class="middle-card">
+            <h1 id="h1-sm">Country/Region</h1>
+            <p>Canada</p>
+            </section>
+            <section class="middle-card">
+            <h1 id="h1-sm">Username</h1>
+            <p>'.$_SESSION['username'].'</p>
+            </section>
+            <section class="middle-card">
+            <h1 id="h1-sm">Password</h1>
+            <p>
+        ';
+      printUserImportantInfo($account_info['password']); 
+      echo '<a href="../../backend/shared/EditPasswordBackend.php" id="icon-btn"><i class="fa fa-edit"></i></a>';
+      if($_SESSION['edit'] == 1)
+      {
+        echo '
+          <form action="../../backend/shared/UpdatePasswordBackend.php" method="post">
+            <div class="form-group">
+              <input type="password" name = "pwd_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new password">
+            </div>
+            <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+              <input type = "submit" class="my_btn edit-btn" role="button" aria-pressed="true" name = "button" value = "Save">  
+            </div>
+          </form>
+        ';
+      }
+      echo '</section>';
     ?>
     <section class="middle-card">
       <h1 id="h1-sm">Payment info</h1>
@@ -206,9 +166,6 @@
         echo '</section>';
       ?>
     </section>
-    <?php
-      }
-    ?>
 
   </main>
 <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
