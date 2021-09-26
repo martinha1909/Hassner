@@ -170,7 +170,12 @@
                         //Artist campaigns, including benchmark, raffle, and give aways.
                         if($_SESSION['display'] == "CAMPAIGN")
                         {  
-                        //nothing to do now as it's not part of vital functionality
+                            echo '
+                                    <div class="py-4 col-12 mx-auto my-auto text-center">
+                                        <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>
+                                    </div>
+                                    <h4>Your active campaigns</h4>
+                            ';
                         }
 
                         //Artist's portfolio
