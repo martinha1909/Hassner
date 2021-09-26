@@ -87,16 +87,23 @@
 
               <?php
                 $status = "";
-                if ($_SESSION['status'] == "USERNAME_ERR") {
+                if ($_SESSION['status'] == "USERNAME_ERR") 
+                {
                   $_SESSION['status'] = "ERROR";
                   $status = getStatusMessage("Username already taken", "");
-                } else if ($_SESSION['status'] == "SERVER_ERR") {
+                } 
+                else if ($_SESSION['status'] == "SERVER_ERR") 
+                {
                   $_SESSION['status'] = "ERROR";
                   $status = getStatusMessage("Server error, cannot create account", "");
-                } else if ($_SESSION['status'] == "EMPTY_ERR") {
+                } 
+                else if ($_SESSION['status'] == "EMPTY_ERR") 
+                {
                   $_SESSION['status'] = "ERROR";
                   $status = getStatusMessage("Please fill out all fields", "");
-                } else if ($_SESSION['status'] == "EMAIL_ERR") {
+                } 
+                else if ($_SESSION['status'] == "EMAIL_ERR") 
+                {
                   $_SESSION['status'] = "ERROR";
                   $status = getStatusMessage("Email already taken", "");
                 }
