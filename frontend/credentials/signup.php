@@ -86,20 +86,20 @@
               </div>
 
               <?php
-              $status = "";
-              if ($_SESSION['status'] == "USERNAME_ERR") {
-                $_SESSION['status'] = "ERROR";
-                $status = getStatusMessage("Username already taken", "");
-              } else if ($_SESSION['status'] == "SERVER_ERR") {
-                $_SESSION['status'] = "ERROR";
-                $status = getStatusMessage("Server error, cannot create account", "");
-              } else if ($_SESSION['status'] == "EMPTY_ERR") {
-                $_SESSION['status'] = "ERROR";
-                $status = getStatusMessage("Please fill out all fields", "");
-              } else if ($_SESSION['status'] == "EMAIL_ERR") {
-                $_SESSION['status'] = "ERROR";
-                $status = getStatusMessage("Email already taken", "");
-              }
+                $status = "";
+                if ($_SESSION['status'] == "USERNAME_ERR") {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Username already taken", "");
+                } else if ($_SESSION['status'] == "SERVER_ERR") {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Server error, cannot create account", "");
+                } else if ($_SESSION['status'] == "EMPTY_ERR") {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Please fill out all fields", "");
+                } else if ($_SESSION['status'] == "EMAIL_ERR") {
+                  $_SESSION['status'] = "ERROR";
+                  $status = getStatusMessage("Email already taken", "");
+                }
               ?>
 
               <!-- account type -->
@@ -113,69 +113,6 @@
                 <input type="radio" name="account_type" value="artist">
                 <label for="dewey">Artist</label>
               </div>
-
-              <!-- register button -->
-              <!-- TODO: register button functionality-->
-              <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" name="button" value="Register" onclick='window.location.reload();'>
-
-                <div class="form-group">
-                  <h5>Email Address</h5>
-                  <input type="text" name = "email" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter email address">
-                </div>
-
-                <div class="form-group">
-                  <h5>Username</h5>
-                  <input type="text" name = "username" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter username">
-                </div>
-
-                <!-- password field -->
-                <div class="form-group">
-                  <h5>Password</h5>
-                  <input type="password" name = "password" class="form-control" style="border-color: white;" id="exampleInputPassword1" placeholder="Password">
-                </div>
-
-                <?php
-                  $status = "";
-                  if($_SESSION['status'] == StatusCodes::ErrUsername)
-                  {
-                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                    $status = getStatusMessage("Username already taken", "");
-                  }
-                  else if($_SESSION['status'] == StatusCodes::ErrServer)
-                  {
-                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                    $status = getStatusMessage("Server error, cannot create account", "");
-                  }
-                  else if($_SESSION['status'] == StatusCodes::ErrEmpty)
-                  {
-                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                    $status = getStatusMessage("Please fill out all fields", "");
-                  }
-                  else if($_SESSION['status'] == StatusCodes::ErrEmailDuplicate)
-                  {
-                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                    $status = getStatusMessage("Email already taken", "");
-                  }
-                  else if($_SESSION['status'] == StatusCodes::ErrEmailFormat)
-                  {
-                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                    $status = getStatusMessage("Invalid email format", "");
-                  }
-
-                ?>
-
-                <!-- account type -->
-                <h6 style = "color: orange;">Account Type</h6>
-                <div>
-                  <input type="radio" name="account_type" value="user" checked>
-                  <label for="huey">Listener</label>
-                </div>
-
-                <div>
-                  <input type="radio" name="account_type" value="artist">
-                  <label for="dewey">Artist</label>
-                </div>
 
                 <!-- register button -->
                 <!-- TODO: register button functionality-->
