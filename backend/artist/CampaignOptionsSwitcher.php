@@ -1,4 +1,5 @@
 <?php
+    session_start();
     $campaign_option = $_POST['campaign_options'];
 
     if($campaign_option == "Experience")

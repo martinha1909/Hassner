@@ -55,15 +55,21 @@
                                                 <label for="dewey">Backstage</label>
                                             </div>
                                             <div>
+                                                <input type="radio" name="experience_options" value="other">
+                                                <label for="dewey"><input type="text" name = "custom" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Other"></label>
+                                            </div>
+                                            <div>
                                                 <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
                                             </div>
                                         </form>
                                     </div>
                                 ';
+    
+                                $_SESSION['campaign_option'] = 0;
                             }
                             else if($_SESSION['campaign_option'] = "OBJECT")
                             {
-
+                                $_SESSION['campaign_option'] = 0;
                             }
                         ?>
                 </div>
