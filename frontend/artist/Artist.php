@@ -65,13 +65,16 @@ $_SESSION['user_balance'] = $account_info['balance'];
             <div class="row">
                 <ul class="list-group bg-dark">
                     <?php
-                    if ($_SESSION['display'] == "ETHOS" || $_SESSION['display'] == 0) {
+                    if ($_SESSION['display'] == "ETHOS" || $_SESSION['display'] == 0) 
+                    {
                         echo '<li class="selected-no-hover list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                        echo '<input name="display_type" type="submit" id="menu-style" class="menu-text" value="❖ Ethos"';
-                        echo '</form>';
-                        echo '</li>';
-                    } else {
+                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
+                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="❖ Ethos"
+                                </form>
+                            </li>
+                        ';
+                    } 
+                    else {
                         echo '<li class="list-group-item-no-hover">
                               <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
                         echo '<input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Ethos">';
