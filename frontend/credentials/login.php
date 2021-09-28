@@ -46,7 +46,7 @@ hassnerInit();
 
           <!-- header -->
           <div class="col text-center">
-            <h1> Sign in to Hassner</h1>
+            <h1 class="h1-blue"> Sign in to Hassner</h1>
           </div>
 
           <!-- hyperlinks -->
