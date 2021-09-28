@@ -64,11 +64,23 @@
                                         </form>
                                     </div>
                                 ';
+
+                                for($i = 0; $i < sizeof($_SESSION['campaign_data']); $i++)
+                                {
+                                    echo $_SESSION['campaign_data'][$i];
+                                    echo "<br>";
+                                }
     
-                                $_SESSION['campaign_option'] = 0;
+                                // $_SESSION['campaign_option'] = 0;
                             }
                             else if($_SESSION['campaign_option'] = "OBJECT")
                             {
+                                array_push($_SESSION['campaign_data'], "object");
+                                for($i = 0; $i < sizeof($_SESSION['campaign_data']); $i++)
+                                {
+                                    echo $_SESSION['campaign_data'][$i];
+                                    echo "<br>";
+                                }
                                 $_SESSION['campaign_option'] = 0;
                             }
                         ?>

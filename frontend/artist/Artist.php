@@ -169,7 +169,14 @@
                     <?php
                         //Artist campaigns, including benchmark, raffle, and give aways.
                         if($_SESSION['display'] == "CAMPAIGN")
-                        {  
+                        {
+                            //The format of this array will have
+                            //First index: type of offering (experience, object, etc.)
+                            //Second index: specific offering
+                            //Third index: campaign duration
+                            //Fourth index: ethos amount
+                            //Fifth index: Raffle or benchmark
+                            $_SESSION['campaign_data'] = array();
                             echo '
                                     <div class="py-4 col-12 mx-auto my-auto text-center">
                                         <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>
