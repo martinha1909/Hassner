@@ -181,7 +181,7 @@
                                     <div class="py-4 col-12 mx-auto my-auto text-center">
                                         <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>
                                     </div>
-                                    <h4>Your active campaigns</h4>
+                                    <h4>Your other campaigns</h4>
                             ';
                         }
 
