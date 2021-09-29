@@ -27,63 +27,45 @@
                 </nav>
             </div>
         </section>
-        <div class="py-4 col-12 mx-auto my-auto text-center">
-            <h4>What are you offering?</h4>
-        </div>
         <section id="login" class="py-5";>
             <div class="container">
                 <div class="col-12 mx-auto my-auto text-center">
-                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            <form action="../../backend/artist/CampaignOptionsSwitcher.php" method="post">
-                                <input name = "campaign_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Experience"> 
-                                <input name = "campaign_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Object">
-                            </form>
-                        </div>
-                        <?php
-                            if($_SESSION['campaign_option'] == "EXPERIENCE")
-                            {
-                                echo '
-                                    <div class="col-md-8 col-12 mx-auto pt-5 text-center py-4">
-                                        <h6>Offer an Experience</h6>
-                                        <form action="../../backend/artist/CampaignExperienceSwitcher.php" method="post">
-                                            <div>
-                                                <input type="radio" name="experience_options" value="tickets" checked>
-                                                <label for="huey">Tickets</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name="experience_options" value="backstage">
-                                                <label for="dewey">Backstage</label>
-                                            </div>
-                                            <div>
-                                                <input type="radio" name="experience_options" value="other">
-                                                <label for="dewey"><input type="text" name = "custom" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Other"></label>
-                                            </div>
-                                            <div>
-                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
-                                            </div>
-                                        </form>
-                                    </div>
-                                ';
+                    <div class="col-md-8 col-12 mx-auto pt-5 text-center py-4">
+                        <h2>Offer</h2>
+                        <form action="../../backend/artist/CreateCampaignBackend.php" method="post">
+                            <div class="py-4">
+                                <h4>Experience</h4>
+                                <input type="radio" id="tickets" name="offer" value="tickets">
+                                <label for="tickets">Tickets</label><br>
+                                <input type="radio" id="backstage" name="offer" value="backstage">
+                                <label for="backstage">Backstage</label><br>
+                                <input type="radio" id="merchandise" name="offer" value="merchandise">
+                                <label for="merchandise">Merchandise</label><br>
+                                <input type="radio" id="instrument" name="offer" value="instrument">
+                                <label for="instrument">instrument</label><br>  
+                                <input type="radio" id="other" name="offer" value="other">
+                                <label for="other"><input type="text" name = "other_offering" class="form-control" placeholder="Other"></label><br><br>
+                            </div>
 
-                                for($i = 0; $i < sizeof($_SESSION['campaign_data']); $i++)
-                                {
-                                    echo $_SESSION['campaign_data'][$i];
-                                    echo "<br>";
-                                }
-    
-                                // $_SESSION['campaign_option'] = 0;
-                            }
-                            else if($_SESSION['campaign_option'] = "OBJECT")
-                            {
-                                array_push($_SESSION['campaign_data'], "object");
-                                for($i = 0; $i < sizeof($_SESSION['campaign_data']); $i++)
-                                {
-                                    echo $_SESSION['campaign_data'][$i];
-                                    echo "<br>";
-                                }
-                                $_SESSION['campaign_option'] = 0;
-                            }
-                        ?>
+                            <div class="py-4">
+                                <h4>Expires</h4>
+                                <input type="datetime-local" name="campaign_duration">
+                            </div>
+
+                            <div class="py-4">
+                                <h4>Minimum Ethos</h4>
+                                <input type="text" name = "minimum_ethos" class="form-control" placeholder="Ethos required to enter">
+                            </div>
+
+                            <div class="py-4">
+                                <input type="radio" id="raffle" name="raffle_or_benchmark" value="raffle">
+                                <label for="raffle">Raffle</label><br>
+                                <input type="radio" id="benchmark" name="raffle_or_benchmark" value="benchmark">
+                                <label for="benchmark">Benchmark</label><br>
+                            </div>
+                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" value = "Commence Campaign">  
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>

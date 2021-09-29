@@ -141,4 +141,9 @@
 
         return $ret;
     }
+
+    function datePickerParser($time)
+    {
+        return explode("T", $time);
+    }
 ?>
