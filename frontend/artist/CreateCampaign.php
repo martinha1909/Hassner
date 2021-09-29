@@ -1,5 +1,6 @@
 <?php
   include '../../backend/control/Dependencies.php';
+  include '../../backend/shared/CampaignHelpers.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,6 +32,21 @@
             <div class="container">
                 <div class="col-12 mx-auto my-auto text-center">
                     <div class="col-md-8 col-12 mx-auto pt-5 text-center py-4">
+                        <?php
+                            if($_SESSION['logging_mode'] == LogModes::CAMPAIGN)
+                            {
+                                if($_SESSION['status'] == StatusCodes::CampaignEmpty)
+                                {
+                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                    getStatusMessage("Please fill out all fields", "");
+                                }
+                                else if($_SESSION['status'] == StatusCodes::CampaignTimeErr)
+                                {
+                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                    getStatusMessage("Expiration date has to be in the future", "");
+                                }
+                            }
+                        ?>
                         <h2>Offer</h2>
                         <form action="../../backend/artist/CreateCampaignBackend.php" method="post">
                             <div class="py-4">

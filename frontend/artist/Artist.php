@@ -170,18 +170,25 @@
                         //Artist campaigns, including benchmark, raffle, and give aways.
                         if($_SESSION['display'] == "CAMPAIGN")
                         {
-                            //The format of this array will have
-                            //First index: type of offering (experience, object, etc.)
-                            //Second index: specific offering
-                            //Third index: campaign duration
-                            //Fourth index: ethos amount
-                            //Fifth index: Raffle or benchmark
-                            $_SESSION['campaign_data'] = array();
                             echo '
                                     <div class="py-4 col-12 mx-auto my-auto text-center">
                                         <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>
                                     </div>
                                     <h4>Your other campaigns</h4>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Offering</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time left</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Eligible Participants</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Type</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Released</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>';
+                            echo'
+                                        </tbody>
+                                    </table>
                             ';
                         }
 
