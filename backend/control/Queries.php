@@ -562,7 +562,7 @@
             $stmt->bind_param('sssidss', $buyer, $artist, $artist, $buyer_new_share_amount, $inital_pps, $date_purchased, $time_purchased);
             if($stmt->execute() == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
@@ -656,7 +656,7 @@
             $stmt->bind_param('sssidss', $buyer, $seller, $artist, $amount, $initial_pps, $date_purchased, $time_purchased);
             if($stmt->execute() == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
@@ -682,11 +682,11 @@
                     $sql = "UPDATE buy_history SET no_of_share_bought = no_of_share_bought - '$temp' WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
                     if($conn->query($sql) == TRUE)
                     {
-                        $status = "SUCCESS";
+                        $status = StatusCodes::Success;
                     }   
                     else
                     {
-                        $status = "ERROR";
+                        $status = StatusCodes::ErrGeneric;
                         return $status;
                     }
                     break;
@@ -696,11 +696,11 @@
                     $sql = "UPDATE buy_history SET no_of_share_bought = 0 WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
                     if($conn->query($sql) == TRUE)
                     {
-                        $status = "SUCCESS";
+                        $status = StatusCodes::Success;
                     }   
                     else
                     {
-                        $status = "ERROR";
+                        $status = StatusCodes::ErrGeneric;
                         return $status;
                     }
                     break;
@@ -710,11 +710,11 @@
                     $sql = "UPDATE buy_history SET no_of_share_bought = 0 WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
                     if($conn->query($sql) == TRUE)
                     {
-                        $status = "SUCCESS";
+                        $status = StatusCodes::Success;
                     }   
                     else
                     {
-                        $status = "ERROR";
+                        $status = StatusCodes::ErrGeneric;
                         return $status;
                     }
                     
@@ -827,11 +827,11 @@
                     $sql = "UPDATE buy_history SET no_of_share_bought = no_of_share_bought - '$temp' WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
                     if($conn->query($sql) == TRUE)
                     {
-                        $status = "SUCCESS";
+                        $status = StatusCodes::Success;
                     }   
                     else
                     {
-                        $status = "ERROR";
+                        $status = StatusCodes::ErrGeneric;
                         return $status;
                     }
                     break;
@@ -841,11 +841,11 @@
                     $sql = "UPDATE buy_history SET no_of_share_bought = 0 WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
                     if($conn->query($sql) == TRUE)
                     {
-                        $status = "SUCCESS";
+                        $status = StatusCodes::Success;
                     }   
                     else
                     {
-                        $status = "ERROR";
+                        $status = StatusCodes::ErrGeneric;
                         return $status;
                     }
                     break;
@@ -855,11 +855,11 @@
                     $sql = "UPDATE buy_history SET no_of_share_bought = 0 WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
                     if($conn->query($sql) == TRUE)
                     {
-                        $status = "SUCCESS";
+                        $status = StatusCodes::Success;
                     }   
                     else
                     {
-                        $status = "ERROR";
+                        $status = StatusCodes::ErrGeneric;
                         return $status;
                     }
                     
@@ -894,21 +894,21 @@
             $sql = "UPDATE sell_order SET no_of_share = '$new_quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }
 
             $sql = "UPDATE sell_order SET date_posted = '$new_date' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
             if($conn->query($sql) == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }
 
             $sql = "UPDATE sell_order SET time_posted = '$new_time' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
@@ -973,11 +973,11 @@
             $stmt->bind_param('issddss', $sell_order_id, $user_username, $artist_username, $asked_price, $quantity, $date_posted, $time_posted);
             if($stmt->execute() == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }
             return $status;
         }
@@ -999,11 +999,11 @@
             $stmt->bind_param('issidss', $buy_order_id, $user_username, $artist_username, $quantity, $request_price, $date_posted, $time_posted);
             if($stmt->execute() == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }
             return $status;
         }
