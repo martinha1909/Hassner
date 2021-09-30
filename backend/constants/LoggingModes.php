@@ -9,6 +9,7 @@ if(!defined('LOGMODES_LOADED')){
         const BUY_SHARE = "BUY_SHARE";
         const SELL_SILIQAS = "SELL_SILIQAS";
         const BUY_SILIQAS = "BUY_SILIQAS";
+        const CAMPAIGN = "CAMPAIGN";
         const NON_EXIST = "NON_EXIST";
         const EXIST = "EXIST";
     }
