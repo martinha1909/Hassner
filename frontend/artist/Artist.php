@@ -2,6 +2,7 @@
   include '../../backend/control/Dependencies.php';
   include '../../backend/artist/ArtistHelpers.php';
   include '../../backend/shared/MarketplaceHelpers.php';
+  include '../../backend/shared/CampaignHelpers.php';
 
   $_SESSION['selected_artist'] = $_SESSION['username'];
   $account_info = getArtistAccount($_SESSION['username'], "artist");
@@ -170,6 +171,17 @@
                         //Artist campaigns, including benchmark, raffle, and give aways.
                         if($_SESSION['display'] == "CAMPAIGN")
                         {
+                            $offerings = array();
+                            $time_left = array();
+                            $eligible_participants = array();
+                            $types = array();
+                            $time_releases = array();
+                            fetchCampaigns($_SESSION['username'], 
+                                           $offerings, 
+                                           $time_left, 
+                                           $eligible_participants, 
+                                           $types, 
+                                           $time_releases);
                             echo '
                                     <div class="py-4 col-12 mx-auto my-auto text-center">
                                         <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>

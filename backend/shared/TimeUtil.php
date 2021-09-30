@@ -220,4 +220,38 @@
 
         return $ret;
     }
+
+    function calculateTimeLeft($current_date, $current_time, $date_expires, $time_expires)
+    {
+        //Assuming error check
+        $ret = "Error in calculate time remaining";
+
+        //First index contains day
+        //Second index contains month
+        //Third index contains year
+        $day_rn = explode("-", $current_date);
+
+        //First index contains year
+        //Second index contains month
+        //Third index contains day
+        $day_exp = explode("-", $date_expires);
+
+        //First index contains hour
+        //Second index contains minute
+        //Third index contains second
+        $time_rn = explode(":", $current_time);
+
+        //First index contains hour
+        //Second index contains minute
+        $time_exp = explode(":", $time_expires);
+
+        if(!isInTheFuture($day_exp, $day_rn, $time_exp, $time_rn))
+        {
+            $ret = "Expired";
+        }
+        else
+        {
+            
+        }
+    }
 ?>

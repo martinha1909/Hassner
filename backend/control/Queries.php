@@ -217,6 +217,17 @@
             return $result;
         }
 
+        function searchArtistCampaigns($conn, $artist_username)
+        {
+            $sql = "SELECT * FROM campaign WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function getArtistShareHolders($conn, $artist_username)
         {
             $sql = "SELECT user_username FROM buy_history WHERE artist_username = ?";
