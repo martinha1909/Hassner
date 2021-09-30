@@ -1,13 +1,13 @@
 <?php
-    session_start();
-    include '../../backend/shared/Helper.php';
-    include '../../backend/shared/TimeUtil.php';
-    include '../../backend/constants/LoggingModes.php';
+session_start();
+include '../../backend/shared/Helper.php';
+include '../../backend/shared/TimeUtil.php';
+include '../../backend/constants/LoggingModes.php';
 
-    $_SESSION['logging_mode'] = LogModes::NONE;
-    $_SESSION['status'] =  0;
+$_SESSION['logging_mode'] = LogModes::NONE;
+$_SESSION['status'] =  0;
 
-    hassnerInit();
+hassnerInit();
 ?>
 
 <!doctype html>
@@ -59,7 +59,7 @@
         <div class="container">
             <div class="row vh-md-100">
                 <div class="col-md-8 col-sm-10 col-12 mx-auto my-auto text-center">
-                    <h1 class="h1-tan">Investing&nbspis music&nbspto&nbspour&nbspears</h1>
+                    <h1 class="h1-blue">Investing&nbspis music&nbspto&nbspour&nbspears</h1>
                     <h5 class="lead">Hassner is creating new opportunities for both listeners and artists. Sign&nbspup&nbspfor&nbspfree.</h5>
                     <a class="page-scroll" href="#signup">
                         <!--It loss the green background, but it scrolls to the bottom of the page now (or we can make it go to the signup page automatically)-->
@@ -146,7 +146,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <script src="../js/scripts.js"></script>
 </body>
 
 </html>

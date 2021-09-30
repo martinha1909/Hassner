@@ -146,6 +146,12 @@ select#dark {
   font-weight: 800;
 }
 
+.h1-blue {
+  font-size: 3rem;
+  color: #0a60d0;
+  font-weight: 800;
+}
+
 .h2-tan {
   font-size: 2.5rem;
   color: #e2cda9ff;
@@ -159,6 +165,11 @@ select#dark {
 .h3-tan {
   font-size: 1.5rem;
   color: #e2cda9ff;
+}
+
+.h3-blue {
+  font-size: 1.5rem;
+  color: #0a60d0;
 }
 
 .h4-tan {
