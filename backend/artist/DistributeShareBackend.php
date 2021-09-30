@@ -12,7 +12,7 @@
     $siliqas_raising = $_POST['siliqas_raising'];
 
     //For now the first time artists distribute their share will just have this comment to keep things consistent
-    $comment = "First IPO";
+    $comment = "IPO";
     $current_date = getCurrentDate("America/Edmonton");
     $date_parser = dayAndTimeSplitter($current_date);
 

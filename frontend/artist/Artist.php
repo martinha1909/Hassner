@@ -2,6 +2,7 @@
   include '../../backend/control/Dependencies.php';
   include '../../backend/artist/ArtistHelpers.php';
   include '../../backend/shared/MarketplaceHelpers.php';
+  include '../../backend/constants/ShareInteraction.php';
 
   $_SESSION['selected_artist'] = $_SESSION['username'];
   $account_info = getArtistAccount($_SESSION['username'], "artist");
@@ -178,7 +179,41 @@
                         {
                             if($account_info['Share_Distributed'] == 0)
                             {
-                                echo '<h3>Get started by distributing share in the account tab</h3>';
+                                echo '
+                                        <form action="../../backend/artist/DistributeShareBackend.php" method="post">
+
+                                        <div class="form-group">
+                                            <h5>How much siliqas are you raising</h5>
+                                            <input name = "siliqas_raising" type="text" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <h5>How many shares are you distributing?</h5>
+                                            <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
+                                        </div>';
+                                
+                                if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
+                                {
+                                    if($_SESSION['status'] == "NUM_ERR")
+                                    {
+                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                    getStatusMessage("Please enter in number format", "");
+                                    }
+                                    else if($_SESSION['status'] == "EMPTY_ERR")
+                                    {
+                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                    getStatusMessage("Please fill out all fields", "");
+                                    }
+                                }
+
+                                echo '
+
+                                        <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
+                                        </div>
+
+                                        </form>
+                                    ';
                             }
                             else
                             {
@@ -211,9 +246,41 @@
                                         <h6>Market cap (q̶): '.$market_cap.'</h6>
                                         <h6>Day High (q̶): '.$high.'</h6>
                                         <h6>Day Low (q̶): '.$low.'</h6>
-                                        <br>
+                                        <br>';
+                                if(artistCanCreateSellOrder($_SESSION['username']))
+                                {
+                                    echo '
+                                            <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
+                                                <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
+                                            </form>
+                                    ';
+                                }
+                                echo '
                                         <h2>Buy Back Shares</h2>
                                 ';
+
+                                if($_SESSION['buy_sell'] == ShareInteraction::SELL)
+                                {
+                                    $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
+                                    echo '
+                                        <h6>How many shares are you selling?</h6>
+                                        <div class="wrapper-searchbar">
+                                            <div class="container-searchbar mx-auto">
+                                                <label>
+                                                    <form action="../../backend/shared/SellOrderBackend.php" method="post">
+                                                        <input name = "purchase_quantity" type="range" min="1" max='.$max.' value="1" class="slider" id="myRange">
+                                                        <p>Quantity: <span id="demo"></span></p>
+                                                        <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
+                                                        <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
+                                                    </form>
+                                                </label> 
+                                            </div>
+                                        </div>
+                                    ';
+                                    $_SESSION['buy_sell'] = 0;
+                                }
+
+                                sellOrderInit();
 
                                 askedPriceInit();
                                 echo '
