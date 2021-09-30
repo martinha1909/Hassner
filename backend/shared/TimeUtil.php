@@ -251,7 +251,54 @@
         }
         else
         {
-            
+            $year_remaining = $day_exp[0] - ($day_rn[2] + 2000);
+            $month_remaining = $day_exp[1] - $day_rn[1];
+            $day_remaining = $day_exp[2] - $day_rn[0];
+            // if()
+            // //same year
+            // if($day_exp[0] == ($day_rn[2] + 2000))
+            // {
+
+            // }
+            // //year is in the future
+            // else if($day_exp[0] > ($day_rn[2] + 2000))
+            // {
+            //     //a month less than current month but belongs to a year in the future
+            //     if($day_exp[1] < $day_rn[1])
+            //     {
+
+            //     }
+            //     //a month higher than current month and belongs to a year in the future
+            //     else if($day_exp[1] > $day_rn[1])
+            //     {
+            //         $year_remaining = $day_exp[0] - ($day_rn[2] + 2000);
+            //         $month_remaining = $day_exp[1] - $day_rn[1];
+            //         if($year_remaining == 1)
+            //         {
+            //             if($month_remaining == 1)
+            //             {
+            //                 $ret = $year_remaining ." year and ". $month_remaining ." month left";
+            //             }
+            //             else
+            //             {
+            //                 $ret = $year_remaining ." year and ". $month_remaining ." months left";
+            //             }
+            //         }
+            //         else
+            //         {
+            //             if($month_remaining == 1)
+            //             {
+            //                 $ret = $year_remaining ." years and ". $month_remaining ." month left";
+            //             }
+            //             else
+            //             {
+            //                 $ret = $year_remaining ." years and ". $month_remaining ." months left";
+            //             }
+            //         }
+            //     }
+            // }
         }
+
+        return $ret;
     }
 ?>

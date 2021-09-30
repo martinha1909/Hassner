@@ -14,12 +14,12 @@
                                                     $row['date_expires'], 
                                                     $row['time_expires']);
 
-            // $eligible_participant = calculateEligibleParticipants($artist_username, $row['id']);
+            $eligible_participant = calculateEligibleParticipants($artist_username, $row['id']);
             $time_released = dateParser($row['date_posted'])." at ".timeParser($row['time_posted']);
 
             array_push($offerings, $row['offering']);
             array_push($time_left, $campaign_time_left);
-            // array_push($eligible_participants, $eligible_participant);
+            array_push($eligible_participants, $eligible_participant);
             array_push($types, $row['type']);
             array_push($time_releases, $time_released);
         }
