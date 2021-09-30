@@ -30,6 +30,7 @@
         //third index contains day
         $exp_day = explode("-", $expiration_date[0]);
         $exp_time = explode(":", $expiration_date[1]);
+
         //First index contains date
         //Second index contains time
         $release_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
@@ -39,57 +40,42 @@
         $release_day = explode("-", $release_date[0]);
         $release_time = explode(":", $release_date[1]);
 
-        //if the year is in the past, we give an error
-        if($exp_day[0] < ($release_day[2] + 2000))
+        if(isInTheFuture($exp_day, $release_day, $exp_time, $release_time))
+        {
+            if($offer == "other")
+            {
+                $other_offer = $_POST['other_offering'];
+                postCampaign($conn, 
+                             $_SESSION['username'], 
+                             $other_offer, 
+                             $release_date[0], 
+                             $release_date[1], 
+                             $expiration_date[0], 
+                             $expiration_date[1],
+                             $type,
+                             $minimum_ethos);
+            }
+            else
+            {
+                postCampaign($conn, 
+                             $_SESSION['username'], 
+                             $offer, 
+                             $release_date[0], 
+                             $release_date[1], 
+                             $expiration_date[0], 
+                             $expiration_date[1],
+                             $type,
+                             $minimum_ethos);
+            }
+
+            $_SESSION['dependencies'] = "FRONTEND";
+            returnToMainPage();
+        }
+        else
         {
             $_SESSION['status'] = StatusCodes::CampaignTimeErr;
             $_SESSION['dependencies'] = "FRONTEND";
             header("Location: ../../frontend/artist/CreateCampaign.php");
-        }
-        //If the year is the same as the current year, we check the month
-        else if($exp_day[0] == ($release_day[2] + 2000))
-        {
-            if($exp_day[1] < $release_day[1])
-            {
-                $_SESSION['status'] = StatusCodes::CampaignTimeErr;
-                $_SESSION['dependencies'] = "FRONTEND";
-                header("Location: ../../frontend/artist/CreateCampaign.php");
-            }
-        }
-        else
-        {
-            echo $exp_day[0];
-            echo "<br>";
-            echo $release_day[2]+ 2000;
-
-            // if($offer == "other")
-            // {
-            //     $other_offer = $_POST['other_offering'];
-            //     postCampaign($conn, 
-            //                  $_SESSION['username'], 
-            //                  $other_offer, 
-            //                  $release_date[0], 
-            //                  $release_date[1], 
-            //                  $expiration_date[0], 
-            //                  $expiration_date[1],
-            //                  $type,
-            //                  $minimum_ethos);
-            // }
-            // else
-            // {
-            //     postCampaign($conn, 
-            //                  $_SESSION['username'], 
-            //                  $offer, 
-            //                  $release_date[0], 
-            //                  $release_date[1], 
-            //                  $expiration_date[0], 
-            //                  $expiration_date[1],
-            //                  $type,
-            //                  $minimum_ethos);
-            // }
-
-            $_SESSION['dependencies'] = "FRONTEND";
-            // returnToMainPage();
         }
     }
 ?>
