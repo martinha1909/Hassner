@@ -6,9 +6,9 @@
     $buy_or_sell = $_POST['buy_sell'];
     if($buy_or_sell == "-Sell your shares")
     {
-        if($_SESSION['buy_sell'] != "SELL")
+        if($_SESSION['buy_sell'] != ShareInteraction::SELL)
         {
-            $_SESSION['buy_sell'] = "SELL";
+            $_SESSION['buy_sell'] = ShareInteraction::SELL;
         }
         else
         {
@@ -17,9 +17,9 @@
     }
     else if($buy_or_sell == "+Buy shares")
     {
-        if($_SESSION['buy_sell'] != "BUY")
+        if($_SESSION['buy_sell'] != ShareInteraction::BUY)
         {
-            $_SESSION['buy_sell'] = "BUY";
+            $_SESSION['buy_sell'] = ShareInteraction::BUY;
         }
         else
         {

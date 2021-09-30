@@ -2,6 +2,7 @@
   include '../../backend/control/Dependencies.php';
   include '../../backend/artist/ArtistHelpers.php';
   include '../../backend/shared/MarketplaceHelpers.php';
+  include '../../backend/constants/ShareInteraction.php';
 
   $_SESSION['selected_artist'] = $_SESSION['username'];
   $account_info = getArtistAccount($_SESSION['username'], "artist");
@@ -224,7 +225,7 @@
                                         <h2>Buy Back Shares</h2>
                                 ';
 
-                                if($_SESSION['buy_sell'] == "SELL")
+                                if($_SESSION['buy_sell'] == ShareInteraction::SELL)
                                 {
                                     $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
                                     echo '

@@ -192,7 +192,7 @@
                         ';
                     }
                     //displaying sell shares button if user chooses the options
-                    if($_SESSION['buy_sell'] == "SELL")
+                    if($_SESSION['buy_sell'] == ShareInteraction::SELL)
                     {
                         $max = $_SESSION['shares_owned'] - getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']);
                         echo '
@@ -243,7 +243,7 @@
         <div class="row vh-md-100 align-items-start">
             <div class="mx-auto my-auto text-center col">
                 <?php
-                    if($_SESSION['buy_sell'] == "BUY" && $_SESSION['buy_options'] == 0)
+                    if($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == 0)
                     {
                         echo '
                                 <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
@@ -254,7 +254,7 @@
                                 </div>
                         ';
                     }
-                    else if($_SESSION['buy_sell'] == "BUY" && $_SESSION['buy_options'] == "BID")
+                    else if($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "BID")
                     {
                         echo '
                                 <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
@@ -266,7 +266,7 @@
                         ';
                         askedPriceInit();
                     }
-                    else if($_SESSION['buy_sell'] == "BUY" && $_SESSION['buy_options'] == "MARKET")
+                    else if($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "MARKET")
                     {
                         echo '
                                 <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
