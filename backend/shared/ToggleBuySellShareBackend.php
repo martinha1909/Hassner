@@ -2,6 +2,7 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
     include '../constants/AccountTypes.php';
+    include '../constants/ShareInteraction.php';
 
     $buy_or_sell = $_POST['buy_sell'];
     if($buy_or_sell == "-Sell your shares")
@@ -48,4 +49,3 @@
     {
         returnToMainPage();
     }
-?>
