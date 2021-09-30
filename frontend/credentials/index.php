@@ -88,7 +88,7 @@ hassnerInit();
                                     <span data-feather="activity" width="35" height="35"></span>
                                 </div>
                             </div>
-                            <h5>Investors</h5>
+                            <h5 class="h5-dark">Investors</h5>
                             <p class="text-dark">Support your favourite artists and make returns!</p>
                         </div>
                         <div class="col-md-6 box">
@@ -97,7 +97,7 @@ hassnerInit();
                                     <span data-feather="bar-chart-2" width="35" height="35"></span>
                                 </div>
                             </div>
-                            <h5>Artists</h5>
+                            <h5 class="h5-dark">Artists</h5>
                             <p class="text-dark">See your growth and funding!</p>
                         </div>
                     </div>
