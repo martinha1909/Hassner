@@ -66,73 +66,93 @@ $_SESSION['user_balance'] = $account_info['balance'];
                 <ul class="list-group bg-dark">
                     <?php
                     if ($_SESSION['display'] == "ETHOS" || $_SESSION['display'] == 0) {
-                        echo '<li class="selected-no-hover list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                        echo '<input name="display_type" type="submit" id="menu-style" class="menu-text" value="❖ Ethos"';
-                        echo '</form>';
-                        echo '</li>';
+                        echo '
+                            <li class="selected-no-hover list-group-item-no-hover">
+                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
+                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="❖ Ethos"
+                                </form>
+                            </li>
+                        ';
                     } else {
-                        echo '<li class="list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                        echo '<input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Ethos">';
-                        echo '</form>';
-                        echo '</li>';
+                        echo '
+                            <li class="list-group-item-no-hover">
+                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
+                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Ethos">
+                                </form>
+                            </li>
+                        ';
                     }
 
                     if ($_SESSION['display'] == "CAMPAIGN") {
-                        echo '<li class="selected-no-hover list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                        echo '<input name="display_type" type="submit" id="menu-style" class="menu-text" value="◔ Campaign">';
-                        echo '</form>';
-                        echo '</li>';
+                        echo '
+                            <li class="selected-no-hover list-group-item-no-hover">
+                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
+                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◔ Campaign">
+                                </form>
+                            </li>
+                        ';
                     } else {
-                        echo '<li class="list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                        echo '<input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Campaign">';
-                        echo '</form>';
-                        echo '</li>';
+                        echo '
+                            <li class="list-group-item-no-hover">
+                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
+                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Campaign">
+                                </form>
+                            </li>
+                        ';
                     }
 
                     if ($_SESSION['display'] == "SILIQAS") {
-                        echo '<li class="selected-no-hover list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                        echo '<input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Siliqas">';
-                        echo '</form>';
-                        echo '</li>';
+                        echo '
+                            <li class="selected-no-hover list-group-item-no-hover">
+                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
+                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Siliqas">
+                                </form>
+                            </li>
+                        ';
                     } else {
-                        echo '<li class="list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                        echo '<input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Siliqas">';
-                        echo '</form>';
-                        echo '</li>';
+                        echo '
+                            <li class="list-group-item-no-hover">
+                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
+                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Siliqas">
+                                </form>
+                            </li>
+                        ';
                     }
 
                     if ($_SESSION['display'] == "ARTISTS") {
-                        echo '<li class="selected-no-hover list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                        echo '<input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Artists">';
-                        echo '</form>';
-                        echo '</li>';
+                        echo '
+                            <li class="selected-no-hover list-group-item-no-hover">
+                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
+                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Artists">
+                                </form>
+                            </li>
+                        ';
                     } else {
-                        echo '<li class="list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                        echo '<input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Artists">';
-                        echo '</form>';
-                        echo '</li>';
+                        echo '
+                            <li class="list-group-item-no-hover">
+                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
+                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Artists">
+                                </form>
+                            </li>
+                        ';
                     }
 
                     if ($_SESSION['display'] == "ACCOUNT") {
-                        echo '<li class="selected-no-hover list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                        echo '<input name="display_type" type="submit" id="menu-style" class="menu-text" value="▤ Account">';
-                        echo '</form>';
-                        echo '</li>';
+                        echo '
+                            <li class="selected-no-hover list-group-item-no-hover">
+                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
+                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="▤ Account">
+                                </form>
+                            </li>
+                        ';
                     } else {
-                        echo '<li class="list-group-item-no-hover">
-                              <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">';
-                        echo '<input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Account">';
-                        echo '</form>';
-                        echo '</li>';
+                        echo '
+                            <li class="list-group-item-no-hover">
+                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
+                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Account">
+                                </form>
+                            </li>
+                        ';
                     }
                     ?>
                 </ul>
