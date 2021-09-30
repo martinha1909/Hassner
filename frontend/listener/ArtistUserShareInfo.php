@@ -146,7 +146,7 @@
                                 }
                             }
                             echo '
-                                <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
+                                <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
                                     <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
                                 </form>
                             ';
@@ -183,16 +183,16 @@
                                                                    $_SESSION['selected_artist'])))
                     {
                         echo '
-                            <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
+                            <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
                                 <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="+Buy shares">
                             </form>
-                            <form action="../../backend/listener/ToggleBuySellShareBackend.php" method="post">
+                            <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
                                 <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="+Create buy order">
                             </form>
                         ';
                     }
                     //displaying sell shares button if user chooses the options
-                    if($_SESSION['buy_sell'] == "SELL")
+                    if($_SESSION['buy_sell'] == ShareInteraction::SELL)
                     {
                         $max = $_SESSION['shares_owned'] - getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']);
                         echo '
@@ -200,7 +200,7 @@
                             <div class="wrapper-searchbar">
                                 <div class="container-searchbar mx-auto">
                                     <label>
-                                        <form action="../../backend/listener/SellOrderBackend.php" method="post">
+                                        <form action="../../backend/shared/SellOrderBackend.php" method="post">
                                             <input name = "purchase_quantity" type="range" min="1" max='.$max.' value="1" class="slider" id="myRange">
                                             <p>Quantity: <span id="demo"></span></p>
                                             <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
@@ -243,7 +243,7 @@
         <div class="row vh-md-100 align-items-start">
             <div class="mx-auto my-auto text-center col">
                 <?php
-                    if($_SESSION['buy_sell'] == "BUY" && $_SESSION['buy_options'] == 0)
+                    if($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == 0)
                     {
                         echo '
                                 <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
@@ -254,7 +254,7 @@
                                 </div>
                         ';
                     }
-                    else if($_SESSION['buy_sell'] == "BUY" && $_SESSION['buy_options'] == "BID")
+                    else if($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "BID")
                     {
                         echo '
                                 <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
@@ -266,7 +266,7 @@
                         ';
                         askedPriceInit();
                     }
-                    else if($_SESSION['buy_sell'] == "BUY" && $_SESSION['buy_options'] == "MARKET")
+                    else if($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "MARKET")
                     {
                         echo '
                                 <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
