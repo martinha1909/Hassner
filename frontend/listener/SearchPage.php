@@ -28,7 +28,7 @@ include '../../backend/listener/SearchArtistHelpers.php';
         <div class="container-xxl">
             <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
 
-                <a id="href-hover" class="navbar-brand heading-black" href="../../frontend/listener/listener.php" onclick=redirectToListener();>
+                <a class="navbar-brand heading-black" href="../../frontend/listener/listener.php" onclick=redirectToListener();>
                     HASSNER
                 </a>
 
