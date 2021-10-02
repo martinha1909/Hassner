@@ -243,10 +243,10 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
                                     </div>
                             ';
                         echo '
-                            <div class="py-4 center-text">
-                                <h3 class="h3-blue py-5">Market Price</h3>
-                            </div>
-                        ';
+                                <div class="py-4 center-text">
+                                    <h3 class="h3-blue py-5">Market Price</h3>
+                                </div>
+                            ';
 
                         //If the amount of artist shares has not sold out or the artist has distributed some shares, makes Buy option available 
                         if ($_SESSION['available_shares'] > 0) {
