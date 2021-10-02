@@ -157,6 +157,12 @@ select#dark {
   color: #e2cda9ff;
 }
 
+.h2-blue {
+  font-size: 2.5rem;
+  color: #0a60d0;
+  font-weight: 800;
+}
+
 .h2-dark {
   font-size: 2.5rem;
   color: #11171a;
