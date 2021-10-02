@@ -112,7 +112,7 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
                         </tbody>
                     </table>
                 </div>
-                <div class="mx-auto my-auto text-center col-4">
+                <div class="mx-auto my-auto text-center col-5">
                     <?php
                     //Sell shares button is only available if you own some shares
                     if ($_SESSION['shares_owned'] > 0) {
@@ -158,10 +158,10 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
                     )) {
                         echo '
                             <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
-                                <input name="buy_sell" type="submit" id="menu-style-invert" class="menu-text" value="+Buy shares">
+                                <input name="buy_sell" type="submit" id="menu-style-invert" class="menu-text py-2" value="+Buy shares">
                             </form>
                             <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
-                                <input name="buy_sell" type="submit" id="menu-style-invert" class="menu-text" value="+Create buy order">
+                                <input name="buy_sell" type="submit" id="menu-style-invert" class="menu-text py-2" value="+Create buy order">
                             </form>
                         ';
                     }
@@ -170,13 +170,13 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
                         $max = $_SESSION['shares_owned'] - getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']);
                         echo '
                             <h6>How many shares are you selling?</h6>
-                            <div class="wrapper-searchbar">
+                            <div class="wrapper-searchbar py-2">
                                 <div class="container-searchbar mx-auto">
                                     <label>
                                         <form action="../../backend/shared/SellOrderBackend.php" method="post">
                                             <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
                                             <p>Quantity: <span id="demo"></span></p>
-                                            <input type="text" name="asked_price" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
+                                            <input type="text" name="asked_price" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter # in Siliqas">
                                             <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
                                         </form>
                                     </label> 
@@ -188,13 +188,13 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
                         //Users can still request a buy order up to the max total of share distributed
                         echo '
                             <h6>How many shares are you buying?</h6>
-                            <div class="wrapper-searchbar">
+                            <div class="wrapper-searchbar py-2">
                                 <div class="container-searchbar mx-auto">
                                     <label>
                                         <form action="../../backend/listener/BuyOrderBackend.php" method="post">
                                             <input name = "request_quantity" type="range" min="1" max=' . totalShareDistributed($_SESSION['selected_artist']) - getAmountSharesRequesting($_SESSION['username'], $_SESSION['selected_artist']) . ' value="1" class="slider" id="myRange">
                                             <p>Quantity: <span id="demo"></span></p>
-                                            <input type="text" name="request_price" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
+                                            <input type="text" name="request_price" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter # in Siliqas">
                                             <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
                                         </form>
                                     </label> 
@@ -212,41 +212,41 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
     <section class="vh-md-100" id="Marketplace">
         <div class="container-fluid">
             <div class="row vh-md-100 align-items-start">
-                <div class="mx-auto my-auto text-center col">
+                <div class="my-auto text-center col">
                     <?php
                     if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == 0) {
                         echo '
-                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                    <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method = "post">
-                                        <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();"> 
-                                        <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
-                                    </form>
-                                </div>
-                        ';
+                                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                        <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method = "post">
+                                            <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();"> 
+                                            <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
+                                        </form>
+                                    </div>
+                            ';
                     } else if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "BID") {
                         echo '
-                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                    <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method = "post">
-                                        <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();"> 
-                                        <input name = "buy_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
-                                    </form>
-                                </div>
-                        ';
+                                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                        <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method = "post">
+                                            <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();"> 
+                                            <input name = "buy_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
+                                        </form>
+                                    </div>
+                            ';
                         askedPriceInit();
                     } else if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "MARKET") {
                         echo '
-                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                    <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method="post"> 
-                                        <input name = "buy_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();">
-                                        <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
-                                    </form>
-                                </div>
-                        ';
+                                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                        <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method="post"> 
+                                            <input name = "buy_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();">
+                                            <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
+                                        </form>
+                                    </div>
+                            ';
                         echo '
-                            <div class="py-4 center-text">
-                                <h3 class="h3-blue py-5">Market Price</h3>
-                            </div>
-                        ';
+                                <div class="py-4 center-text">
+                                    <h3 class="h3-blue py-5">Market Price</h3>
+                                </div>
+                            ';
 
                         //If the amount of artist shares has not sold out or the artist has distributed some shares, makes Buy option available 
                         if ($_SESSION['available_shares'] > 0) {

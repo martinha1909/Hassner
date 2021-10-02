@@ -109,7 +109,7 @@ function askedPriceInit()
     //to match with asked_price indices
     fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $_SESSION['selected_artist']);
     echo '
-            <div class="py-4 text-left">
+            <div>
                 <h3 class="h3-blue py-5 text-center">Bid Price</h3>
             </div>
         ';
