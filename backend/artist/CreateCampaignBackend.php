@@ -23,7 +23,6 @@
     }
     else
     {
-        $eligible_participants = calculateEligibleParticipants($_SESSION['username'], $minimum_ethos);
         //First index contains date
         //Second index contains time
         $expiration_date = datePickerParser($_POST['campaign_duration']);

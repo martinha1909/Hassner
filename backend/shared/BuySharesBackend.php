@@ -98,7 +98,7 @@
             {
                 $_SESSION['status'] = purchaseAskedPriceShare($conn, 
                                                               $_SESSION['username'], 
-                                                              $account_info['user_username'], 
+                                                              $account_info['username'], 
                                                               $_SESSION['selected_artist'],
                                                               $buyer_new_balance, 
                                                               $seller_new_balance, 
