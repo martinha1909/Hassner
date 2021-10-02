@@ -161,9 +161,13 @@ select#dark {
   font-size: 2.5rem;
   color: #0a60d0;
 <<<<<<< HEAD
+<<<<<<< HEAD
   font-weight: 800;
 =======
 >>>>>>> ff014b7 (Search Page Frontend (#45))
+=======
+  font-weight: 800;
+>>>>>>> 49b246a (headers blue, changed classes, removed stlyes, rearranged)
 }
 
 .h2-dark {
