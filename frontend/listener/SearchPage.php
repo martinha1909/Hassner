@@ -65,11 +65,11 @@ include '../../backend/listener/SearchArtistHelpers.php';
                                     <table class="table">
                                         <thead class="thead-orange">
                                             <tr>
-                                                <th scope="col";"><input class="th-dark"type = "submit" aria-pressed="true" value = "#"></th>
-                                                <th scope="col";"><input class="th-dark"type = "submit" aria-pressed="true" value = "Artist"></th>
-                                                <th scope="col";"><input class="th-dark"type = "submit" aria-pressed="true" value = "Price Per Share"></th>
-                                                <th scope="col";"><input class="th-dark"type = "submit" aria-pressed="true" value = "Market Cap"></th>
-                                                <th scope="col";"><input class="th-dark"type = "submit" aria-pressed="true" value = "Monthly Shareholders"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "#"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Artist"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Price Per Share"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Market Cap"></th>
+                                                <th scope="col" class="bg-dark" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Monthly Shareholders"></th>
                                             </tr>
                                         </thead>
                                     <tbody>
