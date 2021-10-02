@@ -284,30 +284,30 @@
                             }
                             else
                             {
-                                $ret = $minutes_remaining." minutes left";
+                                $ret = $minutes_remaining." m left";
                             }
                         }
                         //If years, months, and days are 0, we only include hours and minutes
                         else
                         {
-                            $ret = $hours_remaining." hours and ".$minutes_remaining." left";
+                            $ret = $hours_remaining." h & ".$minutes_remaining." m left";
                         }
                     }
                     //if years and months are 0, we only include days and hours
                     else
                     {
-                        $ret = $days_remaining." days and ".$hours_remaining." hours left";
+                        $ret = $days_remaining." d & ".$hours_remaining." h left";
                     }
                 }
                 //if years is 0, we only include months and days
                 else
                 {
-                    $ret = $months_remaining." months and ".$days_remaining." days left";
+                    $ret = $months_remaining." m & ".$days_remaining." d left";
                 }
             }
             else
             {
-                $ret = $years_remaining." years, ".$months_remaining." months and ".$days_remaining." days left";
+                $ret = $years_remaining." y, ".$months_remaining." m & ".$days_remaining." d left";
             }
         }
 

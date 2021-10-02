@@ -1,5 +1,5 @@
 <?php
-    function fetchCampaigns($artist_username, &$offerings, &$time_left, &$eligible_participants, &$types, &$time_releases)
+    function fetchCampaigns($artist_username, &$offerings, &$time_left, &$eligible_participants, &$min_ethos, &$types, &$time_releases)
     {
         $conn = connect();
         //First index contains date
@@ -19,6 +19,7 @@
             array_push($offerings, $row['offering']);
             array_push($time_left, $campaign_time_left);
             array_push($eligible_participants, $row['eligible_participants']);
+            array_push($min_ethos, $row['minimum_ethos']);
             array_push($types, $row['type']);
             array_push($time_releases, $time_released);
         }
@@ -29,6 +30,10 @@
         $ret = 0;
         $conn = connect();
 
-        $res = getEligibleParticipants($conn, $artist_username, $criteria);
+        $res = getArtistShareHoldersInfo($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+
+        }
     }
 ?>

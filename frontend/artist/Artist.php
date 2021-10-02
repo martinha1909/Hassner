@@ -167,12 +167,14 @@
                             $offerings = array();
                             $time_left = array();
                             $eligible_participants = array();
+                            $min_ethos = array();
                             $types = array();
                             $time_releases = array();
                             fetchCampaigns($_SESSION['username'], 
                                            $offerings, 
                                            $time_left, 
                                            $eligible_participants, 
+                                           $min_ethos,
                                            $types, 
                                            $time_releases);
                             echo '
@@ -184,9 +186,10 @@
                                         <thead>
                                             <tr>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Offering</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time left</th>
-                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Eligible Participants</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Type</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Eligible Participants</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Minimum Ethos</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time left</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Released</th>
                                             </tr>
                                         </thead>
@@ -196,10 +199,11 @@
                             {
                                 echo '
                                             <tr>
-                                                <td>'.$offerings[$i].'</td>
-                                                <td>'.$time_left[$i].'</td>
-                                                <td>'.$eligible_participants[$i].'</td>
+                                                <th>'.$offerings[$i].'</th>
                                                 <td>'.$types[$i].'</td>
+                                                <td>'.$eligible_participants[$i].'</td>
+                                                <td>'.$min_ethos[$i].'</td>
+                                                <td>'.$time_left[$i].'</td>
                                                 <td>'.$time_releases[$i].'</td>
                                             </tr>
                                 ';
