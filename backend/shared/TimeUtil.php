@@ -251,52 +251,64 @@
         }
         else
         {
-            $year_remaining = $day_exp[0] - ($day_rn[2] + 2000);
-            $month_remaining = $day_exp[1] - $day_rn[1];
-            $day_remaining = $day_exp[2] - $day_rn[0];
-            // if()
-            // //same year
-            // if($day_exp[0] == ($day_rn[2] + 2000))
-            // {
+            $pre_formatted_current = $day_rn[0]."-".$day_rn[1]."-20".$day_rn[2]." ".$current_time;
+            $pre_formatted_exp = $date_expires." ".$time_expires.":00";
+            $now = new DateTime($pre_formatted_current);
+            $now->format('d-m-Y H:i:s');
+            $exp = new DateTime($pre_formatted_exp);
+            $exp->format('Y-m-d H:i:s');
 
-            // }
-            // //year is in the future
-            // else if($day_exp[0] > ($day_rn[2] + 2000))
-            // {
-            //     //a month less than current month but belongs to a year in the future
-            //     if($day_exp[1] < $day_rn[1])
-            //     {
+            $interval = $exp->diff($now);
 
-            //     }
-            //     //a month higher than current month and belongs to a year in the future
-            //     else if($day_exp[1] > $day_rn[1])
-            //     {
-            //         $year_remaining = $day_exp[0] - ($day_rn[2] + 2000);
-            //         $month_remaining = $day_exp[1] - $day_rn[1];
-            //         if($year_remaining == 1)
-            //         {
-            //             if($month_remaining == 1)
-            //             {
-            //                 $ret = $year_remaining ." year and ". $month_remaining ." month left";
-            //             }
-            //             else
-            //             {
-            //                 $ret = $year_remaining ." year and ". $month_remaining ." months left";
-            //             }
-            //         }
-            //         else
-            //         {
-            //             if($month_remaining == 1)
-            //             {
-            //                 $ret = $year_remaining ." years and ". $month_remaining ." month left";
-            //             }
-            //             else
-            //             {
-            //                 $ret = $year_remaining ." years and ". $month_remaining ." months left";
-            //             }
-            //         }
-            //     }
-            // }
+            $years_remaining = $interval->format("%y");
+            $months_remaining = $interval->format("%m");
+            $days_remaining = $interval->format("%d");
+            $hours_remaining = $interval->format("%h");
+            $minutes_remaining = $interval->format("%i");
+
+            //This part is to parse into a string that we want to display, the full relative time left can be 
+            //done by doing:
+            // echo $interval->format("%y years, %m months, %a days, %h hours, %i minutes, %s seconds");
+            if($years_remaining == 0)
+            {
+                if($months_remaining == 0)
+                {
+                    if($days_remaining == 0)
+                    {
+                        //if years, months, days, and hours are 0, we only include minutes
+                        if($hours_remaining == 0)
+                        {
+                            if($minutes_remaining == 0)
+                            {
+                                $ret = "Expired";
+                            }
+                            else
+                            {
+                                $ret = $minutes_remaining." minutes left";
+                            }
+                        }
+                        //If years, months, and days are 0, we only include hours and minutes
+                        else
+                        {
+                            $ret = $hours_remaining." hours and ".$minutes_remaining." left";
+                        }
+                    }
+                    //if years and months are 0, we only include days and hours
+                    else
+                    {
+                        $ret = $days_remaining." days and ".$hours_remaining." hours left";
+                    }
+                }
+                //if years is 0, we only include months and days
+                else
+                {
+                    $ret = $months_remaining." months and ".$days_remaining." days left";
+                }
+            }
+            else
+            {
+                $ret = $years_remaining." years, ".$months_remaining." months and ".$days_remaining." days left";
+            }
         }
 
         return $ret;

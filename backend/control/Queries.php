@@ -239,6 +239,11 @@
             return $result;
         }
 
+        function getEligibleParticipants($conn, $artist_username, $criteria)
+        {
+            
+        }
+
         function getArtistShareHolders($conn, $artist_username)
         {
             $sql = "SELECT user_username FROM buy_history WHERE artist_username = ?";

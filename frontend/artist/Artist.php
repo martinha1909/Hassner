@@ -191,6 +191,19 @@
                                             </tr>
                                         </thead>
                                         <tbody>';
+
+                            for($i = 0; $i < sizeof($offerings); $i++)
+                            {
+                                echo '
+                                            <tr>
+                                                <td>'.$offerings[$i].'</td>
+                                                <td>'.$time_left[$i].'</td>
+                                                <td>'.$eligible_participants[$i].'</td>
+                                                <td>'.$types[$i].'</td>
+                                                <td>'.$time_releases[$i].'</td>
+                                            </tr>
+                                ';
+                            }
                             echo'
                                         </tbody>
                                     </table>
