@@ -230,7 +230,7 @@
 
         function searchArtistCampaigns($conn, $artist_username)
         {
-            $sql = "SELECT * FROM campaign WHERE artist_username = ?";
+            $sql = "SELECT offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos FROM campaign WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
