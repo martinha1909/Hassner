@@ -27,7 +27,7 @@
                     {
                         $ret++;
                     }
-                    $total_share_of_each_participant = 0;
+                    $total_share_of_each_participant = $row['no_of_share_bought'];
                     array_push($participants, $row['user_username']);
                 }
             }
