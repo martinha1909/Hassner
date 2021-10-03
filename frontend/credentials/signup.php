@@ -107,6 +107,11 @@
                   $_SESSION['status'] = StatusCodes::ErrGeneric;
                   $status = getStatusMessage("Email already taken", "");
                 }
+                else if ($_SESSION['status'] == StatusCodes::ErrUsernameFormat) 
+                {
+                  $_SESSION['status'] = StatusCodes::ErrGeneric;
+                  $status = getStatusMessage("Username can only have numbers and letters", "");
+                }
               ?>
 
               <!-- account type -->
