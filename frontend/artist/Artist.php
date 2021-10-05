@@ -3,6 +3,7 @@
     include '../../backend/artist/ArtistHelpers.php';
     include '../../backend/shared/MarketplaceHelpers.php';
     include '../../backend/constants/ShareInteraction.php';
+    include '../../backend/shared/CampaignHelpers.php';
 
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
@@ -160,10 +161,58 @@
 
                 <div class="col">
                     <?php
-                    //Artist campaigns, including benchmark, raffle, and give aways.
-                    if ($_SESSION['display'] == "CAMPAIGN") {
-                        //nothing to do now as it's not part of vital functionality
-                    }
+                        //Artist campaigns, including benchmark, raffle, and give aways.
+                        if($_SESSION['display'] == "CAMPAIGN")
+                        {
+                            $offerings = array();
+                            $time_left = array();
+                            $eligible_participants = array();
+                            $min_ethos = array();
+                            $types = array();
+                            $time_releases = array();
+                            fetchCampaigns($_SESSION['username'], 
+                                           $offerings, 
+                                           $time_left, 
+                                           $eligible_participants, 
+                                           $min_ethos,
+                                           $types, 
+                                           $time_releases);
+                            echo '
+                                    <div class="py-4 col-12 mx-auto my-auto text-center">
+                                        <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>
+                                    </div>
+                                    <h4>Your other campaigns</h4>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Offering</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Type</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Eligible Participants</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Minimum Ethos</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time left</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Released</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>';
+
+                            for($i = 0; $i < sizeof($offerings); $i++)
+                            {
+                                echo '
+                                            <tr>
+                                                <th>'.$offerings[$i].'</th>
+                                                <td>'.$types[$i].'</td>
+                                                <td>'.$eligible_participants[$i].'</td>
+                                                <td>'.$min_ethos[$i].'</td>
+                                                <td>'.$time_left[$i].'</td>
+                                                <td>'.$time_releases[$i].'</td>
+                                            </tr>
+                                ';
+                            }
+                            echo'
+                                        </tbody>
+                                    </table>
+                            ';
+                        }
 
                         //Artist's portfolio
                         else if($_SESSION['display'] == "ETHOS" || $_SESSION['display'] == 0)

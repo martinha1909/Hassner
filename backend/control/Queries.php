@@ -228,6 +228,17 @@
             return $result;
         }
 
+        function searchArtistCampaigns($conn, $artist_username)
+        {
+            $sql = "SELECT offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos FROM campaign WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function getArtistShareHolders($conn, $artist_username)
         {
             $sql = "SELECT user_username FROM buy_history WHERE artist_username = ?";
@@ -381,6 +392,14 @@
         function getMaxBuyOrderID($conn)
         {
             $sql = "SELECT MAX(id) AS max_id FROM buy_order";
+            $result = mysqli_query($conn,$sql);
+            
+            return $result;
+        }
+
+        function getMaxCampaignID($conn)
+        {
+            $sql = "SELECT MAX(id) AS max_id FROM campaign";
             $result = mysqli_query($conn,$sql);
             
             return $result;
@@ -1004,6 +1023,33 @@
             else
             {
                 $status = StatusCodes::ErrGeneric;
+            }
+            return $status;
+        }
+
+        function postCampaign($conn, $artist_username, $offering, $release_date, $release_time, $expiration_date, $expiration_time, $type, $minimum_ethos)
+        {
+            $campaign_id = 0;
+            $status = 0;
+
+            $res = getMaxCampaignID($conn);
+            if($res->num_rows != 0)
+            {
+                $max_id = $res->fetch_assoc();
+                $campaign_id = $max_id['max_id'] + 1;
+            }
+
+            $sql = "INSERT INTO campaign (id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos)
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('isssssssd', $campaign_id, $artist_username, $offering, $release_date, $release_time, $expiration_date, $expiration_time, $type, $minimum_ethos);
+            if($stmt->execute() == TRUE)
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                $status = "ERROR";
             }
             return $status;
         }

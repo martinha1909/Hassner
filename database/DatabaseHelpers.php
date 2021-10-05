@@ -42,6 +42,14 @@
         }
     }
 
+    function deleteCampaigns($conn, $username)
+    {
+        $sql = "DELETE FROM campaign WHERE artist_username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+    }
+
     function cleanDatabase($conn)
     {
         $sql = "SELECT * FROM account";
@@ -80,6 +88,7 @@
 
             deleteShareTables($conn, $account_type, $username);
             deleteInjectionHistory($conn, $username);
+            deleteCampaigns($conn, $username);
         }
     }
 
@@ -97,6 +106,7 @@
 
             deleteShareTables($conn, $account_type, $username);
             deleteInjectionHistory($conn, $username);
+            deleteCampaigns($conn, $username);
 
             $sql = "DELETE FROM account WHERE username = ?";
             $stmt = $conn->prepare($sql);
@@ -114,6 +124,9 @@
         $conn->query($sql);
 
         $sql = "DROP TABLE inject_history";
+        $conn->query($sql);
+
+        $sql = "DROP TABLE campaign";
         $conn->query($sql);
 
         $sql = "DROP TABLE account";
