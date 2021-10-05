@@ -146,7 +146,19 @@
     {
         return explode("T", $time);
     }
-
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	exp_day	        $exp_day	expiration day to be determined if in the future or not
+    *                                       has format of YYYY-MM-DD
+    * @param  	exp_time	    $exp_day	expiration time (combine with the day) to be determined if in the future or not
+    *                                       has format of HH:MM
+    * @param  	release_day	    $exp_day	current day to compare to expiration date
+    *                                       has format of DD-MM-YY
+    * @param  	release_time	$exp_day	current time (combine with the current day) to compare to expiration date
+    *                                       has format of HH:MM:SS
+    * @return 	ret	a boolean, true if the expiration date is in the future, false otherwise
+    */
     function isInTheFuture($exp_day, $release_day, $exp_time, $release_time)
     {
         $ret = TRUE;
