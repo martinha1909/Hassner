@@ -443,7 +443,7 @@
         return $ret;
     }
 
-    function fetchInvestedArtistCampaigns($user_username, &$artists, &$offerings, &$progress, &$time_left, &$minimum_ethos)
+    function fetchInvestedArtistCampaigns($user_username, &$artists, &$offerings, &$progress, &$time_left, &$minimum_ethos, &$owned_ethos)
     {
         $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
         $conn = connect();
@@ -467,6 +467,7 @@
                 array_push($progress, $progress_calc);
                 array_push($time_left, $campaign_time_left);
                 array_push($minimum_ethos, $row['minimum_ethos']);
+                array_push($owned_ethos, $total_shares_bought);
             }
         }
     }

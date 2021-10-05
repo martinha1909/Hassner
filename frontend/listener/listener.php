@@ -342,12 +342,14 @@ $_SESSION['user_balance'] = $account['balance'];
                             $progress = array();
                             $time_left = array();
                             $minimum_ethos = array();
+                            $owned_ethos = array();
                             fetchInvestedArtistCampaigns($_SESSION['username'], 
                                                          $artists, 
                                                          $offerings, 
                                                          $progress, 
                                                          $time_left, 
-                                                         $minimum_ethos);
+                                                         $minimum_ethos,
+                                                         $owned_ethos);
                             
                             echo '
                                 <table class="table">
@@ -358,6 +360,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                             <th scope="col">Progess</th>
                                             <th scope="col">Time left</th>
                                             <th scope="col">Minimum Ethos</th>
+                                            <th scope="col">Owned Ethos</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -372,6 +375,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                         <td>'.round($progress[$i], 2).'%</td>
                                         <td>'.$time_left[$i].'</td>
                                         <td>'.$minimum_ethos[$i].'</td>
+                                        <td>'.$owned_ethos[$i].'</td>
                                     </tr>
                         ';
                     }
