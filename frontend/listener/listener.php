@@ -336,6 +336,51 @@ $_SESSION['user_balance'] = $account['balance'];
                             }
                         }
 
+                        else if($_SESSION['display'] == "CAMPAIGN") {
+                            $artists = array();
+                            $offerings = array();
+                            $progress = array();
+                            $time_left = array();
+                            $minimum_ethos = array();
+                            fetchInvestedArtistCampaigns($_SESSION['username'], 
+                                                         $artists, 
+                                                         $offerings, 
+                                                         $progress, 
+                                                         $time_left, 
+                                                         $minimum_ethos);
+                            
+                            echo '
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Artist</th>
+                                            <th scope="col">Offering</th>
+                                            <th scope="col">Progess</th>
+                                            <th scope="col">Time left</th>
+                                            <th scope="col">Minimum Ethos</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                            ';
+
+                    for($i = 0; $i < sizeof($artists); $i++)
+                    {
+                        echo '
+                                    <tr>
+                                        <th>'.$artists[$i].'</th>
+                                        <td>'.$offerings[$i].'</td>
+                                        <td>'.round($progress[$i], 2).'%</td>
+                                        <td>'.$time_left[$i].'</td>
+                                        <td>'.$minimum_ethos[$i].'</td>
+                                    </tr>
+                        ';
+                    }
+                    echo'
+                                </tbody>
+                            </table>
+                    ';
+                        }
+
                         //displaying Top Invested Artist
                         else if ($_SESSION['display'] == "ARTISTS") {
                             echo '

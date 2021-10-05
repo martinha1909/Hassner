@@ -425,4 +425,49 @@
 
         return $request_quantity;
     }
+
+    function getAllInvestedArtists($user_username)
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = searchUsersInvestment($conn, $user_username);
+        while($row = $res->fetch_assoc()) {
+            if(sizeof($ret) == 0) {
+                array_push($ret, $row['artist_username']);
+            } else if ($row['artist_username'] != $ret[sizeof($ret) - 1]) {
+                array_push($ret, $row['artist_username']);
+            }
+        }
+
+        return $ret;
+    }
+
+    function fetchInvestedArtistCampaigns($user_username, &$artists, &$offerings, &$progress, &$time_left, &$minimum_ethos)
+    {
+        $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
+        $conn = connect();
+        $all_artists = getAllInvestedArtists($user_username);
+
+        for($i = 0; $i < sizeof($all_artists); $i++) {
+            $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
+            $res = searchArtistCampaigns($conn, $all_artists[$i]);
+            while($row = $res->fetch_assoc()) {
+                if($total_shares_bought >= $row['minimum_ethos']) {
+                    $progress_calc = 100;
+                } else {
+                    $progress_calc = ($total_shares_bought/$row['minimum_ethos']) * 100;
+                }
+                $campaign_time_left = calculateTimeLeft($current_date[0], 
+                                                        $current_date[1], 
+                                                        $row['date_expires'], 
+                                                        $row['time_expires']);
+                array_push($artists, $row['artist_username']);
+                array_push($offerings, $row['offering']);
+                array_push($progress, $progress_calc);
+                array_push($time_left, $campaign_time_left);
+                array_push($minimum_ethos, $row['minimum_ethos']);
+            }
+        }
+    }
 ?>
