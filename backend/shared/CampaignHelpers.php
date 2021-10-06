@@ -106,26 +106,4 @@
             }
         }
     }
-
-    function fetchExpiredCampaigns($artist_username, &$offerings, &$eligible_participants, &$min_ethos, &$types, &$time_releases, &$roll_results)
-    {
-        $conn = connect();
-
-        $res = searchArtistCampaigns($conn, $artist_username);
-        while($row = $res->fetch_assoc())
-        {
-            if($row['time_posted'] == "Expired" || $row['date_posted'] == "Expired")
-            {
-                echo "hfiefe ";
-                $time_released = dateParser($row['date_posted'])." at ".timeParser($row['time_posted']);
-
-                array_push($offerings, $row['offering']);
-                array_push($eligible_participants, $row['eligible_participants']);
-                array_push($min_ethos, $row['minimum_ethos']);
-                array_push($types, $row['type']);
-                array_push($roll_results, $row['winner']);
-                array_push($time_releases, $time_released);
-            }
-        }
-    }
 ?>

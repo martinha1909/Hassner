@@ -216,54 +216,6 @@
                                         </tbody>
                                     </table>
                             ';
-
-                            $offerings = array();
-                            $eligible_participants = array();
-                            $min_ethos = array();
-                            $types = array();
-                            $time_releases = array();
-                            $roll_results = array();
-                            fetchExpiredCampaigns($_SESSION['username'], 
-                                                  $offerings, 
-                                                  $eligible_participants, 
-                                                  $min_ethos,
-                                                  $types, 
-                                                  $time_releases,
-                                                  $roll_results);
-
-                            echo '
-                                    <h4>Expired campaigns</h4>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Offering</th>
-                                                <th scope="col">Type</th>
-                                                <th scope="col">Eligible Participants</th>
-                                                <th scope="col">Minimum Ethos</th>
-                                                <th scope="col">Winner</th>
-                                                <th scope="col">Time Released</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                            ';
-
-                            for($i = 0; $i < sizeof($offerings); $i++)
-                            {
-                                echo '
-                                            <tr>
-                                                <th>'.$offerings[$i].'</th>
-                                                <td>'.$types[$i].'</td>
-                                                <td>'.$eligible_participants[$i].'</td>
-                                                <td>'.$min_ethos[$i].'</td>
-                                                <td>'.$roll_results[$i].'</td>
-                                                <td>'.$time_releases[$i].'</td>
-                                            </tr>
-                                ';
-                            }
-                            echo'
-                                        </tbody>
-                                    </table>
-                            ';
                         }
 
                         //Artist's portfolio
