@@ -2,6 +2,7 @@
 include '../../backend/control/Dependencies.php';
 include '../../backend/shared/MarketplaceHelpers.php';
 include '../../backend/constants/LoggingModes.php';
+include '../../backend/constants/MenuOption.php';
 
 $account = getAccount($_SESSION['username']);
 $_SESSION['user_balance'] = $account['balance'];
@@ -59,7 +60,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     <?php
                     //By default My Portfolio is selected
                     //When My Portfolio is selected
-                    if ($_SESSION['display'] == 0 || $_SESSION['display'] == "PORTFOLIO") {
+                    if ($_SESSION['display'] == MenuOption::None || $_SESSION['display'] == MenuOption::Portfolio) {
                         echo '
                                     <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
@@ -78,7 +79,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     }
 
                     //When settings is selected
-                    if ($_SESSION['display'] == "CAMPAIGN") {
+                    if ($_SESSION['display'] == MenuOption::Campaign) {
                         echo '
                                     <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
@@ -97,7 +98,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     }
 
                     //When Siliqas option is selected
-                    if ($_SESSION['display'] == "SILIQAS") {
+                    if ($_SESSION['display'] == MenuOption::Siliqas) {
                         echo '
                                     <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
@@ -116,7 +117,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     }
 
                     //When Artists is selected
-                    if ($_SESSION['display'] == "ARTISTS") {
+                    if ($_SESSION['display'] == MenuOption::Artists) {
                         echo '
                                     <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
@@ -135,7 +136,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     }
 
                     //When Account is selected
-                    if ($_SESSION['display'] == "ACCOUNT") {
+                    if ($_SESSION['display'] == MenuOption::Account) {
                         echo '
                                     <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
@@ -159,7 +160,7 @@ $_SESSION['user_balance'] = $account['balance'];
                     <ul class="list-group">
                         <?php
                         //displaying My Portfolio
-                        if ($_SESSION['display'] == 0 || $_SESSION['display'] == "PORTFOLIO") {
+                        if ($_SESSION['display'] == MenuOption::None || $_SESSION['display'] == MenuOption::Portfolio) {
                             echo '
                                     <table class="table">
                                         <thead>
@@ -337,7 +338,7 @@ $_SESSION['user_balance'] = $account['balance'];
                         }
 
                         //displaying Top Invested Artist
-                        else if ($_SESSION['display'] == "ARTISTS") {
+                        else if ($_SESSION['display'] == MenuOption::Artists) {
                             echo '
                                     <table class="table">
                                         <thead>
@@ -366,12 +367,12 @@ $_SESSION['user_balance'] = $account['balance'];
                             }
                             echo '</form>';
                             echo '</table>';
-                        } else if ($_SESSION['display'] == "SILIQAS") {
+                        } else if ($_SESSION['display'] == MenuOption::Siliqas) {
                             siliqasInit();
                         }
 
                         //Account page functionality
-                        else if ($_SESSION['display'] == "ACCOUNT") {
+                        else if ($_SESSION['display'] == MenuOption::Account) {
                             echo '
                                     <section id="login">
                                         <div class="container">
