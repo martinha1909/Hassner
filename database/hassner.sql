@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 05, 2021 at 02:21 AM
+-- Generation Time: Oct 06, 2021 at 07:01 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -60,92 +60,11 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `shares_repurchase`) VALUES
 ('21 Savage', 'artist', 'artist', 6, 0, 0, 0, 0, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('88Glam', 'artist', 'artist', 2, 0, 0, 0, 0, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 3),
+('88Glam', 'artist', 'artist', 2, 0, 0, 0, 0, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 20),
 ('kai', 'user', 'user', 4, 0, 0, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('martin', 'user', 'user', 1, 0, 0, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
 ('NAV', 'artist', 'artist', 3, 0, 0, 0, 0, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('vitor', 'user', 'user', 5, 0, 0, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `buy_history`
---
-
-CREATE TABLE `buy_history` (
-  `user_username` varchar(50) NOT NULL,
-  `seller_username` varchar(50) NOT NULL,
-  `artist_username` varchar(50) NOT NULL,
-  `no_of_share_bought` int(11) NOT NULL,
-  `price_per_share_when_bought` float NOT NULL,
-  `date_purchased` varchar(10) NOT NULL,
-  `time_purchased` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `buy_order`
---
-
-CREATE TABLE `buy_order` (
-  `id` int(11) NOT NULL,
-  `user_username` varchar(50) NOT NULL,
-  `artist_username` varchar(50) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `siliqas_requested` float NOT NULL,
-  `date_posted` varchar(20) NOT NULL,
-  `time_posted` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `campaign`
---
-
-CREATE TABLE `campaign` (
-  `id` int(11) NOT NULL,
-  `artist_username` varchar(50) NOT NULL,
-  `offering` varchar(20) NOT NULL,
-  `date_posted` varchar(20) NOT NULL,
-  `time_posted` varchar(10) NOT NULL,
-  `date_expires` varchar(10) NOT NULL,
-  `time_expires` varchar(10) NOT NULL,
-  `type` varchar(10) NOT NULL,
-  `minimum_ethos` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `inject_history`
---
-
-CREATE TABLE `inject_history` (
-  `id` int(11) NOT NULL,
-  `artist_username` varchar(50) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `date_injected` varchar(50) NOT NULL,
-  `time_injected` varchar(20) NOT NULL,
-  `comment` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `sell_order`
---
-
-CREATE TABLE `sell_order` (
-  `id` int(11) NOT NULL,
-  `user_username` varchar(50) NOT NULL,
-  `artist_username` varchar(50) NOT NULL,
-  `selling_price` float NOT NULL,
-  `no_of_share` int(11) NOT NULL,
-  `date_posted` varchar(20) NOT NULL,
-  `time_posted` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
@@ -157,82 +76,6 @@ CREATE TABLE `sell_order` (
 ALTER TABLE `account`
   ADD PRIMARY KEY (`username`),
   ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `buy_history`
---
-ALTER TABLE `buy_history`
-  ADD PRIMARY KEY (`user_username`,`seller_username`,`date_purchased`,`time_purchased`),
-  ADD KEY `artist_buy_history_key` (`artist_username`),
-  ADD KEY `seller_buy_history_key` (`seller_username`);
-
---
--- Indexes for table `buy_order`
---
-ALTER TABLE `buy_order`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `buy_order_user_key` (`user_username`),
-  ADD KEY `buy_order_artist_key` (`artist_username`);
-
---
--- Indexes for table `campaign`
---
-ALTER TABLE `campaign`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `artist_campaign_key` (`artist_username`);
-
---
--- Indexes for table `inject_history`
---
-ALTER TABLE `inject_history`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `artist_injection_key` (`artist_username`);
-
---
--- Indexes for table `sell_order`
---
-ALTER TABLE `sell_order`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `sell_order_user` (`user_username`),
-  ADD KEY `sell_order_artist` (`artist_username`);
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `buy_history`
---
-ALTER TABLE `buy_history`
-  ADD CONSTRAINT `artist_buy_history_key` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`),
-  ADD CONSTRAINT `seller_buy_history_key` FOREIGN KEY (`seller_username`) REFERENCES `account` (`username`),
-  ADD CONSTRAINT `user_buy_history_key` FOREIGN KEY (`user_username`) REFERENCES `account` (`username`);
-
---
--- Constraints for table `buy_order`
---
-ALTER TABLE `buy_order`
-  ADD CONSTRAINT `buy_order_artist_key` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`),
-  ADD CONSTRAINT `buy_order_user_key` FOREIGN KEY (`user_username`) REFERENCES `account` (`username`);
-
---
--- Constraints for table `campaign`
---
-ALTER TABLE `campaign`
-  ADD CONSTRAINT `artist_campaign_key` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`);
-
---
--- Constraints for table `inject_history`
---
-ALTER TABLE `inject_history`
-  ADD CONSTRAINT `artist_injection_key` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`);
-
---
--- Constraints for table `sell_order`
---
-ALTER TABLE `sell_order`
-  ADD CONSTRAINT `sell_order_artist` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`),
-  ADD CONSTRAINT `sell_order_user` FOREIGN KEY (`user_username`) REFERENCES `account` (`username`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
