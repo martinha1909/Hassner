@@ -13,13 +13,15 @@
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
     {
         $_SESSION['status'] = StatusCodes::ErrEmailFormat;
+        $_SESSION['dependencies'] = "FRONTEND";
+        header("Location: ../../frontend/credentials/signup.php");
     }
-    else if(!empty($username) && !empty($password) && !empty($email))
-    {
+    else if(!empty($username) && !empty($password) && !empty($email)){
         if(!ctype_alnum($username))
         {
             $_SESSION['status'] = StatusCodes::ErrUsernameFormat;
-            goto done;
+            $_SESSION['dependencies'] = "FRONTEND";
+            header("Location: ../../frontend/credentials/signup.php");
         }
         else
         {
@@ -28,12 +30,14 @@
             if($usr_res->num_rows > 0)
             {
                 $_SESSION['status'] = StatusCodes::ErrUsername;
-                goto done;
+                $_SESSION['dependencies'] = "FRONTEND";
+                header("Location: ../../frontend/credentials/signup.php");
             }
             else if($email_res->num_rows > 0)
             {
                 $_SESSION['status'] = StatusCodes::ErrEmailDuplicate;
-                goto done;
+                $_SESSION['dependencies'] = "FRONTEND";
+                header("Location: ../../frontend/credentials/signup.php");
             }
             else
             {
@@ -46,7 +50,8 @@
                 else
                 {
                     $_SESSION['status'] = StatusCodes::ErrServer;
-                    goto done;
+                    $_SESSION['dependencies'] = "FRONTEND";
+                    header("Location: ../../frontend/credentials/signup.php");
                 }
             }
         }
@@ -54,9 +59,11 @@
     else
     {
         $_SESSION['status'] = StatusCodes::ErrEmpty;
-        goto done;
+        $_SESSION['dependencies'] = "FRONTEND";
+        header("Location: ../../frontend/credentials/signup.php");
     }
-done:
-    $_SESSION['dependencies'] = "FRONTEND";
-    header("Location: ../../frontend/credentials/signup.php");
+
+      
+
+
 ?>
