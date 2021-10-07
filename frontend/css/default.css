@@ -10663,3 +10663,7 @@ a#dashboard-hover:hover {
   line-height: 40px;
   width: 0px;
 }
+
+.campaign_winner {
+  background-color: #0a60d0;
+}

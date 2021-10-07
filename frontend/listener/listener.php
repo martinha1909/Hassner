@@ -421,11 +421,11 @@
                                 {
                                     echo '
                                                 <tr>
-                                                    <th style="background-color: #0a60d0;">'.$artists[$i].'</th>
-                                                    <td style="background-color: #0a60d0;">'.$offerings[$i].'</td>
-                                                    <td style="background-color: #0a60d0;">'.$minimum_ethos[$i].'</td>
-                                                    <td style="background-color: #0a60d0;">'.$winners[$i].'</td>
-                                                    <td style="background-color: #0a60d0;">'.$time_releases[$i].'</td>
+                                                    <th class="campaign_winner">'.$artists[$i].'</th>
+                                                    <td class="campaign_winner">'.$offerings[$i].'</td>
+                                                    <td class="campaign_winner">'.$minimum_ethos[$i].'</td>
+                                                    <td class="campaign_winner">'.$winners[$i].'</td>
+                                                    <td class="campaign_winner">'.$time_releases[$i].'</td>
                                                 </tr>
                                     ';
                                 }
