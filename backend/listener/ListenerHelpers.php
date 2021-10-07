@@ -480,4 +480,9 @@
             }
         }
     }
+
+    function fetchParticipatedCampaigns($user_username, $artists, $offerings, $minimum_ethos, $owned_ethos, $winners)
+    {
+        
+    }
 ?>

@@ -366,23 +366,68 @@ $_SESSION['user_balance'] = $account['balance'];
                                     <tbody>
                             ';
 
-                    for($i = 0; $i < sizeof($artists); $i++)
-                    {
-                        echo '
-                                    <tr>
-                                        <th>'.$artists[$i].'</th>
-                                        <td>'.$offerings[$i].'</td>
-                                        <td>'.round($progress[$i], 2).'%</td>
-                                        <td>'.$time_left[$i].'</td>
-                                        <td>'.$minimum_ethos[$i].'</td>
-                                        <td>'.$owned_ethos[$i].'</td>
-                                    </tr>
-                        ';
-                    }
-                    echo'
-                                </tbody>
-                            </table>
-                    ';
+                            for($i = 0; $i < sizeof($artists); $i++)
+                            {
+                                echo '
+                                            <tr>
+                                                <th>'.$artists[$i].'</th>
+                                                <td>'.$offerings[$i].'</td>
+                                                <td>'.round($progress[$i], 2).'%</td>
+                                                <td>'.$time_left[$i].'</td>
+                                                <td>'.$minimum_ethos[$i].'</td>
+                                                <td>'.$owned_ethos[$i].'</td>
+                                            </tr>
+                                ';
+                            }
+                            echo'
+                                        </tbody>
+                                    </table>
+                            ';
+
+                            $artists = array();
+                            $offerings = array();
+                            $minimum_ethos = array();
+                            $winners = array();
+                            fetchParticipatedCampaigns($_SESSION['username'], 
+                                                       $artists, 
+                                                       $offerings, 
+                                                       $minimum_ethos,
+                                                       $owned_ethos,
+                                                       $winners);
+                            
+                            echo '
+                                <div class="py-6">
+                                    <h4>Campaign that you participated</h4>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Artist</th>
+                                                <th scope="col">Offering</th>
+                                                <th scope="col">Minimum Ethos</th>
+                                                <th scope="col">Winner</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                            ';
+
+                            for($i = 0; $i < sizeof($artists); $i++)
+                            {
+                                echo '
+                                            <tr>
+                                                <th>'.$artists[$i].'</th>
+                                                <td>'.$offerings[$i].'</td>
+                                                <td>'.round($progress[$i], 2).'%</td>
+                                                <td>'.$time_left[$i].'</td>
+                                                <td>'.$minimum_ethos[$i].'</td>
+                                                <td>'.$owned_ethos[$i].'</td>
+                                            </tr>
+                                ';
+                            }
+                            echo'
+                                            </tbody>
+                                        </table>
+                                </div>
+                            ';
                         }
 
                         //displaying Top Invested Artist
