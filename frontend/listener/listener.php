@@ -1,10 +1,13 @@
 <?php
-include '../../backend/control/Dependencies.php';
-include '../../backend/shared/MarketplaceHelpers.php';
-include '../../backend/constants/LoggingModes.php';
+    include '../../backend/control/Dependencies.php';
+    include '../../backend/shared/MarketplaceHelpers.php';
+    include '../../backend/shared/CampaignHelpers.php';
+    include '../../backend/constants/LoggingModes.php';
 
-$account = getAccount($_SESSION['username']);
-$_SESSION['user_balance'] = $account['balance'];
+    $account = getAccount($_SESSION['username']);
+    $_SESSION['user_balance'] = $account['balance'];
+
+    checkRaffleRoll();
 ?>
 
 <!doctype html>
@@ -388,12 +391,13 @@ $_SESSION['user_balance'] = $account['balance'];
                             $offerings = array();
                             $minimum_ethos = array();
                             $winners = array();
+                            $time_releases = array();
                             fetchParticipatedCampaigns($_SESSION['username'], 
                                                        $artists, 
                                                        $offerings, 
                                                        $minimum_ethos,
-                                                       $owned_ethos,
-                                                       $winners);
+                                                       $winners,
+                                                       $time_releases);
                             
                             echo '
                                 <div class="py-6">
@@ -405,6 +409,7 @@ $_SESSION['user_balance'] = $account['balance'];
                                                 <th scope="col">Offering</th>
                                                 <th scope="col">Minimum Ethos</th>
                                                 <th scope="col">Winner</th>
+                                                <th scope="col">Date Released</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -412,16 +417,30 @@ $_SESSION['user_balance'] = $account['balance'];
 
                             for($i = 0; $i < sizeof($artists); $i++)
                             {
-                                echo '
-                                            <tr>
-                                                <th>'.$artists[$i].'</th>
-                                                <td>'.$offerings[$i].'</td>
-                                                <td>'.round($progress[$i], 2).'%</td>
-                                                <td>'.$time_left[$i].'</td>
-                                                <td>'.$minimum_ethos[$i].'</td>
-                                                <td>'.$owned_ethos[$i].'</td>
-                                            </tr>
-                                ';
+                                if($winners[$i] == $_SESSION['username'])
+                                {
+                                    echo '
+                                                <tr>
+                                                    <th style="background-color: #0a60d0;">'.$artists[$i].'</th>
+                                                    <td style="background-color: #0a60d0;">'.$offerings[$i].'</td>
+                                                    <td style="background-color: #0a60d0;">'.$minimum_ethos[$i].'</td>
+                                                    <td style="background-color: #0a60d0;">'.$winners[$i].'</td>
+                                                    <td style="background-color: #0a60d0;">'.$time_releases[$i].'</td>
+                                                </tr>
+                                    ';
+                                }
+                                else
+                                {
+                                    echo '
+                                                <tr>
+                                                    <th>'.$artists[$i].'</th>
+                                                    <td>'.$offerings[$i].'</td>
+                                                    <td>'.$minimum_ethos[$i].'</td>
+                                                    <td>'.$winners[$i].'</td>
+                                                    <td>'.$time_releases[$i].'</td>
+                                                </tr>
+                                    ';
+                                }
                             }
                             echo'
                                             </tbody>

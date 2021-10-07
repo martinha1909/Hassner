@@ -72,7 +72,7 @@
                 {
                     if($row['type'] == "raffle")
                     {
-                        $roll_res = "martin";
+                        $roll_res = getRaffleResult();
                         updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
                     }
 
@@ -123,6 +123,49 @@
                 array_push($types, $row['type']);
                 array_push($roll_results, $row['winner']);
                 array_push($time_releases, $time_released);
+            }
+        }
+    }
+
+    function getRaffleResult(): string
+    {
+        return "martin";
+    }
+
+    //Checks for all campaigns in the database, if it has expired and if it is a raffle campaign, roll the raffle
+    function checkRaffleRoll()
+    {
+        $conn = connect();
+        //First index contains date
+        //Second index contains time
+        $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
+
+        $res = searchCampaignsByType($conn, "raffle");
+        while($row = $res->fetch_assoc())
+        {
+            //Avoid fetching campaigns that are already expired in the past
+            if($row['date_expires'] != "Expired")
+            {
+                //Assume error
+                $roll_res = "roll error";
+                $campaign_time_left = calculateTimeLeft($current_date[0], 
+                                                        $current_date[1], 
+                                                        $row['date_expires'], 
+                                                        $row['time_expires']);
+
+                //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
+                //so we don't come back to it on late fetches
+                if($campaign_time_left == "Expired")
+                {
+                    if($row['type'] == "raffle")
+                    {
+                        //If the campaign has expired, we roll the raffle
+                        $roll_res = getRaffleResult();
+                        updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
+                    }
+
+                    updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
+                }
             }
         }
     }

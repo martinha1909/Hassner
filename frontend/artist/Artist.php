@@ -8,6 +8,8 @@
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
     $_SESSION['user_balance'] = $account_info['balance'];
+
+    checkRaffleRoll();
 ?>
 
 <!doctype html>

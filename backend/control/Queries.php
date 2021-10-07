@@ -239,6 +239,17 @@
             return $result;
         }
 
+        function searchCampaignsByType($conn, $campaign_type)
+        {
+            $sql = "SELECT id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE type = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $campaign_type);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function getArtistShareHolders($conn, $artist_username)
         {
             $sql = "SELECT user_username FROM buy_history WHERE artist_username = ?";
