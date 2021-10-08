@@ -61,7 +61,7 @@
             return $ret;
         }
 
-        function populateWeightedChance(&$odds, $artist_total_shares)
+        function populateWeightedChance($artist_total_shares, &$weighted_chances, &$values)
         {
             if(!($this->isListEmpty()))
             {
@@ -69,10 +69,16 @@
                 while($current_node != null)
                 {
                     $weighted = ($current_node->getData()->getEthosOwned())/($artist_total_shares) * 100;
-                    array_push($odds, $weighted);
+                    array_push($values, $current_node->getData()->getParticipantName());
+                    array_push($weighted_chances, $weighted);
                     $current_node = $current_node->getNext();
                 }
             }
+        }
+
+        function getListSize(): int
+        {
+            return $this->size;
         }
 
         function toString(): string

@@ -131,6 +131,8 @@
 
     function getRaffleResult($conn, $campaign_id, $artist_share_distributed): string
     {
+        $weighted_chances = array();
+        $values = array();
         //Assuming error
         $ret = "Error";
 
@@ -139,7 +141,7 @@
 
         $participants = getParticipantList($conn, $campaign_info['minimum_ethos'], $campaign_info['artist_username']);
 
-        $weighted_chances = participantsWeightedChance($participants, $artist_share_distributed);
+        participantsWeightedChance($participants, $artist_share_distributed, $weighted_chances, $values);
 
         //If the size of all weighted chances is 0, then there were no participants that participated in this campaign
         if(sizeof($weighted_chances) == 0)
@@ -148,7 +150,7 @@
         }
         else
         {
-            //Perform random chance with weighted values here
+            $ret = weighted_random_chance($values, $weighted_chances);
         }
         return $ret;
     }
@@ -176,7 +178,6 @@
 
                 //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
                 //so we don't come back to it on late fetches
-                $campaign_time_left = "Expired";
                 if($campaign_time_left == "Expired")
                 {
                     if($row['type'] == "raffle")
@@ -185,10 +186,10 @@
                         $artist_share_distributed = $res_1->fetch_assoc();
                         //If the campaign has expired, we roll the raffle
                         $roll_res = getRaffleResult($conn, $row['id'], $artist_share_distributed['Share_Distributed']);
-                        // updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
+                        updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
                     }
 
-                    // updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
+                    updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
                 }
             }
         }
@@ -236,11 +237,39 @@
         return $ret;
     }
 
-    function participantsWeightedChance(ParticipantList &$participants, $artist_total_shares): array
+    function participantsWeightedChance(ParticipantList &$participants, $artist_total_shares, &$weighted_chances, &$values)
     {
-        $ret = array();
+        $participants->populateWeightedChance($artist_total_shares, $weighted_chances, $values);
+    }
 
-        $participants->populateWeightedChance($ret, $artist_total_shares);
+    /**
+     * weighted_random_chance($values, $weighted_chances)
+     * Pick a random item based on weights.
+     *
+     * @param array $values Array of elements to choose from 
+     * @param array $weighted_chances An array of weights. Weight must be a positive number.
+     * @return mixed Selected element.
+     */
+    function weighted_random_chance($values, $weighted_chances)
+    {
+        //Assume error check
+        $ret = "Error in rolling weighted chance";
+
+        $count = count($values); 
+        $i = 0; 
+        $n = 0; 
+        $num = mt_rand(1, array_sum($weighted_chances)); 
+
+        while($i < $count)
+        {
+            $n += $weighted_chances[$i]; 
+            if($n >= $num)
+            {
+                break; 
+            }
+            $i++; 
+        } 
+        $ret = $values[$i];
 
         return $ret;
     }

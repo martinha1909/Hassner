@@ -132,4 +132,45 @@
         $sql = "DROP TABLE account";
         $conn->query($sql);
     }
+
+    function searchAccountType($conn, $type)
+    {
+        $sql = "SELECT * FROM account WHERE account_type = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $type);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+    }
+
+    function updateUserBalance($conn, $username, $balance)
+    {
+        $status = 0;
+        $sql = "UPDATE account SET balance = $balance WHERE username = '$username'";
+        if ($conn->query($sql) === TRUE) 
+        {
+            $status = StatusCodes::Success;
+        } 
+        else 
+        {
+            $status = StatusCodes::ErrGeneric;
+        }  
+        return $status;
+    }
+
+    function populateUserBalance($conn, $balance)
+    {
+        $ret = 0;
+        $res = searchAccountType($conn, "user");
+        while($row = $res->fetch_assoc())
+        {
+            $ret = updateUserBalance($conn, $row['username'], $balance);
+            if($ret == StatusCodes::ErrGeneric)
+            {
+                break;
+            }
+        }
+
+        return $ret;
+    }
 ?>

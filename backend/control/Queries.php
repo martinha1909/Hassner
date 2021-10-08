@@ -507,6 +507,20 @@
             $conn->query($sql);
         }
 
+        function updateUserBalance($conn, $username, $balance)
+        {
+            $status = 0;
+            $sql = "UPDATE account SET balance = $balance WHERE username = '$username'";
+            if ($conn->query($sql) === TRUE) 
+            {
+                $status = StatusCodes::Success;
+            } 
+            else 
+            {
+                $status = StatusCodes::ErrGeneric;
+            }  
+            return $status;
+        }
         function purchaseSiliqas($conn, $username, $coins)
         {
             $coins = round($coins, 2);
@@ -522,6 +536,7 @@
             }  
             return $status;
         }
+
         function sellSiliqas($conn, $username, $coins)
         {
             $coins = round($coins, 2);

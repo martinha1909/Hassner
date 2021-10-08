@@ -464,8 +464,8 @@
                                                             $current_date[1], 
                                                             $row['date_expires'], 
                                                             $row['time_expires']);
-                //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
-                //so we don't come back to it on late fetches
+                    //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
+                    //so we don't come back to it on late fetches
                     if($campaign_time_left == "Expired")
                     {
                         $roll_res = "N/A";
