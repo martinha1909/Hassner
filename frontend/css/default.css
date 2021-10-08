@@ -10667,3 +10667,8 @@ a#dashboard-hover:hover {
 .campaign_winner {
   background-color: #0a60d0;
 }
+
+.no-background {
+  border:1px transparent; 
+  background-color: transparent;
+}

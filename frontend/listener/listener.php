@@ -349,13 +349,17 @@
                             $time_left = array();
                             $minimum_ethos = array();
                             $owned_ethos = array();
+                            $types = array();
+                            $chances = array();
                             fetchInvestedArtistCampaigns($_SESSION['username'], 
                                                          $artists, 
                                                          $offerings, 
                                                          $progress, 
                                                          $time_left, 
                                                          $minimum_ethos,
-                                                         $owned_ethos);
+                                                         $owned_ethos,
+                                                         $types,
+                                                         $chances);
                             
                             echo '
                                 <table class="table">
@@ -367,6 +371,9 @@
                                             <th scope="col">Time left</th>
                                             <th scope="col">Minimum Ethos</th>
                                             <th scope="col">Owned Ethos</th>
+                                            <th scope="col">Chance of winning</th>
+                                            </form>
+                                            <th scope="col">Type</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -382,6 +389,24 @@
                                                 <td>'.$time_left[$i].'</td>
                                                 <td>'.$minimum_ethos[$i].'</td>
                                                 <td>'.$owned_ethos[$i].'</td>
+                                ';
+                                if($chances[$i] != -1)
+                                {
+                                    echo '
+                                                    <form action="../../backend/listener/IncreaseChanceBackend.php" method="post">
+                                                        <td>'.$chances[$i].'<input name = "artist_name['.$artists[$i].']" type = "submit" id="abc" class="no-background" role="button" aria-pressed="true" value = " +"></td>
+                                                    </form>
+                                    ';
+                                }
+                                else
+                                {
+                                    echo '
+                                                    <td>N/A</td>
+                                    ';
+                                }
+
+                                echo '
+                                                <td>'.$types[$i].'</td>
                                             </tr>
                                 ';
                             }
@@ -395,12 +420,14 @@
                             $minimum_ethos = array();
                             $winners = array();
                             $time_releases = array();
+                            $types = array();
                             fetchParticipatedCampaigns($_SESSION['username'], 
                                                        $artists, 
                                                        $offerings, 
                                                        $minimum_ethos,
                                                        $winners,
-                                                       $time_releases);
+                                                       $time_releases,
+                                                       $types);
                             
                             echo '
                                 <div class="py-6">
@@ -412,6 +439,7 @@
                                                 <th scope="col">Offering</th>
                                                 <th scope="col">Minimum Ethos</th>
                                                 <th scope="col">Winner</th>
+                                                <th scope="col">Type</th>
                                                 <th scope="col">Date Released</th>
                                             </tr>
                                         </thead>
@@ -424,11 +452,12 @@
                                 {
                                     echo '
                                                 <tr>
-                                                    <th class="campaign_winner">'.$artists[$i].'</th>
-                                                    <td class="campaign_winner">'.$offerings[$i].'</td>
-                                                    <td class="campaign_winner">'.$minimum_ethos[$i].'</td>
+                                                    <th>'.$artists[$i].'</th>
+                                                    <td>'.$offerings[$i].'</td>
+                                                    <td>'.$minimum_ethos[$i].'</td>
                                                     <td class="campaign_winner">'.$winners[$i].'</td>
-                                                    <td class="campaign_winner">'.$time_releases[$i].'</td>
+                                                    <td>'.$types[$i].'</td>
+                                                    <td>'.$time_releases[$i].'</td>
                                                 </tr>
                                     ';
                                 }
@@ -440,6 +469,7 @@
                                                     <td>'.$offerings[$i].'</td>
                                                     <td>'.$minimum_ethos[$i].'</td>
                                                     <td>'.$winners[$i].'</td>
+                                                    <td>'.$types[$i].'</td>
                                                     <td>'.$time_releases[$i].'</td>
                                                 </tr>
                                     ';
