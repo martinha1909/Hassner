@@ -170,13 +170,15 @@
                             $min_ethos = array();
                             $types = array();
                             $time_releases = array();
+                            $roll_results = array();
                             fetchCampaigns($_SESSION['username'], 
                                            $offerings, 
                                            $time_left, 
                                            $eligible_participants, 
                                            $min_ethos,
                                            $types, 
-                                           $time_releases);
+                                           $time_releases,
+                                           $roll_results);
                             echo '
                                     <div class="py-4 col-12 mx-auto my-auto text-center">
                                         <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>
@@ -190,6 +192,7 @@
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Eligible Participants</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Minimum Ethos</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time left</th>
+                                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Roll Result</th>
                                                 <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Time Released</th>
                                             </tr>
                                         </thead>
@@ -204,6 +207,7 @@
                                                 <td>'.$eligible_participants[$i].'</td>
                                                 <td>'.$min_ethos[$i].'</td>
                                                 <td>'.$time_left[$i].'</td>
+                                                <td>'.$roll_results[$i].'</td>
                                                 <td>'.$time_releases[$i].'</td>
                                             </tr>
                                 ';
