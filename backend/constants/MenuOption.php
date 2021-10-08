@@ -3,7 +3,7 @@ if(!defined('MENUOPTION_LOADED')){
     abstract class MenuOption
     {
         //starter
-        const None = 0;
+        const None = "NONE";
 
         //listener side
         const Portfolio = "PORTFOLIO";
