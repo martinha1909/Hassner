@@ -233,7 +233,7 @@
         return $ret;
     }
 
-    function calculateTimeLeft($current_date, $current_time, $date_expires, $time_expires)
+    function calculateTimeLeft($current_date, $current_time, $date_expires, $time_expires): string
     {
         //Assuming error check
         $ret = "Error in calculate time remaining";
