@@ -468,11 +468,14 @@
                 //so we don't come back to it on late fetches
                     if($campaign_time_left == "Expired")
                     {
+                        $roll_res = "N/A";
                         if($row['type'] == "raffle")
                         {
-                            $roll_res = getRaffleResult();
-                            updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
+                            $res_1 = searchNumberOfShareDistributed($conn, $row['artist_username']);
+                            $artist_share_distributed = $res_1->fetch_assoc();
+                            $roll_res = getRaffleResult($conn, $row['id'], $artist_share_distributed['Share_Distributed']);
                         }
+                        updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
                         updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
                     }
                     array_push($artists, $row['artist_username']);

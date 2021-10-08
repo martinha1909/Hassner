@@ -4,6 +4,8 @@
     include '../../backend/shared/MarketplaceHelpers.php';
     include '../../backend/constants/ShareInteraction.php';
     include '../../backend/shared/CampaignHelpers.php';
+    include '../../backend/object/ParticipantList.php';
+    include '../../backend/object/CampaignParticipant.php';
 
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");

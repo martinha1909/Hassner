@@ -72,10 +72,12 @@
                 {
                     if($row['type'] == "raffle")
                     {
-                        $roll_res = getRaffleResult();
-                        updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
+                        $res_1 = searchNumberOfShareDistributed($conn, $row['artist_username']);
+                        $artist_share_distributed = $res_1->fetch_assoc();
+                        $roll_res = getRaffleResult($conn, $row['id'], $artist_share_distributed['Share_Distributed']);
                     }
 
+                    updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
                     updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
 
                     if($eligible_participant != $row['eligible_participants'])
@@ -127,9 +129,28 @@
         }
     }
 
-    function getRaffleResult(): string
+    function getRaffleResult($conn, $campaign_id, $artist_share_distributed): string
     {
-        return "martin";
+        //Assuming error
+        $ret = "Error";
+
+        $res = searchCampaignMinimumEthos($conn, $campaign_id);
+        $campaign_info = $res->fetch_assoc();
+
+        $participants = getParticipantList($conn, $campaign_info['minimum_ethos'], $campaign_info['artist_username']);
+
+        $weighted_chances = participantsWeightedChance($participants, $artist_share_distributed);
+
+        //If the size of all weighted chances is 0, then there were no participants that participated in this campaign
+        if(sizeof($weighted_chances) == 0)
+        {
+            $ret = "N/A";
+        }
+        else
+        {
+            //Perform random chance with weighted values here
+        }
+        return $ret;
     }
 
     //Checks for all campaigns in the database, if it has expired and if it is a raffle campaign, roll the raffle
@@ -155,18 +176,72 @@
 
                 //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
                 //so we don't come back to it on late fetches
+                $campaign_time_left = "Expired";
                 if($campaign_time_left == "Expired")
                 {
                     if($row['type'] == "raffle")
                     {
+                        $res_1 = searchNumberOfShareDistributed($conn, $row['artist_username']);
+                        $artist_share_distributed = $res_1->fetch_assoc();
                         //If the campaign has expired, we roll the raffle
-                        $roll_res = getRaffleResult();
-                        updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
+                        $roll_res = getRaffleResult($conn, $row['id'], $artist_share_distributed['Share_Distributed']);
+                        // updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
                     }
 
-                    updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
+                    // updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
                 }
             }
         }
+    }
+
+    function getParticipantList($conn, $minimum_ethos, $artist_username): ParticipantList
+    {
+        $ret = new ParticipantList();
+
+        $total_share_of_each_participant = 0;
+
+        $res = getArtistShareHoldersInfo($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            if($ret->isListEmpty())
+            {
+                $total_number_of_shares_bought = calculateTotalNumberOfSharesBought($row['user_username'], $artist_username);
+                if($total_number_of_shares_bought >= $minimum_ethos)
+                {
+                    $participant = new CampaignParticipant();
+                    $participant->setArtistName($artist_username);
+                    $participant->setParticipantName($row['user_username']);
+                    $participant->setEthosOwned($total_number_of_shares_bought);
+                    $ret->addItem($participant);
+                }
+            }
+            //Skip the duplicate usernames
+            else if($row['user_username'] == $ret->getLastItem()->getParticipantName())
+            {
+                continue;
+            }
+            else
+            {
+                $total_number_of_shares_bought = calculateTotalNumberOfSharesBought($row['user_username'], $artist_username);
+                if($total_number_of_shares_bought >= $minimum_ethos)
+                {
+                    $participant = new CampaignParticipant();
+                    $participant->setArtistName($artist_username);
+                    $participant->setParticipantName($row['user_username']);
+                    $participant->setEthosOwned($total_number_of_shares_bought);
+                    $ret->addItem($participant);
+                }
+            }
+        }
+        return $ret;
+    }
+
+    function participantsWeightedChance(ParticipantList &$participants, $artist_total_shares): array
+    {
+        $ret = array();
+
+        $participants->populateWeightedChance($ret, $artist_total_shares);
+
+        return $ret;
     }
 ?>

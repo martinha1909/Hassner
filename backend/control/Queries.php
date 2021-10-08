@@ -239,6 +239,17 @@
             return $result;
         }
 
+        function searchCampaignMinimumEthos($conn, $campaign_id)
+        {
+            $sql = "SELECT minimum_ethos, artist_username FROM campaign WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $campaign_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchCampaignsByType($conn, $campaign_type)
         {
             $sql = "SELECT id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE type = ?";

@@ -3,11 +3,13 @@
     include '../../backend/shared/MarketplaceHelpers.php';
     include '../../backend/shared/CampaignHelpers.php';
     include '../../backend/constants/LoggingModes.php';
+    include '../../backend/object/ParticipantList.php';
+    include '../../backend/object/CampaignParticipant.php';
 
     $account = getAccount($_SESSION['username']);
     $_SESSION['user_balance'] = $account['balance'];
 
-    checkRaffleRoll();
+    // checkRaffleRoll();
 ?>
 
 <!doctype html>
@@ -60,6 +62,7 @@
             <div class="row">
                 <ul class="list-group">
                     <?php
+                    checkRaffleRoll();
                     //By default My Portfolio is selected
                     //When My Portfolio is selected
                     if ($_SESSION['display'] == 0 || $_SESSION['display'] == "PORTFOLIO") {
