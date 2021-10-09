@@ -394,7 +394,7 @@
                                 {
                                     echo '
                                                     <form action="../../backend/listener/IncreaseChanceBackend.php" method="post">
-                                                        <td>'.$chances[$i].'<input name = "artist_name['.$artists[$i].']" type = "submit" id="abc" class="no-background" role="button" aria-pressed="true" value = " +"></td>
+                                                        <td>'.$chances[$i].'%<input name = "artist_name['.$artists[$i].']" type = "submit" id="abc" class="no-background" role="button" aria-pressed="true" value = " +"></td>
                                                     </form>
                                     ';
                                 }
@@ -452,12 +452,12 @@
                                 {
                                     echo '
                                                 <tr>
-                                                    <th>'.$artists[$i].'</th>
-                                                    <td>'.$offerings[$i].'</td>
-                                                    <td>'.$minimum_ethos[$i].'</td>
+                                                    <th class="campaign_winner">'.$artists[$i].'</th>
+                                                    <td class="campaign_winner">'.$offerings[$i].'</td>
+                                                    <td class="campaign_winner">'.$minimum_ethos[$i].'</td>
                                                     <td class="campaign_winner">'.$winners[$i].'</td>
-                                                    <td>'.$types[$i].'</td>
-                                                    <td>'.$time_releases[$i].'</td>
+                                                    <td class="campaign_winner">'.$types[$i].'</td>
+                                                    <td class="campaign_winner">'.$time_releases[$i].'</td>
                                                 </tr>
                                     ';
                                 }
