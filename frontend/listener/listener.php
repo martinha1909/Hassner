@@ -9,7 +9,7 @@
     $account = getAccount($_SESSION['username']);
     $_SESSION['user_balance'] = $account['balance'];
 
-    // checkRaffleRoll();
+    checkRaffleRoll();
 ?>
 
 <!doctype html>
