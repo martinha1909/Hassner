@@ -325,4 +325,71 @@
 
         return $ret;
     }
+
+    function toRelativeTime($current_date, $date_posted, $time_posted)
+    {
+        //Assuming error check
+        $ret = "Error in calculate time remaining";
+        $pre_formatted_posted = $date_posted." ".$time_posted;
+
+        $now = new DateTime($current_date);
+        $now->format('d-m-Y H:i:s');
+        $posted = new DateTime($pre_formatted_posted);
+        $posted->format('Y-m-d H:i:s');
+
+        $interval = $posted->diff($now);
+
+        $years_ago = $interval->format("%y");
+        $months_ago = $interval->format("%m");
+        $days_ago = $interval->format("%d");
+        $hours_ago = $interval->format("%h");
+        $minutes_ago = $interval->format("%i");
+        $seconds_ago = $interval->format("%s");
+
+        //This part is to parse into a string that we want to display, the full relative time left can be 
+        //done by doing:
+        // echo $interval->format("%y years, %m months, %a days, %h hours, %i minutes, %s seconds");
+        if($years_ago == 0)
+        {
+            if($months_ago == 0)
+            {
+                if($days_ago == 0)
+                {
+                    //if years, months, days, and hours are 0, we only include minutes
+                    if($hours_ago == 0)
+                    {
+                        if($minutes_ago == 0)
+                        {
+                            $ret = $seconds_ago."s ago";
+                        }
+                        else
+                        {
+                            $ret = $minutes_ago."m & ".$seconds_ago."s ago";
+                        }
+                    }
+                    //If years, months, and days are 0, we only include hours and minutes
+                    else
+                    {
+                        $ret = $hours_ago."h & ".$minutes_ago."m ago";
+                    }
+                }
+                //if years and months are 0, we only include days and hours
+                else
+                {
+                    $ret = $days_ago."d & ".$hours_ago."h ago";
+                }
+            }
+            //if years is 0, we only include months and days
+            else
+            {
+                $ret = $months_ago."m & ".$days_ago."d ago";
+            }
+        }
+        else
+        {
+            $ret = $years_ago."y, ".$months_ago."m & ".$days_ago."d ago";
+        }
+
+        return $ret;
+    }
 ?>
