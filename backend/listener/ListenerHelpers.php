@@ -154,8 +154,9 @@
         return $ret['Share_Distributed'];
     }
 
-    function fetchBuyOrders($user_username, &$artist_usernames, &$quantities_requested, &$siliqas_requested, &$date_posted, &$time_posted, &$buy_order_ids)
+    function fetchBuyOrders($user_username, &$artist_usernames, &$quantities_requested, &$siliqas_requested, &$date_posted, &$buy_order_ids)
     {
+        $current_date = getCurrentDate("America/Edmonton");
         $conn = connect();
         $res = searchUserBuyOrders($conn, $user_username);
         while($row = $res->fetch_assoc())
@@ -167,11 +168,14 @@
             }
             else
             {
+                $relative_time_posted = toRelativeTime($current_date, 
+                                                       $row['date_posted'], 
+                                                       $row['time_posted']);
+
                 array_push($artist_usernames, $row['artist_username']);
                 array_push($quantities_requested, $row['quantity']);
                 array_push($siliqas_requested, $row['siliqas_requested']);
-                array_push($date_posted, $row['date_posted']);
-                array_push($time_posted, $row['time_posted']);
+                array_push($date_posted, $relative_time_posted);
                 array_push($buy_order_ids, $row['id']);
             }
         }

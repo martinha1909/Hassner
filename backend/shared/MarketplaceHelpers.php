@@ -255,8 +255,9 @@
 
     //retrieves from the database all the rows that contains all selling shares accrossed all artists of $user_username
     //If notices a row that has quantity of 0, simply just removes it from the database
-    function fetchSellOrders($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits, &$date_posted, &$time_posted, &$ids)
+    function fetchSellOrders($user_username, &$artist_usernames, &$roi, &$selling_prices, &$share_amounts, &$profits, &$date_posted, &$ids)
     {
+        $current_date = getCurrentDate("America/Edmonton");
         $conn = connect();
         $result = searchSellOrderByUser($conn, $user_username);
         while($row = $result->fetch_assoc())
@@ -271,13 +272,17 @@
                 $pps = $result_2->fetch_assoc();
                 $_roi = (($row['selling_price'] - $pps['price_per_share'])/($pps['price_per_share']))*100;
                 $profit = $row['selling_price'] - $pps['price_per_share'];
+
+                $relative_time_posted = toRelativeTime($current_date, 
+                                                       $row['date_posted'], 
+                                                       $row['time_posted']);
+
                 array_push($artist_usernames, $row['artist_username']);
                 array_push($roi, round($_roi, 2));
                 array_push($selling_prices, $row['selling_price']);
                 array_push($share_amounts, $row['no_of_share']);
                 array_push($profits, $profit);
-                array_push($date_posted, $row['date_posted']);
-                array_push($time_posted, $row['time_posted']);
+                array_push($date_posted, $relative_time_posted);
                 array_push($ids, $row['id']);
             }
         }
@@ -292,7 +297,6 @@
         $share_amounts = array();
         $profits = array();
         $date_posted = array();
-        $time_posted = array();
         $ids = array();
 
         //update the shares that the user is currently selling
@@ -304,7 +308,6 @@
             $share_amounts,
             $profits,
             $date_posted,
-            $time_posted,
             $ids
         );
 
@@ -323,7 +326,6 @@
                                 <th class="th-tan" scope="col">ROI</th>
                                 <th class="th-tan" scope="col">Gain/Loss (q̶)</th>
                                 <th class="th-tan" scope="col">Date Posted</th>
-                                <th class="th-tan" scope="col">Time Posted</th>
                                 <th class="th-tan" scope="col">Remove Order</th>
                             </tr>
                         </thead>
@@ -339,8 +341,7 @@
                                     <td>' . $share_amounts[$i] . '</td>
                                     <td>' . $roi[$i] . '%</td>
                                     <td>' . $profits[$i] . '</td>
-                                    <td>' . dateParser($date_posted[$i]) . '</td>
-                                    <td>' . timeParser($time_posted[$i]) . '</td>
+                                    <td>' . $date_posted[$i] . '</td>
                                     <td><input type="submit" id="abc" class="cursor-context" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
                                 </tr>
                             </form>

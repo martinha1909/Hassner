@@ -285,7 +285,6 @@
                             $quantities_requested = array();
                             $siliqas_requested = array();
                             $date_posted = array();
-                            $time_posted = array();
                             $buy_order_ids = array();
 
 
@@ -295,7 +294,6 @@
                                 $quantities_requested,
                                 $siliqas_requested,
                                 $date_posted,
-                                $time_posted,
                                 $buy_order_ids
                             );
 
@@ -311,7 +309,6 @@
                                                         <th class="th-tan" scope="col">Siliqas Requested</th>
                                                         <th class="th-tan" scope="col">Quantity</th>
                                                         <th class="th-tan" scope="col">Date Posted</th>
-                                                        <th class="th-tan" scope="col">Time Posted</th>
                                                         <th class="th-tan" scope="col">Remove Order</th>
                                                     </tr>
                                                 </thead>
@@ -326,8 +323,7 @@
                                                         <td>' . $artist_usernames[$i] . '</td>
                                                         <td>' . $siliqas_requested[$i] . '</td>
                                                         <td>' . $quantities_requested[$i] . '</td>
-                                                        <td>' . dateParser($date_posted[$i]) . '</td>
-                                                        <td>' . timeParser($time_posted[$i]) . '</td>
+                                                        <td>' . $date_posted[$i] . '</td>
                                                         <td><input type="submit" id="abc" class="cursor-context" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
                                                     </tr>
                                                 </form>
