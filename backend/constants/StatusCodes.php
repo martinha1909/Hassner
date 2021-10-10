@@ -7,10 +7,13 @@ if(!defined('STATUSCODES_LOADED')){
         const ErrEmpty = "EMPTY_ERROR";
         const ErrNum = "NUM_ERROR";
         const ErrUsername = "USERNAME_ERR";
+        const ErrUsernameFormat = "USERNAME_FORMAT_ERR";
         const ErrServer = "SERVER_ERR";
         const ErrEmailDuplicate = "DUPL_EMAIL_ERR";
         const ErrEmailFormat = "EMAIL_FORMAT_ERR";
         const ErrNotEnough = "NOT_ENOUGH_ERR";
+        const CampaignEmpty = "CAMPAIGN_EMPTY_ERR";
+        const CampaignTimeErr = "CAMPAIGN_TIME_ERR";
     }
     define('STATUSCODES_LOADED', 1);
 }

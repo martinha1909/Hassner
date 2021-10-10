@@ -228,6 +228,39 @@
             return $result;
         }
 
+        function searchArtistCampaigns($conn, $artist_username)
+        {
+            $sql = "SELECT id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchCampaignMinimumEthos($conn, $campaign_id)
+        {
+            $sql = "SELECT minimum_ethos, artist_username FROM campaign WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $campaign_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchCampaignsByType($conn, $campaign_type)
+        {
+            $sql = "SELECT id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE type = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $campaign_type);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function getArtistShareHolders($conn, $artist_username)
         {
             $sql = "SELECT user_username FROM buy_history WHERE artist_username = ?";
@@ -386,6 +419,35 @@
             return $result;
         }
 
+        function getMaxCampaignID($conn)
+        {
+            $sql = "SELECT MAX(id) AS max_id FROM campaign";
+            $result = mysqli_query($conn,$sql);
+            
+            return $result;
+        }
+
+        function updateCampaignEligibleParticipants($conn, $campaign_id, $eligible_participant)
+        {
+            $sql = "UPDATE campaign SET eligible_participants = '$eligible_participant' WHERE id='$campaign_id'";
+            $conn->query($sql);
+        }
+
+        function updateRaffleCampaignWinner($conn, $campaign_id, $winner)
+        {
+            $sql = "UPDATE campaign SET winner = '$winner' WHERE id='$campaign_id'";
+            $conn->query($sql);
+        }
+
+        function updateCampaignExpirationDate($conn, $campaign_id, $exp_date)
+        {
+            $sql = "UPDATE campaign SET date_expires = '$exp_date' WHERE id='$campaign_id'";
+            $conn->query($sql);
+
+            $sql = "UPDATE campaign SET time_expires = '$exp_date' WHERE id='$campaign_id'";
+            $conn->query($sql);
+        }
+
         function artistShareDistributionInit($conn, $artist_username, $share_distributing, $initial_pps, $comment, $date, $time)
         {
             $status = 0;
@@ -445,6 +507,20 @@
             $conn->query($sql);
         }
 
+        function updateUserBalance($conn, $username, $balance)
+        {
+            $status = 0;
+            $sql = "UPDATE account SET balance = $balance WHERE username = '$username'";
+            if ($conn->query($sql) === TRUE) 
+            {
+                $status = StatusCodes::Success;
+            } 
+            else 
+            {
+                $status = StatusCodes::ErrGeneric;
+            }  
+            return $status;
+        }
         function purchaseSiliqas($conn, $username, $coins)
         {
             $coins = round($coins, 2);
@@ -460,6 +536,7 @@
             }  
             return $status;
         }
+
         function sellSiliqas($conn, $username, $coins)
         {
             $coins = round($coins, 2);
@@ -1004,6 +1081,35 @@
             else
             {
                 $status = StatusCodes::ErrGeneric;
+            }
+            return $status;
+        }
+
+        function postCampaign($conn, $artist_username, $offering, $release_date, $release_time, $expiration_date, $expiration_time, $type, $minimum_ethos)
+        {
+            $campaign_id = 0;
+            $status = 0;
+            $eligible_participant = 0;
+            $winner = NULL;
+
+            $res = getMaxCampaignID($conn);
+            if($res->num_rows != 0)
+            {
+                $max_id = $res->fetch_assoc();
+                $campaign_id = $max_id['max_id'] + 1;
+            }
+
+            $sql = "INSERT INTO campaign (id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner)
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('isssssssdis', $campaign_id, $artist_username, $offering, $release_date, $release_time, $expiration_date, $expiration_time, $type, $minimum_ethos, $eligible_participant, $winner);
+            if($stmt->execute() == TRUE)
+            {
+                $status = "SUCCESS";
+            }
+            else
+            {
+                $status = "ERROR";
             }
             return $status;
         }

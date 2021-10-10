@@ -42,6 +42,14 @@
         }
     }
 
+    function deleteCampaigns($conn, $username)
+    {
+        $sql = "DELETE FROM campaign WHERE artist_username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+    }
+
     function cleanDatabase($conn)
     {
         $sql = "SELECT * FROM account";
@@ -80,6 +88,7 @@
 
             deleteShareTables($conn, $account_type, $username);
             deleteInjectionHistory($conn, $username);
+            deleteCampaigns($conn, $username);
         }
     }
 
@@ -97,6 +106,7 @@
 
             deleteShareTables($conn, $account_type, $username);
             deleteInjectionHistory($conn, $username);
+            deleteCampaigns($conn, $username);
 
             $sql = "DELETE FROM account WHERE username = ?";
             $stmt = $conn->prepare($sql);
@@ -116,7 +126,51 @@
         $sql = "DROP TABLE inject_history";
         $conn->query($sql);
 
+        $sql = "DROP TABLE campaign";
+        $conn->query($sql);
+
         $sql = "DROP TABLE account";
         $conn->query($sql);
+    }
+
+    function searchAccountType($conn, $type)
+    {
+        $sql = "SELECT * FROM account WHERE account_type = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $type);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+    }
+
+    function updateUserBalance($conn, $username, $balance)
+    {
+        $status = 0;
+        $sql = "UPDATE account SET balance = $balance WHERE username = '$username'";
+        if ($conn->query($sql) === TRUE) 
+        {
+            $status = StatusCodes::Success;
+        } 
+        else 
+        {
+            $status = StatusCodes::ErrGeneric;
+        }  
+        return $status;
+    }
+
+    function populateUserBalance($conn, $balance)
+    {
+        $ret = 0;
+        $res = searchAccountType($conn, "user");
+        while($row = $res->fetch_assoc())
+        {
+            $ret = updateUserBalance($conn, $row['username'], $balance);
+            if($ret == StatusCodes::ErrGeneric)
+            {
+                break;
+            }
+        }
+
+        return $ret;
     }
 ?>
