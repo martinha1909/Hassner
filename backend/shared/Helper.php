@@ -1,14 +1,14 @@
 <?php
-
     include '../../backend/constants/StatusCodes.php';
     include '../../backend/constants/Currency.php';
     include '../../backend/constants/LoggingModes.php';
+    include '../../backend/constants/MenuOption.php';
 
     function hassnerInit()
     {   
         $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['coins'] = 0;
-        $_SESSION['display'] = 0;
+        $_SESSION['display'] = MenuOption::None;
         $_SESSION['sort_type'] = 0;
         $_SESSION['cad'] = 0;
         $_SESSION['edit'] = 0;
