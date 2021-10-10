@@ -44,7 +44,7 @@
             return $this->artist_username;
         }
 
-        function tostring(): string
+        function toString(): string
         {
             $ret = "";
 
