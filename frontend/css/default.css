@@ -10303,7 +10303,7 @@ footer h5 {
   line-height: 40px;
   right: -100px;
   color: #ffffff;
-  background-color: rgb(255, 145, 0);
+  background-color: #0a60d0;
 }
 .scroll-top:hover {
   background-color: #11171a;
@@ -10539,7 +10539,7 @@ input#abc-no-underline:hover {
 input#menu-style-invert {
   font-weight: 500;
   /* background-color: #4c9ed9; */
-  color: #ff9100;
+  color: #e2cda9ff;
   padding: 0px 0px;
 }
 
