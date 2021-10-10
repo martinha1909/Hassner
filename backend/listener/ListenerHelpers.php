@@ -443,7 +443,7 @@
         return $ret;
     }
 
-    function fetchInvestedArtistCampaigns($user_username, &$artists, &$offerings, &$progress, &$time_left, &$minimum_ethos, &$owned_ethos)
+    function fetchInvestedArtistCampaigns($user_username, &$artists, &$offerings, &$progress, &$time_left, &$minimum_ethos, &$owned_ethos, &$types, &$chances)
     {
         $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
         $conn = connect();
@@ -453,6 +453,10 @@
             $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
             $res = searchArtistCampaigns($conn, $all_artists[$i]);
             while($row = $res->fetch_assoc()) {
+                //assume not applicable
+                $chance = -1;
+                $res_1 = searchNumberOfShareDistributed($conn, $row['artist_username']);
+                $artist_share_distributed = $res_1->fetch_assoc();
                 if($row['date_expires'] != "Expired")
                 {
                     if($total_shares_bought >= $row['minimum_ethos']) {
@@ -464,11 +468,21 @@
                                                             $current_date[1], 
                                                             $row['date_expires'], 
                                                             $row['time_expires']);
-                //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
-                //so we don't come back to it on late fetches
+                    //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
+                    //so we don't come back to it on late fetches
                     if($campaign_time_left == "Expired")
                     {
+                        $roll_res = "N/A";
+                        if($row['type'] == "raffle")
+                        {
+                            $roll_res = getRaffleResult($conn, $row['id'], $artist_share_distributed['Share_Distributed']);
+                        }
+                        updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
                         updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
+                    }
+                    if($row['type'] == "raffle")
+                    {
+                        $chance = $total_shares_bought/$artist_share_distributed['Share_Distributed'] * 100;
                     }
                     array_push($artists, $row['artist_username']);
                     array_push($offerings, $row['offering']);
@@ -476,6 +490,32 @@
                     array_push($time_left, $campaign_time_left);
                     array_push($minimum_ethos, $row['minimum_ethos']);
                     array_push($owned_ethos, $total_shares_bought);
+                    array_push($types, $row['type']);
+                    array_push($chances, $chance);
+                }
+            }
+        }
+    }
+
+    function fetchParticipatedCampaigns($user_username, &$artists, &$offerings, &$minimum_ethos, &$winners, &$time_releases, &$types)
+    {
+        $conn = connect();
+        $all_artists = getAllInvestedArtists($user_username);
+
+        for($i = 0; $i < sizeof($all_artists); $i++) {
+            $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
+            $res = searchArtistCampaigns($conn, $all_artists[$i]);
+            while($row = $res->fetch_assoc()) {
+                if($row['date_expires'] == "Expired")
+                {
+                    $time_released = dateParser($row['date_posted'])." at ".timeParser($row['time_posted']);
+
+                    array_push($artists, $row['artist_username']);
+                    array_push($offerings, $row['offering']);
+                    array_push($minimum_ethos, $row['minimum_ethos']);
+                    array_push($winners, $row['winner']);
+                    array_push($time_releases, $time_released);
+                    array_push($types, $row['type']);
                 }
             }
         }

@@ -1,5 +1,4 @@
 <?php
-
     include '../../backend/constants/StatusCodes.php';
     include '../../backend/constants/Currency.php';
     include '../../backend/constants/LoggingModes.php';
@@ -215,18 +214,5 @@
                 $arr[$j + 1] = $key;
             }
         }
-    }
-
-    function calculateTotalNumberOfSharesBought($user_username, $artist_username)
-    {
-        $ret = 0;
-        $conn = connect();
-
-        $res = searchSpecificInvestment($conn, $user_username, $artist_username);
-        while($row = $res->fetch_assoc()) {
-            $ret += $row['no_of_share_bought'];
-        }
-
-        return $ret;
     }
 ?>

@@ -239,6 +239,28 @@
             return $result;
         }
 
+        function searchCampaignMinimumEthos($conn, $campaign_id)
+        {
+            $sql = "SELECT minimum_ethos, artist_username FROM campaign WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $campaign_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchCampaignsByType($conn, $campaign_type)
+        {
+            $sql = "SELECT id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE type = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $campaign_type);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function getArtistShareHolders($conn, $artist_username)
         {
             $sql = "SELECT user_username FROM buy_history WHERE artist_username = ?";
@@ -485,6 +507,20 @@
             $conn->query($sql);
         }
 
+        function updateUserBalance($conn, $username, $balance)
+        {
+            $status = 0;
+            $sql = "UPDATE account SET balance = $balance WHERE username = '$username'";
+            if ($conn->query($sql) === TRUE) 
+            {
+                $status = StatusCodes::Success;
+            } 
+            else 
+            {
+                $status = StatusCodes::ErrGeneric;
+            }  
+            return $status;
+        }
         function purchaseSiliqas($conn, $username, $coins)
         {
             $coins = round($coins, 2);
@@ -500,6 +536,7 @@
             }  
             return $status;
         }
+
         function sellSiliqas($conn, $username, $coins)
         {
             $coins = round($coins, 2);
