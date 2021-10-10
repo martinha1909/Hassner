@@ -338,7 +338,7 @@
                             }
                         }
 
-                        else if($_SESSION['display'] == "CAMPAIGN") {
+                        else if($_SESSION['display'] == MenuOption::Campaign) {
                             $artists = array();
                             $offerings = array();
                             $progress = array();
