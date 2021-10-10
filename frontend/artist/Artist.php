@@ -4,6 +4,7 @@
     include '../../backend/shared/MarketplaceHelpers.php';
     include '../../backend/constants/ShareInteraction.php';
     include '../../backend/shared/CampaignHelpers.php';
+    include '../../backend/constants/MenuOption.php';
 
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
@@ -67,7 +68,7 @@
             <div class="row">
                 <ul class="list-group bg-dark">
                     <?php
-                    if ($_SESSION['display'] == "ETHOS" || $_SESSION['display'] == 0) {
+                    if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) {
                         echo '
                             <li class="selected-no-hover list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
@@ -85,7 +86,7 @@
                         ';
                     }
 
-                    if ($_SESSION['display'] == "CAMPAIGN") {
+                    if ($_SESSION['display'] == MenuOption::Campaign) {
                         echo '
                             <li class="selected-no-hover list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
@@ -103,7 +104,7 @@
                         ';
                     }
 
-                    if ($_SESSION['display'] == "SILIQAS") {
+                    if ($_SESSION['display'] == MenuOption::Siliqas) {
                         echo '
                             <li class="selected-no-hover list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
@@ -121,7 +122,7 @@
                         ';
                     }
 
-                    if ($_SESSION['display'] == "ARTISTS") {
+                    if ($_SESSION['display'] == MenuOption::Artists) {
                         echo '
                             <li class="selected-no-hover list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
@@ -139,7 +140,7 @@
                         ';
                     }
 
-                    if ($_SESSION['display'] == "ACCOUNT") {
+                    if ($_SESSION['display'] == MenuOption::Account) {
                         echo '
                             <li class="selected-no-hover list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
@@ -162,7 +163,7 @@
                 <div class="col">
                     <?php
                         //Artist campaigns, including benchmark, raffle, and give aways.
-                        if($_SESSION['display'] == "CAMPAIGN")
+                        if($_SESSION['display'] == MenuOption::Campaign)
                         {
                             $offerings = array();
                             $time_left = array();
@@ -219,7 +220,7 @@
                         }
 
                         //Artist's portfolio
-                        else if($_SESSION['display'] == "ETHOS" || $_SESSION['display'] == 0)
+                        else if($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None)
                         {
                             if($account_info['Share_Distributed'] == 0)
                             {
@@ -339,7 +340,7 @@
 
                     //brings to Artist personal account page, where they can input their metrics, which are shown
                     //when users search for them and also on their portfolio tab
-                    else if ($_SESSION['display'] == "ACCOUNT") {
+                    else if ($_SESSION['display'] == MenuOption::Account) {
                         echo '
                                 <section id="login">
                                 <div class="container">
@@ -363,9 +364,9 @@
                     }
 
                     //Sell siliqas to USD/CAD/EUR
-                    else if ($_SESSION['display'] == "SILIQAS") {
+                    else if ($_SESSION['display'] == MenuOption::Siliqas) {
                         siliqasInit();
-                    } else if ($_SESSION['display'] == "ARTISTS") {
+                    } else if ($_SESSION['display'] == MenuOption::Artists) {
                     }
                     ?>
                 </div>
