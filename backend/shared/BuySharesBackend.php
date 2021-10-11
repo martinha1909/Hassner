@@ -112,8 +112,7 @@
                                                               $_SESSION['seller_toggle'],
                                                               $date_parser[0],
                                                               $date_parser[1],
-                                                              "NONE");
-                refreshUserArtistShareTable();
+                                                              "AUTO_PURCHASE");
                 refreshSellOrderTable();
                 refreshBuyOrderTable();
             }
@@ -148,7 +147,7 @@
              
             if($_SESSION['account_type'] == AccountType::User)
             {
-                header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+                // header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
             }
             else if($_SESSION['account_type'] == AccountType::Artist)
             {

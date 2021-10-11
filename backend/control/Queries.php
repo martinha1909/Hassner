@@ -766,62 +766,38 @@
                 return $status;
             }
 
-            $res = searchSpecificInvestment($conn, $seller, $artist);
-            $temp = $amount;
-            while($row = $res->fetch_assoc())
+            $res_buyer = searchSharesInArtistShareHolders($conn, $buyer, $artist);
+            $res_seller = searchSharesInArtistShareHolders($conn, $seller, $artist);
+            //if the buyer has not invested in the artist, add a row
+            if($res_buyer->num_rows == 0)
             {
-                $uname = $row['user_username'];
-                $sname = $row['seller_username'];
-                $aname = $row['artist_username'];
-                $pps = $row['price_per_share_when_bought'];
-                $d = $row['date_purchased'];
-                $t = $row['time_purchased'];
+                $status = addArtistShareholder($conn, $buyer, $artist, $amount);
+                if($status == StatusCodes::ErrGeneric)
+                {
+                    return $status;
+                }
+            }
+            //otherwise just update the new shares owned of the user towards the artist
+            else
+            {
+                $current_share_amount_buyer = $res_buyer->fetch_assoc();
+                $new_share_amount_buyer = $current_share_amount_buyer['shares_owned'] + $amount;
 
-                //Since there could be many rows of buy_history with the same user_username and artist_username,
-                //we want to recursively check all of the tuples until amount is 0
-                if($row['no_of_share_bought'] > $temp)
+                $status = updateArtistShareholder($conn, $buyer, $artist, $new_share_amount_buyer);
+                if($status == StatusCodes::ErrGeneric)
                 {
-                    $sql = "UPDATE buy_history SET no_of_share_bought = no_of_share_bought - '$temp' WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
-                    if($conn->query($sql) == TRUE)
-                    {
-                        $status = StatusCodes::Success;
-                    }   
-                    else
-                    {
-                        $status = StatusCodes::ErrGeneric;
-                        return $status;
-                    }
-                    break;
+                    return $status;
                 }
-                else if($row['no_of_share_bought'] == $temp)
-                {
-                    $sql = "UPDATE buy_history SET no_of_share_bought = 0 WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
-                    if($conn->query($sql) == TRUE)
-                    {
-                        $status = StatusCodes::Success;
-                    }   
-                    else
-                    {
-                        $status = StatusCodes::ErrGeneric;
-                        return $status;
-                    }
-                    break;
-                }
-                else
-                {
-                    $sql = "UPDATE buy_history SET no_of_share_bought = 0 WHERE user_username = '$uname' AND artist_username = '$aname' AND seller_username = '$sname' AND date_purchased = '$d' AND time_purchased = '$t'";
-                    if($conn->query($sql) == TRUE)
-                    {
-                        $status = StatusCodes::Success;
-                    }   
-                    else
-                    {
-                        $status = StatusCodes::ErrGeneric;
-                        return $status;
-                    }
-                    
-                    $temp -= $row['no_of_share_bought'];
-                }
+            }
+
+            //Decrease the number of shares the seller is currently holding of the artist
+            $current_share_amount_seller = $res_seller->fetch_assoc();
+            $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount;
+
+            $status = updateArtistShareholder($conn, $seller, $artist, $new_share_amount_seller);
+            if($status == StatusCodes::ErrGeneric)
+            {
+                return $status;
             }
 
             if($indicator == "AUTO_PURCHASE")
@@ -1044,6 +1020,7 @@
             {
                 $status = StatusCodes::ErrGeneric;
             }
+
             return $status;
         }
 

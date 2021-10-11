@@ -25,11 +25,11 @@ function fetchMarketPrice($artist_username)
     $_SESSION['shares_owned'] = 0;
 
     $conn = connect();
-    $search_1 = searchSpecificInvestment($conn, $_SESSION['username'], $_SESSION['selected_artist']);
-    if ($search_1->num_rows > 0) {
-        while ($row = $search_1->fetch_assoc()) {
-            $_SESSION['shares_owned'] += $row['no_of_share_bought'];
-        }
+    $search_1 = searchSharesInArtistShareHolders($conn, $_SESSION['username'], $_SESSION['selected_artist']);
+    if($search_1->num_rows != 0)
+    {
+        $row = $search_1->fetch_assoc();
+        $_SESSION['shares_owned'] = $row['shares_owned'];
     }
 
     $search_2 = searchArtistCurrentPricePerShare($conn, $_SESSION['selected_artist']);
