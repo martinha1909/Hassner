@@ -44,6 +44,17 @@
             return $result;
         }
 
+        function searchSharesInArtistShareHolders($conn, $user_username, $artist_username)
+        {
+            $sql = "SELECT shares_owned FROM artist_shareholders WHERE user_username = ? AND artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $user_username, $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchUsersInvestment($conn, $user_username)
         {
             $sql = "SELECT * FROM buy_history WHERE user_username = ?";
@@ -647,6 +658,20 @@
                 return $status;
             }
 
+            $res = searchSharesInArtistShareHolders($conn, $buyer, $artist);
+            //if the buyer has not invested in the artist, add a row
+            if($res->num_rows == 0)
+            {
+                $status = addArtistShareholder($conn, $buyer, $artist, $amount);
+            }
+            //otherwise just update the new shares owned of the user towards the artist
+            else
+            {
+                $current_share_amount = $res->fetch_assoc();
+                $new_share_amount = $current_share_amount['shares_owned'] + $amount;
+                $status = updateArtistShareholder($conn, $buyer, $artist, $new_share_amount);
+            }
+
             return $status;
         }
 
@@ -1006,6 +1031,22 @@
             $conn->query($sql);
         }
 
+        function updateArtistShareholder($conn, $shareholder_username, $artist_username, $new_share_amount)
+        {
+            $status = 0;
+            
+            $sql = "UPDATE artist_shareholders SET shares_owned = '$new_share_amount' WHERE user_username = '$shareholder_username' AND artist_username = '$artist_username'";
+            if($conn->query($sql) == TRUE)
+            {
+                $status = StatusCodes::Success;
+            }
+            else
+            {
+                $status = StatusCodes::ErrGeneric;
+            }
+            return $status;
+        }
+
         function addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date, $time)
         {
             $status = 0;
@@ -1022,6 +1063,23 @@
                     VALUES(?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('isisss', $injection_id, $artist_username, $share_distributing, $date, $time, $comment);
+            if($stmt->execute() == TRUE)
+            {
+                $status = StatusCodes::Success;
+            }
+            else
+            {
+                $status = StatusCodes::ErrGeneric;
+            }
+            return $status;
+        }
+
+        function addArtistShareholder($conn, $shareholder_username, $artist_username, $amount)
+        {
+            $sql = "INSERT INTO artist_shareholders (user_username, artist_username, shares_owned)
+                    VALUES(?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssi', $shareholder_username, $artist_username, $amount);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;
