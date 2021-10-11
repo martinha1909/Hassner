@@ -120,11 +120,11 @@ function askedPriceInit()
                     <table class="table">
                         <thead>
                             <tr>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">#</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Seller username</th>
+                                <th scope="col">Price per share(q̶)</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">+</th>
                             </tr>
                         </thead>
                         <tbody>';

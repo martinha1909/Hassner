@@ -301,15 +301,15 @@
                                 
                                 if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
                                 {
-                                    if($_SESSION['status'] == "NUM_ERR")
+                                    if($_SESSION['status'] == StatusCodes::ErrNum)
                                     {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Please enter in number format", "");
+                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                        getStatusMessage("Please enter in number format", "");
                                     }
-                                    else if($_SESSION['status'] == "EMPTY_ERR")
+                                    else if($_SESSION['status'] == StatusCodes::ErrEmpty)
                                     {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Please fill out all fields", "");
+                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                        getStatusMessage("Please fill out all fields", "");
                                     }
                                 }
 
@@ -387,6 +387,18 @@
                                 }
 
                                 sellOrderInit();
+
+                                if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
+                                {
+                                    if($_SESSION['status'] == StatusCodes::Success)
+                                    {
+                                        getStatusMessage("", "Shares bought back successfully");
+                                    }
+                                    else if($_SESSION['status'] == StatusCodes::ErrGeneric)
+                                    {
+                                        getStatusMessage("An unexpected error occured", "");
+                                    }
+                                }
 
                                 askedPriceInit();
                                 echo '
