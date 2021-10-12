@@ -7,12 +7,13 @@ if(!defined('MENUOPTION_LOADED')){
 
         //listener side
         const Portfolio = "PORTFOLIO";
+        const Artists = "ARTISTS";
 
         //artist side
         const Ethos = "ETHOS";
+        const Investors = "INVESTORS";
 
         //both 
-        const Artists = "ARTISTS";
         const Siliqas = "SILIQAS";
         const Account = "ACCOUNT";
         const Campaign = "CAMPAIGN";
