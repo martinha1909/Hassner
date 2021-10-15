@@ -24,11 +24,10 @@
     function dateParser($date)
     {
         $date_parser = explode("-", $date);
-        $day = dayToText($date_parser[0]);
         $month = monthToText($date_parser[1]);
         $year = "20".$date_parser[2];
 
-        $ret = $month." ".$day.", ".$year;
+        $ret = $month." ".$date_parser[0].", ".$year;
 
         return $ret;
     }
@@ -44,47 +43,23 @@
         return timeToText($time_parser[0], $time_parser[1]);
     }
 
-    function dayToText($day)
-    {
-        $last_char = substr($day, -1);
-
-        if($last_char == "1")
-        {
-            $day = $day."st";
-        }
-        else if($last_char == "2")
-        {
-            $day = $day."nd";
-        }
-        else if($last_char == "3")
-        {
-            $day = $day."rd";
-        }
-        else
-        {
-            $day = $day."th";
-        }
-
-        return $day;
-    }
-
     function monthToText($month)
     {
         if($month == "01")
         {
-            $month = "January";
+            $month = "Jan";
         }
         else if($month == "02")
         {
-            $month = "February";
+            $month = "Feb";
         }
         else if($month == "03")
         {
-            $month = "March";
+            $month = "Mar";
         }
         else if($month == "04")
         {
-            $month = "April";
+            $month = "Apr";
         }
         else if($month == "05")
         {
@@ -92,31 +67,31 @@
         }
         else if($month == "06")
         {
-            $month = "June";
+            $month = "Jun";
         }
         else if($month == "07")
         {
-            $month = "July";
+            $month = "Jul";
         }
         else if($month == "08")
         {
-            $month = "August";
+            $month = "Aug";
         }
         else if($month == "09")
         {
-            $month = "September";
+            $month = "Sep";
         }
         else if($month == "10")
         {
-            $month = "October";
+            $month = "Oct";
         }
         else if($month == "11")
         {
-            $month = "November";
+            $month = "Nov";
         }
         else if($month == "12")
         {
-            $month = "December";
+            $month = "Dec";
         }
 
         return $month;
