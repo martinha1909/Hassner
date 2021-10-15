@@ -6,7 +6,7 @@
 
         //h - Represent hour in 12-hour format with leading zeros (01 to 12)
         //H - Represent hour in in 24-hour format with leading zeros (00 to 23)
-        $date = date('d-m-y H:i:s');
+        $date = date('d-m-Y H:i:s');
         return $date;
     }
 
@@ -25,9 +25,8 @@
     {
         $date_parser = explode("-", $date);
         $month = monthToText($date_parser[1]);
-        $year = "20".$date_parser[2];
 
-        $ret = $month." ".$date_parser[0].", ".$year;
+        $ret = $month." ".$date_parser[0].", ".$date_parser[2];
 
         return $ret;
     }
@@ -138,12 +137,12 @@
     {
         $ret = TRUE;
         //if the year is in the past, we give an error
-        if($exp_day[0] < ($release_day[2] + 2000))
+        if($exp_day[0] < $release_day[2])
         {
             $ret = FALSE;
         }
         //If the year is the same as the current year, we check the month
-        else if($exp_day[0] == ($release_day[2] + 2000))
+        else if($exp_day[0] == $release_day[2])
         {
             //if the month is less than the current month, we return false
             if($exp_day[1] < $release_day[1])
@@ -238,7 +237,7 @@
         }
         else
         {
-            $pre_formatted_current = $day_rn[0]."-".$day_rn[1]."-20".$day_rn[2]." ".$current_time;
+            $pre_formatted_current = $day_rn[0]."-".$day_rn[1]."-".$day_rn[2]." ".$current_time;
             $pre_formatted_exp = $date_expires." ".$time_expires.":00";
             $now = new DateTime($pre_formatted_current);
             $now->format('d-m-Y H:i:s');
