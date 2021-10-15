@@ -625,6 +625,24 @@
                 $status = StatusCodes::ErrGeneric;
             }
 
+            $res = searchSharesInArtistShareHolders($conn, $buyer, $artist);
+            //if the buyer has not invested in the artist, add a row
+            if($res->num_rows == 0)
+            {
+                $status = addArtistShareholder($conn, $buyer, $artist, $amount);
+                if($status == StatusCodes::ErrGeneric)
+                {
+                    return $status;
+                }
+            }
+            //otherwise just update the new shares owned of the user towards the artist
+            else
+            {
+                $current_share_amount = $res->fetch_assoc();
+                $new_share_amount = $current_share_amount['shares_owned'] + $amount;
+                $status = updateArtistShareholder($conn, $buyer, $artist, $new_share_amount);
+            }
+
             return $status;
         }
 

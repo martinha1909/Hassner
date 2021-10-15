@@ -125,11 +125,11 @@
                         ';
                     }
 
-                    if ($_SESSION['display'] == MenuOption::Artists) {
+                    if ($_SESSION['display'] == MenuOption::Investors) {
                         echo '
                             <li class="selected-no-hover list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Artists">
+                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Investors">
                                 </form>
                             </li>
                         ';
@@ -137,7 +137,7 @@
                         echo '
                             <li class="list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Artists">
+                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Investors">
                                 </form>
                             </li>
                         ';
@@ -440,7 +440,7 @@
                     //Sell siliqas to USD/CAD/EUR
                     else if ($_SESSION['display'] == MenuOption::Siliqas) {
                         siliqasInit();
-                    } else if ($_SESSION['display'] == MenuOption::Artists) {
+                    } else if ($_SESSION['display'] == MenuOption::Investors) {
                     }
                     ?>
                 </div>
