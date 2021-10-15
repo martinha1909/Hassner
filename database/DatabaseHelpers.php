@@ -1,6 +1,17 @@
 <?php
     include '../backend/constants/AccountTypes.php';
 
+    function searchShareholdersByArtist($conn, $artist_username)
+    {
+        $sql = "SELECT artist_username, user_username FROM artist_shareholders WHERE artist_username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $artist_username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result;
+    }
+
     function deleteInjectionHistory($conn, $username)
     {
         $sql = "DELETE FROM inject_history WHERE artist_username = ?";
@@ -50,6 +61,21 @@
         $stmt->execute();
     }
 
+    function deleteArtistShareholders($conn, $username)
+    {
+        $res = searchShareholdersByArtist($conn, $username);
+        if($res->num_rows > 0)
+        {
+            while($row = $res->fetch_assoc())
+            {
+                $sql = "DELETE FROM artist_shareholders WHERE artist_username = ? AND user_username = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ss', $username, $row['user_username']);
+                $stmt->execute();
+            }
+        }
+    }
+
     function cleanDatabase($conn)
     {
         $sql = "SELECT * FROM account";
@@ -86,9 +112,13 @@
             $query = "UPDATE account SET Market_cap = 0 WHERE username='$username'";
             $conn->query($query);
 
+            $query = "UPDATE account SET shares_repurchase = 0 WHERE username='$username'";
+            $conn->query($query);
+
             deleteShareTables($conn, $account_type, $username);
             deleteInjectionHistory($conn, $username);
             deleteCampaigns($conn, $username);
+            deleteArtistShareholders($conn, $username);
         }
     }
 
@@ -107,6 +137,7 @@
             deleteShareTables($conn, $account_type, $username);
             deleteInjectionHistory($conn, $username);
             deleteCampaigns($conn, $username);
+            deleteArtistShareholders($conn, $username);
 
             $sql = "DELETE FROM account WHERE username = ?";
             $stmt = $conn->prepare($sql);
@@ -127,6 +158,9 @@
         $conn->query($sql);
 
         $sql = "DROP TABLE campaign";
+        $conn->query($sql);
+
+        $sql = "DROP TABLE artist_shareholders";
         $conn->query($sql);
 
         $sql = "DROP TABLE account";

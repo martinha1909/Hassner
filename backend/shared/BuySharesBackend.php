@@ -112,8 +112,7 @@
                                                               $_SESSION['seller_toggle'],
                                                               $date_parser[0],
                                                               $date_parser[1],
-                                                              "NONE");
-                refreshUserArtistShareTable();
+                                                              "AUTO_PURCHASE");
                 refreshSellOrderTable();
                 refreshBuyOrderTable();
             }
@@ -131,12 +130,14 @@
                                                     $seller_new_balance, 
                                                     $seller_new_share_amount, 
                                                     $buyer_new_share_amount,
+                                                    $_SESSION['current_pps']['price_per_share'],
                                                     $new_pps, 
                                                     $amount_bought,
                                                     $_SESSION['seller_toggle'],
-                                                    $sell_order_info['selling_price']);
-                
-                refreshUserArtistShareTable();
+                                                    $sell_order_info['selling_price'],
+                                                    $date_parser[0],
+                                                    $date_parser[1]);
+
                 refreshSellOrderTable();
                 refreshBuyOrderTable();
             }
