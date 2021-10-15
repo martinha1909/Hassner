@@ -11,7 +11,7 @@
     }
 
     //first index of return array will contain current date, second index will contain current time
-    //date will have format of DD-MM-YY
+    //date will have format of DD-MM-YYYY
     function dayAndTimeSplitter($date)
     {
         return explode(" ", $date);
@@ -20,7 +20,7 @@
     //return array will have:
     //First index: day (DD)
     //Second index: month(MM)
-    //Third index: year(YY)
+    //Third index: year(YYYY)
     function dateParser($date)
     {
         $date_parser = explode("-", $date);
@@ -128,7 +128,7 @@
     * @param  	exp_time	    $exp_day	expiration time (combine with the day) to be determined if in the future or not
     *                                       has format of HH:MM
     * @param  	release_day	    $exp_day	current day to compare to expiration date
-    *                                       has format of DD-MM-YY
+    *                                       has format of DD-MM-YYYY
     * @param  	release_time	$exp_day	current time (combine with the current day) to compare to expiration date
     *                                       has format of HH:MM:SS
     * @return 	ret	a boolean, true if the expiration date is in the future, false otherwise
