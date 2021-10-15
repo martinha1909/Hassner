@@ -97,7 +97,7 @@
             //portion and increase the price per share by the amount they bought back
             if($_SESSION['account_type'] == AccountType::User)
             {
-                $_SESSION['status'] = purchaseAskedPriceShare($conn, 
+                $_SESSION['status'] = purchaseAskedPriceShare($connPDO, 
                                                               $_SESSION['username'], 
                                                               $account_info['username'], 
                                                               $_SESSION['selected_artist'],
@@ -124,7 +124,7 @@
                 //we are subtracting here because we will add this amount to share_repurchase column
                 $buyer_new_share_amount = $artist_account_info['Shares'] - $amount_bought;
 
-                $_SESSION['status'] = buyBackShares($conn, 
+                $_SESSION['status'] = buyBackShares($connPDO, 
                                                     $_SESSION['username'], 
                                                     $sell_order_info['user_username'], 
                                                     $buyer_new_balance, 
