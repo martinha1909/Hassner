@@ -52,6 +52,10 @@ include '../../backend/listener/SearchArtistHelpers.php';
         </div>
     </section>
 
+    <?php
+    frontendTicker();
+    ?>
+
     <div class="container my-auto mx-auto col-6">
         <section class="py-6 mx-auto" id="login">
             <div class="container-fluid">
