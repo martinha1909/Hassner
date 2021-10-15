@@ -8,6 +8,7 @@
     $_SESSION['logging_mode'] = LogModes::BUY_SHARE;
 
     $conn = connect();
+    $connPDO = connectPDO();
     $amount_bought = $_POST['purchase_quantity'];
     if($_SESSION['buy_asked_price'] == 1)
     {
@@ -52,7 +53,7 @@
 
             //in the case of buying with market price, the price per share doesn't change
             $new_pps = $_SESSION['current_pps']['price_per_share'];
-            $_SESSION['status'] = purchaseMarketPriceShare($conn, 
+            $_SESSION['status'] = purchaseMarketPriceShare($connPDO, 
                                                            $_SESSION['username'], 
                                                            $_SESSION['selected_artist'], 
                                                            $buyer_new_balance, 
