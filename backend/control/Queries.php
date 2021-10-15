@@ -591,73 +591,31 @@
             $status = 0;
             try {
                 $conn->beginTransaction();
+
                 $conn->exec("UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE account SET Shares = Shares + '$amount' WHERE username = '$artist'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$buyer'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE account SET balance = '$artist_new_balance' WHERE username = '$artist'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                              VALUES('$buyer', '$artist', '$artist', '$buyer_new_share_amount', '$inital_pps', '$date_purchased', '$time_purchased')");
+                
+                $search_conn = connect();
+                $res = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);
+                //if the buyer has not invested in the artist, add a row
+                if($res->num_rows == 0)
+                {
+                    $conn->exec("INSERT INTO artist_shareholders (user_username, artist_username, shares_owned)
+                                 VALUES('$buyer', '$artist', '$amount')");
+                }
+                //otherwise just update the new shares owned of the user towards the artist
+                else
+                {
+                    $current_share_amount = $res->fetch_assoc();
+                    $new_share_amount = $current_share_amount['shares_owned'] + $amount;
+                    $conn->exec("UPDATE artist_shareholders SET shares_owned = '$new_share_amount' WHERE user_username = '$buyer' AND artist_username = '$artist'");
+                }
+
                 $conn->commit();
                 $status = StatusCodes::Success;
             } catch (PDOException $e) {
@@ -665,44 +623,6 @@
                 echo "Failed: " . $e->getMessage();
 
                 $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            $search_conn = connect();
-            $res = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);
-            //if the buyer has not invested in the artist, add a row
-            if($res->num_rows == 0)
-            {
-                try {
-                    $conn->beginTransaction();
-                    $conn->exec("INSERT INTO artist_shareholders (user_username, artist_username, shares_owned)
-                                 VALUES('$buyer', '$artist', '$amount')");
-                    $conn->commit();
-                    $status = StatusCodes::Success;
-                } catch (PDOException $e) {
-                    $conn->rollBack();
-                    echo "Failed: " . $e->getMessage();
-    
-                    $status = StatusCodes::ErrGeneric;
-                    return $status;
-                }
-            }
-            //otherwise just update the new shares owned of the user towards the artist
-            else
-            {
-                $current_share_amount = $res->fetch_assoc();
-                $new_share_amount = $current_share_amount['shares_owned'] + $amount;
-                try {
-                    $conn->beginTransaction();
-                    $conn->exec("UPDATE artist_shareholders SET shares_owned = '$new_share_amount' WHERE user_username = '$buyer' AND artist_username = '$artist'");
-                    $conn->commit();
-                    $status = StatusCodes::Success;
-                } catch (PDOException $e) {
-                    $conn->rollBack();
-                    echo "Failed: " . $e->getMessage();
-    
-                    $status = StatusCodes::ErrGeneric;
-                }
             }
 
             return $status;
@@ -714,151 +634,58 @@
 
             try {
                 $conn->beginTransaction();
+
                 $conn->exec("UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = '$buyer'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
 
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            //If the user is the seller, we want to decrease the total number of shares owned by the user
-            //But if the user is an artist, we want to reduce the amount of shares that was bought back,
-            //the total number of shares bought of that artist is still the same
-            if($_SESSION['account_type'] == AccountType::User)
-            {
-                try {
-                    $conn->beginTransaction();
+                //If the user is the seller, we want to decrease the total number of shares owned by the user
+                //But if the user is an artist, we want to reduce the amount of shares that was bought back,
+                //the total number of shares bought of that artist is still the same
+                if($_SESSION['account_type'] == AccountType::User)
+                {
                     $conn->exec("UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = '$seller'");
-                    $conn->commit();
-                    $status = StatusCodes::Success;
-                } catch (PDOException $e) {
-                    $conn->rollBack();
-                    echo "Failed: " . $e->getMessage();
-    
-                    $status = StatusCodes::ErrGeneric;
-                    return $status;
                 }
-            }
-            else if($_SESSION['account_type'] == AccountType::Artist)
-            {
-                try {
-                    $conn->beginTransaction();
+                else if($_SESSION['account_type'] == AccountType::Artist)
+                {
                     $conn->exec("UPDATE account SET shares_repurchase = shares_repurchase - '$amount' WHERE username = '$seller'");
-                    $conn->commit();
-                    $status = StatusCodes::Success;
-                } catch (PDOException $e) {
-                    $conn->rollBack();
-                    echo "Failed: " . $e->getMessage();
-    
-                    $status = StatusCodes::ErrGeneric;
-                    return $status;
                 }
-            }
 
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$buyer'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE account SET balance = '$seller_new_balance' WHERE username = '$seller'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                              VALUES('$buyer', '$seller', '$artist', '$amount', '$initial_pps', '$date_purchased', '$time_purchased')");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
 
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            $search_conn = connect();
-            $res_buyer = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);
-            $res_seller = searchSharesInArtistShareHolders($search_conn, $seller, $artist);
-            //if the buyer has not invested in the artist, add a row
-            if($res_buyer->num_rows == 0)
-            {
-                try {
-                    $conn->beginTransaction();
+                $search_conn = connect();
+                $res_buyer = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);
+                $res_seller = searchSharesInArtistShareHolders($search_conn, $seller, $artist);
+                //if the buyer has not invested in the artist, add a row
+                if($res_buyer->num_rows == 0)
+                {
                     $conn->exec("INSERT INTO artist_shareholders (user_username, artist_username, shares_owned)
-                                 VALUES('$buyer', '$artist', '$amount')");
-                    $conn->commit();
-                    $status = StatusCodes::Success;
-                } catch (PDOException $e) {
-                    $conn->rollBack();
-                    echo "Failed: " . $e->getMessage();
-    
-                    $status = StatusCodes::ErrGeneric;
-                    return $status;
+                                    VALUES('$buyer', '$artist', '$amount')");
                 }
-            }
-            //otherwise just update the new shares owned of the user towards the artist
-            else
-            {
-                $current_share_amount_buyer = $res_buyer->fetch_assoc();
-                $new_share_amount_buyer = $current_share_amount_buyer['shares_owned'] + $amount;
-
-                try {
-                    $conn->beginTransaction();
+                //otherwise just update the new shares owned of the user towards the artist
+                else
+                {
+                    $current_share_amount_buyer = $res_buyer->fetch_assoc();
+                    $new_share_amount_buyer = $current_share_amount_buyer['shares_owned'] + $amount;
                     $conn->exec("UPDATE artist_shareholders SET shares_owned = '$new_share_amount_buyer' WHERE user_username = '$buyer' AND artist_username = '$artist'");
-                    $conn->commit();
-                    $status = StatusCodes::Success;
-                } catch (PDOException $e) {
-                    $conn->rollBack();
-                    echo "Failed: " . $e->getMessage();
-    
-                    $status = StatusCodes::ErrGeneric;
-                    return $status;
                 }
-            }
-
-            //Decrease the number of shares the seller is currently holding of the artist
-            $current_share_amount_seller = $res_seller->fetch_assoc();
-            $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount;
-
-            try {
-                $conn->beginTransaction();
+    
+                //Decrease the number of shares the seller is currently holding of the artist
+                $current_share_amount_seller = $res_seller->fetch_assoc();
+                $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount;
                 $conn->exec("UPDATE artist_shareholders SET shares_owned = '$new_share_amount_seller' WHERE user_username = '$seller' AND artist_username = '$artist'");
+                
+                if($indicator == "AUTO_PURCHASE")
+                {
+                    $conn->exec("UPDATE sell_order SET no_of_share = no_of_share - '$amount' WHERE id = '$order_id'");
+                }
+                else if($indicator == "AUTO_SELL")
+                {
+                    $conn->exec("UPDATE buy_order SET quantity = quantity - '$amount' WHERE id = '$order_id'");
+                }
+
                 $conn->commit();
                 $status = StatusCodes::Success;
             } catch (PDOException $e) {
@@ -866,37 +693,6 @@
                 echo "Failed: " . $e->getMessage();
 
                 $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            if($indicator == "AUTO_PURCHASE")
-            {
-                try {
-                    $conn->beginTransaction();
-                    $conn->exec("UPDATE sell_order SET no_of_share = no_of_share - '$amount' WHERE id = '$order_id'");
-                    $conn->commit();
-                    $status = StatusCodes::Success;
-                } catch (PDOException $e) {
-                    $conn->rollBack();
-                    echo "Failed: " . $e->getMessage();
-    
-                    $status = StatusCodes::ErrGeneric;
-                    return $status;
-                }
-            }
-            else if($indicator == "AUTO_SELL")
-            {
-                try {
-                    $conn->beginTransaction();
-                    $conn->exec("UPDATE buy_order SET quantity = quantity - '$amount' WHERE id = '$order_id'");
-                    $conn->commit();
-                    $status = StatusCodes::Success;
-                } catch (PDOException $e) {
-                    $conn->rollBack();
-                    echo "Failed: " . $e->getMessage();
-    
-                    $status = StatusCodes::ErrGeneric;
-                }
             }
 
             return $status;
@@ -908,144 +704,37 @@
 
             try {
                 $conn->beginTransaction();
+
                 $conn->exec("UPDATE account SET balance = '$buyer_new_balance' WHERE username = '$artist_username'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE account SET balance = '$seller_new_balance' WHERE username = '$seller_username'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = '$seller_username'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE account SET price_per_share = '$new_pps' WHERE username = '$artist_username'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE account SET shares_repurchase = shares_repurchase + '$amount_bought' WHERE username = '$artist_username'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                              VALUES('$artist_username', '$seller_username', '$artist_username', '$amount_bought', '$initial_pps', '$date_purchased', '$time_purchased')");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
 
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            $search_conn = connect();
-            $res_buyer = searchSharesInArtistShareHolders($search_conn, $artist_username, $artist_username);
-            $res_seller = searchSharesInArtistShareHolders($search_conn, $seller_username, $artist_username);
-            //if this is the first time the artist has bought back shares, add a row
-            if($res_buyer->num_rows == 0)
-            {
-
-                try {
-                    $conn->beginTransaction();
+                $search_conn = connect();
+                $res_buyer = searchSharesInArtistShareHolders($search_conn, $artist_username, $artist_username);
+                $res_seller = searchSharesInArtistShareHolders($search_conn, $seller_username, $artist_username);
+                //if this is the first time the artist has bought back shares, add a row
+                if($res_buyer->num_rows == 0)
+                {
                     $conn->exec("INSERT INTO artist_shareholders (user_username, artist_username, shares_owned)
                                  VALUES('$artist_username', '$artist_username', '$amount_bought')");
-                    $conn->commit();
-                    $status = StatusCodes::Success;
-                } catch (PDOException $e) {
-                    $conn->rollBack();
-                    echo "Failed: " . $e->getMessage();
-    
-                    $status = StatusCodes::ErrGeneric;
-                    return $status;
                 }
-            }
-            //otherwise just update the amount of shares that were bought back
-            else
-            {
-                $current_share_amount = $res_buyer->fetch_assoc();
-                $new_share_amount = $current_share_amount['shares_owned'] + $amount_bought;
-
-                try {
-                    $conn->beginTransaction();
+                //otherwise just update the amount of shares that were bought back
+                else
+                {
+                    $current_share_amount = $res_buyer->fetch_assoc();
+                    $new_share_amount = $current_share_amount['shares_owned'] + $amount_bought;
                     $conn->exec("UPDATE artist_shareholders SET shares_owned = '$new_share_amount' WHERE user_username = '$artist_username' AND artist_username = '$artist_username'");
-                    $conn->commit();
-                    $status = StatusCodes::Success;
-                } catch (PDOException $e) {
-                    $conn->rollBack();
-                    echo "Failed: " . $e->getMessage();
-    
-                    $status = StatusCodes::ErrGeneric;
-                    return $status;
                 }
-            }
 
-            //Decrease the number of shares the seller is currently holding of the artist
-            $current_share_amount_seller = $res_seller->fetch_assoc();
-            $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount_bought;
-
-            try {
-                $conn->beginTransaction();
+                $current_share_amount_seller = $res_seller->fetch_assoc();
+                $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount_bought;
                 $conn->exec("UPDATE artist_shareholders SET shares_owned = '$new_share_amount_seller' WHERE user_username = '$seller_username' AND artist_username = '$artist_username'");
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-                return $status;
-            }
-
-            try {
-                $conn->beginTransaction();
                 $conn->exec("UPDATE sell_order SET no_of_share = no_of_share - '$amount_bought' WHERE id = '$sell_order_id'");
+
                 $conn->commit();
                 $status = StatusCodes::Success;
             } catch (PDOException $e) {
