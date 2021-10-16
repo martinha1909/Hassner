@@ -66,6 +66,17 @@
             return $result;
         }
 
+        function searchArtistBuyBackShares($conn, $artist_username)
+        {
+            $sql = "SELECT price_per_share_when_bought, date_purchase, time_purchase, no_of_share_bought FROM buy_history WHERE user_username = ? AND artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $artist_username, $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchSpecificInvestment($conn, $user_username, $invested_artist)
         {
             $sql = "SELECT * FROM buy_history WHERE user_username = ? AND artist_username = ?";
