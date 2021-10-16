@@ -3,6 +3,7 @@
     include '../../backend/artist/ArtistHelpers.php';
     include '../../backend/shared/MarketplaceHelpers.php';
     include '../../backend/constants/ShareInteraction.php';
+    include '../../backend/constants/TradeHistoryType.php';
     include '../../backend/shared/CampaignHelpers.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
@@ -406,6 +407,7 @@
                                         </table>
                                 ';
                             
+                            //Buy Back shares history 
                             echo '
                                 <div class="col-6">
                                     <h3 class="h3-blue py-2">Buy Back Shares History</h3>
@@ -447,6 +449,8 @@
                                         </tbody>
                                     </table>
                             ';
+
+                            tradeHistoryInit($_SESSION['username']);
 
                             echo '<h3>Inject history</h3>';
 

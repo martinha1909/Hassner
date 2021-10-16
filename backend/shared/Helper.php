@@ -21,6 +21,9 @@
         $_SESSION['siliqas_or_fiat'] = 0;
         $_SESSION['share_distribute'] = 0;
         $_SESSION['buy_options'] = 0;
+        $_SESSION['trade_history_from'] = 0;
+        $_SESSION['trade_history_to'] = 0;
+        $_SESSION['trade_history_type'] = 0;
         //conversion rate from CAD to Siliqas, 1 CAD = 0.95 Sililqas (brute force for now)
         $_SESSION['conversion_rate'] = -0.05;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
@@ -30,11 +33,11 @@
     {
         if($_SESSION['status'] == StatusCodes::ErrGeneric)
         {
-            echo '<p style="color: red;">'.$err_msg.'</p>';
+            echo '<p class="error-msg">'.$err_msg.'</p>';
         }
         else if($_SESSION['status'] == StatusCodes::Success)
         {
-            echo '<p style="color: green;">'.$suc_msg.'</p>';
+            echo '<p class="suc-msg">'.$suc_msg.'</p>';
         }
 
         $_SESSION['status'] = 0;

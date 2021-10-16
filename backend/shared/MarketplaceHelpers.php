@@ -877,4 +877,98 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
             array_push($time_purchase, $time);
         }
     }
+
+    function tradeHistoryInit($username)
+    {
+        //Price displays the highest and lowest trades of the day
+        //Volumn displays how many total shares of the artist that was traded that day
+        //Value displays total amount of siliqas that was traded of the artist that day
+        //Trades displays the total number of trades that day
+        echo '
+            <div class="col-6">
+                <h3 class="h3-blue py-2">Trade History</h3>
+                <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
+                    <h6>From</h6>
+                    <input type="date" name="trade_history_from">
+                    <h6>To</h6>
+                    <input type="date" name="trade_history_to">
+                    <input type="submit" class="cursor-context" role="button" aria-pressed="true" value="->">
+                </form>
+        ';
+
+        //By default we display all shares bought activity
+        if ($_SESSION['trade_history_type'] == 0) 
+        {
+            echo '
+                <form action="../../backend/shared/TradeHistoryTypeSwitcher.php" method="post">
+                <div style="float:none; margin:auto;" class="select-dark">
+                        <select name="trade_history_type" id="dark" onchange="this.form.submit()">
+                            <option selected disabled>'.TradeHistoryType::SHARE_BOUGHT.'</option>
+                            <option value="share repurchase">shares repurchase</option>
+                            <option value="share repurchase">shares bought</option>
+                        </select>
+                </div>
+                </form>
+            ';
+            $_SESSION['trade_history_type'] = TradeHistoryType::SHARE_BOUGHT;
+        } 
+        else
+        {
+            echo '
+                <form action="../../backend/shared/TradeHistoryTypeSwitcher.php" method="post">
+                <div style="float:none; margin:auto;" class="select-dark">
+                        <select name="trade_history_type" id="dark" onchange="this.form.submit()">
+                            <option selected disabled>' . $_SESSION['trade_history_type'] . '</option>
+                            <option value="'.TradeHistoryType::SHARE_REPURCHASE.'">'.TradeHistoryType::SHARE_REPURCHASE.'</option>
+                            <option value="'.TradeHistoryType::SHARE_BOUGHT.'">'.TradeHistoryType::SHARE_BOUGHT.'</option>
+                        </select>
+                </div>
+                </form>
+            ';
+        }
+        
+        if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_from'] == 0)
+        {
+            echo '<p class="error-msg">Please choose a range</p>';
+        }
+        else
+        {
+            echo '
+                        <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Volumn</th>
+                                <th scope="col">Value</th>
+                                <th scope="col">Trades</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                </div>
+            ';
+            $dates = array();
+            $prices = array();
+            $volumns = array();
+            $values = array();
+            $trades = array();
+
+            for ($i = 0; $i < sizeof($dates); $i++) {
+                echo '
+                            <tr>
+                                <td>' . $dates[$i] . '</td>
+                                <td>' . $prices[$i] . '</td>
+                                <td>' . $volumns[$i] . '</td>
+                                <td>' . $values[$i] . '</td>
+                                <td>' . $trades[$i] . '</td>
+                            </tr>
+                ';
+            }
+        }
+
+        echo '
+                    </tbody>
+                </table>
+        ';
+    }
 ?>

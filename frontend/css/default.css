@@ -10672,3 +10672,11 @@ a#dashboard-hover:hover {
   border:1px transparent; 
   background-color: transparent;
 }
+
+.error-msg {
+  color: red;
+}
+
+.suc-msg {
+  color: green;
+}
