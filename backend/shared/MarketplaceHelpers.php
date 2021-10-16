@@ -967,6 +967,9 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
             }
             else
             {
+                $_SESSION['trade_history_from'] = reformatDate($_SESSION['trade_history_from']);
+                $_SESSION['trade_history_to'] = reformatDate($_SESSION['trade_history_to']);
+
                 //Price displays the highest and lowest trades of the day
                 //Volumn displays how many total shares of the artist that was traded that day
                 //Value displays total amount of siliqas that was traded of the artist that day
@@ -977,7 +980,7 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                             <thead>
                                 <tr>
                                     <th scope="col">Date</th>
-                                    <th scope="col">Price</th>
+                                    <th scope="col">Price(HIGH/LOW)</th>
                                     <th scope="col">Volumn</th>
                                     <th scope="col">Value</th>
                                     <th scope="col">Trades</th>
@@ -986,33 +989,64 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                             <tbody>
                     </div>
                 ';
-                $dates = array();
-                $prices = array();
-                $volumns = array();
-                $values = array();
-                $trades = array();
 
+                $trade_history_list = new TradeHistoryList();
+
+                //Fetching arrays if shares repurchase was chosen
                 if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_REPURCHASE)
                 {
-                    $res = searchUsersInvestment($conn, $username);
+                    $res = searchArtistBuyBackShares($conn, $username);
                     while($row = $res->fetch_assoc())
                     {
+                        //only display the dates that are in the range that the user chose
+                        if(isInRange($row['date_purchased'], $_SESSION['trade_history_from'], $_SESSION['trade_history_to']))
+                        {
+                            if($trade_history_list->isListEmpty())
+                            {
+                                $item = new TradeHistoryItem($row['date_purchased']);
+                                $item->addPrice($row['price_per_share_when_bought']);
+                                $item->addValue($row['price_per_share_when_bought']);
+                                $item->addVolumn($row['no_of_share_bought']);
+                                $item->addTrade();
 
+                                $trade_history_list->addItem($item);
+                            }
+                            else
+                            {
+                                if($trade_history_list->dateHasExisted($row['date_purchased']))
+                                {
+                                    $trade_history_list->addToExistedDate($row['date_purchased'],
+                                                                          $row['price_per_share_when_bought'],
+                                                                          $row['no_of_share_bought']);
+                                }
+                                else
+                                {
+                                    $item = new TradeHistoryItem($row['date_purchased']);
+                                    $item->addPrice($row['price_per_share_when_bought']);
+                                    $item->addValue($row['price_per_share_when_bought']);
+                                    $item->addVolumn($row['no_of_share_bought']);
+                                    $item->addTrade();
+                                }
+                            }
+                        }
                     }
                 }
+                //Fetching arrays if shares bought was chosen
                 else if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_BOUGHT)
                 {
 
                 }
 
-                for ($i = 0; $i < sizeof($dates); $i++) {
+                $trade_history_list->finalize();
+
+                for ($i = 0; $i < $trade_history_list->getListSize(); $i++) {
                     echo '
                                 <tr>
-                                    <td>' . $dates[$i] . '</td>
-                                    <td>' . $prices[$i] . '</td>
-                                    <td>' . $volumns[$i] . '</td>
-                                    <td>' . $values[$i] . '</td>
-                                    <td>' . $trades[$i] . '</td>
+                                    <td>' . $trade_history_list->getIndex($i)->getDate() . '</td>
+                                    <td>' . $trade_history_list->getIndex($i)->getFinalizeMin() . '/'.$trade_history_list->getIndex($i)->getFinalizeMax().'</td>
+                                    <td>' . $trade_history_list->getIndex($i)->getFinalizeVolumn() . '</td>
+                                    <td>' . $trade_history_list->getIndex($i)->getFinalizeValue() . '</td>
+                                    <td>' . $trade_history_list->getIndex($i)->getTrade() . '</td>
                                 </tr>
                     ';
                 }

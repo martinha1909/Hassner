@@ -7,6 +7,9 @@
     include '../../backend/shared/CampaignHelpers.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
+    include '../../backend/object/TradeHistory.php';
+    include '../../backend/object/TradeHistoryList.php';
+    include '../../backend/object/Node.php';
 
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
