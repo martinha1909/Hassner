@@ -123,6 +123,8 @@
                 //we are subtracting here because we will add this amount to share_repurchase column
                 $buyer_new_share_amount = $artist_account_info['Shares'] - $amount_bought;
 
+                $new_pps = $_SESSION['purchase_price'];
+
                 $_SESSION['status'] = buyBackShares($conn, 
                                                     $_SESSION['username'], 
                                                     $sell_order_info['user_username'], 
