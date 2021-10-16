@@ -1001,6 +1001,8 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                         //only display the dates that are in the range that the user chose
                         if(isInRange($row['date_purchased'], $_SESSION['trade_history_from'], $_SESSION['trade_history_to']))
                         {
+                            // echo $row['date_purchased'];
+                            // echo "<br>";
                             if($trade_history_list->isListEmpty())
                             {
                                 $item = new TradeHistoryItem($row['date_purchased']);
@@ -1026,6 +1028,8 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                                     $item->addValue($row['price_per_share_when_bought']);
                                     $item->addVolumn($row['no_of_share_bought']);
                                     $item->addTrade();
+
+                                    $trade_history_list->addItem($item);
                                 }
                             }
                         }
