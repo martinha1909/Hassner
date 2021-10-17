@@ -128,27 +128,26 @@
             return $ret;
         }
 
-        function toString(): string
+        function printList()
         {
-            $ret = "";
-            // $temp = new Node();
-            // $temp = $this->head;
-            // if($temp != null) 
-            // {
-            //     $ret .= "The list contains: <br>";
-            //     while($temp != null) 
-            //     {
-            //         $ret .= $temp->getData()->toString()."<br>";
-            //         $temp = $temp->getNext();
-            //     }
-            //     $ret .= "\n";
-            // } 
-            // else 
-            // {
-            //     $ret .= "The list is empty.\n";
-            // }
+            if($this->size > 0)
+            {
+                $current_node = $this->head;
+                while($current_node != NULL)
+                {
+                    echo '
+                                <tr>
+                                    <td>' . $current_node->getData()->getDate() . '</td>
+                                    <td>' . $current_node->getData()->getFinalizeMin() . '/'.$current_node->getData()->getFinalizeMax().'</td>
+                                    <td>' . $current_node->getData()->getFinalizeVolumn() . '</td>
+                                    <td>' . $current_node->getData()->getFinalizeValue() . '</td>
+                                    <td>' . $current_node->getData()->getTrade() . '</td>
+                                </tr>
+                    ';
 
-            return $ret;
+                    $current_node = $current_node->getNext();
+                }
+            }
         }
     }
 ?>

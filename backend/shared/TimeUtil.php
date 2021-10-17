@@ -375,9 +375,9 @@
     {
         $ret = "Error in reformatting date";
 
-        $date_split = explode("-", $date);
-        //reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
-        $ret = $date_split[2]."-".$date_split[1]."-".$date_split[0];
+        // reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
+        $date = new DateTime($date);
+        $ret = $date->format('d-m-Y');
 
         return $ret;
     }

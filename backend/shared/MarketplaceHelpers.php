@@ -882,6 +882,10 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
     {
         $conn = connect();
 
+        echo $_SESSION['trade_history_from'];
+        echo "<br>";
+        echo $_SESSION['trade_history_to'];
+
         if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
         {
             echo '
@@ -967,9 +971,6 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
             }
             else
             {
-                $_SESSION['trade_history_from'] = reformatDate($_SESSION['trade_history_from']);
-                $_SESSION['trade_history_to'] = reformatDate($_SESSION['trade_history_to']);
-
                 //Price displays the highest and lowest trades of the day
                 //Volumn displays how many total shares of the artist that was traded that day
                 //Value displays total amount of siliqas that was traded of the artist that day
@@ -1041,19 +1042,12 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
                 }
 
-                $trade_history_list->finalize();
-
-                for ($i = 0; $i < $trade_history_list->getListSize(); $i++) {
-                    echo '
-                                <tr>
-                                    <td>' . $trade_history_list->getIndex($i)->getDate() . '</td>
-                                    <td>' . $trade_history_list->getIndex($i)->getFinalizeMin() . '/'.$trade_history_list->getIndex($i)->getFinalizeMax().'</td>
-                                    <td>' . $trade_history_list->getIndex($i)->getFinalizeVolumn() . '</td>
-                                    <td>' . $trade_history_list->getIndex($i)->getFinalizeValue() . '</td>
-                                    <td>' . $trade_history_list->getIndex($i)->getTrade() . '</td>
-                                </tr>
-                    ';
+                if($trade_history_list->getListSize() > 0)
+                {
+                    $trade_history_list->finalize();
                 }
+
+                $trade_history_list->printList();
             }
 
             echo '
