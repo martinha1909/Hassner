@@ -592,13 +592,15 @@
             try {
                 $conn->beginTransaction();
 
-                $stmt = $conn->prepare("UPDATE account SET Shares = Shares + '$amount' WHERE username = ?");
-                $stmt->bindValue(1, $buyer);
-                $stmt->execute(array($buyer));
+                $stmt = $conn->prepare("UPDATE account SET Shares = Shares + ? WHERE username = ?");
+                $stmt->bindValue(1, $amount);
+                $stmt->bindValue(2, $buyer);
+                $stmt->execute(array($amount, $buyer));
 
-                $stmt = $conn->prepare("UPDATE account SET Shares = Shares + '$amount' WHERE username = ?");
-                $stmt->bindValue(1, $artist);
-                $stmt->execute(array($artist));
+                $stmt = $conn->prepare("UPDATE account SET Shares = Shares + ? WHERE username = ?");
+                $stmt->bindValue(1, $amount);
+                $stmt->bindValue(2, $artist);
+                $stmt->execute(array($amount, $artist));
 
                 $stmt = $conn->prepare("UPDATE account SET balance = '$buyer_new_balance' WHERE username = ?");
                 $stmt->bindValue(1, $buyer);
@@ -680,9 +682,10 @@
                 }
                 else if($_SESSION['account_type'] == AccountType::Artist)
                 {
-                    $stmt = $conn->prepare("UPDATE account SET shares_repurchase = shares_repurchase - '$amount' WHERE username = ?");
-                    $stmt->bindValue(1, $seller);
-                    $stmt->execute(array($seller));
+                    $stmt = $conn->prepare("UPDATE account SET shares_repurchase = shares_repurchase - ? WHERE username = ?");
+                    $stmt->bindValue(1, $amount);
+                    $stmt->bindValue(2, $seller);
+                    $stmt->execute(array($amount, $seller));
                 }
 
                 $stmt = $conn->prepare("UPDATE account SET balance = '$buyer_new_balance' WHERE username = ?");
@@ -742,15 +745,17 @@
                 
                 if($indicator == "AUTO_PURCHASE")
                 {
-                    $stmt = $conn->prepare("UPDATE sell_order SET no_of_share = no_of_share - '$amount' WHERE id = ?");
-                    $stmt->bindValue(1, $order_id);
-                    $stmt->execute(array($order_id));
+                    $stmt = $conn->prepare("UPDATE sell_order SET no_of_share = no_of_share - ? WHERE id = ?");
+                    $stmt->bindValue(1, $amount);
+                    $stmt->bindValue(2, $order_id);
+                    $stmt->execute(array($amount, $order_id));
                 }
                 else if($indicator == "AUTO_SELL")
                 {
-                    $stmt = $conn->prepare("UPDATE buy_order SET quantity = quantity - '$amount' WHERE id = ?");
-                    $stmt->bindValue(1, $order_id);
-                    $stmt->execute(array($order_id));
+                    $stmt = $conn->prepare("UPDATE buy_order SET quantity = quantity - ? WHERE id = ?");
+                    $stmt->bindValue(1, $amount);
+                    $stmt->bindValue(2, $order_id);
+                    $stmt->execute(array($amount, $order_id));
                 }
 
                 $conn->commit();
@@ -788,9 +793,10 @@
                 $stmt->bindValue(1, $artist_username);
                 $stmt->execute(array($artist_username));
                 
-                $stmt = $conn->prepare("UPDATE account SET shares_repurchase = shares_repurchase + '$amount_bought' WHERE username = ?");
-                $stmt->bindValue(1, $artist_username);
-                $stmt->execute(array($artist_username));
+                $stmt = $conn->prepare("UPDATE account SET shares_repurchase = shares_repurchase + ? WHERE username = ?");
+                $stmt->bindValue(1, $amount_bought);
+                $stmt->bindValue(2, $artist_username);
+                $stmt->execute(array($amount_bought, $artist_username));
                 
                 $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                                         VALUES(?, ?, ?, ?, ?, ?, ?)");
@@ -835,10 +841,10 @@
                 $stmt->bindValue(2, $artist_username);
                 $stmt->execute(array($seller_username, $artist_username));
                 
-                $stmt = $conn->prepare("UPDATE sell_order SET no_of_share = no_of_share - '$amount_bought' WHERE id = ?");
-                $stmt->bindValue(1, $sell_order_id);
-                $stmt->execute(array($sell_order_id));
-                $conn->exec("UPDATE sell_order SET no_of_share = no_of_share - '$amount_bought' WHERE id = '$sell_order_id'");
+                $stmt = $conn->prepare("UPDATE sell_order SET no_of_share = no_of_share - ? WHERE id = ?");
+                $stmt->bindValue(1, $amount_bought);
+                $stmt->bindValue(2, $sell_order_id);
+                $stmt->execute(array($amount_bought, $sell_order_id));
 
                 $conn->commit();
                 $status = StatusCodes::Success;
