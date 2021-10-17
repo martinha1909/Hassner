@@ -1,15 +1,15 @@
 <?php
-    include '../../backend/control/Dependencies.php';
-    include '../../backend/shared/MarketplaceHelpers.php';
-    include '../../backend/shared/CampaignHelpers.php';
-    include '../../backend/constants/LoggingModes.php';
-    include '../../backend/object/ParticipantList.php';
-    include '../../backend/object/CampaignParticipant.php';
+include '../../backend/control/Dependencies.php';
+include '../../backend/shared/MarketplaceHelpers.php';
+include '../../backend/shared/CampaignHelpers.php';
+include '../../backend/constants/LoggingModes.php';
+include '../../backend/object/ParticipantList.php';
+include '../../backend/object/CampaignParticipant.php';
 
-    $account = getAccount($_SESSION['username']);
-    $_SESSION['user_balance'] = $account['balance'];
+$account = getAccount($_SESSION['username']);
+$_SESSION['user_balance'] = $account['balance'];
 
-    checkRaffleRoll();
+checkRaffleRoll();
 ?>
 
 <!doctype html>
@@ -60,7 +60,7 @@
     <section id="login">
         <div class="container-fluid">
             <div class="row">
-                <ul class="list-group">
+                <ul class="list-group bg-dark">
                     <?php
                     checkRaffleRoll();
                     //By default My Portfolio is selected
@@ -336,9 +336,7 @@
                                         </div>
                                     ';
                             }
-                        }
-
-                        else if($_SESSION['display'] == MenuOption::Campaign) {
+                        } else if ($_SESSION['display'] == MenuOption::Campaign) {
                             $artists = array();
                             $offerings = array();
                             $progress = array();
@@ -347,18 +345,19 @@
                             $owned_ethos = array();
                             $types = array();
                             $chances = array();
-                            fetchInvestedArtistCampaigns($_SESSION['username'], 
-                                                         $artists, 
-                                                         $offerings, 
-                                                         $progress, 
-                                                         $time_left, 
-                                                         $minimum_ethos,
-                                                         $owned_ethos,
-                                                         $types,
-                                                         $chances);
+                            fetchInvestedArtistCampaigns(
+                                $_SESSION['username'],
+                                $artists,
+                                $offerings,
+                                $progress,
+                                $time_left,
+                                $minimum_ethos,
+                                $owned_ethos,
+                                $types,
+                                $chances
+                            );
 
-                            if(sizeof($offerings) > 0)
-                            {
+                            if (sizeof($offerings) > 0) {
                                 echo '
                                     <table class="table">
                                         <thead>
@@ -377,38 +376,34 @@
                                         <tbody>
                                 ';
 
-                                for($i = 0; $i < sizeof($artists); $i++)
-                                {
+                                for ($i = 0; $i < sizeof($artists); $i++) {
                                     echo '
                                                 <tr>
-                                                    <th>'.$artists[$i].'</th>
-                                                    <td>'.$offerings[$i].'</td>
-                                                    <td>'.round($progress[$i], 2).'%</td>
-                                                    <td>'.$time_left[$i].'</td>
-                                                    <td>'.$minimum_ethos[$i].'</td>
-                                                    <td>'.$owned_ethos[$i].'</td>
+                                                    <th>' . $artists[$i] . '</th>
+                                                    <td>' . $offerings[$i] . '</td>
+                                                    <td>' . round($progress[$i], 2) . '%</td>
+                                                    <td>' . $time_left[$i] . '</td>
+                                                    <td>' . $minimum_ethos[$i] . '</td>
+                                                    <td>' . $owned_ethos[$i] . '</td>
                                     ';
-                                    if($chances[$i] != -1)
-                                    {
+                                    if ($chances[$i] != -1) {
                                         echo '
                                                         <form action="../../backend/listener/IncreaseChanceBackend.php" method="post">
-                                                            <td>'.$chances[$i].'%<input name = "artist_name['.$artists[$i].']" type = "submit" id="abc" class="no-background" role="button" aria-pressed="true" value = " +"></td>
+                                                            <td>' . $chances[$i] . '%<input name = "artist_name[' . $artists[$i] . ']" type = "submit" id="abc" class="no-background" role="button" aria-pressed="true" value = " +"></td>
                                                         </form>
                                         ';
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         echo '
                                                         <td>N/A</td>
                                         ';
                                     }
 
                                     echo '
-                                                    <td>'.$types[$i].'</td>
+                                                    <td>' . $types[$i] . '</td>
                                                 </tr>
                                     ';
                                 }
-                                echo'
+                                echo '
                                             </tbody>
                                         </table>
                                 ';
@@ -420,20 +415,21 @@
                             $winners = array();
                             $time_releases = array();
                             $types = array();
-                            fetchParticipatedCampaigns($_SESSION['username'], 
-                                                       $artists, 
-                                                       $offerings, 
-                                                       $minimum_ethos,
-                                                       $winners,
-                                                       $time_releases,
-                                                       $types);
-                            
+                            fetchParticipatedCampaigns(
+                                $_SESSION['username'],
+                                $artists,
+                                $offerings,
+                                $minimum_ethos,
+                                $winners,
+                                $time_releases,
+                                $types
+                            );
+
                             echo '
                                 <div class="py-6">
                                     <h4>Campaign that you participated</h4>
                             ';
-                            if(sizeof($offerings) > 0)
-                            {
+                            if (sizeof($offerings) > 0) {
                                 echo '
                                         <table class="table">
                                             <thead>
@@ -449,43 +445,37 @@
                                             <tbody>
                                 ';
 
-                                for($i = 0; $i < sizeof($artists); $i++)
-                                {
-                                    if($winners[$i] == $_SESSION['username'])
-                                    {
+                                for ($i = 0; $i < sizeof($artists); $i++) {
+                                    if ($winners[$i] == $_SESSION['username']) {
                                         echo '
                                                     <tr>
-                                                        <th class="campaign_winner">'.$artists[$i].'</th>
-                                                        <td class="campaign_winner">'.$offerings[$i].'</td>
-                                                        <td class="campaign_winner">'.$minimum_ethos[$i].'</td>
-                                                        <td class="campaign_winner">'.$winners[$i].'</td>
-                                                        <td class="campaign_winner">'.$types[$i].'</td>
-                                                        <td class="campaign_winner">'.$time_releases[$i].'</td>
+                                                        <th class="campaign_winner">' . $artists[$i] . '</th>
+                                                        <td class="campaign_winner">' . $offerings[$i] . '</td>
+                                                        <td class="campaign_winner">' . $minimum_ethos[$i] . '</td>
+                                                        <td class="campaign_winner">' . $winners[$i] . '</td>
+                                                        <td class="campaign_winner">' . $types[$i] . '</td>
+                                                        <td class="campaign_winner">' . $time_releases[$i] . '</td>
                                                     </tr>
                                         ';
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         echo '
                                                     <tr>
-                                                        <th>'.$artists[$i].'</th>
-                                                        <td>'.$offerings[$i].'</td>
-                                                        <td>'.$minimum_ethos[$i].'</td>
-                                                        <td>'.$winners[$i].'</td>
-                                                        <td>'.$types[$i].'</td>
-                                                        <td>'.$time_releases[$i].'</td>
+                                                        <th>' . $artists[$i] . '</th>
+                                                        <td>' . $offerings[$i] . '</td>
+                                                        <td>' . $minimum_ethos[$i] . '</td>
+                                                        <td>' . $winners[$i] . '</td>
+                                                        <td>' . $types[$i] . '</td>
+                                                        <td>' . $time_releases[$i] . '</td>
                                                     </tr>
                                         ';
                                     }
                                 }
-                                echo'
+                                echo '
                                                 </tbody>
                                             </table>
                                     </div>
                                 ';
-                            }
-                            else
-                            {
+                            } else {
                                 echo '<h5>No campaigns participated</h5>';
                             }
                         }
@@ -529,18 +519,17 @@
                             echo '
                                     <section id="login">
                                         <div class="container">
-                                            <div class="col-4 mx-auto my-auto text-center">
-                                                <h3 class="h3-blue py-4">Verify your password to access personal page</h3>
+                                            <div class="text-center">
+                                                <h3 class="h3-blue">Verify your password to access personal page</h3>
                                                 <form action="../../backend/listener/PersonalPageBackend.php" method="post">
-                                                    <div class="form-group">
-                                                        <h5>Password</h5>
+                                                    <div class="form-group col-4 mx-auto">
                                                         <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">';
                             if ($_SESSION['logging_mode'] == LogModes::PERSONAL) {
                                 getStatusMessage("Incorrect Password, please try again", "");
                             }
                             echo '
                                                     </div>
-                                                    <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                    <div class="text-center">
                                                         <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
                                                     </div>
                                                 </form>
