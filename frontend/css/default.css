@@ -113,6 +113,14 @@ p {
   color: #e2cda9ff;
 }
 
+.markup-green {
+  color: green;
+}
+
+.markup-red {
+  color: red;
+}
+
 abbr[title],
 abbr[data-original-title] {
   text-decoration: underline;
@@ -473,8 +481,8 @@ small,
 
 mark,
 .mark {
-  padding: 0.2em;
-  background-color: #fcf8e3;
+  padding: 0em;
+  background-color: transparent;
 }
 
 .list-unstyled {
@@ -4424,10 +4432,9 @@ input[type="button"].btn-block {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #263238;
+  background-color: #ffffff;
   background-clip: border-box;
   border: 0px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.3rem;
 }
 .card > hr {
   margin-right: 0;
@@ -10669,6 +10676,6 @@ a#dashboard-hover:hover {
 }
 
 .no-background {
-  border:1px transparent; 
+  border: 1px transparent;
   background-color: transparent;
 }
