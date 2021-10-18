@@ -49,7 +49,7 @@ include '../../backend/constants/LoggingModes.php';
       echo '
             <form action="../../backend/shared/UpdateEmailBackend.php" method="post">
               <div class="form-group py-2">
-                <input type="text" name = "email_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new email address">
+                <input type="text" name = "email_edit" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new email address">
               </div>
               <div class="text-center">
                 <input type = "submit" class="my_btn edit-btn" role="button" aria-pressed="true" name = "button" value = "Save">  
@@ -77,7 +77,7 @@ include '../../backend/constants/LoggingModes.php';
       echo '
           <form action="../../backend/shared/UpdatePasswordBackend.php" method="post">
             <div class="form-group py-2">
-              <input type="password" name = "pwd_edit" class="form-control form-control-sm" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new password">
+              <input type="password" name = "pwd_edit" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new password">
             </div>
             <div class="text-center">
               <input type = "submit" class="my_btn edit-btn" role="button" aria-pressed="true" name = "button" value = "Save">  
@@ -89,9 +89,9 @@ include '../../backend/constants/LoggingModes.php';
     ?>
     <section class="middle-card">
       <h1 id="h1-sm">Payment info</h1>
-      <p><i style="color: white;" class="fa fa-user"></i> Name on card: <?php
-                                                                        echo $account_info['Full_name'];
-                                                                        ?></p>
+      <p><i class="fa fa-user"></i> Name on card: <?php
+                                                  echo $account_info['Full_name'];
+                                                  ?></p>
     </section>
 
     <!-- Displaying card number of personal page -->
@@ -103,32 +103,32 @@ include '../../backend/constants/LoggingModes.php';
 
     <!-- Displaying billing address of personal page -->
     <section class="middle-card">
-      <p><i style="color: white;" class="fas fa-map-marker-alt"></i> Billing Address: <?php
-                                                                                      echo $account_info['billing_address'];
-                                                                                      ?></p>
+      <p><i class="fas fa-map-marker-alt"></i> Billing Address: <?php
+                                                                echo $account_info['billing_address'];
+                                                                ?></p>
     </section>
 
     <!-- Displaying billing info of personal page -->
 
     <!-- Displaying city -->
     <section class="middle-card">
-      <p><i style="color: white;" class="fas fa-location-arrow"></i> City: <?php
-                                                                            echo $account_info['City'];
-                                                                            ?></p>
+      <p><i class="fas fa-location-arrow"></i> City: <?php
+                                                      echo $account_info['City'];
+                                                      ?></p>
     </section>
 
     <!-- Displaying state -->
     <section class="middle-card">
-      <p><i style="color: white;" class="fas fa-archway"></i> State: <?php
-                                                                      echo $account_info['State'];
-                                                                      ?></p>
+      <p><i class="fas fa-archway"></i> State: <?php
+                                                echo $account_info['State'];
+                                                ?></p>
     </section>
 
     <!-- Displaying zip code -->
     <section class="middle-card">
-      <p><i style="color: white;" class="fas fa-align-justify"></i> Zip: <?php
-                                                                          echo $account_info['ZIP'];
-                                                                          ?></p>
+      <p><i class="fas fa-align-justify"></i> Zip: <?php
+                                                    echo $account_info['ZIP'];
+                                                    ?></p>
     </section>
 
     <!-- Displaying transit number -->
