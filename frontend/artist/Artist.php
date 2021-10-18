@@ -285,8 +285,10 @@ checkRaffleRoll();
                     }
 
                     //Artist's portfolio
-                    else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) {
-                        if ($account_info['Share_Distributed'] == 0) {
+                    else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) 
+                    {
+                        if ($account_info['Share_Distributed'] == 0) 
+                        {
                             echo '
                                         <form action="../../backend/artist/DistributeShareBackend.php" method="post">
 
@@ -300,29 +302,28 @@ checkRaffleRoll();
                                             <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
                                         </div>';
                                 
-                                if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
+                            if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
+                            {
+                                if($_SESSION['status'] == StatusCodes::ErrNum)
                                 {
-                                    if($_SESSION['status'] == StatusCodes::ErrNum)
-                                    {
-                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                        getStatusMessage("Please enter in number format", "");
-                                    }
-                                    else if($_SESSION['status'] == StatusCodes::ErrEmpty)
-                                    {
-                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                        getStatusMessage("Please fill out all fields", "");
-                                    }
+                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                    getStatusMessage("Please enter in number format", "");
+                                }
+                                else if($_SESSION['status'] == StatusCodes::ErrEmpty)
+                                {
+                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                    getStatusMessage("Please fill out all fields", "");
                                 }
                             }
 
                             echo '
 
-                                        <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
-                                        </div>
+                                    <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                        <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
+                                    </div>
 
-                                        </form>
-                                    ';
+                                    </form>
+                            ';
                         } else {
                             $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
                             $market_cap = calculateMarketCap($_SESSION['username']);
