@@ -12,6 +12,8 @@ if(!defined('STATUSCODES_LOADED')){
         const ErrEmailDuplicate = "DUPL_EMAIL_ERR";
         const ErrEmailFormat = "EMAIL_FORMAT_ERR";
         const ErrNotEnough = "NOT_ENOUGH_ERR";
+        const ErrTickerDuplicate = "DUPL_TICKER_ERR";
+        const ErrTickerFormat = "TICKER_FORMAT_ERR";
         const CampaignEmpty = "CAMPAIGN_EMPTY_ERR";
         const CampaignTimeErr = "CAMPAIGN_TIME_ERR";
     }

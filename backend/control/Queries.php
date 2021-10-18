@@ -2,6 +2,8 @@
         include '../../backend/constants/StatusCodes.php';
         include '../../backend/constants/AccountTypes.php';
         
+        $connPDO = connectPDO();
+
         //logs in with provided user info and password, then use SQL query to query database 
         //after qurerying return the result
         function login($conn, $username, $pwd) // done2
@@ -32,6 +34,24 @@
             $stmt->execute();
             $result = $stmt->get_result();
             return $result;
+        }
+
+        function searchTicker($conn, $ticker)
+        {
+            try
+            {
+                $sql = "SELECT ticker FROM artist_account_data WHERE ticker = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindValue(1, $ticker);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                return $result;
+            }
+            catch(PDOException $e)
+            {
+                echo 'SQL error: ' + $e;
+            }
+            
         }
 
         function searchAccountType($conn, $type)
@@ -349,7 +369,7 @@
             return $result;
         }
 
-        function signup($conn, $username, $password, $type, $email) //done2
+        function signup($conn, $username, $password, $type, $email, $ticker) //done2
         {
             $original_share= "";
             $transit_no = "";
@@ -378,6 +398,7 @@
             $result = getMaxID($conn);
             $row = $result->fetch_assoc(); 
             $id = $row["max_id"] + 1;
+            // TODO: Make this a pdo transaction, then add ticker insert
             $sql = "INSERT INTO account (username, password, account_type, id, Shares, balance, rate, 
                                          Share_Distributed, email, billing_address, Full_name, City, State, ZIP, 
                                          Card_number, Transit_no, Inst_no, Account_no, Swift, price_per_share, 

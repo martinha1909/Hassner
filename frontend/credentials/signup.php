@@ -85,6 +85,11 @@ hassnerInit();
               <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
             </div>
 
+            <div class="form-group artistRadio">
+              <h5>Choose your market ticker</h5>
+              <input type="text" name="ticker" class="form-control" id="signupTicker" placeholder="Ticker" maxlength=4>
+            </div>
+
             <?php
             $status = "";
             if ($_SESSION['status'] == StatusCodes::ErrUsername) {
@@ -106,12 +111,12 @@ hassnerInit();
             <h6 class="h6-tan">Account Type</h6>
             <div>
               <input type="radio" name="account_type" value="user" checked>
-              <label for="huey">Listener</label>
+              <label for="user">Listener</label>
             </div>
 
             <div>
               <input type="radio" name="account_type" value="artist">
-              <label for="dewey">Artist</label>
+              <label for="artist">Artist</label>
             </div>
 
             <!-- register button -->
@@ -139,7 +144,8 @@ hassnerInit();
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-  <script src="js/scripts.js"></script>
+  <script src="../js/scripts.js"></script>
+  <script src="../js/signup.js"></script>
 </body>
 
 </html>
