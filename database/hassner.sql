@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2021 at 12:53 AM
+-- Generation Time: Oct 12, 2021 at 01:58 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -67,6 +67,18 @@ INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `
 ('NAV', 'artist', 'artist', 3, 0, 0, 0, 0, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('riley', 'user', 'user', 7, 0, 0, 0, 0, 'efin@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('vitor', 'user', 'user', 5, 0, 0, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `artist_shareholders`
+--
+
+CREATE TABLE `artist_shareholders` (
+  `user_username` varchar(20) NOT NULL,
+  `artist_username` varchar(20) NOT NULL,
+  `shares_owned` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -163,6 +175,13 @@ ALTER TABLE `account`
   ADD UNIQUE KEY `id` (`id`);
 
 --
+-- Indexes for table `artist_shareholders`
+--
+ALTER TABLE `artist_shareholders`
+  ADD PRIMARY KEY (`user_username`,`artist_username`),
+  ADD KEY `shareholder_artist_key` (`artist_username`);
+
+--
 -- Indexes for table `buy_history`
 --
 ALTER TABLE `buy_history`
@@ -204,6 +223,13 @@ ALTER TABLE `sell_order`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `artist_shareholders`
+--
+ALTER TABLE `artist_shareholders`
+  ADD CONSTRAINT `shareholder_artist_key` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`),
+  ADD CONSTRAINT `shareholder_username_key` FOREIGN KEY (`user_username`) REFERENCES `account` (`username`);
 
 --
 -- Constraints for table `buy_history`

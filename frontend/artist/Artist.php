@@ -28,6 +28,7 @@ checkRaffleRoll();
     <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
 
     <!-- Bootstrap CSS / Color Scheme -->
+    <link rel="icon" href="../../frontend/Images/hx_tmp_2.ico" type="image/ico">
     <link rel="stylesheet" href="../css/default.css" id="theme-color">
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
     <link rel="stylesheet" href="../css/date_picker.css" type="text/css">
@@ -128,11 +129,11 @@ checkRaffleRoll();
                         ';
                     }
 
-                    if ($_SESSION['display'] == MenuOption::Artists) {
+                    if ($_SESSION['display'] == MenuOption::Investors) {
                         echo '
                             <li class="selected-no-hover list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Artists">
+                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Investors">
                                 </form>
                             </li>
                         ';
@@ -140,7 +141,7 @@ checkRaffleRoll();
                         echo '
                             <li class="list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Artists">
+                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Investors">
                                 </form>
                             </li>
                         ';
@@ -284,8 +285,10 @@ checkRaffleRoll();
                     }
 
                     //Artist's portfolio
-                    else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) {
-                        if ($account_info['Share_Distributed'] == 0) {
+                    else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) 
+                    {
+                        if ($account_info['Share_Distributed'] == 0) 
+                        {
                             echo '
                                         <form action="../../backend/artist/DistributeShareBackend.php" method="post">
 
@@ -298,12 +301,16 @@ checkRaffleRoll();
                                             <h5>How many shares are you distributing?</h5>
                                             <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
                                         </div>';
-
-                            if ($_SESSION['logging_mode'] == LogModes::SHARE_DIST) {
-                                if ($_SESSION['status'] == "NUM_ERR") {
+                                
+                            if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
+                            {
+                                if($_SESSION['status'] == StatusCodes::ErrNum)
+                                {
                                     $_SESSION['status'] = StatusCodes::ErrGeneric;
                                     getStatusMessage("Please enter in number format", "");
-                                } else if ($_SESSION['status'] == "EMPTY_ERR") {
+                                }
+                                else if($_SESSION['status'] == StatusCodes::ErrEmpty)
+                                {
                                     $_SESSION['status'] = StatusCodes::ErrGeneric;
                                     getStatusMessage("Please fill out all fields", "");
                                 }
@@ -311,12 +318,12 @@ checkRaffleRoll();
 
                             echo '
 
-                                        <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
-                                        </div>
+                                    <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                        <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
+                                    </div>
 
-                                        </form>
-                                    ';
+                                    </form>
+                            ';
                         } else {
                             $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
                             $market_cap = calculateMarketCap($_SESSION['username']);
@@ -380,11 +387,23 @@ checkRaffleRoll();
 
                             sellOrderInit();
 
+                            if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
+                            {
+                                if($_SESSION['status'] == StatusCodes::Success)
+                                {
+                                    getStatusMessage("", "Shares bought back successfully");
+                                }
+                                else if($_SESSION['status'] == StatusCodes::ErrGeneric)
+                                {
+                                    getStatusMessage("An unexpected error occured", "");
+                                }
+                            }
+
                             askedPriceInit();
                             echo '
-                                            </tbody>
-                                        </table>
-                                ';
+                                        </tbody>
+                                    </table>
+                            ';
 
                             echo '<h3>Inject history</h3>';
 
@@ -420,7 +439,7 @@ checkRaffleRoll();
                     //Sell siliqas to USD/CAD/EUR
                     else if ($_SESSION['display'] == MenuOption::Siliqas) {
                         siliqasInit();
-                    } else if ($_SESSION['display'] == MenuOption::Artists) {
+                    } else if ($_SESSION['display'] == MenuOption::Investors) {
                     }
                     ?>
                 </div>

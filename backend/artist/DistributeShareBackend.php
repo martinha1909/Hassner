@@ -38,7 +38,6 @@
                                     $date_parser[0],
                                     $date_parser[1]);
 
-        $_SESSION['display'] = 0;
         $_SESSION['dependencies'] = "FRONTEND";
 
         header("Location: ../../frontend/artist/Artist.php");

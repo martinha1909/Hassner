@@ -84,7 +84,6 @@
                 }
             }
 
-            refreshUserArtistShareTable();
             refreshSellOrderTable();
             refreshBuyOrderTable();
 
@@ -140,7 +139,6 @@
                     }
                 }
             }
-            refreshUserArtistShareTable();
             refreshSellOrderTable();
             refreshBuyOrderTable();
         }
