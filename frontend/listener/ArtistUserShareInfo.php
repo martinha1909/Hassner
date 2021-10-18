@@ -60,6 +60,7 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
 
     <?php
     fetchMarketPrice($_SESSION['selected_artist']);
+    frontendTicker();
     ?>
 
     <!-- listener functionality -->
