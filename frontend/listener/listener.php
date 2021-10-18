@@ -26,6 +26,7 @@ checkRaffleRoll();
     <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
 
     <!-- Bootstrap CSS / Color Scheme -->
+    <link rel="icon" href="../../frontend/Images/hx_tmp_2.ico" type="image/ico">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/default.css" id="theme-color">
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">

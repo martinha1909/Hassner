@@ -19,6 +19,7 @@
     <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
 
     <!--vendors styles-->
+    <link rel="icon" href="../../frontend/Images/hx_tmp_2.ico" type="image/ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">

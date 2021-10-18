@@ -15,6 +15,7 @@ hassnerInit();
   <meta name="description" content="Hassner is a platform to raise music for artists" />
 
   <!--Inter UI font-->
+  <link rel="icon" href="../../frontend/Images/hx_tmp_2.ico" type="image/ico">
   <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
 
   <!-- Bootstrap CSS / Color Scheme -->

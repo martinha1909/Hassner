@@ -25,6 +25,7 @@ hassnerInit();
     <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
 
     <!-- Bootstrap CSS / Color Scheme -->
+    <link rel="icon" href="../../frontend/Images/hx_tmp_2.ico" type="image/ico">
     <link rel="stylesheet" href="../css/default.css" id="theme-color">
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
 </head>
