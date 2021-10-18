@@ -25,11 +25,11 @@ function fetchMarketPrice($artist_username)
     $_SESSION['shares_owned'] = 0;
 
     $conn = connect();
-    $search_1 = searchSpecificInvestment($conn, $_SESSION['username'], $_SESSION['selected_artist']);
-    if ($search_1->num_rows > 0) {
-        while ($row = $search_1->fetch_assoc()) {
-            $_SESSION['shares_owned'] += $row['no_of_share_bought'];
-        }
+    $search_1 = searchSharesInArtistShareHolders($conn, $_SESSION['username'], $_SESSION['selected_artist']);
+    if($search_1->num_rows != 0)
+    {
+        $row = $search_1->fetch_assoc();
+        $_SESSION['shares_owned'] = $row['shares_owned'];
     }
 
     $search_2 = searchArtistCurrentPricePerShare($conn, $_SESSION['selected_artist']);
@@ -120,11 +120,11 @@ function askedPriceInit()
                     <table class="table">
                         <thead>
                             <tr>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">#</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Seller username</th>
+                                <th scope="col">Price per share(q̶)</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">+</th>
                             </tr>
                         </thead>
                         <tbody>';
@@ -758,14 +758,14 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                 //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
                 $seller_new_balance = $account_info['balance'] + ($row['quantity'] * $asked_price);
 
-                //subtracts siliqas from the user
-                $buyer_new_balance = $_SESSION['user_balance'] - (($row['quantity'] * $asked_price));
-
                 $seller_new_share_amount = $account_info['Shares'] - $row['quantity'];
 
                 $res_1 = searchAccount($conn, $row['user_username']);
                 $buyer_account_info = $res_1->fetch_assoc();
                 $buyer_new_share_amount = $buyer_account_info['Shares'] + $row['quantity'];
+
+                //subtracts siliqas from the user
+                $buyer_new_balance = $buyer_account_info['balance'] - (($row['quantity'] * $asked_price));
 
                 //In the case of buying in asked price, the new market price will become the last purchased price
                 $new_pps = $asked_price;
@@ -805,14 +805,14 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                 //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
                 $seller_new_balance = $account_info['balance'] + ($quantity * $asked_price);
 
-                //subtracts siliqas from the user
-                $buyer_new_balance = $_SESSION['user_balance'] - (($quantity * $asked_price));
-
                 $seller_new_share_amount = $account_info['Shares'] - $quantity;
 
                 $res_1 = searchAccount($conn, $row['user_username']);
                 $buyer_account_info = $res_1->fetch_assoc();
                 $buyer_new_share_amount = $buyer_account_info['Shares'] + $quantity;
+
+                //subtracts siliqas from the user
+                $buyer_new_balance = $buyer_account_info['balance'] - (($quantity * $asked_price));
 
                 //In the case of buying in asked price, the new market price will become the last purchased price
                 $new_pps = $asked_price;

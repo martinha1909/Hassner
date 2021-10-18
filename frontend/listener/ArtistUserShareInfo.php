@@ -89,9 +89,7 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
                                 <th scope="col">Owned Shares</th>
                                 <th scope="col">Shares selling</th>
                                 <th scope="col">Shares requesting</th>
-                                <th scope="col">Artist</th>
                                 <th scope="col">Current price per share (q̶)</th>
-                                <th scope="col">Selling profit per share (q̶)</th>
                                 <th scope="col">Issued Shares</th>
                                 <th scope="col">Available Shares</th>
                             </tr>
@@ -104,9 +102,7 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
                                 <th scope="row"><?php echo $_SESSION['shares_owned']; ?></th>
                                 <td><?php echo getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
                                 <td><?php echo getAmountSharesRequesting($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
-                                <td><?php echo $_SESSION['selected_artist']; ?></td>
                                 <td><?php echo round($_SESSION['current_pps']['price_per_share'], 2); ?></td>
-                                <td><?php echo $_SESSION['profit']; ?> (<?php echo $_SESSION['profit_rate']; ?>%)</td>
                                 <td><?php echo totalShareDistributed($_SESSION['selected_artist']); ?></td>
                                 <td><?php echo $_SESSION['available_shares']; ?></td>
                             </tr>

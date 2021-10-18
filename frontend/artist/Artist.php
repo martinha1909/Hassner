@@ -128,11 +128,11 @@ checkRaffleRoll();
                         ';
                     }
 
-                    if ($_SESSION['display'] == MenuOption::Artists) {
+                    if ($_SESSION['display'] == MenuOption::Investors) {
                         echo '
                             <li class="selected-no-hover list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Artists">
+                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Investors">
                                 </form>
                             </li>
                         ';
@@ -140,7 +140,7 @@ checkRaffleRoll();
                         echo '
                             <li class="list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Artists">
+                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Investors">
                                 </form>
                             </li>
                         ';
@@ -298,14 +298,19 @@ checkRaffleRoll();
                                             <h5>How many shares are you distributing?</h5>
                                             <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
                                         </div>';
-
-                            if ($_SESSION['logging_mode'] == LogModes::SHARE_DIST) {
-                                if ($_SESSION['status'] == "NUM_ERR") {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Please enter in number format", "");
-                                } else if ($_SESSION['status'] == "EMPTY_ERR") {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Please fill out all fields", "");
+                                
+                                if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
+                                {
+                                    if($_SESSION['status'] == StatusCodes::ErrNum)
+                                    {
+                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                        getStatusMessage("Please enter in number format", "");
+                                    }
+                                    else if($_SESSION['status'] == StatusCodes::ErrEmpty)
+                                    {
+                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                        getStatusMessage("Please fill out all fields", "");
+                                    }
                                 }
                             }
 
@@ -380,11 +385,23 @@ checkRaffleRoll();
 
                             sellOrderInit();
 
+                            if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
+                            {
+                                if($_SESSION['status'] == StatusCodes::Success)
+                                {
+                                    getStatusMessage("", "Shares bought back successfully");
+                                }
+                                else if($_SESSION['status'] == StatusCodes::ErrGeneric)
+                                {
+                                    getStatusMessage("An unexpected error occured", "");
+                                }
+                            }
+
                             askedPriceInit();
                             echo '
-                                            </tbody>
-                                        </table>
-                                ';
+                                        </tbody>
+                                    </table>
+                            ';
 
                             echo '<h3>Inject history</h3>';
 
@@ -420,7 +437,7 @@ checkRaffleRoll();
                     //Sell siliqas to USD/CAD/EUR
                     else if ($_SESSION['display'] == MenuOption::Siliqas) {
                         siliqasInit();
-                    } else if ($_SESSION['display'] == MenuOption::Artists) {
+                    } else if ($_SESSION['display'] == MenuOption::Investors) {
                     }
                     ?>
                 </div>
