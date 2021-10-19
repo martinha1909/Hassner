@@ -505,4 +505,91 @@
             }
         }
     }
+
+    function tradeHistoryInit($artist_username)
+    {
+        $conn = connect();
+
+        if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
+        {
+            echo '
+                <div class="col-6">
+                    <h3 class="h3-blue py-2">Trade History</h3>
+                    <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
+                        <h6>From</h6>
+                        <input type="date" name="trade_history_from">
+                        <h6>To</h6>
+                        <input type="date" name="trade_history_to">
+                        <input type="submit" class="cursor-context" role="button" aria-pressed="true" value="->">
+                    </form>
+            ';
+        }
+        else
+        {
+            echo '
+                <div class="col-6">
+                    <h3 class="h3-blue py-2">Trade History</h3>
+                    <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
+                        <h6>From</h6>
+                        <input type="date" name="trade_history_from" value="'.$_SESSION['trade_history_from'].'">
+                        <h6>To</h6>
+                        <input type="date" name="trade_history_to" value="'.$_SESSION['trade_history_to'].'">
+                        <input type="submit" class="cursor-context" role="button" aria-pressed="true" value="->">
+                    </form>
+            ';
+        }
+
+        if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
+        {
+            echo '<p class="error-msg">Please choose a range</p>';
+        }
+        else
+        {
+            $date = explode("-", $_SESSION['trade_history_from']);
+            //reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
+            $from_date = array($date[2], $date[1], $date[0]);
+            //We don't care about time 
+            $time = "00:00:00";
+            $from_time = explode(":", $time);
+            $to_date = explode("-", $_SESSION['trade_history_to']);
+            $time = "00:00";
+            $to_time = explode(":", $time);
+            if(!isInTheFuture($to_date, $from_date, $to_time, $from_time))
+            {
+                echo '<p class="error-msg">To date has to be later than from date</p>';
+            }
+            else
+            {
+                //Price displays the highest and lowest trades of the day
+                //Volumn displays how many total shares of the artist that was traded that day
+                //Value displays total amount of siliqas that was traded of the artist that day
+                //Trades displays the total number of trades that day
+                echo '
+                            <div class="py-4">
+                            <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Price(HIGH/LOW)</th>
+                                    <th scope="col">Volumn</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Trades</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    </div>
+                ';
+                $res = searchSharesBoughtFromArtist($conn, $artist_username);
+                $trade_history_list = populateTradeHistory($conn, $res);
+
+                $trade_history_list->addListToTable();
+
+                echo '
+                            </tbody>
+                        </table>
+                        </div>
+                ';
+            }
+        }
+    }
 ?>

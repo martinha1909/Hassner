@@ -877,4 +877,53 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
             array_push($time_purchase, $time);
         }
     }
+
+    function populateTradeHistory($conn, $query_result): TradeHistoryList
+    {
+        $trade_history_list = new TradeHistoryList();
+
+        while($row = $query_result->fetch_assoc())
+        {
+            //only display the dates that are in the range that the user chose
+            if(isInRange($row['date_purchased'], $_SESSION['trade_history_from'], $_SESSION['trade_history_to']))
+            {
+                if($trade_history_list->isListEmpty())
+                {
+                    $item = new TradeHistoryItem($row['date_purchased']);
+                    $item->addPrice($row['price_per_share_when_bought']);
+                    $item->addValue($row['price_per_share_when_bought']);
+                    $item->addVolumn($row['no_of_share_bought']);
+                    $item->addTrade();
+
+                    $trade_history_list->addItem($item);
+                }
+                else
+                {
+                    if($trade_history_list->dateHasExisted($row['date_purchased']))
+                    {
+                        $trade_history_list->addToExistedDate($row['date_purchased'],
+                                                                $row['price_per_share_when_bought'],
+                                                                $row['no_of_share_bought']);
+                    }
+                    else
+                    {
+                        $item = new TradeHistoryItem($row['date_purchased']);
+                        $item->addPrice($row['price_per_share_when_bought']);
+                        $item->addValue($row['price_per_share_when_bought']);
+                        $item->addVolumn($row['no_of_share_bought']);
+                        $item->addTrade();
+
+                        $trade_history_list->addItem($item);
+                    }
+                }
+            }
+        }
+
+        if($trade_history_list->getListSize() > 0)
+        {
+            $trade_history_list->finalize();
+        }
+
+        return $trade_history_list;
+    }
 ?>
