@@ -167,34 +167,35 @@ checkRaffleRoll();
                     ?>
                 </ul>
 
-                <div class="col">
-                    <?php
-                    //Artist campaigns, including benchmark, raffle, and give aways.
-                    if ($_SESSION['display'] == MenuOption::Campaign) {
-                        $offerings = array();
-                        $time_left = array();
-                        $eligible_participants = array();
-                        $min_ethos = array();
-                        $types = array();
-                        $time_releases = array();
-                        $roll_results = array();
-                        fetchCampaigns(
-                            $_SESSION['username'],
-                            $offerings,
-                            $time_left,
-                            $eligible_participants,
-                            $min_ethos,
-                            $types,
-                            $time_releases,
-                            $roll_results
-                        );
-                        echo '
+                <div class="container my-auto mx-auto col-6">
+                    <div class="col">
+                        <?php
+                        //Artist campaigns, including benchmark, raffle, and give aways.
+                        if ($_SESSION['display'] == MenuOption::Campaign) {
+                            $offerings = array();
+                            $time_left = array();
+                            $eligible_participants = array();
+                            $min_ethos = array();
+                            $types = array();
+                            $time_releases = array();
+                            $roll_results = array();
+                            fetchCampaigns(
+                                $_SESSION['username'],
+                                $offerings,
+                                $time_left,
+                                $eligible_participants,
+                                $min_ethos,
+                                $types,
+                                $time_releases,
+                                $roll_results
+                            );
+                            echo '
                                     <div class="py-4 col-12 mx-auto my-auto text-center">
                                         <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>
                                     </div>
                             ';
-                        if (sizeof($offerings) > 0) {
-                            echo '
+                            if (sizeof($offerings) > 0) {
+                                echo '
                                         <h4>Your other campaigns</h4>
                                         <table class="table">
                                             <thead>
@@ -210,8 +211,8 @@ checkRaffleRoll();
                                             </thead>
                                             <tbody>';
 
-                            for ($i = 0; $i < sizeof($offerings); $i++) {
-                                echo '
+                                for ($i = 0; $i < sizeof($offerings); $i++) {
+                                    echo '
                                                 <tr>
                                                     <th>' . $offerings[$i] . '</th>
                                                     <td>' . $types[$i] . '</td>
@@ -222,35 +223,35 @@ checkRaffleRoll();
                                                     <td>' . $time_releases[$i] . '</td>
                                                 </tr>
                                     ';
-                            }
-                            echo '
+                                }
+                                echo '
                                             </tbody>
                                         </table>
                                 ';
                         }
 
-                        $offerings = array();
-                        $eligible_participants = array();
-                        $min_ethos = array();
-                        $types = array();
-                        $time_releases = array();
-                        $roll_results = array();
-                        fetchExpiredCampaigns(
-                            $_SESSION['username'],
-                            $offerings,
-                            $eligible_participants,
-                            $min_ethos,
-                            $types,
-                            $time_releases,
-                            $roll_results
-                        );
-                        echo '
+                            $offerings = array();
+                            $eligible_participants = array();
+                            $min_ethos = array();
+                            $types = array();
+                            $time_releases = array();
+                            $roll_results = array();
+                            fetchExpiredCampaigns(
+                                $_SESSION['username'],
+                                $offerings,
+                                $eligible_participants,
+                                $min_ethos,
+                                $types,
+                                $time_releases,
+                                $roll_results
+                            );
+                            echo '
                                     <div class="py-6">
                                         <h4 class=>Expired campaigns</h4>
                             ';
 
-                        if (sizeof($offerings) > 0) {
-                            echo '
+                            if (sizeof($offerings) > 0) {
+                                echo '
                                             <table class="table">
                                                 <thead>
                                                     <tr>
@@ -264,8 +265,8 @@ checkRaffleRoll();
                                                 </thead>
                                                 <tbody>';
 
-                            for ($i = 0; $i < sizeof($offerings); $i++) {
-                                echo '
+                                for ($i = 0; $i < sizeof($offerings); $i++) {
+                                    echo '
                                                     <tr>
                                                         <th>' . $offerings[$i] . '</th>
                                                         <td>' . $types[$i] . '</td>
@@ -275,8 +276,8 @@ checkRaffleRoll();
                                                         <td>' . $time_releases[$i] . '</td>
                                                     </tr>
                                     ';
-                            }
-                            echo '
+                                }
+                                echo '
                                                 </tbody>
                                             </table>
                                         </div>
@@ -284,12 +285,10 @@ checkRaffleRoll();
                         }
                     }
 
-                    //Artist's portfolio
-                    else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) 
-                    {
-                        if ($account_info['Share_Distributed'] == 0) 
-                        {
-                            echo '
+                        //Artist's portfolio
+                        else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) {
+                            if ($account_info['Share_Distributed'] == 0) {
+                                echo '
                                         <form action="../../backend/artist/DistributeShareBackend.php" method="post">
 
                                         <div class="form-group">
@@ -301,18 +300,15 @@ checkRaffleRoll();
                                             <h5>How many shares are you distributing?</h5>
                                             <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
                                         </div>';
-                                
-                            if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
-                            {
-                                if($_SESSION['status'] == StatusCodes::ErrNum)
-                                {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Please enter in number format", "");
-                                }
-                                else if($_SESSION['status'] == StatusCodes::ErrEmpty)
-                                {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Please fill out all fields", "");
+
+                                if ($_SESSION['logging_mode'] == LogModes::SHARE_DIST) {
+                                    if ($_SESSION['status'] == "NUM_ERR") {
+                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                        getStatusMessage("Please enter in number format", "");
+                                    } else if ($_SESSION['status'] == "EMPTY_ERR") {
+                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                        getStatusMessage("Please fill out all fields", "");
+                                    }
                                 }
                             }
 
@@ -322,21 +318,21 @@ checkRaffleRoll();
                                         <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
                                     </div>
 
-                                    </form>
-                            ';
-                        } else {
-                            $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
-                            $market_cap = calculateMarketCap($_SESSION['username']);
-                            $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
-                            $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
-                            echo '
+                                        </form>
+                                    ';
+                            } else {
+                                $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
+                                $market_cap = calculateMarketCap($_SESSION['username']);
+                                $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
+                                $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
+                                echo '
                                         <h6>Price Per Share (q̶): ' . $account_info['price_per_share'] . '</h6>
                                         <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
                                             <h6>Volumn: ' . $account_info['Share_Distributed'] . ' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
                                         </form>
                                 ';
-                            if ($_SESSION['share_distribute'] != 0) {
-                                echo '
+                                if ($_SESSION['share_distribute'] != 0) {
+                                    echo '
                                         <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
                                             <p>How many shares would you like to inject?</p>
                                             <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">
@@ -347,15 +343,15 @@ checkRaffleRoll();
                                             </div>
                                         </form>
                                     ';
-                            }
-                            echo '
+                                }
+                                echo '
                                         <h6>Current Shareholders: ' . $shareholder_list->num_rows . '</h6>
                                         <h6>Market cap (q̶): ' . $market_cap . '</h6>
                                         <h6>Day High (q̶): ' . $high . '</h6>
                                         <h6>Day Low (q̶): ' . $low . '</h6>
                                         <br>';
-                            if (artistCanCreateSellOrder($_SESSION['username'])) {
-                                echo '
+                                if (artistCanCreateSellOrder($_SESSION['username'])) {
+                                    echo '
                                             <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
                                                 <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
                                             </form>
@@ -365,9 +361,9 @@ checkRaffleRoll();
                                         <h2>Buy Back Shares</h2>
                                 ';
 
-                            if ($_SESSION['buy_sell'] == ShareInteraction::SELL) {
-                                $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
-                                echo '
+                                if ($_SESSION['buy_sell'] == ShareInteraction::SELL) {
+                                    $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
+                                    echo '
                                         <h6>How many shares are you selling?</h6>
                                         <div class="wrapper-searchbar">
                                             <div class="container-searchbar mx-auto">
@@ -405,27 +401,26 @@ checkRaffleRoll();
                                     </table>
                             ';
 
-                            echo '<h3>Inject history</h3>';
+                                echo '<h3>Inject history</h3>';
 
-                            injectionHistoryInit($_SESSION['username']);
+                                injectionHistoryInit($_SESSION['username']);
+                            }
                         }
-                    }
 
-                    //brings to Artist personal account page, where they can input their metrics, which are shown
-                    //when users search for them and also on their portfolio tab
-                    else if ($_SESSION['display'] == MenuOption::Account) {
-                        echo '
+                        //brings to Artist personal account page, where they can input their metrics, which are shown
+                        //when users search for them and also on their portfolio tab
+                        else if ($_SESSION['display'] == MenuOption::Account) {
+                            echo '
                                 <section id="login">
                                 <div class="container">
                                     <div">
-                                        <div class="col-4 mx-auto my-auto text-center">
-                                            <h3 class="h3-blue py-4">Verify your password to access personal page</h3>
+                                        <div class="text-center">
+                                            <h3 class="h3-blue">Verify your password to access personal page</h3>
                                             <form action="../../backend/artist/PersonalPageBackend.php" method="post">
-                                                <div class="form-group">
-                                                    <h5>Password</h5>
+                                                <div class="form-group col-4 mx-auto">
                                                     <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
                                                 </div>
-                                                <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                <div class="text-center">
                                                     <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
                                                 </div>
                                             </form>
@@ -434,20 +429,20 @@ checkRaffleRoll();
                                     </div>
                                 </section>
                             ';
-                    }
+                        }
 
-                    //Sell siliqas to USD/CAD/EUR
-                    else if ($_SESSION['display'] == MenuOption::Siliqas) {
-                        siliqasInit();
-                    } else if ($_SESSION['display'] == MenuOption::Investors) {
-                    }
-                    ?>
+                        //Sell siliqas to USD/CAD/EUR
+                        else if ($_SESSION['display'] == MenuOption::Siliqas) {
+                            siliqasInit();
+                        } else if ($_SESSION['display'] == MenuOption::Artists) {
+                        }
+                        ?>
+                    </div>
+                    <!-- header -->
+
+
                 </div>
-                <!-- header -->
-
-
             </div>
-        </div>
     </section>
 
     <a class="li-bottom btn btn-secondary" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>

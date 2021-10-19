@@ -1903,7 +1903,7 @@ pre code {
   color: #546e7a;
   background-color: #ffffff;
   background-clip: padding-box;
-  border: 2px solid #cfd8dc;
+  border: 2px solid #ffffff;
   border-radius: 0.3rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -1919,7 +1919,7 @@ pre code {
 .form-control:focus {
   color: #546e7a;
   background-color: #ffffff;
-  border-color: #000000;
+  border-color: #11171a;
   outline: 0;
   box-shadow: none;
 }
