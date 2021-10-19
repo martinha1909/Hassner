@@ -228,7 +228,7 @@ checkRaffleRoll();
                                             </tbody>
                                         </table>
                                 ';
-                        }
+                            }
 
                             $offerings = array();
                             $eligible_participants = array();
@@ -282,8 +282,8 @@ checkRaffleRoll();
                                             </table>
                                         </div>
                                 ';
+                            }
                         }
-                    }
 
                         //Artist's portfolio
                         else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) {
@@ -310,16 +310,15 @@ checkRaffleRoll();
                                         getStatusMessage("Please fill out all fields", "");
                                     }
                                 }
-                            }
 
-                            echo '
+                                echo '
 
-                                    <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                        <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
-                                    </div>
+                                        <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
+                                        </div>
 
-                                        </form>
-                                    ';
+                                            </form>
+                                        ';
                             } else {
                                 $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
                                 $market_cap = calculateMarketCap($_SESSION['username']);
@@ -356,10 +355,10 @@ checkRaffleRoll();
                                                 <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
                                             </form>
                                     ';
-                            }
-                            echo '
-                                        <h2>Buy Back Shares</h2>
-                                ';
+                                }
+                                echo '
+                                            <h2>Buy Back Shares</h2>
+                                    ';
 
                                 if ($_SESSION['buy_sell'] == ShareInteraction::SELL) {
                                     $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
@@ -378,28 +377,24 @@ checkRaffleRoll();
                                             </div>
                                         </div>
                                     ';
-                                $_SESSION['buy_sell'] = 0;
-                            }
-
-                            sellOrderInit();
-
-                            if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
-                            {
-                                if($_SESSION['status'] == StatusCodes::Success)
-                                {
-                                    getStatusMessage("", "Shares bought back successfully");
+                                    $_SESSION['buy_sell'] = 0;
                                 }
-                                else if($_SESSION['status'] == StatusCodes::ErrGeneric)
-                                {
-                                    getStatusMessage("An unexpected error occured", "");
-                                }
-                            }
 
-                            askedPriceInit();
-                            echo '
-                                        </tbody>
-                                    </table>
-                            ';
+                                sellOrderInit();
+
+                                if ($_SESSION['logging_mode'] == LogModes::BUY_SHARE) {
+                                    if ($_SESSION['status'] == StatusCodes::Success) {
+                                        getStatusMessage("", "Shares bought back successfully");
+                                    } else if ($_SESSION['status'] == StatusCodes::ErrGeneric) {
+                                        getStatusMessage("An unexpected error occured", "");
+                                    }
+                                }
+
+                                askedPriceInit();
+                                echo '
+                                            </tbody>
+                                        </table>
+                                ';
 
                                 echo '<h3>Inject history</h3>';
 
