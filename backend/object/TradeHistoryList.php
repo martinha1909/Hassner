@@ -12,15 +12,7 @@
 
         function isListEmpty()
         {
-            //Assume empty
-            $ret = true;
-
-            if($this->size > 0)
-            {
-                $ret = false;
-            }
-
-            return $ret;
+            return ($this->size <= 0);
         }
 
         function dateHasExisted($date): bool
