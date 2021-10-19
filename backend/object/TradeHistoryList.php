@@ -128,7 +128,7 @@
             return $ret;
         }
 
-        function printList()
+        function addListToTable()
         {
             if($this->size > 0)
             {
