@@ -65,9 +65,9 @@
     {
         $ret = $amount;
         $ret = $amount * (1 + $conversion_rate);
-        if($currency_type == Currency::USD)
+        if ($currency_type == Currency::USD)
             $ret *= 1.25;
-        else if($currency_type == Currency::EUR)
+        else if ($currency_type == Currency::EUR)
             $ret *= 1.47;
 
         return $ret;
@@ -77,9 +77,9 @@
     {
         $ret = $amount;
         $ret = $amount / (1 + $conversion_rate);
-        if($currency_type == Currency::USD)
+        if ($currency_type == Currency::USD)
             $ret /= 1.25;
-        else if($currency_type == Currency::EUR)
+        else if ($currency_type == Currency::EUR)
             $ret /= 1.47;
 
         return $ret;
@@ -87,21 +87,18 @@
 
     function returnToMainPage()
     {
-        if($_SESSION['account_type'] == AccountType::User)
-        {
+        if ($_SESSION['account_type'] == AccountType::User) {
             header("Location: ../../frontend/listener/listener.php");
-        }
-        else if($_SESSION['account_type'] ==  AccountType::Artist)
-        {
+        } else if ($_SESSION['account_type'] ==  AccountType::Artist) {
             header("Location: ../../frontend/artist/Artist.php");
         }
     }
 
     function hasEnoughSiliqas($amount_spending, $balance)
     {
-        if($balance >= $amount_spending)
+        if ($balance >= $amount_spending)
             return true;
-        
+
         return false;
     }
 
@@ -118,7 +115,7 @@
 
         return $ret;
     }
-    
+
     //performing insertionSort to targeted arrays with $indicator being either ascending or descending
     //guide_arr is the leading array to sort with indixes correspond to other array indices
     function insertionSort(&$guide_arr, &$arr1, &$arr2, &$arr3, $indicator)
@@ -127,95 +124,116 @@
         $key;
         $key2;
         $j;
-        if($indicator == "Ascending")
-        {
-            for($i=1; $i<sizeof($guide_arr); $i++)
-            {
+        if ($indicator == "Ascending") {
+            for ($i = 1; $i < sizeof($guide_arr); $i++) {
                 $key = $guide_arr[$i];
                 $key2 = $arr1[$i];
                 $key3 = $arr2[$i];
                 $key4 = $arr3[$i];
-                $j = $i-1;
-                while($j >= 0 && $guide_arr[$j] < $key)
-                {
-                    $guide_arr[($j+1)] = $guide_arr[$j];
-                    $arr1[($j+1)] = $arr1[$j];
-                    $arr2[($j+1)] = $arr2[$j];
-                    $arr3[($j+1)] = $arr3[$j];
-                    $j = $j-1;
+                $j = $i - 1;
+                while ($j >= 0 && $guide_arr[$j] < $key) {
+                    $guide_arr[($j + 1)] = $guide_arr[$j];
+                    $arr1[($j + 1)] = $arr1[$j];
+                    $arr2[($j + 1)] = $arr2[$j];
+                    $arr3[($j + 1)] = $arr3[$j];
+                    $j = $j - 1;
                 }
-                $guide_arr[($j+1)] = $key;
-                $arr1[($j+1)] = $key2;
-                $arr2[($j+1)] = $key3;
-                $arr3[($j+1)] = $key4;
-            }                    
-        }
-        else
-        {
-            for($i=1; $i<sizeof($guide_arr); $i++)
-            {
+                $guide_arr[($j + 1)] = $key;
+                $arr1[($j + 1)] = $key2;
+                $arr2[($j + 1)] = $key3;
+                $arr3[($j + 1)] = $key4;
+            }
+        } else {
+            for ($i = 1; $i < sizeof($guide_arr); $i++) {
                 $key = $guide_arr[$i];
                 $key2 = $arr1[$i];
                 $key3 = $arr2[$i];
                 $key4 = $arr3[$i];
-                $j = $i-1;
-                while($j >= 0 && $guide_arr[$j] > $key)
-                {
-                    $guide_arr[($j+1)] = $guide_arr[$j];
-                    $arr1[($j+1)] = $arr1[$j];
-                    $arr2[($j+1)] = $arr2[$j];
-                    $arr3[($j+1)] = $arr3[$j];
-                    $j = $j-1;
+                $j = $i - 1;
+                while ($j >= 0 && $guide_arr[$j] > $key) {
+                    $guide_arr[($j + 1)] = $guide_arr[$j];
+                    $arr1[($j + 1)] = $arr1[$j];
+                    $arr2[($j + 1)] = $arr2[$j];
+                    $arr3[($j + 1)] = $arr3[$j];
+                    $j = $j - 1;
                 }
-                $guide_arr[($j+1)] = $key;
-                $arr1[($j+1)] = $key2;
-                $arr2[($j+1)] = $key3;
-                $arr3[($j+1)] = $key4;
-            }                  
+                $guide_arr[($j + 1)] = $key;
+                $arr1[($j + 1)] = $key2;
+                $arr2[($j + 1)] = $key3;
+                $arr3[($j + 1)] = $key4;
+            }
         }
     }
 
     function singleSort(&$arr, $indicator)
     {
-        if($indicator == "Descending")
-        {
-            for ($i = 1; $i < sizeof($arr); $i++)
-            {
+        if ($indicator == "Descending") {
+            for ($i = 1; $i < sizeof($arr); $i++) {
                 $key = $arr[$i];
-                $j = $i-1;
-            
+                $j = $i - 1;
+
                 // Move elements of arr[0..i-1],
                 // that are    greater than key, to
                 // one position ahead of their
                 // current position
-                while ($j >= 0 && $arr[$j] > $key)
-                {
+                while ($j >= 0 && $arr[$j] > $key) {
                     $arr[$j + 1] = $arr[$j];
                     $j = $j - 1;
                 }
-                
+
                 $arr[$j + 1] = $key;
             }
-        }
-        else
-        {
-            for ($i = 1; $i < sizeof($arr); $i++)
-            {
+        } else {
+            for ($i = 1; $i < sizeof($arr); $i++) {
                 $key = $arr[$i];
-                $j = $i-1;
-            
+                $j = $i - 1;
+
                 // Move elements of arr[0..i-1],
                 // that are    greater than key, to
                 // one position ahead of their
                 // current position
-                while ($j >= 0 && $arr[$j] < $key)
-                {
+                while ($j >= 0 && $arr[$j] < $key) {
                     $arr[$j + 1] = $arr[$j];
                     $j = $j - 1;
                 }
-                
+
                 $arr[$j + 1] = $key;
             }
         }
+    }
+
+    //Stock Ticker temporary waiting for backend to fill out values
+    function frontendTicker()
+    {
+        echo '
+            <div class="card">
+                <div class="card-body text-dark">
+                    <marquee direction="left">
+                        <strong>88GM</strong> 0.78
+                        <mark class="markup-red">-26.42% </mark>|
+                        <strong>00KW</strong> 14.07
+                        <mark class="markup-green">+2.78%</mark>|
+                        <strong>42WK</strong> 0.99
+                        <mark class="markup-green">+5.32%</mark>|
+                        <strong>21SV</strong> 28.81
+                        <mark class="markup-green">+2.89%</mark>|
+                        <strong>20SV</strong> 0.78
+                        <mark class="markup-red">-26.42%</mark>|
+                        <strong>19FH</strong> 26.88
+                        <mark class="markup-red">-6.42%</mark>|
+                        <strong>67MP</strong> 47.81
+                        <mark class="markup-red">-2.20%</mark>|
+                        <strong>88GM</strong> 0.78
+                        <mark class="markup-red">-26.42%</mark>|
+                        <strong>00KW</strong> 14.07
+                        <mark class="markup-green">+2.78%</mark>|
+                        <strong>42WK</strong> 0.99
+                        <mark class="markup-green">+5.32%</mark>|
+                        <strong>21SV</strong> 28.81
+                        <mark class="markup-green">+2.89%</mark>|
+                    </marquee>
+                </div>
+            </div>
+            ';
     }
 ?>
