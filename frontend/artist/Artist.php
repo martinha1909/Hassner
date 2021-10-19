@@ -52,7 +52,7 @@ checkRaffleRoll();
                     <span data-feather="grid"></span>
                 </button>
 
-                <div style="color: #11171a; font-weight: bold; background-color:white; border-left: 4px solid #11171a; border-right: 10px solid white;">
+                <div class="user-balance">
                     <?php
                     echo ' &nbsp;(q̶): ';
                     echo round($account_info['balance'], 2);
@@ -289,12 +289,12 @@ checkRaffleRoll();
 
                                         <div class="form-group">
                                             <h5>How much siliqas are you raising</h5>
-                                            <input name = "siliqas_raising" type="text" style="border-color: white;" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
+                                            <input name = "siliqas_raising" type="text" id="exampleInputPassword1" placeholder="Enter amount">
                                         </div>
 
                                         <div class="form-group">
                                             <h5>How many shares are you distributing?</h5>
-                                            <input name = "distribute_share" type="text" style="border-color: white;" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
+                                            <input name = "distribute_share" type="text" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
                                         </div>';
 
                             if ($_SESSION['logging_mode'] == LogModes::SHARE_DIST) {
@@ -323,16 +323,16 @@ checkRaffleRoll();
                             echo '
                                         <h6>Price Per Share (q̶): ' . $account_info['price_per_share'] . '</h6>
                                         <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
-                                            <h6>Volumn: ' . $account_info['Share_Distributed'] . ' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
+                                            <h6>Volumn: ' . $account_info['Share_Distributed'] . ' <input name="display_type" type="submit" id="menu-style" class="menu-text" value="+">
                                         </form>
                                 ';
                             if ($_SESSION['share_distribute'] != 0) {
                                 echo '
                                         <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
                                             <p>How many shares would you like to inject?</p>
-                                            <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">
+                                            <input type="text" name = "share_distributing" class="form-control form-control-sm" placeholder="Enter amount">
                                             <p>Comments</p>
-                                            <input type="text" name = "inject_comment" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter comment">
+                                            <input type="text" name = "inject_comment" class="form-control form-control-sm" placeholder="Enter comment">
                                             <div class="col-md-8 col-12 mx-auto pt-5 text-center">
                                             <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Save">  
                                             </div>
@@ -348,7 +348,7 @@ checkRaffleRoll();
                             if (artistCanCreateSellOrder($_SESSION['username'])) {
                                 echo '
                                             <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
-                                                <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
+                                                <input name="buy_sell" type="submit" id="menu-style-invert" class="menu-text" value="-Sell your shares">
                                             </form>
                                     ';
                             }
@@ -366,7 +366,7 @@ checkRaffleRoll();
                                                     <form action="../../backend/shared/SellOrderBackend.php" method="post">
                                                         <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
                                                         <p>Quantity: <span id="demo"></span></p>
-                                                        <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
+                                                        <input type="text" name="asked_price" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
                                                         <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
                                                     </form>
                                                 </label> 
