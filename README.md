@@ -29,7 +29,7 @@ Notes on the database
     
     b. account type id "artist", then it means the total amount of shares owned by that artist that has been bought throughout all users in the platform. In other words, the amount of share available for purchase of that artist would be equivalent to the "Share_Distributed" column value minus "Shares" column value. (any artist Available Shares = Share_Distributed - Shares)
 
-2. The balance `column` under `account` table in the database indicate a users' account balance, in CAD. 
+2. The balance `column` under `account` table in the database indicate a users' account balance, in USD. 
 
 2. To delete database (for importing purposes): go to web browser and run localhost:80/Hassner/database/        deleteDatabase.php
 
