@@ -438,7 +438,7 @@ checkRaffleRoll();
 
                     //Sell siliqas to USD/CAD/EUR
                     else if ($_SESSION['display'] == MenuOption::Siliqas) {
-                        siliqasInit();
+                        fiatInit();
                     } else if ($_SESSION['display'] == MenuOption::Investors) {
                     }
                     ?>

@@ -446,8 +446,27 @@ function getHighestOrLowestPPS($artist_username, $indicator)
     }
 }
 
-function siliqasInit()
+function currenciesToCAD($amount, $currency): float
 {
+    //Doesn't change if currency is CAD
+    $ret = $amount;
+
+    if($currency == "USD")
+    {
+        //Probably will need to functionality to pull real fluctuating value from the world in the future
+        $ret *= 1.24;
+    }
+    else if($currency == "EUR")
+    {
+        $ret *= 1.44;
+    }
+
+    return $ret;
+}
+
+function fiatInit()
+{
+    $account_info = getAccount($_SESSION['username']);
     $balance = getUserBalance($_SESSION['username']);
 
     echo '
@@ -457,14 +476,17 @@ function siliqasInit()
                         <form action="../../backend/shared/CurrencyBackend.php" method="post">
         ';
 
-    if ($_SESSION['logging_mode'] == LogModes::BUY_SILIQAS) {
+    if ($_SESSION['logging_mode'] == LogModes::DEPOSIT) {
         if ($_SESSION['status'] == StatusCodes::ErrEmpty) {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
             getStatusMessage("Please fill out all fields and try again", "");
+        } else if($_SESSION['status'] == StatusCodes::ErrNum) {
+            $_SESSION['status'] = StatusCodes::ErrGeneric;
+            getStatusMessage("Amount has to be a number", "");
         } else {
             getStatusMessage("Failed to buy, an error occured", "Siliqas bought successfully");
         }
-    } else if ($_SESSION['logging_mode'] == LogModes::SELL_SILIQAS) {
+    } else if ($_SESSION['logging_mode'] == LogModes::WITHDRAW) {
         if ($_SESSION['status'] == StatusCodes::ErrEmpty) {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
             getStatusMessage("Please fill out all fields and try again", "");
@@ -499,96 +521,62 @@ function siliqasInit()
                     </div>
             ';
         echo "Account balance: " . $balance . "<br>";
-        $conversion_rate = $_SESSION['conversion_rate'] * 100;
-        if ($conversion_rate < 0) {
-            echo "↓ " . $conversion_rate . "%<br>";
-        } else if ($conversion_rate > 0) {
-            echo "↑ " . $conversion_rate . "%<br>";
-        } else {
-            echo $conversion_rate;
-            echo "%<br>";
-        }
         echo '
                     </form>
-                    <form action = "../../backend/shared/SiliqasOptionsBackend.php" method = "post">
+                    <form action = "../../backend/shared/FiatOptionsSwitcher.php" method = "post">
             ';
         if ($_SESSION['currency'] == 0) {
             echo '
                         <h5 style="padding-top:150px;"> Please choose a currency</h5>
                 ';
         } else {
-            if ($_SESSION['siliqas_or_fiat'] == 0) {
+            if ($_SESSION['fiat_options'] == 0) {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "' . $_SESSION['currency'] . ' to Siliqas" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Siliqas to ' . $_SESSION['currency'] . '" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Deposit" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Withdraw" onclick="window.location.reload();"> 
                             </div>
                         </form>
                     ';
-            } else if ($_SESSION['siliqas_or_fiat'] == "BUY_SILIQAS") {
+            } else if ($_SESSION['fiat_options'] == "DEPOSIT") {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "' . $_SESSION['currency'] . ' to Siliqas" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Siliqas to ' . $_SESSION['currency'] . '" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Deposit" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Withdraw" onclick="window.location.reload();"> 
                             </div>
                         </form>
                     ';
-            } else if ($_SESSION['siliqas_or_fiat'] == "SELL_SILIQAS") {
+            } else if ($_SESSION['fiat_options'] == "WITHDRAW") {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "' . $_SESSION['currency'] . ' to Siliqas" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Siliqas to ' . $_SESSION['currency'] . '" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Deposit" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Withdraw" onclick="window.location.reload();"> 
                             </div>
                         </form>
                     ';
             }
         }
     }
-    if ($_SESSION['siliqas_or_fiat'] == "BUY_SILIQAS") {
+    if ($_SESSION['fiat_options'] == "DEPOSIT") {
         echo '
-                    <form action = "../../backend/shared/CheckConversionBackend.php" method = "post">
+                    <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
                         <div class="form-group">
             ';
         echo '
-                    <h5 style="padding-top:150px;">Enter Amount in ' . $_SESSION['currency'] . '</h5>
-                    <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
-                </div>
-                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                        <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
-                </div>
-                </form>
-                <p class="navbar navbar-expand-lg navbar-light bg-dark">Siliqas (q̶):
-            ';
-
-        if ($_SESSION['coins'] != 0) {
-            //rounding to 2 decimals
-            echo round($_SESSION['coins'], 2);
-        } else {
-            echo " ";
-            echo 0;
-        }
-        echo '
-                </p>
-                </form>
-                <form action = "../shared/Checkout.php" method = "post">
-                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-            ';
-        if ($_SESSION['btn_show'] == 1) {
-            echo '
-                        <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Buy this amount!" onclick="window.location.reload();">
-                    </div>
-                </form>
-                ';
-        }
-        echo '
+                            <h5 style="padding-top:150px;">Enter Amount in ' . $_SESSION['currency'] . '</h5>
+                            <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
+                        </div>
+                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue to Checkout" onclick="window.location.reload();"> 
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </section>';
-        $_SESSION['btn_show'] = 0;
-    } else if ($_SESSION['siliqas_or_fiat'] == "SELL_SILIQAS") {
+    } else if ($_SESSION['fiat_options'] == "WITHDRAW") {
         echo '
-                        <form action = "../../backend/shared/CheckConversionBackend.php" method = "post">
+                        <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
                             <div class="form-group">
                                 <h5 style="padding-top:150px;">Enter Amount in Siliqas (q̶)</h5>
                                 <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
@@ -600,9 +588,9 @@ function siliqasInit()
                         <p class="navbar navbar-expand-lg navbar-light bg-dark">' . $_SESSION['currency'] . ' (q̶):
             ';
 
-        if ($_SESSION['coins'] != 0) {
+        if ($_SESSION['cad'] != 0) {
             //rounding to 2 decimals
-            echo round($_SESSION['coins'], 2);
+            echo round($_SESSION['cad'], 2);
         } else {
             echo " ";
             echo 0;

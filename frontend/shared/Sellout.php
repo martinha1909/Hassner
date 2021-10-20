@@ -111,7 +111,7 @@ $_SESSION['expyear'] = 0;
             echo "$";
           else if ($_SESSION['currency'] == Currency::EUR)
             echo "€";
-          echo $_SESSION['siliqas'];
+          echo $_SESSION['fiat'];
           ?>
           </b></span></h4>
       <p><a>
@@ -120,14 +120,14 @@ $_SESSION['expyear'] = 0;
         </a> <span class="price">
           <?php
 
-          echo $_SESSION['coins'];
+          echo $_SESSION['cad'];
           ?>
         </span></p>
       <hr>
       <p>Total (q̶ ) <span class="price"><b>
             <?php
 
-            echo $_SESSION['coins'];
+            echo $_SESSION['cad'];
             ?>
           </b></span></p>
     </div>

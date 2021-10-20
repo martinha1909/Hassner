@@ -7,22 +7,18 @@ include '../../backend/constants/MenuOption.php';
 function hassnerInit()
 {
     $_SESSION['dependencies'] = "FRONTEND";
-    $_SESSION['coins'] = 0;
     $_SESSION['display'] = MenuOption::None;
     $_SESSION['sort_type'] = 0;
     $_SESSION['cad'] = 0;
     $_SESSION['edit'] = 0;
     $_SESSION['currency'] = 0;
-    $_SESSION['btn_show'] = 0;
     $_SESSION['saved'] = 0;
     $_SESSION['buy_sell'] = 0;
     $_SESSION['buy_asked_price'] = 0;
     $_SESSION['buy_market_price'] = 0;
-    $_SESSION['siliqas_or_fiat'] = 0;
+    $_SESSION['fiat_options'] = 0;
     $_SESSION['share_distribute'] = 0;
     $_SESSION['buy_options'] = 0;
-    //conversion rate from CAD to Siliqas, 1 CAD = 0.95 Sililqas (brute force for now)
-    $_SESSION['conversion_rate'] = -0.05;
     $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
 }
 
@@ -63,18 +59,6 @@ function convertToSiliqas($amount, $conversion_rate, $currency_type)
         $ret *= 1.25;
     else if ($currency_type == Currency::EUR)
         $ret *= 1.47;
-
-    return $ret;
-}
-
-function siliqasToFiat($amount, $conversion_rate, $currency_type)
-{
-    $ret = $amount;
-    $ret = $amount / (1 + $conversion_rate);
-    if ($currency_type == Currency::USD)
-        $ret /= 1.25;
-    else if ($currency_type == Currency::EUR)
-        $ret /= 1.47;
 
     return $ret;
 }
