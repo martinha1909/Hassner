@@ -20,17 +20,19 @@
             $_SESSION['status'] = StatusCodes::ErrNum;
             returnToMainPage();
         }
-
-        $_SESSION['cad'] = currenciesToCAD($_SESSION['fiat'], $_SESSION['currency']);
-        $_SESSION['dependencies'] = "FRONTEND";
-
-        header("Location: ../../frontend/shared/Checkout.php");
+        else
+        {
+            $_SESSION['cad'] = currenciesToCAD($_SESSION['fiat'], $_SESSION['currency']);
+            $_SESSION['dependencies'] = "FRONTEND";
+    
+            header("Location: ../../frontend/shared/Checkout.php");
+        }
     }
     else if($_SESSION['fiat_options'] == "WITHDRAW")
     {
         //Amount of money that user input in
         $_SESSION['cad'] = $_POST['currency'];
-        $_SESSION['logging_mode'] = LogModes::DEPOSIT;
+        $_SESSION['logging_mode'] = LogModes::WITHDRAW;
         if(empty($_SESSION['fiat']))
         {
             $_SESSION['status'] = StatusCodes::ErrEmpty;
@@ -46,7 +48,7 @@
             $conn = connect();
             $res = searchAccount($conn, $_SESSION['username']);
             $balance = $res->fetch_assoc();
-            if($balance['balance'] < $_SESSION['fiat'])
+            if($balance['balance'] < $_SESSION['cad'])
             {
                 $_SESSION['status'] = StatusCodes::ErrNotEnough;
                 returnToMainPage();
@@ -54,11 +56,10 @@
             else
             {
                 $_SESSION['fiat'] = CADToCurrencies($_SESSION['cad'], $_SESSION['currency']);
+                $_SESSION['dependencies'] = "FRONTEND";
+
+                header("Location: ../../frontend/shared/Sellout.php");
             }
         }
-
-        $_SESSION['dependencies'] = "FRONTEND";
-
-        header("Location: ../../frontend/shared/Sellout.php");
     }
 ?>

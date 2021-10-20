@@ -532,9 +532,9 @@
             }  
             return $status;
         }
-        function purchaseSiliqas($conn, $username, $coins)
+        function deposit($conn, $username, $cad)
         {
-            $coins = round($coins, 2);
+            $coins = round($cad, 2);
             $status = 0;
             $sql = "UPDATE account SET balance = balance + $coins WHERE username = '$username'";
             if ($conn->query($sql) === TRUE) 
@@ -548,7 +548,7 @@
             return $status;
         }
 
-        function sellSiliqas($conn, $username, $coins)
+        function withdraw($conn, $username, $coins)
         {
             $coins = round($coins, 2);
             $status = 0;

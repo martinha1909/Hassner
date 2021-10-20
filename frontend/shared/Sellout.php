@@ -98,7 +98,7 @@ $_SESSION['expyear'] = 0;
           </label>
       </div>
       <div class="col-3 mx-auto">
-        <input type="submit" value="Continue to sell your silicas" class="btn btn-primary">
+        <input type="submit" value="Continue" class="btn btn-primary">
       </div>
       </form>
     </div>

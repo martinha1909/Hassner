@@ -500,17 +500,17 @@ function fiatInit()
             $_SESSION['status'] = StatusCodes::ErrGeneric;
             getStatusMessage("Amount has to be a number", "");
         } else {
-            getStatusMessage("Failed to buy, an error occured", "Siliqas bought successfully");
+            getStatusMessage("Failed to buy, an error occured", "Succeeded");
         }
     } else if ($_SESSION['logging_mode'] == LogModes::WITHDRAW) {
         if ($_SESSION['status'] == StatusCodes::ErrEmpty) {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
             getStatusMessage("Please fill out all fields and try again", "");
-        } else if ($_SESSION['status'] == "NOT_ENOUGH_ERR") {
+        } else if ($_SESSION['status'] == StatusCodes::ErrNotEnough) {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
-            getStatusMessage("Not enough siliqas", "");
+            getStatusMessage("Not enough CAD", "");
         } else {
-            getStatusMessage("An error occured", "Siliqas sold successfully");
+            getStatusMessage("An error occured", "Succeeded");
         }
     }
 

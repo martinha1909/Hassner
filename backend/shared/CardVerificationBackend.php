@@ -42,9 +42,8 @@
                                 $zip, 
                                 $card_name, 
                                 $card_number);
-            $_SESSION['status'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['cad']);
+            $_SESSION['status'] = deposit($conn, $_SESSION['username'], $_SESSION['cad']);
             $_SESSION['btn_show'] = 0;
-            $_SESSION['cad'] = 0;
             $_SESSION['cad'] = 0;
             $_SESSION['saved'] = 0; 
             $_SESSION['fiat'] = 0;
@@ -59,8 +58,7 @@
         if(!empty($full_name) && !empty($email) && !empty($address) && !empty($city) && !empty($state) && !empty($zip) && !empty($card_name) && !empty($card_number) && !empty($expmonth) && !empty($expyear) && !empty($cvv))
         {
             $_SESSION['cad'] = round($_SESSION['cad'], 2);
-            $_SESSION['status'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['cad']);
-            $_SESSION['cad'] = 0;
+            $_SESSION['status'] = deposit($conn, $_SESSION['username'], $_SESSION['cad']);
             $_SESSION['cad'] = 0;
             $_SESSION['fiat'] = 0;
             $_SESSION['saved'] = 0;
