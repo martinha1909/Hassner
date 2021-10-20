@@ -25,7 +25,7 @@
     # Basic CC verification. This would be done by a payment processor in the future
     if((strlen($card_number) < 14) || (strlen($card_number) > 16))
     {
-        $_SESSION['status'] = StatusCodes::EMPTY_ERR;
+        $_SESSION['status'] = StatusCodes::ErrCard;
     }
     else if($save_info == "Yes")
     {
@@ -51,7 +51,7 @@
         }
         else
         {
-            $_SESSION['status'] = StatusCodes::EMPTY_ERR;
+            $_SESSION['status'] = StatusCodes::ErrEmpty;
         }
     }
     else
@@ -67,7 +67,7 @@
         }
         else
         {
-            $_SESSION['status'] = StatusCodes::EMPTY_ERR;
+            $_SESSION['status'] = StatusCodes::ErrCard;
         }
     }
 

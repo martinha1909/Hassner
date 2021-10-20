@@ -115,7 +115,7 @@ $_SESSION['expyear'] = 0;
           ?>
           </b></span></h4>
       <p><a>
-          <?php echo "Siliqas (q̶ )";
+          <?php echo "CAD ";
           ?>
         </a> <span class="price">
           <?php
@@ -124,7 +124,7 @@ $_SESSION['expyear'] = 0;
           ?>
         </span></p>
       <hr>
-      <p>Total (q̶ ) <span class="price"><b>
+      <p>Total (CAD) <span class="price"><b>
             <?php
 
             echo $_SESSION['cad'];

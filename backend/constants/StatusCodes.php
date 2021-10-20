@@ -6,6 +6,7 @@ if(!defined('STATUSCODES_LOADED')){
         const ErrGeneric = "ERROR"; // Use this as little as possible, new errors should have new entries
         const ErrEmpty = "EMPTY_ERROR";
         const ErrNum = "NUM_ERROR";
+        const ErrCard = "CARD_ERROR";
         const ErrUsername = "USERNAME_ERR";
         const ErrUsernameFormat = "USERNAME_FORMAT_ERR";
         const ErrServer = "SERVER_ERR";

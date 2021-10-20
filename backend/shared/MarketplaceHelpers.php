@@ -464,6 +464,22 @@ function currenciesToCAD($amount, $currency): float
     return $ret;
 }
 
+function CADToCurrencies($amount, $currency): float
+{
+    $ret = $amount;
+    if($currency == "USD")
+    {
+        //Probably will need to functionality to pull real fluctuating value from the world in the future
+        $ret *= 0.81;
+    }
+    else if($currency == "EUR")
+    {
+        $ret *= 0.70;
+    }
+
+    return $ret;
+}
+
 function fiatInit()
 {
     $account_info = getAccount($_SESSION['username']);
@@ -576,39 +592,15 @@ function fiatInit()
     </section>';
     } else if ($_SESSION['fiat_options'] == "WITHDRAW") {
         echo '
-                        <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
-                            <div class="form-group">
-                                <h5 style="padding-top:150px;">Enter Amount in Siliqas (q̶)</h5>
-                                <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
-                            </div>
-                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Check Conversion" onclick="window.location.reload();"> 
-                            </div>
-                        </form>
-                        <p class="navbar navbar-expand-lg navbar-light bg-dark">' . $_SESSION['currency'] . ' (q̶):
-            ';
-
-        if ($_SESSION['cad'] != 0) {
-            //rounding to 2 decimals
-            echo round($_SESSION['cad'], 2);
-        } else {
-            echo " ";
-            echo 0;
-        }
-        echo '
-                        </p>
-                    </form>
-                    <form action = "../shared/Sellout.php" method = "post">
+                    <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
+                        <div class="form-group">
+                            <h5 style="padding-top:150px;">Enter Amount in CAD</h5>
+                            <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
+                        </div>
                         <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-            ';
-        if ($_SESSION['btn_show'] == 1) {
-            echo '
-                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Sell this amount!" onclick="window.location.reload();">
+                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue to Checkout" onclick="window.location.reload();"> 
                         </div>
                     </form>
-                ';
-        }
-        echo '
                 </div>
             </div>
         </div>

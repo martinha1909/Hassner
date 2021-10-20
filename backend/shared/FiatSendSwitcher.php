@@ -5,11 +5,10 @@
     include '../constants/LoggingModes.php';
     include '../constants/StatusCodes.php';
 
-    //Amount of money that user input in
-    $_SESSION['fiat'] = $_POST['currency'];
-
     if($_SESSION['fiat_options'] == "DEPOSIT")
     {
+        //Amount of money that user input in
+        $_SESSION['fiat'] = $_POST['currency'];
         $_SESSION['logging_mode'] = LogModes::DEPOSIT;
         if(empty($_SESSION['fiat']))
         {
@@ -23,10 +22,26 @@
         }
 
         $_SESSION['cad'] = currenciesToCAD($_SESSION['fiat'], $_SESSION['currency']);
+        $_SESSION['dependencies'] = "FRONTEND";
+
+        header("Location: ../../frontend/shared/Checkout.php");
     }
     else if($_SESSION['fiat_options'] == "WITHDRAW")
     {
-        if(!empty($_SESSION['fiat']) && is_numeric($_SESSION['fiat']))
+        //Amount of money that user input in
+        $_SESSION['cad'] = $_POST['currency'];
+        $_SESSION['logging_mode'] = LogModes::DEPOSIT;
+        if(empty($_SESSION['fiat']))
+        {
+            $_SESSION['status'] = StatusCodes::ErrEmpty;
+            returnToMainPage();
+        }
+        else if(!is_numeric($_SESSION['fiat']))
+        {
+            $_SESSION['status'] = StatusCodes::ErrNum;
+            returnToMainPage();
+        }
+        else
         {
             $conn = connect();
             $res = searchAccount($conn, $_SESSION['username']);
@@ -34,20 +49,16 @@
             if($balance['balance'] < $_SESSION['fiat'])
             {
                 $_SESSION['status'] = StatusCodes::ErrNotEnough;
+                returnToMainPage();
             }
             else
             {
-                // $_SESSION['cad'] = siliqasToFiat($_SESSION['fiat'], $_SESSION['conversion_rate'], $_SESSION['currency']);
-                $_SESSION['btn_show'] = 1;
+                $_SESSION['fiat'] = CADToCurrencies($_SESSION['cad'], $_SESSION['currency']);
             }
         }
-        else
-        {
-            $_SESSION['status'] = StatusCodes::ErrEmpty;
-        }
+
+        $_SESSION['dependencies'] = "FRONTEND";
+
+        header("Location: ../../frontend/shared/Sellout.php");
     }
-
-    $_SESSION['dependencies'] = "FRONTEND";
-
-    header("Location: ../../frontend/shared/Checkout.php");
 ?>
