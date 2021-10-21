@@ -43,10 +43,11 @@
                                 $card_name, 
                                 $card_number);
             $_SESSION['status'] = deposit($conn, $_SESSION['username'], $_SESSION['usd']);
-            $_SESSION['btn_show'] = 0;
             $_SESSION['usd'] = 0;
             $_SESSION['saved'] = 0; 
             $_SESSION['fiat'] = 0;
+            $_SESSION['currency'] = 0;
+            $_SESSION['fiat_options'] = 0;
         }
         else
         {
@@ -62,6 +63,8 @@
             $_SESSION['usd'] = 0;
             $_SESSION['fiat'] = 0;
             $_SESSION['saved'] = 0;
+            $_SESSION['currency'] = 0;
+            $_SESSION['fiat_options'] = 0;
         }
         else
         {
@@ -70,11 +73,6 @@
     }
 
     $_SESSION['dependencies'] = "FRONTEND";
-
-    if($_SESSION['account_type'] == AccountType::Artist)
-    {
-        $_SESSION['display'] = 0;
-    }
      
     returnToMainPage();
 ?>
