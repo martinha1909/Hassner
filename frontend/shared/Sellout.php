@@ -105,7 +105,7 @@ $_SESSION['expyear'] = 0;
   </div>
   <div class="col-25">
     <div class="container">
-      <h4 class="h3-blue">Payout <span class="price">
+      <h4 class="h3-blue">Payout (<?php echo $_SESSION['currency'] ?>)<span class="price">
           <?php
           if ($_SESSION['currency'] == Currency::USD || $_SESSION['currency'] == Currency::CAD)
             echo "$";
@@ -115,7 +115,7 @@ $_SESSION['expyear'] = 0;
           ?>
           </b></span></h4>
       <p><a>
-          <?php echo "CAD ";
+          <?php echo "USD ";
           ?>
         </a> <span class="price">
           <?php

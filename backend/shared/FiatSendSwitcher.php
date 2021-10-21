@@ -33,7 +33,7 @@
         //Amount of money that user input in
         $_SESSION['usd'] = $_POST['currency'];
         $_SESSION['logging_mode'] = LogModes::WITHDRAW;
-        if(empty($_SESSION['fiat']))
+        if(empty($_SESSION['usd']))
         {
             $_SESSION['status'] = StatusCodes::ErrEmpty;
             returnToMainPage();
