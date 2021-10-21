@@ -5,7 +5,7 @@
         //contains all the values of that day to determine the highest and lowest
         private $price;
         //contains all of the amount of shares each trade has 
-        private $volumn;
+        private $volume;
         //contains the amount of siliqas each trade has
         private $value;
         //contains all the trade of the day
@@ -13,19 +13,19 @@
         //finalized items
         private float $finalize_min;
         private float $finalize_max;
-        private int $finalize_volumn;
+        private int $finalize_volume;
         private float $finalize_value;
 
         function __construct($date)
         {
             $this->date = $date;
             $this->price = array();
-            $this->volumn = array();
+            $this->volume = array();
             $this->value = array();
             $this->trade = 0;
             $this->finalize_min = 0;
             $this->finalize_max = 0;
-            $this->finalize_volumn = 0;
+            $this->finalize_volume = 0;
             $this->finalize_value = 0;
         }
 
@@ -59,13 +59,13 @@
             }
         }
 
-        function finalizeVolumn()
+        function finalizeVolume()
         {
-            if(sizeof($this->volumn) > 0)
+            if(sizeof($this->volume) > 0)
             {
-                for($i = 0; $i < sizeof($this->volumn); $i++)
+                for($i = 0; $i < sizeof($this->volume); $i++)
                 {
-                    $this->finalize_volumn += $this->volumn[$i];
+                    $this->finalize_volume += $this->volume[$i];
                 }
             }
         }
@@ -96,9 +96,9 @@
             return $this->finalize_max;
         }
 
-        function getFinalizeVolumn()
+        function getFinalizeVolume()
         {
-            return $this->finalize_volumn;
+            return $this->finalize_volume;
         }
 
         function getFinalizeValue()
@@ -121,9 +121,9 @@
             array_push($this->price, $price);
         }
 
-        function addVolumn($volumn)
+        function addVolume($volume)
         {
-            array_push($this->volumn, $volumn);
+            array_push($this->volume, $volume);
         }
 
         function addValue($value)

@@ -892,7 +892,7 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                     $item = new TradeHistoryItem($row['date_purchased']);
                     $item->addPrice($row['price_per_share_when_bought']);
                     $item->addValue($row['price_per_share_when_bought']);
-                    $item->addVolumn($row['no_of_share_bought']);
+                    $item->addVolume($row['no_of_share_bought']);
                     $item->addTrade();
 
                     $trade_history_list->addItem($item);
@@ -910,7 +910,7 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                         $item = new TradeHistoryItem($row['date_purchased']);
                         $item->addPrice($row['price_per_share_when_bought']);
                         $item->addValue($row['price_per_share_when_bought']);
-                        $item->addVolumn($row['no_of_share_bought']);
+                        $item->addVolume($row['no_of_share_bought']);
                         $item->addTrade();
 
                         $trade_history_list->addItem($item);

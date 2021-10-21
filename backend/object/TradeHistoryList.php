@@ -37,7 +37,7 @@
             return $ret;
         }
 
-        function addToExistedDate($date, $price, $volumn)
+        function addToExistedDate($date, $price, $volume)
         {
             $current_node = $this->head;
             while(($current_node != null))
@@ -46,7 +46,7 @@
                 {
                     $current_node->getData()->addPrice($price);
                     $current_node->getData()->addValue($price);
-                    $current_node->getData()->addVolumn($volumn);
+                    $current_node->getData()->addVolume($volume);
                     $current_node->getData()->addTrade();
                     break;
                 }
@@ -83,7 +83,7 @@
             {
                 $current_node->getData()->finalizeMin();
                 $current_node->getData()->finalizeMax();
-                $current_node->getData()->finalizeVolumn();
+                $current_node->getData()->finalizeVolume();
                 $current_node->getData()->finalizeValue();
 
                 $current_node = $current_node->getNext();
@@ -131,7 +131,7 @@
                                 <tr>
                                     <td>' . $current_node->getData()->getDate() . '</td>
                                     <td>' . $current_node->getData()->getFinalizeMin() . '/'.$current_node->getData()->getFinalizeMax().'</td>
-                                    <td>' . $current_node->getData()->getFinalizeVolumn() . '</td>
+                                    <td>' . $current_node->getData()->getFinalizeVolume() . '</td>
                                     <td>' . $current_node->getData()->getFinalizeValue() . '</td>
                                     <td>' . $current_node->getData()->getTrade() . '</td>
                                 </tr>

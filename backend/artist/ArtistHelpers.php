@@ -191,7 +191,7 @@
                                 <tr>
                                     <th scope="col">Date</th>
                                     <th scope="col">Price(HIGH/LOW)</th>
-                                    <th scope="col">Volumn</th>
+                                    <th scope="col">Volume</th>
                                     <th scope="col">Value</th>
                                     <th scope="col">Trades</th>
                                 </tr>
