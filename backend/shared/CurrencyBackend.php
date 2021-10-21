@@ -5,7 +5,6 @@
     $_SESSION['currency'] = $_POST['currency'];
     
     $_SESSION['usd'] = 0;
-    $_SESSION['usd'] = 0;
 
     $_SESSION['dependencies'] = "FRONTEND";
 
