@@ -120,14 +120,14 @@ $_SESSION['expyear'] = 0;
         </a> <span class="price">
           <?php
 
-          echo $_SESSION['cad'];
+          echo $_SESSION['usd'];
           ?>
         </span></p>
       <hr>
-      <p>Total (CAD) <span class="price"><b>
+      <p>Total (USD) <span class="price"><b>
             <?php
 
-            echo $_SESSION['cad'];
+            echo $_SESSION['usd'];
             ?>
           </b></span></p>
     </div>

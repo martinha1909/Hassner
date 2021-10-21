@@ -446,35 +446,35 @@ function getHighestOrLowestPPS($artist_username, $indicator)
     }
 }
 
-function currenciesToCAD($amount, $currency): float
+function currenciesToUSD($amount, $currency): float
 {
     //Doesn't change if currency is CAD
     $ret = $amount;
 
-    if($currency == "USD")
-    {
-        //Probably will need to functionality to pull real fluctuating value from the world in the future
-        $ret *= 1.24;
-    }
-    else if($currency == "EUR")
-    {
-        $ret *= 1.44;
-    }
-
-    return $ret;
-}
-
-function CADToCurrencies($amount, $currency): float
-{
-    $ret = $amount;
-    if($currency == "USD")
+    if($currency == "CAD")
     {
         //Probably will need to functionality to pull real fluctuating value from the world in the future
         $ret *= 0.81;
     }
     else if($currency == "EUR")
     {
-        $ret *= 0.70;
+        $ret *= 1.16;
+    }
+
+    return $ret;
+}
+
+function USDToCurrencies($amount, $currency): float
+{
+    $ret = $amount;
+    if($currency == "CAD")
+    {
+        //Probably will need to functionality to pull real fluctuating value from the world in the future
+        $ret *= 1.24;
+    }
+    else if($currency == "EUR")
+    {
+        $ret *= 0.86;
     }
 
     return $ret;
@@ -594,7 +594,7 @@ function fiatInit()
         echo '
                     <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
                         <div class="form-group">
-                            <h5 style="padding-top:150px;">Enter Amount in CAD</h5>
+                            <h5 style="padding-top:150px;">Enter Amount in USD</h5>
                             <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
                         </div>
                         <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">

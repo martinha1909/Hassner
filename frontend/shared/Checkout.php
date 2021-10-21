@@ -193,8 +193,8 @@ $_SESSION['expyear'] = 0;
     <div class="col-25">
       <div class="container">
         <h4>Cart <span class="price"><?php
-                                      echo "(CAD): ";
-                                      echo $_SESSION['cad']; ?></b></span></h4>
+                                      echo "(USD): ";
+                                      echo $_SESSION['usd']; ?></b></span></h4>
         <p><a><?php echo $_SESSION['currency']; ?></a> <span class="price"><?php
                                                                             if ($_SESSION['currency'] == Currency::USD || $_SESSION['currency'] == Currency::CAD) {
                                                                               echo "$";

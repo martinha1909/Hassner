@@ -6,7 +6,7 @@ include '../../backend/constants/LoggingModes.php';
 include '../../backend/constants/ShareInteraction.php';
 
 $_SESSION['conversion_rate'];
-$_SESSION['cad'] = 0;
+$_SESSION['usd'] = 0;
 $_SESSION['status'];
 
 refreshUserArtistShareTable();

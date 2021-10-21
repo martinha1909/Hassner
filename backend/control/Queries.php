@@ -532,9 +532,9 @@
             }  
             return $status;
         }
-        function deposit($conn, $username, $cad)
+        function deposit($conn, $username, $usd)
         {
-            $coins = round($cad, 2);
+            $coins = round($usd, 2);
             $status = 0;
             $sql = "UPDATE account SET balance = balance + $coins WHERE username = '$username'";
             if ($conn->query($sql) === TRUE) 

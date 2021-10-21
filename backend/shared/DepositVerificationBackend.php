@@ -16,12 +16,12 @@
     {
         if(!empty($transit_no) && !empty($inst_no) && !empty($account_no) && !empty($swift))
         {
-            $_SESSION['cad'] = round($_SESSION['cad'], 2);
+            $_SESSION['usd'] = round($_SESSION['usd'], 2);
             saveUseraccountInfo($conn, $_SESSION['username'], $transit_no, $inst_no, $account_no, $swift);
-            $_SESSION['status'] = withdraw($conn, $_SESSION['username'], $_SESSION['cad']);
+            $_SESSION['status'] = withdraw($conn, $_SESSION['username'], $_SESSION['usd']);
             $_SESSION['btn_show'] = 0;
-            $_SESSION['cad'] = 0;
-            $_SESSION['cad'] = 0;
+            $_SESSION['usd'] = 0;
+            $_SESSION['usd'] = 0;
             $_SESSION['saved'] = 0; 
             $_SESSION['fiat'] = 0;
         }
@@ -34,10 +34,10 @@
     {
         if(!empty($transit_no) && !empty($inst_no) && !empty($account_no) && !empty($swift))
         {
-            $_SESSION['cad'] = round($_SESSION['cad'], 2);
-            $_SESSION['status'] = withdraw($conn, $_SESSION['username'], $_SESSION['cad']);
-            $_SESSION['cad'] = 0;
-            $_SESSION['cad'] = 0;
+            $_SESSION['usd'] = round($_SESSION['usd'], 2);
+            $_SESSION['status'] = withdraw($conn, $_SESSION['username'], $_SESSION['usd']);
+            $_SESSION['usd'] = 0;
+            $_SESSION['usd'] = 0;
             $_SESSION['fiat'] = 0;
             $_SESSION['saved'] = 0;
         }

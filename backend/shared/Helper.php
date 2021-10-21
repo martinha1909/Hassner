@@ -9,7 +9,7 @@ function hassnerInit()
     $_SESSION['dependencies'] = "FRONTEND";
     $_SESSION['display'] = MenuOption::None;
     $_SESSION['sort_type'] = 0;
-    $_SESSION['cad'] = 0;
+    $_SESSION['usd'] = 0;
     $_SESSION['edit'] = 0;
     $_SESSION['currency'] = 0;
     $_SESSION['saved'] = 0;
