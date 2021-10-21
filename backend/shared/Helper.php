@@ -3,6 +3,7 @@ include '../../backend/constants/StatusCodes.php';
 include '../../backend/constants/Currency.php';
 include '../../backend/constants/LoggingModes.php';
 include '../../backend/constants/MenuOption.php';
+include '../../backend/constants/BalanceOption.php';
 
 function hassnerInit()
 {
@@ -16,7 +17,7 @@ function hassnerInit()
     $_SESSION['buy_sell'] = 0;
     $_SESSION['buy_asked_price'] = 0;
     $_SESSION['buy_market_price'] = 0;
-    $_SESSION['fiat_options'] = 0;
+    $_SESSION['fiat_options'] = BalanceOption::NONE;
     $_SESSION['share_distribute'] = 0;
     $_SESSION['buy_options'] = 0;
     $_SESSION['current_date'] = getCurrentDate('America/Edmonton');

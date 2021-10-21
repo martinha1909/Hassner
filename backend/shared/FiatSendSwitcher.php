@@ -4,8 +4,9 @@
     include '../shared/MarketplaceHelpers.php';
     include '../constants/LoggingModes.php';
     include '../constants/StatusCodes.php';
+    include '../constants/BalanceOption.php';
 
-    if($_SESSION['fiat_options'] == "DEPOSIT")
+    if($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS)
     {
         //Amount of money that user input in
         $_SESSION['fiat'] = $_POST['currency'];
@@ -28,7 +29,7 @@
             header("Location: ../../frontend/shared/Checkout.php");
         }
     }
-    else if($_SESSION['fiat_options'] == "WITHDRAW")
+    else if($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS)
     {
         //Amount of money that user input in
         $_SESSION['usd'] = $_POST['currency'];

@@ -547,34 +547,34 @@ function fiatInit()
                         <h5 style="padding-top:150px;"> Please choose a currency</h5>
                 ';
         } else {
-            if ($_SESSION['fiat_options'] == 0) {
+            if ($_SESSION['fiat_options'] == BalanceOption::NONE) {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Deposit" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Withdraw" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::WITHDRAW.'" onclick="window.location.reload();"> 
                             </div>
                         </form>
                     ';
-            } else if ($_SESSION['fiat_options'] == "DEPOSIT") {
+            } else if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Deposit" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Withdraw" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::WITHDRAW.'" onclick="window.location.reload();"> 
                             </div>
                         </form>
                     ';
-            } else if ($_SESSION['fiat_options'] == "WITHDRAW") {
+            } else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Deposit" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Withdraw" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
+                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::WITHDRAW.'" onclick="window.location.reload();"> 
                             </div>
                         </form>
                     ';
             }
         }
     }
-    if ($_SESSION['fiat_options'] == "DEPOSIT") {
+    if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) {
         echo '
                     <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
                         <div class="form-group">
@@ -591,7 +591,7 @@ function fiatInit()
             </div>
         </div>
     </section>';
-    } else if ($_SESSION['fiat_options'] == "WITHDRAW") {
+    } else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) {
         echo '
                     <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
                         <div class="form-group">

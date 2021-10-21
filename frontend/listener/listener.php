@@ -3,6 +3,7 @@ include '../../backend/control/Dependencies.php';
 include '../../backend/shared/MarketplaceHelpers.php';
 include '../../backend/shared/CampaignHelpers.php';
 include '../../backend/constants/LoggingModes.php';
+include '../../backend/constants/BalanceOption.php';
 include '../../backend/object/ParticipantList.php';
 include '../../backend/object/CampaignParticipant.php';
 

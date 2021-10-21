@@ -4,6 +4,7 @@
     include '../constants/LoggingModes.php';
     include '../constants/StatusCodes.php';
     include '../constants/AccountTypes.php';
+    include '../constants/BalanceOption.php';
 
     $_SESSION['logging_mode'] = LogModes::DEPOSIT;
 
@@ -47,7 +48,7 @@
             $_SESSION['saved'] = 0; 
             $_SESSION['fiat'] = 0;
             $_SESSION['currency'] = 0;
-            $_SESSION['fiat_options'] = 0;
+            $_SESSION['fiat_options'] = BalanceOption::NONE;
         }
         else
         {
@@ -64,7 +65,7 @@
             $_SESSION['fiat'] = 0;
             $_SESSION['saved'] = 0;
             $_SESSION['currency'] = 0;
-            $_SESSION['fiat_options'] = 0;
+            $_SESSION['fiat_options'] = BalanceOption::NONE;
         }
         else
         {
