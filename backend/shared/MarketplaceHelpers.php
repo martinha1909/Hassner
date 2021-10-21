@@ -525,6 +525,7 @@ function fiatInit()
                         </select>
                     </div>
             ';
+        echo "Account balance: " . $balance . "<br>";
     } else {
         echo '
                     <div style="float:none;margin:auto;" class="select-dark">
