@@ -858,4 +858,72 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
         return $ret;
     }
+
+    function buyHistoryInit(&$sellers, &$prices, &$quantities, &$date_purchase, &$time_purchase, $username)
+    {
+        $conn = connect();
+
+        $res = searchUsersInvestment($conn, $username);
+
+        while($row = $res->fetch_assoc())
+        {
+            $date = dateParser($row['date_purchased']);
+            $time = timeParser($row['time_purchased']);
+
+            array_push($prices, $row['price_per_share_when_bought']);
+            array_push($sellers, $row['seller_username']);
+            array_push($quantities, $row['no_of_share_bought']);
+            array_push($date_purchase, $date);
+            array_push($time_purchase, $time);
+        }
+    }
+
+    function populateTradeHistory($conn, $query_result): TradeHistoryList
+    {
+        $trade_history_list = new TradeHistoryList();
+
+        while($row = $query_result->fetch_assoc())
+        {
+            //only display the dates that are in the range that the user chose
+            if(isInRange($row['date_purchased'], $_SESSION['trade_history_from'], $_SESSION['trade_history_to']))
+            {
+                if($trade_history_list->isListEmpty())
+                {
+                    $item = new TradeHistoryItem($row['date_purchased']);
+                    $item->addPrice($row['price_per_share_when_bought']);
+                    $item->addValue($row['price_per_share_when_bought']);
+                    $item->addVolume($row['no_of_share_bought']);
+                    $item->addTrade();
+
+                    $trade_history_list->addItem($item);
+                }
+                else
+                {
+                    if($trade_history_list->dateHasExisted($row['date_purchased']))
+                    {
+                        $trade_history_list->addToExistedDate($row['date_purchased'],
+                                                                $row['price_per_share_when_bought'],
+                                                                $row['no_of_share_bought']);
+                    }
+                    else
+                    {
+                        $item = new TradeHistoryItem($row['date_purchased']);
+                        $item->addPrice($row['price_per_share_when_bought']);
+                        $item->addValue($row['price_per_share_when_bought']);
+                        $item->addVolume($row['no_of_share_bought']);
+                        $item->addTrade();
+
+                        $trade_history_list->addItem($item);
+                    }
+                }
+            }
+        }
+
+        if($trade_history_list->getListSize() > 0)
+        {
+            $trade_history_list->finalize();
+        }
+
+        return $trade_history_list;
+    }
 ?>

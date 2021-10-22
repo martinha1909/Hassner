@@ -5,7 +5,7 @@
     $conn = connect();
     cleanDatabase($conn);
     
-    echo '<h3 style="color: green;">Database cleaned successfully</h3>';
+    echo '<h3 class="suc-msg">Database cleaned successfully</h3>';
 
     closeCon($conn);
 ?>

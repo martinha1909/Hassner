@@ -1,5 +1,4 @@
 <?php
-    include 'Node.php';
     class ParticipantList
     {
         private Node $head;

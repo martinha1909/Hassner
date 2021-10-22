@@ -4,6 +4,9 @@ include '../../backend/shared/MarketplaceHelpers.php';
 include '../../backend/constants/StatusCodes.php';
 include '../../backend/constants/LoggingModes.php';
 include '../../backend/constants/ShareInteraction.php';
+include '../../backend/object/TradeHistory.php';
+include '../../backend/object/TradeHistoryList.php';
+include '../../backend/object/Node.php';
 
 $_SESSION['conversion_rate'];
 $_SESSION['coins'] = 0;
@@ -371,6 +374,8 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
                                 </tbody>
                             </table>
                     ';
+
+                    tradeHistoryInit($_SESSION['selected_artist']);
 
                     echo '<h3 class="h3-blue py-5">Ethos Injection History</h3>';
 
