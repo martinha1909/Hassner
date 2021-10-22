@@ -53,7 +53,7 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
                         <label>
                             <span class="screen-reader-text">Search for...</span>
                             <form class="form-inline" action="../../backend/listener/SearchPageBackend.php" method="post">
-                                <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_name" />
+                                <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_search" />
                             </form>
                         </label>
                     </div>
