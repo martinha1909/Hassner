@@ -104,6 +104,12 @@ hassnerInit();
             } else if ($_SESSION['status'] == StatusCodes::ErrEmailDuplicate) {
               $_SESSION['status'] = StatusCodes::ErrGeneric;
               $status = getStatusMessage("Email already taken", "");
+            } else if ($_SESSION['status'] == StatusCodes::ErrTickerDuplicate) {
+              $_SESSION['status'] = StatusCodes::ErrGeneric;
+              $status = getStatusMessage("Ticker already taken", "");
+            } else if ($_SESSION['status'] == StatusCodes::ErrTickerFormat) {
+              $_SESSION['status'] = StatusCodes::ErrGeneric;
+              $status = getStatusMessage("Invalid ticker format", "");
             }
             ?>
 
