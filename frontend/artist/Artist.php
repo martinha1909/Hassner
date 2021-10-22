@@ -424,8 +424,9 @@ checkRaffleRoll();
                                                 <div class="form-group">';
                         if($_SESSION['logging_mode'] == LogModes::PERSONAL)
                         {
-                            if($_SESSION['status'] == StatusCodes::ErrGeneric)
+                            if($_SESSION['status'] == StatusCodes::ErrPassword)
                             {
+                                $_SESSION['status'] = StatusCodes::ErrGeneric;
                                 getStatusMessage("Wrong password", "");
                             }
                         }

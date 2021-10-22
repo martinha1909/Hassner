@@ -7,6 +7,7 @@ if(!defined('STATUSCODES_LOADED')){
         const ErrEmpty = "EMPTY_ERROR";
         const ErrNum = "NUM_ERROR";
         const ErrUsername = "USERNAME_ERR";
+        const ErrPassword = "PASSWORD_ERR";
         const ErrUsernameFormat = "USERNAME_FORMAT_ERR";
         const ErrServer = "SERVER_ERR";
         const ErrEmailDuplicate = "DUPL_EMAIL_ERR";

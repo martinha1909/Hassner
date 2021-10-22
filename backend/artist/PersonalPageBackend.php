@@ -18,7 +18,7 @@
     }
     else
     {
-        $_SESSION['status'] = StatusCodes::ErrGeneric;
+        $_SESSION['status'] = StatusCodes::ErrPassword;
         header("Location: ../../frontend/artist/Artist.php");
     }
 ?>
