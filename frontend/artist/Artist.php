@@ -421,7 +421,15 @@ checkRaffleRoll();
                                         <div class="col-4 mx-auto my-auto text-center">
                                             <h3 class="h3-blue py-4">Verify your password to access personal page</h3>
                                             <form action="../../backend/artist/PersonalPageBackend.php" method="post">
-                                                <div class="form-group">
+                                                <div class="form-group">';
+                        if($_SESSION['logging_mode'] == LogModes::PERSONAL)
+                        {
+                            if($_SESSION['status'] == StatusCodes::ErrGeneric)
+                            {
+                                getStatusMessage("Wrong password", "");
+                            }
+                        }
+                        echo '
                                                     <h5>Password</h5>
                                                     <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
                                                 </div>
