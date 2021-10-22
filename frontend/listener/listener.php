@@ -262,14 +262,12 @@ checkRaffleRoll();
                                 } else if ($_SESSION['sort_type'] == 2) {
                                     sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Ascending");
                                 } else if ($_SESSION['sort_type'] == 3) {
-                                    echo "here";
                                     sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Ascending");
                                 } else if ($_SESSION['sort_type'] == 4) {
                                     sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Descending");
                                 } else if ($_SESSION['sort_type'] == 5) {
                                     sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Descending");
                                 } else if ($_SESSION['sort_type'] == 6) {
-                                    echo "there";
                                     sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Descending");
                                 } else if ($_SESSION['sort_type'] == 7) {
                                     sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Descending");
