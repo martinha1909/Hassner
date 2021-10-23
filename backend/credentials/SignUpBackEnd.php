@@ -4,10 +4,19 @@
     include '../constants/StatusCodes.php';
 
     $conn = connect();
-    $username = $_POST['username'];
+    $connPDO = connectPDO();
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
-    $email = $_POST['email'];
+    $email = trim($_POST['email']);
     $account_type = $_POST['account_type'];
+    if($account_type == AccountType::Artist)
+    {
+        $ticker = strtoupper(trim($_POST['ticker']));
+    }
+    else
+    {
+        $ticker = NULL;
+    }
 
     // Email Verification
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
@@ -27,6 +36,7 @@
         {
             $usr_res = searchAccount($conn, $username);
             $email_res = searchEmail($conn, $email);
+            $ticker_res = searchTicker($conn, $ticker);
             if($usr_res->num_rows > 0)
             {
                 $_SESSION['status'] = StatusCodes::ErrUsername;
@@ -39,10 +49,28 @@
                 $_SESSION['dependencies'] = "FRONTEND";
                 header("Location: ../../frontend/credentials/signup.php");
             }
+            // Validate ticker
+            else if($ticker_res->num_rows > 0)
+            {
+                $_SESSION['status'] = StatusCodes::ErrTickerDuplicate;
+                $_SESSION['dependencies'] = "FRONTEND";
+                header("Location: ../../frontend/credentials/signup.php");
+            }
+            else if(strlen($ticker) != 4 ||
+                    !is_numeric($ticker[0]) || 
+                    !is_numeric($ticker[1]) ||
+                    !ctype_alpha($ticker[2]) ||
+                    !ctype_alpha($ticker[3]))
+            {
+                $_SESSION['status'] = StatusCodes::ErrTickerFormat;
+                $_SESSION['dependencies'] = "FRONTEND";
+                header("Location: ../../frontend/credentials/signup.php");
+            }
             else
             {
-                $_SESSION['status'] = signup($conn, $username, $password, $account_type, $email);
-                if($_SESSION['status'] == StatusCodes::Success)
+                
+                $res = signup($connPDO, $username, $password, $account_type, $email, $ticker);
+                if($res == StatusCodes::Success)
                 {
                     $_SESSION['dependencies'] = "FRONTEND";
                     header("Location: ../../frontend/credentials/login.php");

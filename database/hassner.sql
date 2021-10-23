@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 12, 2021 at 01:58 AM
--- Server version: 10.4.18-MariaDB
--- PHP Version: 8.0.3
+-- Generation Time: Oct 22, 2021 at 04:14 AM
+-- Server version: 10.4.20-MariaDB
+-- PHP Version: 7.4.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -61,12 +61,34 @@ CREATE TABLE `account` (
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `shares_repurchase`) VALUES
 ('21 Savage', 'artist', 'artist', 6, 0, 0, 0, 0, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('88Glam', 'artist', 'artist', 2, 0, 0, 0, 0, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 20),
+('asdf', 'asdf', 'artist', 9, 0, 0, 0, 0, 'asdf@asdf.com', 'asdf', '', '', '', '', '', '', '', '', '', 1, 0, 0, 0, 0),
 ('daniel', 'user', 'user', 8, 0, 0, 0, 0, 'iosrghn@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('kai', 'user', 'user', 4, 0, 0, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('martin', 'user', 'user', 1, 0, 0, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
 ('NAV', 'artist', 'artist', 3, 0, 0, 0, 0, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('riley', 'user', 'user', 7, 0, 0, 0, 0, 'efin@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('vitor', 'user', 'user', 5, 0, 0, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `artist_account_data`
+--
+
+CREATE TABLE `artist_account_data` (
+  `account_id` int(11) NOT NULL,
+  `ticker` varchar(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `artist_account_data`
+--
+
+INSERT INTO `artist_account_data` (`account_id`, `ticker`) VALUES
+(3, '00NV'),
+(6, '21SA'),
+(9, '55GG'),
+(2, '88GM');
 
 -- --------------------------------------------------------
 
@@ -175,6 +197,13 @@ ALTER TABLE `account`
   ADD UNIQUE KEY `id` (`id`);
 
 --
+-- Indexes for table `artist_account_data`
+--
+ALTER TABLE `artist_account_data`
+  ADD PRIMARY KEY (`account_id`),
+  ADD UNIQUE KEY `ticker` (`ticker`);
+
+--
 -- Indexes for table `artist_shareholders`
 --
 ALTER TABLE `artist_shareholders`
@@ -221,8 +250,24 @@ ALTER TABLE `sell_order`
   ADD KEY `sell_order_artist` (`artist_username`);
 
 --
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `account`
+--
+ALTER TABLE `account`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `artist_account_data`
+--
+ALTER TABLE `artist_account_data`
+  ADD CONSTRAINT `artist_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 
 --
 -- Constraints for table `artist_shareholders`
