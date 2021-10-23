@@ -457,10 +457,9 @@
 
                 if($type == AccountType::Artist)
                 {
-                    $artist_id = $connPDO->lastInsertId();
-                    $sql2 = "INSERT INTO artist_account_data (account_id, ticker) VALUES (:artist_id, :ticker)";
+                    $sql2 = "INSERT INTO artist_account_data (artist_username, ticker) VALUES (:artist_username, :ticker)";
                     $stmt2 = $connPDO->prepare($sql2);
-                    $stmt2->bindParam(':artist_id', $artist_id, PDO::PARAM_INT);
+                    $stmt2->bindParam(':artist_username', $username, PDO::PARAM_STR);
                     $stmt2->bindParam(':ticker', $ticker, PDO::PARAM_STR);
                     $stmt2->execute();
                 }
