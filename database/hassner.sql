@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2021 at 04:14 AM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 7.4.22
+-- Generation Time: Oct 24, 2021 at 12:46 AM
+-- Server version: 10.4.18-MariaDB
+-- PHP Version: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -76,19 +76,9 @@ INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `
 --
 
 CREATE TABLE `artist_account_data` (
-  `account_id` int(11) NOT NULL,
+  `artist_username` varchar(20) NOT NULL,
   `ticker` varchar(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `artist_account_data`
---
-
-INSERT INTO `artist_account_data` (`account_id`, `ticker`) VALUES
-(3, '00NV'),
-(6, '21SA'),
-(9, '55GG'),
-(2, '88GM');
 
 -- --------------------------------------------------------
 
@@ -200,8 +190,7 @@ ALTER TABLE `account`
 -- Indexes for table `artist_account_data`
 --
 ALTER TABLE `artist_account_data`
-  ADD PRIMARY KEY (`account_id`),
-  ADD UNIQUE KEY `ticker` (`ticker`);
+  ADD PRIMARY KEY (`artist_username`,`ticker`);
 
 --
 -- Indexes for table `artist_shareholders`
@@ -257,7 +246,7 @@ ALTER TABLE `sell_order`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
@@ -267,7 +256,7 @@ ALTER TABLE `account`
 -- Constraints for table `artist_account_data`
 --
 ALTER TABLE `artist_account_data`
-  ADD CONSTRAINT `artist_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
+  ADD CONSTRAINT `artist_ticker_key` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`);
 
 --
 -- Constraints for table `artist_shareholders`
