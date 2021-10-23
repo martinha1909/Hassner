@@ -27,7 +27,7 @@
         }
         else
         {
-            $_SESSION['status'] = StatusCodes::EMPTY_ERR; 
+            $_SESSION['status'] = StatusCodes::ErrEmpty; 
         }
     }
     else
@@ -43,7 +43,7 @@
         }
         else
         {
-            $_SESSION['status'] = StatusCodes::EMPTY_ERR;
+            $_SESSION['status'] = StatusCodes::ErrEmpty;
         }
     }
     $_SESSION['dependencies'] = "FRONTEND";
