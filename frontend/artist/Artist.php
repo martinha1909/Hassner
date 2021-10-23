@@ -2,9 +2,10 @@
     include '../../backend/control/Dependencies.php';
     include '../../backend/artist/ArtistHelpers.php';
     include '../../backend/shared/MarketplaceHelpers.php';
+    include '../../backend/shared/CampaignHelpers.php';
     include '../../backend/constants/ShareInteraction.php';
     include '../../backend/constants/TradeHistoryType.php';
-    include '../../backend/shared/CampaignHelpers.php';
+    include '../../backend/constants/EthosOption.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
     include '../../backend/object/TradeHistory.php';
@@ -328,135 +329,189 @@
 
                                     </form>
                             ';
-                        } else {
-                            $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
-                            $market_cap = calculateMarketCap($_SESSION['username']);
-                            $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
-                            $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
-                            echo '
-                                        <h6>Price Per Share (q̶): ' . $account_info['price_per_share'] . '</h6>
-                                        <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
-                                            <h6>Volumn: ' . $account_info['Share_Distributed'] . ' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
-                                        </form>
-                                ';
-                            if ($_SESSION['share_distribute'] != 0) {
+                        } 
+                        else 
+                        {
+                            if($_SESSION['ethos_dashboard_options'] == EthosOption::NONE)
+                            {
                                 echo '
-                                        <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
-                                            <p>How many shares would you like to inject?</p>
-                                            <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">
-                                            <p>Comments</p>
-                                            <input type="text" name = "inject_comment" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter comment">
-                                            <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Save">  
+                                        <form action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
+                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
+                                                <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
+                                                <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
                                             </div>
                                         </form>
-                                    ';
+                                ';
                             }
-                            echo '
-                                        <h6>Current Shareholders: ' . $shareholder_list->num_rows . '</h6>
-                                        <h6>Market cap (q̶): ' . $market_cap . '</h6>
-                                        <h6>Day High (q̶): ' . $high . '</h6>
-                                        <h6>Day Low (q̶): ' . $low . '</h6>
-                                        <br>';
-                            if (artistCanCreateSellOrder($_SESSION['username'])) {
+                            else if($_SESSION['ethos_dashboard_options'] == EthosOption::QUOTES)
+                            {
                                 echo '
-                                            <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
-                                                <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
+                                        <form action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
+                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                <input name = "ethos_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
+                                                <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
+                                                <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
+                                            </div>
+                                        </form>
+                                ';
+
+                                $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
+                                $market_cap = calculateMarketCap($_SESSION['username']);
+                                $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
+                                $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
+                                echo '
+                                            <h6>Price Per Share (q̶): ' . $account_info['price_per_share'] . '</h6>
+                                            <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
+                                                <h6>Volumn: ' . $account_info['Share_Distributed'] . ' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
                                             </form>
                                     ';
-                            }
-                            echo '
-                                        <h2>Buy Back Shares</h2>
-                                ';
-
-                            if ($_SESSION['buy_sell'] == ShareInteraction::SELL) {
-                                $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
+                                if ($_SESSION['share_distribute'] != 0) {
+                                    echo '
+                                            <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
+                                                <p>How many shares would you like to inject?</p>
+                                                <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">
+                                                <p>Comments</p>
+                                                <input type="text" name = "inject_comment" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter comment">
+                                                <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Save">  
+                                                </div>
+                                            </form>
+                                        ';
+                                }
                                 echo '
-                                        <h6>How many shares are you selling?</h6>
-                                        <div class="wrapper-searchbar">
-                                            <div class="container-searchbar mx-auto">
-                                                <label>
-                                                    <form action="../../backend/shared/SellOrderBackend.php" method="post">
-                                                        <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
-                                                        <p>Quantity: <span id="demo"></span></p>
-                                                        <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
-                                                        <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
-                                                    </form>
-                                                </label> 
-                                            </div>
-                                        </div>
-                                    ';
-                                $_SESSION['buy_sell'] = 0;
+                                            <h6>Current Shareholders: ' . $shareholder_list->num_rows . '</h6>
+                                            <h6>Market cap (q̶): ' . $market_cap . '</h6>
+                                            <h6>Day High (q̶): ' . $high . '</h6>
+                                            <h6>Day Low (q̶): ' . $low . '</h6>
+                                            <br>
+                                ';
+                                
                             }
-
-                            sellOrderInit();
-
-                            if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
+                            else if($_SESSION['ethos_dashboard_options'] == EthosOption::BUY_BACK_SHARES)
                             {
-                                if($_SESSION['status'] == StatusCodes::Success)
-                                {
-                                    getStatusMessage("", "Shares bought back successfully");
-                                }
-                                else if($_SESSION['status'] == StatusCodes::ErrGeneric)
-                                {
-                                    getStatusMessage("An unexpected error occured", "");
-                                }
-                            }
-
-                            askedPriceInit();
-                            echo '
-                                        </tbody>
-                                    </table>
-                            ';
-                            
-                            //Buy Back shares history 
-                            echo '
-                                <div class="col-6">
-                                    <h3 class="h3-blue py-2">Buy Back Shares History</h3>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Seller</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Quantity</th>
-                                                <th scope="col">Date Purchased</th>
-                                                <th scope="col">Time Purchased</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                </div>
-                            ';
-        
-                            $sellers = array();
-                            $prices = array();
-                            $quantities = array();
-                            $date_purchase = array();
-                            $time_purchase = array();
-        
-                            buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $time_purchase, $_SESSION['username']);
-        
-                            for ($i = 0; $i < sizeof($sellers); $i++) {
                                 echo '
-                                            <tr>
-                                                <td>' . $sellers[$i] . '</td>
-                                                <td>' . $prices[$i] . '</td>
-                                                <td>' . $quantities[$i] . '</td>
-                                                <td>' . $date_purchase[$i] . '</td>
-                                                <td>' . $time_purchase[$i] . '</td>
-                                            </tr>
+                                        <form action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
+                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
+                                                <input name = "ethos_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
+                                                <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
+                                            </div>
+                                        </form>
+                                ';
+
+                                if (artistCanCreateSellOrder($_SESSION['username'])) {
+                                    echo '
+                                                <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
+                                                    <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
+                                                </form>
+                                        ';
+                                }
+                                echo '
+                                            <h2>Buy Back Shares</h2>
+                                    ';
+
+                                if ($_SESSION['buy_sell'] == ShareInteraction::SELL) {
+                                    $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
+                                    echo '
+                                            <h6>How many shares are you selling?</h6>
+                                            <div class="wrapper-searchbar">
+                                                <div class="container-searchbar mx-auto">
+                                                    <label>
+                                                        <form action="../../backend/shared/SellOrderBackend.php" method="post">
+                                                            <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
+                                                            <p>Quantity: <span id="demo"></span></p>
+                                                            <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
+                                                            <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
+                                                        </form>
+                                                    </label> 
+                                                </div>
+                                            </div>
+                                        ';
+                                    $_SESSION['buy_sell'] = 0;
+                                }
+
+                                sellOrderInit();
+
+                                if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
+                                {
+                                    if($_SESSION['status'] == StatusCodes::Success)
+                                    {
+                                        getStatusMessage("", "Shares bought back successfully");
+                                    }
+                                    else if($_SESSION['status'] == StatusCodes::ErrGeneric)
+                                    {
+                                        getStatusMessage("An unexpected error occured", "");
+                                    }
+                                }
+
+                                askedPriceInit();
+                                echo '
+                                            </tbody>
+                                        </table>
+                                ';
+                                
+                                //Buy Back shares history 
+                                echo '
+                                    <div class="col-6">
+                                        <h3 class="h3-blue py-2">Buy Back Shares History</h3>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Seller</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Quantity</th>
+                                                    <th scope="col">Date Purchased</th>
+                                                    <th scope="col">Time Purchased</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                    </div>
+                                ';
+            
+                                $sellers = array();
+                                $prices = array();
+                                $quantities = array();
+                                $date_purchase = array();
+                                $time_purchase = array();
+            
+                                buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $time_purchase, $_SESSION['username']);
+            
+                                for ($i = 0; $i < sizeof($sellers); $i++) {
+                                    echo '
+                                                <tr>
+                                                    <td>' . $sellers[$i] . '</td>
+                                                    <td>' . $prices[$i] . '</td>
+                                                    <td>' . $quantities[$i] . '</td>
+                                                    <td>' . $date_purchase[$i] . '</td>
+                                                    <td>' . $time_purchase[$i] . '</td>
+                                                </tr>
+                                    ';
+                                }
+
+                                echo '
+                                            </tbody>
+                                        </table>
+                                ';
+
+                                tradeHistoryInit($_SESSION['username']);
+
+                                echo '<h3>Inject history</h3>';
+
+                                injectionHistoryInit($_SESSION['username']);
+                            }
+                            else if($_SESSION['ethos_dashboard_options'] == EthosOption::HISTORY)
+                            {
+                                echo '
+                                        <form action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
+                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
+                                                <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
+                                                <input name = "ethos_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
+                                            </div>
+                                        </form>
                                 ';
                             }
-
-                            echo '
-                                        </tbody>
-                                    </table>
-                            ';
-
-                            tradeHistoryInit($_SESSION['username']);
-
-                            echo '<h3>Inject history</h3>';
-
-                            injectionHistoryInit($_SESSION['username']);
                         }
                     }
 
