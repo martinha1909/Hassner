@@ -247,35 +247,33 @@ checkRaffleRoll();
                             $all_price_per_share = array();
                             $all_shares_bought = array();
                             $all_artists = array();
-                            // if ($my_investments->num_rows == 0) {
-                            //     echo '<h3 class="h3-blue"> No results </h3>';
-                            // } else {
-                                $artist_name = "";
-                                $rate = 0;
-                                //retrieving data from the data base to populate arrays that store information of artists that the user has invested in
-                                populateVars($_SESSION['username'], $all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
+                            $artist_name = "";
+                            $rate = 0;
+                            //retrieving data from the data base to populate arrays that store information of artists that the user has invested in
+                            populateVars($_SESSION['username'], $all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
 
-                                if ($_SESSION['sort_type'] == 0) {
-                                    sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Ascending");
-                                } else if ($_SESSION['sort_type'] == 1) {
-                                    sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Ascending");
-                                } else if ($_SESSION['sort_type'] == 2) {
-                                    sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Ascending");
-                                } else if ($_SESSION['sort_type'] == 3) {
-                                    sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Ascending");
-                                } else if ($_SESSION['sort_type'] == 4) {
-                                    sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Descending");
-                                } else if ($_SESSION['sort_type'] == 5) {
-                                    sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Descending");
-                                } else if ($_SESSION['sort_type'] == 6) {
-                                    sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Descending");
-                                } else if ($_SESSION['sort_type'] == 7) {
-                                    sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Descending");
-                                }
-                                printMyPortfolioChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
-                            // }
-                            echo '</tbody>
-                                    </table>';
+                            if ($_SESSION['sort_type'] == 0) {
+                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Ascending");
+                            } else if ($_SESSION['sort_type'] == 1) {
+                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Ascending");
+                            } else if ($_SESSION['sort_type'] == 2) {
+                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Ascending");
+                            } else if ($_SESSION['sort_type'] == 3) {
+                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Ascending");
+                            } else if ($_SESSION['sort_type'] == 4) {
+                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Descending");
+                            } else if ($_SESSION['sort_type'] == 5) {
+                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Descending");
+                            } else if ($_SESSION['sort_type'] == 6) {
+                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Descending");
+                            } else if ($_SESSION['sort_type'] == 7) {
+                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Descending");
+                            }
+                            printMyPortfolioChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
+                            echo '
+                                    </tbody>
+                                </table>
+                            ';
 
                             sellOrderInit();
 
