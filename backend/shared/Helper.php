@@ -20,6 +20,9 @@
         $_SESSION['fiat_options'] = BalanceOption::NONE;
         $_SESSION['share_distribute'] = 0;
         $_SESSION['buy_options'] = 0;
+        $_SESSION['trade_history_from'] = 0;
+        $_SESSION['trade_history_to'] = 0;
+        $_SESSION['trade_history_type'] = 0;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
     }
 
