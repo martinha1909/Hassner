@@ -325,7 +325,7 @@
 
         function getArtistShareHoldersInfo($conn, $artist_username)
         {
-            $sql = "SELECT * FROM buy_history WHERE artist_username = ?";
+            $sql = "SELECT * FROM artist_shareholders WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
