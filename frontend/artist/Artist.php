@@ -55,7 +55,7 @@ checkRaffleRoll();
 
                 <div class="user-balance">
                     <?php
-                    echo ' &nbsp;(q̶): ';
+                    echo ' &nbsp;$(USD): ';
                     echo round($account_info['balance'], 2);
                     $unbought = $account_info['Share_Distributed'] - $account_info['Shares'];
                     echo '<br> &nbsp;Available Shares: ';
@@ -438,7 +438,7 @@ checkRaffleRoll();
         </div>
     </section>
 
-    <a class="li-bottom btn btn-secondary" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
+    <a class="li-bottom btn btn-success py-2" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
 
     <!--scroll to top-->
     <div class="scroll-top">
