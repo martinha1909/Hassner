@@ -9,7 +9,7 @@ include '../../backend/object/TradeHistoryList.php';
 include '../../backend/object/Node.php';
 
 $_SESSION['conversion_rate'];
-$_SESSION['coins'] = 0;
+$_SESSION['usd'] = 0;
 $_SESSION['status'];
 
 refreshUserArtistShareTable();

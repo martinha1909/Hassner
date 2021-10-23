@@ -3,6 +3,7 @@ include '../../backend/control/Dependencies.php';
 include '../../backend/shared/MarketplaceHelpers.php';
 include '../../backend/shared/CampaignHelpers.php';
 include '../../backend/constants/LoggingModes.php';
+include '../../backend/constants/BalanceOption.php';
 include '../../backend/object/ParticipantList.php';
 include '../../backend/object/CampaignParticipant.php';
 
@@ -108,11 +109,11 @@ checkRaffleRoll();
                     }
 
                     //When Siliqas option is selected
-                    if ($_SESSION['display'] == MenuOption::Siliqas) {
+                    if ($_SESSION['display'] == MenuOption::Balance) {
                         echo '
                                     <li class="selected-no-hover list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Siliqas">
+                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Balance">
                                         </form>
                                     </li>
                                 ';
@@ -120,7 +121,7 @@ checkRaffleRoll();
                         echo '
                                     <li class="list-group-item-no-hover">
                                         <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Siliqas">
+                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Balance">
                                         </form>
                                     </li>
                                 ';
@@ -311,7 +312,7 @@ checkRaffleRoll();
                                                     <tr>
                                                         <th class="th-tan" scope="col">Order ID</th>
                                                         <th class="th-tan" scope="col">Artist</th>
-                                                        <th class="th-tan" scope="col">Siliqas Requested</th>
+                                                        <th class="th-tan" scope="col">Amount Requested</th>
                                                         <th class="th-tan" scope="col">Quantity</th>
                                                         <th class="th-tan" scope="col">Date Posted</th>
                                                         <th class="th-tan" scope="col">Remove Order</th>
@@ -515,8 +516,8 @@ checkRaffleRoll();
                             }
                             echo '</form>';
                             echo '</table>';
-                        } else if ($_SESSION['display'] == MenuOption::Siliqas) {
-                            siliqasInit();
+                        } else if ($_SESSION['display'] == MenuOption::Balance) {
+                            fiatInit();
                         }
 
                         //Account page functionality

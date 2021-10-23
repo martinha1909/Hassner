@@ -14,7 +14,7 @@ if(!defined('MENUOPTION_LOADED')){
         const Investors = "INVESTORS";
 
         //both 
-        const Siliqas = "SILIQAS";
+        const Balance = "BALANCE";
         const Account = "ACCOUNT";
         const Campaign = "CAMPAIGN";
     }

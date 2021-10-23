@@ -3,41 +3,32 @@
     include '../../backend/constants/Currency.php';
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/MenuOption.php';
+    include '../../backend/constants/BalanceOption.php';
 
     function hassnerInit()
-    {   
+    {
         $_SESSION['dependencies'] = "FRONTEND";
-        $_SESSION['coins'] = 0;
         $_SESSION['display'] = MenuOption::None;
         $_SESSION['sort_type'] = 0;
-        $_SESSION['cad'] = 0;
+        $_SESSION['usd'] = 0;
         $_SESSION['edit'] = 0;
         $_SESSION['currency'] = 0;
-        $_SESSION['btn_show'] = 0;
         $_SESSION['saved'] = 0;
         $_SESSION['buy_sell'] = 0;
         $_SESSION['buy_asked_price'] = 0;
         $_SESSION['buy_market_price'] = 0;
-        $_SESSION['siliqas_or_fiat'] = 0;
+        $_SESSION['fiat_options'] = BalanceOption::NONE;
         $_SESSION['share_distribute'] = 0;
         $_SESSION['buy_options'] = 0;
-        $_SESSION['trade_history_from'] = 0;
-        $_SESSION['trade_history_to'] = 0;
-        $_SESSION['trade_history_type'] = 0;
-        //conversion rate from CAD to Siliqas, 1 CAD = 0.95 Sililqas (brute force for now)
-        $_SESSION['conversion_rate'] = -0.05;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
     }
 
     function getStatusMessage($err_msg, $suc_msg)
     {
-        if($_SESSION['status'] == StatusCodes::ErrGeneric)
-        {
-            echo '<p class="error-msg">'.$err_msg.'</p>';
-        }
-        else if($_SESSION['status'] == StatusCodes::Success)
-        {
-            echo '<p class="suc-msg">'.$suc_msg.'</p>';
+        if ($_SESSION['status'] == StatusCodes::ErrGeneric) {
+            echo '<p class="error-msg">' . $err_msg . '</p>';
+        } else if ($_SESSION['status'] == StatusCodes::Success) {
+            echo '<p class="suc-msg">' . $suc_msg . '</p>';
         }
 
         $_SESSION['status'] = 0;
@@ -234,6 +225,6 @@
                     </marquee>
                 </div>
             </div>
-            ';
+        ';
     }
 ?>

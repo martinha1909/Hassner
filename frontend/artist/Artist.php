@@ -115,11 +115,11 @@
                         ';
                     }
 
-                    if ($_SESSION['display'] == MenuOption::Siliqas) {
+                    if ($_SESSION['display'] == MenuOption::Balance) {
                         echo '
                             <li class="selected-no-hover list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Siliqas">
+                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Balance">
                                 </form>
                             </li>
                         ';
@@ -127,7 +127,7 @@
                         echo '
                             <li class="list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Siliqas">
+                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Balance">
                                 </form>
                             </li>
                         ';
@@ -495,8 +495,8 @@
                     }
 
                     //Sell siliqas to USD/CAD/EUR
-                    else if ($_SESSION['display'] == MenuOption::Siliqas) {
-                        siliqasInit();
+                    else if ($_SESSION['display'] == MenuOption::Balance) {
+                        fiatInit();
                     } else if ($_SESSION['display'] == MenuOption::Investors) {
                     }
                     ?>
