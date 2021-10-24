@@ -55,11 +55,11 @@ checkRaffleRoll();
                     <span data-feather="grid"></span>
                 </button>
 
-                <div class="user-balance">
-                    <?php
-                    echo ' &nbsp;($USD): ';
-                    ?>
-                </div>
+                    <div class="user-balance">
+                        <?php
+                        echo ' &nbsp;($USD): ';
+                        ?>
+                    </div>
             </nav>
         </div>
     </section>
