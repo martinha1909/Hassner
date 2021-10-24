@@ -83,6 +83,17 @@
             return $result;
         }
 
+        function searchUserInvestedArtists($conn, $user_username)
+        {
+            $sql = "SELECT shares_owned, artist_username FROM artist_shareholders WHERE user_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchUsersInvestment($conn, $user_username)
         {
             $sql = "SELECT * FROM buy_history WHERE user_username = ?";
@@ -335,7 +346,7 @@
 
         function getArtistShareHoldersInfo($conn, $artist_username)
         {
-            $sql = "SELECT * FROM buy_history WHERE artist_username = ?";
+            $sql = "SELECT * FROM artist_shareholders WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
