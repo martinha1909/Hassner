@@ -7,6 +7,8 @@ $_SESSION['expmonth'] = 0;
 $_SESSION['expyear'] = 0;
 ?>
 
+<link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=divice-width, initial-scale=1.0">

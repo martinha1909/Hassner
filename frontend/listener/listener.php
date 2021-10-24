@@ -54,6 +54,12 @@ checkRaffleRoll();
                 <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span data-feather="grid"></span>
                 </button>
+
+                    <div class="user-balance">
+                        <?php
+                        echo ' &nbsp;($USD): ';
+                        ?>
+                    </div>
             </nav>
         </div>
     </section>
@@ -550,7 +556,7 @@ checkRaffleRoll();
         </div>
     </section>
 
-    <a class="li-bottom btn btn-secondary" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
+    <a class="li-bottom btn btn-success py-2" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
 
     <!--scroll to top-->
     <div class="scroll-top">
