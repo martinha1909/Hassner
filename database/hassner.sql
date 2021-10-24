@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2021 at 12:46 AM
+-- Generation Time: Oct 24, 2021 at 10:41 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -60,14 +60,15 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `shares_repurchase`) VALUES
 ('21 Savage', 'artist', 'artist', 6, 0, 0, 0, 0, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('88Glam', 'artist', 'artist', 2, 0, 0, 0, 0, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 20),
-('asdf', 'asdf', 'artist', 9, 0, 0, 0, 0, 'asdf@asdf.com', 'asdf', '', '', '', '', '', '', '', '', '', 1, 0, 0, 0, 0),
-('daniel', 'user', 'user', 8, 0, 0, 0, 0, 'iosrghn@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('kai', 'user', 'user', 4, 0, 0, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('martin', 'user', 'user', 1, 0, 0, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
+('88Glam', 'artist', 'artist', 2, 7426, 42847, 0, 20000, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 4, 0, 0, 0, 2817),
+('asdf', 'asdf', 'artist', 9, 0, 0, 0, 0, 'asdf@asdf.com', 'asdf', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
+('daniel', 'user', 'user', 8, 0, 100000, 0, 0, 'iosrghn@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
+('Drake', 'artist', 'artist', 11, 0, 0, 0, 0, 'qwerty@gmail.com', 'Drake', '', '', '', '', '', '', '', '', '', 1, 0, 0, 0, 0),
+('kai', 'user', 'user', 4, 3274, 79280, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
+('martin', 'user', 'user', 1, 2028, 88962, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
 ('NAV', 'artist', 'artist', 3, 0, 0, 0, 0, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('riley', 'user', 'user', 7, 0, 0, 0, 0, 'efin@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('vitor', 'user', 'user', 5, 0, 0, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
+('riley', 'user', 'user', 7, 0, 100000, 0, 0, 'efin@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
+('vitor', 'user', 'user', 5, 2124, 88911, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -80,6 +81,13 @@ CREATE TABLE `artist_account_data` (
   `ticker` varchar(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `artist_account_data`
+--
+
+INSERT INTO `artist_account_data` (`artist_username`, `ticker`) VALUES
+('Drake', '22DR');
+
 -- --------------------------------------------------------
 
 --
@@ -91,6 +99,16 @@ CREATE TABLE `artist_shareholders` (
   `artist_username` varchar(20) NOT NULL,
   `shares_owned` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `artist_shareholders`
+--
+
+INSERT INTO `artist_shareholders` (`user_username`, `artist_username`, `shares_owned`) VALUES
+('88Glam', '88Glam', 2817),
+('kai', '88Glam', 3274),
+('martin', '88Glam', 2028),
+('vitor', '88Glam', 2124);
 
 -- --------------------------------------------------------
 
@@ -107,6 +125,18 @@ CREATE TABLE `buy_history` (
   `date_purchased` varchar(10) NOT NULL,
   `time_purchased` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `buy_history`
+--
+
+INSERT INTO `buy_history` (`user_username`, `seller_username`, `artist_username`, `no_of_share_bought`, `price_per_share_when_bought`, `date_purchased`, `time_purchased`) VALUES
+('88Glam', 'kai', '88Glam', 1450, 4, '23-10-2021', '19:56:46'),
+('88Glam', 'martin', '88Glam', 898, 5, '23-10-2021', '19:56:46'),
+('88Glam', 'vitor', '88Glam', 469, 2, '23-10-2021', '19:56:46'),
+('kai', '88Glam', '88Glam', 4724, 5, '23-10-2021', '19:51:43'),
+('martin', '88Glam', '88Glam', 2926, 5, '23-10-2021', '19:51:24'),
+('vitor', '88Glam', '88Glam', 2593, 5, '23-10-2021', '19:52:01');
 
 -- --------------------------------------------------------
 
@@ -159,6 +189,13 @@ CREATE TABLE `inject_history` (
   `comment` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `inject_history`
+--
+
+INSERT INTO `inject_history` (`id`, `artist_username`, `amount`, `date_injected`, `time_injected`, `comment`) VALUES
+(1, '88Glam', 20000, '23-10-2021', '19:51:06', 'IPO');
+
 -- --------------------------------------------------------
 
 --
@@ -174,6 +211,15 @@ CREATE TABLE `sell_order` (
   `date_posted` varchar(20) NOT NULL,
   `time_posted` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sell_order`
+--
+
+INSERT INTO `sell_order` (`id`, `user_username`, `artist_username`, `selling_price`, `no_of_share`, `date_posted`, `time_posted`) VALUES
+(1, 'martin', '88Glam', 4, 0, '23-10-2021', '19:51:33'),
+(2, 'kai', '88Glam', 2, 0, '23-10-2021', '19:51:49'),
+(3, 'vitor', '88Glam', 4, 0, '23-10-2021', '19:52:09');
 
 --
 -- Indexes for dumped tables
@@ -246,7 +292,7 @@ ALTER TABLE `sell_order`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
