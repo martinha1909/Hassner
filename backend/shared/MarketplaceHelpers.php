@@ -93,7 +93,7 @@ function fetchAskedPrice(&$ids, &$asked_prices, &$user_usernames, &$artist_usern
     singleSort($ids, "Descending");
 }
 
-function askedPriceInit()
+function askedPriceInit($artist_username, $account_type)
 {
     //displaying asked price marketplace
     $asked_prices = array();
@@ -107,12 +107,24 @@ function askedPriceInit()
     $ids = array();
     //sorting asked_price in a descending order, so the first index would be the lowest value, then swaps the other arrays 
     //to match with asked_price indices
-    fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $_SESSION['selected_artist']);
-    echo '
-            <div>
-                <h3 class="h3-blue py-5 text-center">Bid Price</h3>
-            </div>
+    fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $artist_username);
+
+    if($account_type == AccountType::User)
+    {
+        echo '
+                <div>
+                    <h3 class="h3-blue py-5 text-center">Bid Price</h3>
+                </div>
         ';
+    }
+    else if($account_type == AccountType::Artist)
+    {
+        echo '
+                <div>
+                    <h3 class="h3-blue py-5 text-center">Shares available at bid price</h3>
+                </div>
+        ';
+    }
     if (sizeof($asked_prices) > 0) {
         //displays the buy button when user has not clicked on it
         if ($_SESSION['buy_asked_price'] == 0) {

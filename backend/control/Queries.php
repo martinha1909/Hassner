@@ -24,6 +24,16 @@
             return $result;
         }
 
+        function searchUserBalance($conn, $usernmae)
+        {
+            $sql = "SELECT balance FROM account WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $usernmae);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result;
+        }
+
         function searchEmail($conn, $email)
         {
             $sql = "SELECT username FROM account WHERE email = ?";
@@ -859,6 +869,10 @@
                 $stmt = $conn->prepare("UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = ?");
                 $stmt->bindValue(1, $seller_username);
                 $stmt->execute(array($seller_username));
+
+                $stmt = $conn->prepare("UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = ?");
+                $stmt->bindValue(1, $artist_username);
+                $stmt->execute(array($artist_username));
                 
                 $stmt = $conn->prepare("UPDATE account SET price_per_share = '$new_pps' WHERE username = ?");
                 $stmt->bindValue(1, $artist_username);

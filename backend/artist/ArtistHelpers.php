@@ -223,4 +223,69 @@
             ';
         }
     }
+
+    function getAmountAvailableForRepurchase($artist_username): int
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchSellOrderByArtist($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            $ret += $row['no_of_share'];
+        }
+
+        return $ret;
+    }
+
+    function calculatePriceForAllRepurchase($artist_username): float
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchSellOrderByArtist($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            $price_per_sell_order = $row['no_of_share'] * $row['selling_price'];
+            $ret += $price_per_sell_order;
+        }
+
+        return $ret;
+    }
+
+    function getAllSellOrderIDsForRepurchase($artist_username)
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = searchSellOrderByArtist($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            array_push($ret, $row['id']);
+        }
+
+        return $ret;
+    }
+
+    function getAllRepurchaseSellOrdersInfo($artist_username)
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = searchSellOrderByArtist($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            //the fields that are being sent as "" means we do not need those fields for this case so they can be empty
+            $sell_order_item_info = new SellOrder($row['id'], 
+                                                  $row['user_username'], 
+                                                  "", 
+                                                  $row['selling_price'], 
+                                                  $row['no_of_share'], 
+                                                  "", 
+                                                  "");
+            array_push($ret, $sell_order_item_info);
+        }
+
+        return $ret;
+    }
 ?>

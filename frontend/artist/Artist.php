@@ -11,6 +11,7 @@
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
+    include '../../backend/object/SellOrder.php';
 
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
@@ -366,10 +367,17 @@
                                 $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
                                 echo '
                                             <h6>Price Per Share (q̶): ' . $account_info['price_per_share'] . '</h6>
+                                            <h6>Volumn: ' . $account_info['Share_Distributed'] . '</h6>
+                                            <h6>Current Shareholders: ' . $shareholder_list->num_rows . '</h6>
+                                            <h6>Market cap (q̶): ' . $market_cap . '</h6>
+                                            <h6>Day High (q̶): ' . $high . '</h6>
+                                            <h6>Day Low (q̶): ' . $low . '</h6>
+                                            <br>
                                             <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
-                                                <h6>Volumn: ' . $account_info['Share_Distributed'] . ' <input name="display_type" type="submit" id="menu-style" style="border:1px white; background-color: transparent; color: #ff9100;" value="+">
+                                                <input name="display_type" type="submit" class="btn btn-primary" value="Inject More Shares">
                                             </form>
                                 ';
+
                                 if ($_SESSION['share_distribute'] != 0) {
                                     echo '
                                             <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
@@ -383,13 +391,6 @@
                                             </form>
                                     ';
                                 }
-                                echo '
-                                            <h6>Current Shareholders: ' . $shareholder_list->num_rows . '</h6>
-                                            <h6>Market cap (q̶): ' . $market_cap . '</h6>
-                                            <h6>Day High (q̶): ' . $high . '</h6>
-                                            <h6>Day Low (q̶): ' . $low . '</h6>
-                                            <br>
-                                ';
                                 
                             }
                             else if($_SESSION['ethos_dashboard_options'] == EthosOption::BUY_BACK_SHARES)
@@ -413,9 +414,6 @@
                                                 </form>
                                     ';
                                 }
-                                echo '
-                                            <h2>Buy Back Shares</h2>
-                                ';
 
                                 if ($_SESSION['buy_sell'] == ShareInteraction::SELL) {
                                     $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
@@ -437,6 +435,14 @@
                                     $_SESSION['buy_sell'] = 0;
                                 }
 
+                                $amount_repurchase_available = getAmountAvailableForRepurchase($_SESSION['username']);
+                                $price_for_all_available_repurchase = calculatePriceForAllRepurchase($_SESSION['username']);
+
+                                //Only to be used if artist clicks the button to buy back all shares that are being sold
+                                $_SESSION['repurchase_sell_orders'] = getAllRepurchaseSellOrdersInfo($_SESSION['username']);
+
+                                echo '<h6>Shares available for repurchase: '.$amount_repurchase_available.'</h6>';
+
                                 sellOrderInit();
 
                                 if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
@@ -451,10 +457,14 @@
                                     }
                                 }
 
-                                askedPriceInit();
+                                askedPriceInit($_SESSION['username'], $_SESSION['account_type']);
+
                                 echo '
                                             </tbody>
                                         </table>
+                                        <form action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
+                                            <input type="submit" class="btn btn-primary" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
+                                        </form>
                                 ';
                             }
                             else if($_SESSION['ethos_dashboard_options'] == EthosOption::HISTORY)
