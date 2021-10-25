@@ -58,6 +58,11 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
                         </label>
                     </div>
                 </div>
+                    <div class="user-balance">
+                        <?php
+                        echo ' &nbsp;($USD): ';
+                        ?>
+                    </div>
             </nav>
         </div>
     </section>

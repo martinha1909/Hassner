@@ -30,10 +30,6 @@ main {
   border-radius: 7px;
   box-shadow: -5px -5px 25px rgba(0, 0, 0, 0.705);
   margin: 50px auto;
-
-  animation-name: rotate;
-  animation-duration: 1s;
-  animation-fill-mode: both;
 }
 
 .top-card {
@@ -106,8 +102,9 @@ h1#h1-sm {
   color: white;
   font-weight: 600;
   margin: 12px 0;
-  border-bottom: 4px solid #ffffff;
-  width: 100%;
+  border-bottom: 2px solid #ffffff;
+  width: 50%;
+  padding: 1%;
 }
 
 .middle-card,
@@ -163,19 +160,6 @@ footer .links a {
   color: rgba(0, 0, 0, 0.9);
 }
 
-/* ANIMATION */
-@keyframes rotate {
-  0% {
-    transform-origin: left bottom;
-    transform: rotate3d(0, 0, 1, 45deg);
-    opacity: 0;
-  }
-  100% {
-    transform-origin: left bottom;
-    transform: none;
-    opacity: 1;
-  }
-}
 p {
   color: #ff9100;
   display: inline-block;
@@ -247,9 +231,9 @@ a#icon-btn {
 }
 
 .my_btn {
-  padding: 1px 1px;
+  padding: 2px 2px;
   border: 0 none;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
   box-shadow: none;
