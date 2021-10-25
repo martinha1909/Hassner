@@ -193,15 +193,15 @@ $_SESSION['expyear'] = 0;
     <div class="col-25">
       <div class="container">
         <h4>Cart <span class="price"><?php
-                                      echo "(q̶): ";
-                                      echo $_SESSION['coins']; ?></b></span></h4>
+                                      echo "(USD): ";
+                                      echo $_SESSION['usd']; ?></b></span></h4>
         <p><a><?php echo $_SESSION['currency']; ?></a> <span class="price"><?php
                                                                             if ($_SESSION['currency'] == Currency::USD || $_SESSION['currency'] == Currency::CAD) {
                                                                               echo "$";
                                                                             } else if ($_SESSION['currency'] == "EUR") {
                                                                               echo "€";
                                                                             }
-                                                                            echo $_SESSION['siliqas'];
+                                                                            echo $_SESSION['fiat'];
                                                                             ?></span></p>
         <hr>
         <p>Total <span class="price"><b><?php
@@ -210,7 +210,7 @@ $_SESSION['expyear'] = 0;
                                         } else if ($_SESSION['currency'] == Currency::EUR) {
                                           echo "€";
                                         }
-                                        $total = $_SESSION['siliqas'];
+                                        $total = $_SESSION['fiat'];
                                         echo $total;
                                         ?></b></span></p>
       </div>

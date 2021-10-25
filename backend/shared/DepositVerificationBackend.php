@@ -4,7 +4,7 @@
     include '../constants/StatusCodes.php';
     include '../constants/LoggingModes.php';
 
-    $_SESSION['logging_mode'] = LogModes::SELL_SILIQAS;
+    $_SESSION['logging_mode'] = LogModes::WITHDRAW;
 
     $conn = connect();
     $save_info = $_POST['save_info'];
@@ -16,34 +16,34 @@
     {
         if(!empty($transit_no) && !empty($inst_no) && !empty($account_no) && !empty($swift))
         {
-            $_SESSION['coins'] = round($_SESSION['coins'], 2);
+            $_SESSION['usd'] = round($_SESSION['usd'], 2);
             saveUseraccountInfo($conn, $_SESSION['username'], $transit_no, $inst_no, $account_no, $swift);
-            $_SESSION['status'] = sellSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
+            $_SESSION['status'] = withdraw($conn, $_SESSION['username'], $_SESSION['usd']);
             $_SESSION['btn_show'] = 0;
-            $_SESSION['cad'] = 0;
-            $_SESSION['coins'] = 0;
+            $_SESSION['usd'] = 0;
+            $_SESSION['usd'] = 0;
             $_SESSION['saved'] = 0; 
-            $_SESSION['siliqas'] = 0;
+            $_SESSION['fiat'] = 0;
         }
         else
         {
-            $_SESSION['status'] = StatusCodes::EMPTY_ERR; 
+            $_SESSION['status'] = StatusCodes::ErrEmpty; 
         }
     }
     else
     {
         if(!empty($transit_no) && !empty($inst_no) && !empty($account_no) && !empty($swift))
         {
-            $_SESSION['coins'] = round($_SESSION['coins'], 2);
-            $_SESSION['status'] = sellSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
-            $_SESSION['cad'] = 0;
-            $_SESSION['coins'] = 0;
-            $_SESSION['siliqas'] = 0;
+            $_SESSION['usd'] = round($_SESSION['usd'], 2);
+            $_SESSION['status'] = withdraw($conn, $_SESSION['username'], $_SESSION['usd']);
+            $_SESSION['usd'] = 0;
+            $_SESSION['usd'] = 0;
+            $_SESSION['fiat'] = 0;
             $_SESSION['saved'] = 0;
         }
         else
         {
-            $_SESSION['status'] = StatusCodes::EMPTY_ERR;
+            $_SESSION['status'] = StatusCodes::ErrEmpty;
         }
     }
     $_SESSION['dependencies'] = "FRONTEND";

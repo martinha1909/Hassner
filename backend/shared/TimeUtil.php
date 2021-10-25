@@ -120,6 +120,7 @@
     {
         return explode("T", $time);
     }
+
     /**
     * Determines if an expiration date is in the future or not
     *
@@ -136,6 +137,9 @@
     function isInTheFuture($exp_day, $release_day, $exp_time, $release_time)
     {
         $ret = TRUE;
+        // echo $exp_day[0]." ".$exp_day[1]." ".$exp_day[2];
+        // echo "<br>";
+        // echo $release_day[0]." ".$release_day[1]." ".$release_day[2];
         //if the year is in the past, we give an error
         if($exp_day[0] < $release_day[2])
         {
@@ -365,5 +369,36 @@
         }
 
         return $ret;
+    }
+
+    function reformatDate($date)
+    {
+        $ret = "Error in reformatting date";
+
+        // reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
+        $date = new DateTime($date);
+        $ret = $date->format('d-m-Y');
+
+        return $ret;
+    }
+
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	date_check	date to be determined if in range
+    *                       has format of DD-MM-YYYY
+    * @param  	date_from	date that a range starts
+    *                       has format of DD-MM-YYYY
+    * @param  	date_to	    date that a range ends
+    *                       has format of DD-MM-YYYY
+    * @return 	ret	a boolean, true if the date is in the indicated range, false otherwise
+    */
+    function isInRange($date_check, $date_from, $date_to)
+    {
+        $date_from = strtotime($date_from);
+        $date_to = strtotime($date_to);
+        $date_check = strtotime($date_check);
+
+        return (($date_from <= $date_check ) && ($date_check <= $date_to));
     }
 ?>

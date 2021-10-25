@@ -7,8 +7,8 @@ if(!defined('LOGMODES_LOADED')){
         const SHARE_DIST = "SHARE_DIST";
         const SELL_SHARE = "SELL_SHARE";
         const BUY_SHARE = "BUY_SHARE";
-        const SELL_SILIQAS = "SELL_SILIQAS";
-        const BUY_SILIQAS = "BUY_SILIQAS";
+        const WITHDRAW = "WITHDRAW";
+        const DEPOSIT = "DEPOSIT";
         const CAMPAIGN = "CAMPAIGN";
         const NON_EXIST = "NON_EXIST";
         const EXIST = "EXIST";

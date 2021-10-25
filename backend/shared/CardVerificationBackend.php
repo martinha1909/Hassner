@@ -4,8 +4,9 @@
     include '../constants/LoggingModes.php';
     include '../constants/StatusCodes.php';
     include '../constants/AccountTypes.php';
+    include '../constants/BalanceOption.php';
 
-    $_SESSION['logging_mode'] = LogModes::BUY_SILIQAS;
+    $_SESSION['logging_mode'] = LogModes::DEPOSIT;
 
     $conn = connect();
     $save_info = $_POST['save_info'];
@@ -25,13 +26,13 @@
     # Basic CC verification. This would be done by a payment processor in the future
     if((strlen($card_number) < 14) || (strlen($card_number) > 16))
     {
-        $_SESSION['status'] = StatusCodes::EMPTY_ERR;
+        $_SESSION['status'] = StatusCodes::ErrCard;
     }
     else if($save_info == "Yes")
     {
         if(!empty($full_name) && !empty($email) && !empty($address) && !empty($city) && !empty($state) && !empty($zip) && !empty($card_name) && !empty($card_number) && !empty($expmonth) && !empty($expyear) && !empty($cvv))
         {
-            $_SESSION['coins'] = round($_SESSION['coins'], 2);
+            $_SESSION['usd'] = round($_SESSION['usd'], 2);
             saveUserPaymentInfo($conn, 
                                 $_SESSION['username'], 
                                 $full_name, 
@@ -42,41 +43,37 @@
                                 $zip, 
                                 $card_name, 
                                 $card_number);
-            $_SESSION['status'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
-            $_SESSION['btn_show'] = 0;
-            $_SESSION['cad'] = 0;
-            $_SESSION['coins'] = 0;
+            $_SESSION['status'] = deposit($conn, $_SESSION['username'], $_SESSION['usd']);
+            $_SESSION['usd'] = 0;
             $_SESSION['saved'] = 0; 
-            $_SESSION['siliqas'] = 0;
+            $_SESSION['fiat'] = 0;
+            $_SESSION['currency'] = 0;
+            $_SESSION['fiat_options'] = BalanceOption::NONE;
         }
         else
         {
-            $_SESSION['status'] = StatusCodes::EMPTY_ERR;
+            $_SESSION['status'] = StatusCodes::ErrEmpty;
         }
     }
     else
     {
         if(!empty($full_name) && !empty($email) && !empty($address) && !empty($city) && !empty($state) && !empty($zip) && !empty($card_name) && !empty($card_number) && !empty($expmonth) && !empty($expyear) && !empty($cvv))
         {
-            $_SESSION['coins'] = round($_SESSION['coins'], 2);
-            $_SESSION['status'] = purchaseSiliqas($conn, $_SESSION['username'], $_SESSION['coins']);
-            $_SESSION['cad'] = 0;
-            $_SESSION['coins'] = 0;
-            $_SESSION['siliqas'] = 0;
+            $_SESSION['usd'] = round($_SESSION['usd'], 2);
+            $_SESSION['status'] = deposit($conn, $_SESSION['username'], $_SESSION['usd']);
+            $_SESSION['usd'] = 0;
+            $_SESSION['fiat'] = 0;
             $_SESSION['saved'] = 0;
+            $_SESSION['currency'] = 0;
+            $_SESSION['fiat_options'] = BalanceOption::NONE;
         }
         else
         {
-            $_SESSION['status'] = StatusCodes::EMPTY_ERR;
+            $_SESSION['status'] = StatusCodes::ErrCard;
         }
     }
 
     $_SESSION['dependencies'] = "FRONTEND";
-
-    if($_SESSION['account_type'] == AccountType::Artist)
-    {
-        $_SESSION['display'] = 0;
-    }
      
     returnToMainPage();
 ?>

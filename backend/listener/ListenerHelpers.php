@@ -7,71 +7,25 @@
         return $result;
     }
 
-    function populateVars(&$all_shares_bought, &$all_artists, &$artist_name, &$rate, &$all_profits, &$all_rates, &$all_price_per_share, &$result)
+    function populateVars($user_username, &$all_artists, &$all_shares_bought, &$all_rates, &$all_price_per_share)
     {
         $no_of_shares_bought = 0;
         $conn = connect();
-        while($row = $result->fetch_assoc())
+
+        //Gets all artists that the user has invested in
+        $res = searchUserInvestedArtists($conn, $user_username);
+        while($row = $res->fetch_assoc())
         {
-            $artist_name = $row['artist_username'];
-            $query = searchAccount($conn, $artist_name);
-            $account_info = $query->fetch_assoc();
-            array_push($all_shares_bought, $row['no_of_share_bought']);
-            array_push($all_artists, $artist_name);
-            $rate = $account_info['rate'];
-            $rate = $rate * 100;
-            $all_profits += $rate;
-            array_push($all_rates, $rate);
-            array_push($all_price_per_share, $account_info['price_per_share']);
-        } 
-    }
+            $res_pps = searchArtistCurrentPricePerShare($conn, $row['artist_username']);
+            $current_pps = $res_pps->fetch_assoc();
 
-    function combineDuplicateRows(&$all_artists, &$all_shares_bought, &$all_rates, &$all_price_per_share)
-    {
-        $counter = 0;
-        $all_artists_simplified = array();
-        $all_shares_bought_simplified = array();
-        $all_rates_simplified = array();
-        $all_price_per_share_simplified = array();
-
-        //First index won't be duplicate, so always add the first index
-        array_push($all_artists_simplified, $all_artists[0]);
-        array_push($all_shares_bought_simplified, $all_shares_bought[0]);
-        array_push($all_rates_simplified, $all_rates[0]);
-        array_push($all_price_per_share_simplified, $all_price_per_share[0]);
-
-        $no_of_shares_bought = 0;
-
-        for($i = 1; $i < sizeof($all_artists); $i++)
-        {
-            if($all_artists[$i] == $all_artists[$i-1])
-            {
-                $no_of_shares_bought += $all_shares_bought[$i];
-                if($i == (sizeof($all_artists) - 1))
-                {
-                    array_push($all_shares_bought_simplified, $no_of_shares_bought);
-                }
-                $counter++;
-            }
-            else
-            {
-
-                array_push($all_artists_simplified, $all_artists[$i]);
-                if($counter != 0)
-                {
-                    array_push($all_shares_bought_simplified, $no_of_shares_bought);
-                    $counter = 0;
-                }
-                $no_of_shares_bought = $all_shares_bought[$i];
-                array_push($all_rates_simplified, $all_rates[$i]);
-                array_push($all_price_per_share_simplified, $all_price_per_share[$i]);
-            }
+            array_push($all_artists, $row['artist_username']);
+            array_push($all_shares_bought, $row['shares_owned']);
+            array_push($all_price_per_share, $current_pps['price_per_share']);
+            //This is to calculate the change of artist's stock in the last 24 hours, 
+            //will have a separate PR for this
+            array_push($all_rates, 0);
         }
-
-        $all_artists = $all_artists_simplified;
-        $all_shares_bought = $all_shares_bought_simplified;
-        $all_rates = $all_rates_simplified;
-        $all_price_per_share = $all_price_per_share_simplified;
     }
 
     //sort the columns of My Portfolio chart based on $target and $indicator of ascending or descending order
@@ -285,25 +239,6 @@
                  </tr>';
             $id++;
         }        
-    }
-
-    function buyHistoryInit(&$sellers, &$prices, &$quantities, &$date_purchase, &$time_purchase, $username)
-    {
-        $conn = connect();
-
-        $res = searchUsersInvestment($conn, $username);
-
-        while($row = $res->fetch_assoc())
-        {
-            $date = dateParser($row['date_purchased']);
-            $time = timeParser($row['time_purchased']);
-
-            array_push($prices, $row['price_per_share_when_bought']);
-            array_push($sellers, $row['seller_username']);
-            array_push($quantities, $row['no_of_share_bought']);
-            array_push($date_purchase, $date);
-            array_push($time_purchase, $time);
-        }
     }
 
     function autoPurchase($conn, $user_username, $artist_username, $request_quantity, $request_price)
@@ -521,6 +456,93 @@
                     array_push($time_releases, $time_released);
                     array_push($types, $row['type']);
                 }
+            }
+        }
+    }
+
+    function tradeHistoryInit($artist_username)
+    {
+        $conn = connect();
+
+        if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
+        {
+            echo '
+                <div class="col-6">
+                    <h3 class="h3-blue py-2">Trade History</h3>
+                    <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
+                        <h6>From</h6>
+                        <input type="date" name="trade_history_from">
+                        <h6>To</h6>
+                        <input type="date" name="trade_history_to">
+                        <input type="submit" class="cursor-context" role="button" aria-pressed="true" value="->">
+                    </form>
+            ';
+        }
+        else
+        {
+            echo '
+                <div class="col-6">
+                    <h3 class="h3-blue py-2">Trade History</h3>
+                    <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
+                        <h6>From</h6>
+                        <input type="date" name="trade_history_from" value="'.$_SESSION['trade_history_from'].'">
+                        <h6>To</h6>
+                        <input type="date" name="trade_history_to" value="'.$_SESSION['trade_history_to'].'">
+                        <input type="submit" class="cursor-context" role="button" aria-pressed="true" value="->">
+                    </form>
+            ';
+        }
+
+        if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
+        {
+            echo '<p class="error-msg">Please choose a range</p>';
+        }
+        else
+        {
+            $date = explode("-", $_SESSION['trade_history_from']);
+            //reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
+            $from_date = array($date[2], $date[1], $date[0]);
+            //We don't care about time 
+            $time = "00:00:00";
+            $from_time = explode(":", $time);
+            $to_date = explode("-", $_SESSION['trade_history_to']);
+            $time = "00:00";
+            $to_time = explode(":", $time);
+            if(!isInTheFuture($to_date, $from_date, $to_time, $from_time))
+            {
+                echo '<p class="error-msg">To date has to be later than from date</p>';
+            }
+            else
+            {
+                //Price displays the highest and lowest trades of the day
+                //Volumn displays how many total shares of the artist that was traded that day
+                //Value displays total amount of siliqas that was traded of the artist that day
+                //Trades displays the total number of trades that day
+                echo '
+                            <div class="py-4">
+                            <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Price(HIGH/LOW)</th>
+                                    <th scope="col">Volume</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Trades</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    </div>
+                ';
+                $res = searchSharesBoughtFromArtist($conn, $artist_username);
+                $trade_history_list = populateTradeHistory($conn, $res);
+
+                $trade_history_list->addListToTable();
+
+                echo '
+                            </tbody>
+                        </table>
+                        </div>
+                ';
             }
         }
     }

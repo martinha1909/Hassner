@@ -4,7 +4,7 @@
 
     $type = $_POST['display_type'];
 
-    if(in_array($type, ["Investors", "Ethos", "Siliqas", "Account", "Campaign"]))
+    if(in_array($type, ["Investors", "Ethos", "Balance", "Account", "Campaign"]))
     {
         $_SESSION['display'] = strtoupper($type);
     }

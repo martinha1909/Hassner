@@ -1,17 +1,21 @@
 <?php
-include '../../backend/control/Dependencies.php';
-include '../../backend/artist/ArtistHelpers.php';
-include '../../backend/shared/MarketplaceHelpers.php';
-include '../../backend/constants/ShareInteraction.php';
-include '../../backend/shared/CampaignHelpers.php';
-include '../../backend/object/ParticipantList.php';
-include '../../backend/object/CampaignParticipant.php';
+    include '../../backend/control/Dependencies.php';
+    include '../../backend/artist/ArtistHelpers.php';
+    include '../../backend/shared/MarketplaceHelpers.php';
+    include '../../backend/constants/ShareInteraction.php';
+    include '../../backend/constants/TradeHistoryType.php';
+    include '../../backend/shared/CampaignHelpers.php';
+    include '../../backend/object/ParticipantList.php';
+    include '../../backend/object/CampaignParticipant.php';
+    include '../../backend/object/TradeHistory.php';
+    include '../../backend/object/TradeHistoryList.php';
+    include '../../backend/object/Node.php';
 
-$_SESSION['selected_artist'] = $_SESSION['username'];
-$account_info = getArtistAccount($_SESSION['username'], "artist");
-$_SESSION['user_balance'] = $account_info['balance'];
+    $_SESSION['selected_artist'] = $_SESSION['username'];
+    $account_info = getArtistAccount($_SESSION['username'], "artist");
+    $_SESSION['user_balance'] = $account_info['balance'];
 
-checkRaffleRoll();
+    checkRaffleRoll();
 ?>
 
 <!doctype html>
@@ -111,11 +115,11 @@ checkRaffleRoll();
                         ';
                     }
 
-                    if ($_SESSION['display'] == MenuOption::Siliqas) {
+                    if ($_SESSION['display'] == MenuOption::Balance) {
                         echo '
                             <li class="selected-no-hover list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Siliqas">
+                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Balance">
                                 </form>
                             </li>
                         ';
@@ -123,7 +127,7 @@ checkRaffleRoll();
                         echo '
                             <li class="list-group-item-no-hover">
                                 <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Siliqas">
+                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Balance">
                                 </form>
                             </li>
                         ';
@@ -404,6 +408,51 @@ checkRaffleRoll();
                                         </tbody>
                                     </table>
                             ';
+                            
+                            //Buy Back shares history 
+                            echo '
+                                <div class="col-6">
+                                    <h3 class="h3-blue py-2">Buy Back Shares History</h3>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Seller</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Date Purchased</th>
+                                                <th scope="col">Time Purchased</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                </div>
+                            ';
+        
+                            $sellers = array();
+                            $prices = array();
+                            $quantities = array();
+                            $date_purchase = array();
+                            $time_purchase = array();
+        
+                            buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $time_purchase, $_SESSION['username']);
+        
+                            for ($i = 0; $i < sizeof($sellers); $i++) {
+                                echo '
+                                            <tr>
+                                                <td>' . $sellers[$i] . '</td>
+                                                <td>' . $prices[$i] . '</td>
+                                                <td>' . $quantities[$i] . '</td>
+                                                <td>' . $date_purchase[$i] . '</td>
+                                                <td>' . $time_purchase[$i] . '</td>
+                                            </tr>
+                                ';
+                            }
+
+                            echo '
+                                        </tbody>
+                                    </table>
+                            ';
+
+                            tradeHistoryInit($_SESSION['username']);
 
                             echo '<h3>Inject history</h3>';
 
@@ -421,7 +470,16 @@ checkRaffleRoll();
                                         <div class="col-4 mx-auto my-auto text-center">
                                             <h3 class="h3-blue py-4">Verify your password to access personal page</h3>
                                             <form action="../../backend/artist/PersonalPageBackend.php" method="post">
-                                                <div class="form-group">
+                                                <div class="form-group">';
+                        if($_SESSION['logging_mode'] == LogModes::PERSONAL)
+                        {
+                            if($_SESSION['status'] == StatusCodes::ErrPassword)
+                            {
+                                $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                getStatusMessage("Wrong password", "");
+                            }
+                        }
+                        echo '
                                                     <h5>Password</h5>
                                                     <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
                                                 </div>
@@ -437,8 +495,8 @@ checkRaffleRoll();
                     }
 
                     //Sell siliqas to USD/CAD/EUR
-                    else if ($_SESSION['display'] == MenuOption::Siliqas) {
-                        siliqasInit();
+                    else if ($_SESSION['display'] == MenuOption::Balance) {
+                        fiatInit();
                     } else if ($_SESSION['display'] == MenuOption::Investors) {
                     }
                     ?>

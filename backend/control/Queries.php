@@ -34,6 +34,24 @@
             return $result;
         }
 
+        function searchTicker($conn, $ticker)
+        {
+            try
+            {
+                $sql = "SELECT ticker FROM artist_account_data WHERE ticker = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('s', $ticker);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                return $result;
+            }
+            catch(PDOException $e)
+            {
+                echo 'SQL error: ' + $e;
+            }
+            
+        }
+
         function searchAccountType($conn, $type)
         {
             $sql = "SELECT * FROM account WHERE account_type = ?";
@@ -55,11 +73,44 @@
             return $result;
         }
 
+        function searchUserInvestedArtists($conn, $user_username)
+        {
+            $sql = "SELECT shares_owned, artist_username FROM artist_shareholders WHERE user_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchUsersInvestment($conn, $user_username)
         {
             $sql = "SELECT * FROM buy_history WHERE user_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchArtistBuyBackShares($conn, $artist_username)
+        {
+            $sql = "SELECT price_per_share_when_bought, date_purchased, time_purchased, no_of_share_bought FROM buy_history WHERE user_username = ? AND artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $artist_username, $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchSharesBoughtFromArtist($conn, $artist_username)
+        {
+            $sql = "SELECT price_per_share_when_bought, date_purchased, time_purchased, no_of_share_bought FROM buy_history WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -285,7 +336,7 @@
 
         function getArtistShareHoldersInfo($conn, $artist_username)
         {
-            $sql = "SELECT * FROM buy_history WHERE artist_username = ?";
+            $sql = "SELECT * FROM artist_shareholders WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -349,7 +400,7 @@
             return $result;
         }
 
-        function signup($conn, $username, $password, $type, $email) //done2
+        function signup($connPDO, $username, $password, $type, $email, $ticker)
         {
             $original_share= "";
             $transit_no = "";
@@ -371,40 +422,71 @@
             $income = 0;
             $market_cap = 0;
             $share_repurchase = 0;
-            if($type == 'artist')
+            if($type == AccountType::Artist)
                 $price_per_share = 1;
             else
                 $price_per_share = 0;
-            $result = getMaxID($conn);
-            $row = $result->fetch_assoc(); 
-            $id = $row["max_id"] + 1;
-            $sql = "INSERT INTO account (username, password, account_type, id, Shares, balance, rate, 
+            
+            try 
+            {
+                $connPDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $connPDO->beginTransaction();
+
+                $sql = "INSERT INTO account (username, password, account_type, Shares, balance, rate, 
                                          Share_Distributed, email, billing_address, Full_name, City, State, ZIP, 
                                          Card_number, Transit_no, Inst_no, Account_no, Swift, price_per_share, 
                                          Monthly_shareholder, Income, Market_cap, shares_repurchase)
-                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sssiiddisssssssssssdiddi', $username, $password, $type, $id, $num_of_shares, 
-                                                           $balance, $rate, $share_distributed, $email, 
-                                                           $billing_address, $full_name, $city, $state, $zip, 
-                                                           $card_number, $transit_no, $inst_no, $account_no, 
-                                                           $swift, $price_per_share, $monthly_shareholder, 
-                                                           $income, $market_cap, $share_repurchase);
-            if ($stmt->execute() === TRUE) {
+                    VALUES(:username, :password, :account_type, :Shares, :balance, :rate, :Shares_Distributed, :email, :billing_address, :Full_name, :City
+                    , :State, :ZIP, :Card_number, :Transit_no, :Inst_no, :Account_no, :Swift, :price_per_share, :Monthly_shareholder, :Income, :Market_cap, :shares_repurchase)";
+
+
+                $stmt = $connPDO->prepare($sql);
+                $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+                $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+                $stmt->bindParam(':account_type', $type, PDO::PARAM_STR);
+                $stmt->bindParam(':Shares', $num_of_shares, PDO::PARAM_INT);
+                $stmt->bindParam(':balance', $balance);
+                $stmt->bindParam(':rate', $rate);
+                $stmt->bindParam(':Shares_Distributed', $share_distributed, PDO::PARAM_INT);
+                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+                $stmt->bindParam(':billing_address', $username, PDO::PARAM_STR);
+                $stmt->bindParam(':Full_name', $full_name, PDO::PARAM_STR);
+                $stmt->bindParam(':City', $city, PDO::PARAM_STR);
+                $stmt->bindParam(':State', $state, PDO::PARAM_STR);
+                $stmt->bindParam(':ZIP', $zip, PDO::PARAM_STR);
+                $stmt->bindParam(':Card_number', $card_number, PDO::PARAM_STR);
+                $stmt->bindParam(':Transit_no', $transit_no, PDO::PARAM_STR);
+                $stmt->bindParam(':Inst_no', $inst_no, PDO::PARAM_STR);
+                $stmt->bindParam(':Account_no', $account_no, PDO::PARAM_STR);
+                $stmt->bindParam(':Swift', $swift, PDO::PARAM_STR);
+                $stmt->bindParam(':price_per_share', $price_per_share);
+                $stmt->bindParam(':Monthly_shareholder', $monthly_shareholder, PDO::PARAM_INT);
+                $stmt->bindParam(':Income', $income);
+                $stmt->bindParam(':Market_cap', $market_cap);
+                $stmt->bindParam(':shares_repurchase', $share_repurchase, PDO::PARAM_INT);
+                $stmt->execute();
+
+                if($type == AccountType::Artist)
+                {
+                    $sql2 = "INSERT INTO artist_account_data (artist_username, ticker) VALUES (:artist_username, :ticker)";
+                    $stmt2 = $connPDO->prepare($sql2);
+                    $stmt2->bindParam(':artist_username', $username, PDO::PARAM_STR);
+                    $stmt2->bindParam(':ticker', $ticker, PDO::PARAM_STR);
+                    $stmt2->execute();
+                }
+                $connPDO->commit();
                 $status = StatusCodes::Success;
-            } else {
+            } 
+            catch (Exception $e) 
+            {
+                $connPDO->rollBack();
+                echo "SQL query failed: " . $e->getMessage();
                 $status = StatusCodes::ErrGeneric;
             }
+
             return $status;
         }
 
-        function getMaxID($conn)
-        {
-            $sql = "SELECT MAX(id) AS max_id FROM account";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
 
         function getMaxInjectionID($conn)
         {
@@ -532,9 +614,9 @@
             }  
             return $status;
         }
-        function purchaseSiliqas($conn, $username, $coins)
+        function deposit($conn, $username, $usd)
         {
-            $coins = round($coins, 2);
+            $coins = round($usd, 2);
             $status = 0;
             $sql = "UPDATE account SET balance = balance + $coins WHERE username = '$username'";
             if ($conn->query($sql) === TRUE) 
@@ -548,7 +630,7 @@
             return $status;
         }
 
-        function sellSiliqas($conn, $username, $coins)
+        function withdraw($conn, $username, $coins)
         {
             $coins = round($coins, 2);
             $status = 0;

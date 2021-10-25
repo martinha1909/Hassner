@@ -98,36 +98,36 @@ $_SESSION['expyear'] = 0;
           </label>
       </div>
       <div class="col-3 mx-auto">
-        <input type="submit" value="Continue to sell your silicas" class="btn btn-primary">
+        <input type="submit" value="Continue" class="btn btn-primary">
       </div>
       </form>
     </div>
   </div>
   <div class="col-25">
     <div class="container">
-      <h4 class="h3-blue">Payout <span class="price">
+      <h4 class="h3-blue">Payout (<?php echo $_SESSION['currency'] ?>)<span class="price">
           <?php
           if ($_SESSION['currency'] == Currency::USD || $_SESSION['currency'] == Currency::CAD)
             echo "$";
           else if ($_SESSION['currency'] == Currency::EUR)
             echo "€";
-          echo $_SESSION['siliqas'];
+          echo $_SESSION['fiat'];
           ?>
           </b></span></h4>
       <p><a>
-          <?php echo "Siliqas (q̶ )";
+          <?php echo "USD ";
           ?>
         </a> <span class="price">
           <?php
 
-          echo $_SESSION['coins'];
+          echo $_SESSION['usd'];
           ?>
         </span></p>
       <hr>
-      <p>Total (q̶ ) <span class="price"><b>
+      <p>Total (USD) <span class="price"><b>
             <?php
 
-            echo $_SESSION['coins'];
+            echo $_SESSION['usd'];
             ?>
           </b></span></p>
     </div>

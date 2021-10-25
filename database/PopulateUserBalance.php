@@ -13,7 +13,7 @@
     }
     else
     {
-        echo '<h3 style="color: red;">Failed</h3>';
+        echo '<h3 class="error-msg">Failed</h3>';
     }
 
     closeCon($conn);
