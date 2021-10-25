@@ -183,6 +183,11 @@ select#dark {
   color: #e2cda9ff;
 }
 
+.h4-blue {
+  font-size: 1.375rem;
+  color: #0a60d0;
+}
+
 .h5-tan {
   font-size: 1.25rem;
   color: #e2cda9ff;

@@ -86,7 +86,8 @@ body {
   line-height: 1.5;
   color: #cfd8dc;
   text-align: left;
-  background-color: #000000;
+  background-color: #11171a;
+  overflow-x: hidden;
 }
 
 [tabindex="-1"]:focus {
@@ -1903,7 +1904,7 @@ pre code {
   color: #546e7a;
   background-color: #ffffff;
   background-clip: padding-box;
-  border: 2px solid #cfd8dc;
+  border: 2px solid #ffffff;
   border-radius: 0.3rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -1919,7 +1920,7 @@ pre code {
 .form-control:focus {
   color: #546e7a;
   background-color: #ffffff;
-  border-color: #000000;
+  border-color: #11171a;
   outline: 0;
   box-shadow: none;
 }
@@ -2589,36 +2590,34 @@ fieldset:disabled a.btn {
 }
 
 .btn-success {
-  color: #ffffff;
-  background-color: #00e676;
-  border-color: #00e676;
+  color: #11171a;
+  background-color: #e2cda9ff;
 }
 .btn-success:hover {
-  color: #ffffff;
-  background-color: #00c062;
-  border-color: #00b35c;
+  color: #e2cda9ff;
+  background-color: #11171a;
 }
 .btn-success:focus,
 .btn-success.focus {
-  box-shadow: 0 0 0 0.2rem rgba(0, 230, 118, 0.5);
+  box-shadow: 0 0 0 0.2rem #e2cda9ff;
 }
 .btn-success.disabled,
 .btn-success:disabled {
   color: #ffffff;
-  background-color: #00e676;
-  border-color: #00e676;
+  background-color: #11171a;
+  border-color: #11171a;
 }
 .btn-success:not(:disabled):not(.disabled):active,
 .btn-success:not(:disabled):not(.disabled).active,
 .show > .btn-success.dropdown-toggle {
   color: #ffffff;
-  background-color: #00b35c;
-  border-color: #00a655;
+  background-color: #11171a;
+  border-color: #11171a;
 }
 .btn-success:not(:disabled):not(.disabled):active:focus,
 .btn-success:not(:disabled):not(.disabled).active:focus,
 .show > .btn-success.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgba(0, 230, 118, 0.5);
+  box-shadow: 0 0 0 0.2rem #11171a;
 }
 
 .btn-info {
@@ -9926,11 +9925,11 @@ body {
   color: #000000;
 }
 .btn.btn-success {
-  box-shadow: 0 8px 16px rgba(0, 230, 118, 0.3);
+  box-shadow: 0 8px 16px #11171a;
   transition: all 0.2s ease-out;
 }
 .btn.btn-success:hover {
-  box-shadow: 0 8px 20px rgba(0, 230, 118, 0.35);
+  box-shadow: 0 8px 20px #11171a;
 }
 .btn.btn-success:active {
   box-shadow: none !important;
@@ -10686,4 +10685,8 @@ a#dashboard-hover:hover {
 
 .suc-msg {
   color: green;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c3c100225dec26f6061e54575556057593e1aac7
