@@ -493,13 +493,20 @@ checkRaffleRoll();
                         else if ($_SESSION['display'] == MenuOption::Artists) 
                         {
                             $all_artists = getAllArtist();
-                            ArtistInfo::quickSort($all_artists, 0, (sizeof($all_artists)-1));
 
-                            echo '
-                                <h3>Followed</h3>
-                            ';
+                            if(sizeof($all_artists) == 0)
+                            {
+                                echo "<h3>No artists to display<h3>";
+                            }
+                            else
+                            {
+                                followedArtist();
 
-                            topsAndFlops($all_artists);
+                                topsAndFlops($all_artists);
+
+                                apex($all_artists);
+                            }
+
                             // echo '
                             //         <table class="table">
                             //             <thead>

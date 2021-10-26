@@ -208,28 +208,59 @@
         * @param  	low	            starting index of the array
         * @param  	high            ending index of the array
         * @param  	option          descending or ascending option
+        * @param  	item            variable to use as a base to sort
         */
-        public static function partition(&$artist_info_arr, $low, $high, $option)
+        public static function partition(&$artist_info_arr, $low, $high, $option, $item)
         {
-            $pivot = $artist_info_arr[$high]->getDayChange();
+            if($item == "Day Change")
+            {
+                $pivot = $artist_info_arr[$high]->getDayChange();
+            }
+            else if($item == "Market Cap")
+            {
+                $pivot = $artist_info_arr[$high]->getMarketCap();
+            }
+
             $i = $low - 1;
 
             for($j = $low; $j <= $high - 1; $j++)
             {
                 if($option == "Descending")
                 {
-                    if($artist_info_arr[$j]->getDayChange() > $pivot)
+                    if($item == "Day Change")
                     {
-                        $i++;
-                        ArtistInfo::swap($artist_info_arr, $i, $j);
+                        if($artist_info_arr[$j]->getDayChange() > $pivot)
+                        {
+                            $i++;
+                            ArtistInfo::swap($artist_info_arr, $i, $j);
+                        }
+                    }
+                    else if($item == "Market Cap")
+                    {
+                        if($artist_info_arr[$j]->getMarketCap() > $pivot)
+                        {
+                            $i++;
+                            ArtistInfo::swap($artist_info_arr, $i, $j);
+                        }
                     }
                 }
                 else if($option == "Ascending")
                 {
-                    if($artist_info_arr[$j]->getDayChange() < $pivot)
+                    if($item == "Day Change")
                     {
-                        $i++;
-                        ArtistInfo::swap($artist_info_arr, $i, $j);
+                        if($artist_info_arr[$j]->getDayChange() < $pivot)
+                        {
+                            $i++;
+                            ArtistInfo::swap($artist_info_arr, $i, $j);
+                        }
+                    }
+                    else if($item == "Market Cap")
+                    {
+                        if($artist_info_arr[$j]->getMarketCap() < $pivot)
+                        {
+                            $i++;
+                            ArtistInfo::swap($artist_info_arr, $i, $j);
+                        }
                     }
                 }
             }
@@ -243,15 +274,16 @@
         * @param  	artist_info_arr	array to be sorted
         * @param  	low	            starting index of the array
         * @param  	high            ending index of the array
+        * @param  	item            variable to use as a base to sort
         */
-        public static function quickSort(&$artist_info_arr, $low, $high)
+        public static function quickSort(&$artist_info_arr, $low, $high, $option, $item)
         {
             if($low < $high)
             {
-                $pi = ArtistInfo::partition($artist_info_arr, $low, $high, "Descending");
+                $pi = ArtistInfo::partition($artist_info_arr, $low, $high, $option, $item);
 
-                ArtistInfo::quickSort($artist_info_arr, $low, ($pi - 1));
-                ArtistInfo::quickSort($artist_info_arr, ($pi + 1), $high);
+                ArtistInfo::quickSort($artist_info_arr, $low, ($pi - 1), $option, $item);
+                ArtistInfo::quickSort($artist_info_arr, ($pi + 1), $high, $option, $item);
             }
         }
     }

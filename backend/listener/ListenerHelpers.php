@@ -639,48 +639,67 @@
 
     function topsAndFlops($all_artists)
     {
+        ArtistInfo::quickSort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Day Change");
+
         echo '
             <h3>Tops And Flops</h3>
         ';
 
-        if(sizeof($all_artists) == 0)
+        for($i = 0; $i < sizeof($all_artists); $i++)
         {
-            echo '<p>No artists to display</p>';
-        }
-        else
-        {
-            for($i = 0; $i < sizeof($all_artists); $i++)
+            echo '
+                <p>
+                    '.$all_artists[$i]->getUsername().' ('.$all_artists[$i]->getMarketTag().')
+            ';
+            if($all_artists[$i]->getDayChange() > 0)
             {
                 echo '
-                    <p>
-                        '.$all_artists[$i]->getUsername().' ('.$all_artists[$i]->getMarketTag().')
+                    <span class="suc-msg">
+                        +'.$all_artists[$i]->getDayChange().'%
+                    </span>
                 ';
-                if($all_artists[$i]->getDayChange() > 0)
-                {
-                    echo '
-                        <span class="suc-msg">
-                            +'.$all_artists[$i]->getDayChange().'%
-                        </span>
-                    ';
-                }
-                else if($all_artists[$i]->getDayChange() < 0)
-                {
-                    echo '
-                        <span class="error-msg">
-                            '.$all_artists[$i]->getDayChange().'%
-                        </span>
-                    ';
-                }
-                else if($all_artists[$i]->getDayChange() == 0)
-                {
-                    echo '
-                        <span>
-                            '.$all_artists[$i]->getDayChange().'%
-                        </span>
-                    ';
-                }
-                echo "</p>";
             }
+            else if($all_artists[$i]->getDayChange() < 0)
+            {
+                echo '
+                    <span class="error-msg">
+                        '.$all_artists[$i]->getDayChange().'%
+                    </span>
+                ';
+            }
+            else if($all_artists[$i]->getDayChange() == 0)
+            {
+                echo '
+                    <span>
+                        '.$all_artists[$i]->getDayChange().'%
+                    </span>
+                ';
+            }
+            echo "</p>";
+        }
+    }
+
+    function followedArtist()
+    {
+        echo '
+            <h3>Followed</h3>
+        ';
+    }
+
+    function apex($all_artists)
+    {
+        // ArtistInfo::quickSort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Market Cap");
+        echo '
+            <h3>Apex (Market Cap)</h3>
+        ';
+
+        for($i = 0; $i < sizeof($all_artists); $i++)
+        {
+            echo '
+                <p>
+                    '.$all_artists[$i]->getUsername().' ('.$all_artists[$i]->getMarketTag().') '.$all_artists[$i]->getMarketCap().'
+                </p>
+            ';
         }
     }
 ?>
