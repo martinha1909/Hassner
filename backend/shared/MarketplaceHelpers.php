@@ -60,7 +60,7 @@ function fetchMarketPrice($artist_username)
     //total number of shares bought accross all users with the selected artist
     $total_share_bought = 0;
     while ($row = $search_4->fetch_assoc()) {
-        $total_share_bought += $row['no_of_share_bought'];
+        $total_share_bought += $row['shares_owned'];
     }
     $search_5 = searchNumberOfShareDistributed($conn, $_SESSION['selected_artist']);
     //Number of share distributed by the selected artist
@@ -680,25 +680,6 @@ function injectionHistoryInit($artist_username)
         ';
 }
 
-function refreshUserArtistShareTable()
-{
-    $conn = connect();
-
-    $res = searchAllInvestments($conn);
-    while ($row = $res->fetch_assoc()) {
-        if ($row['no_of_share_bought'] <= 0) {
-            removeUserArtistShareZeroTuples(
-                $conn,
-                $row['user_username'],
-                $row['artist_username'],
-                $row['price_per_share_when_bought'],
-                $row['date_purchased'],
-                $row['time_purchased']
-            );
-        }
-    }
-}
-
 function refreshSellOrderTable()
 {
     $conn = connect();
@@ -923,5 +904,24 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         }
 
         return $trade_history_list;
+    }
+
+    function calculateMarketCap($artist_username)
+    {
+        $conn = connect();
+        $connPDO = connectPDO();
+        $market_cap = 0;
+        $res1 = searchArtistTotalSharesBought($conn, $artist_username);
+        $res2 = searchArtistCurrentPricePerShare($conn, $artist_username);
+        $pps = $res2->fetch_assoc();
+        while($row = $res1->fetch_assoc())
+        {
+            $market_cap += ($row['shares_owned'] * $pps['price_per_share']);
+        }
+
+        //update the market cap 
+        updateArtistMarketCap($connPDO, $artist_username, $market_cap);
+
+        return $market_cap;
     }
 ?>

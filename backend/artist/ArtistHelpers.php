@@ -14,23 +14,6 @@
         return getArtistShareHolders($conn, $artist_username);
     }
 
-    function calculateMarketCap($artist_username)
-    {
-        $conn = connect();
-        $market_cap = 0;
-        $res1 = searchArtistTotalSharesBought($conn, $artist_username);
-        $res2 = searchArtistCurrentPricePerShare($conn, $artist_username);
-        $pps = $res2->fetch_assoc();
-        while($row = $res1->fetch_assoc())
-        {
-            $market_cap += ($row['no_of_share_bought'] * $pps['price_per_share']);
-        }
-
-         
-
-        return $market_cap;
-    }
-
     function artistShareHoldersDurationInit($artist_username, &$shareholder_names, &$share_holder_selling_price, &$shareholder_shares_sold, &$shareholder_shares_duration)
     {
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');

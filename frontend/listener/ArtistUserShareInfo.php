@@ -10,8 +10,8 @@ include '../../backend/object/Node.php';
 
 $_SESSION['usd'] = 0;
 $_SESSION['status'];
-
-refreshUserArtistShareTable();
+//Refreshes market cap
+calculateMarketCap($_SESSION['selected_artist']);
 
 $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
 ?>
