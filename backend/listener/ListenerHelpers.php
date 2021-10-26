@@ -643,14 +643,15 @@
         ArtistInfo::quickSort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Day Change");
 
         echo '
-            <h3>Tops And Flops</h3>
+            <h3 class="h3-blue">Tops And Flops</h3>
+            <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
         ';
 
         for($i = 0; $i < sizeof($all_artists); $i++)
         {
             echo '
                 <p>
-                    '.$all_artists[$i]->getUsername().' ('.$all_artists[$i]->getMarketTag().')
+                <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$all_artists[$i]->getUsername().'"> ('.$all_artists[$i]->getMarketTag().')
             ';
             if($all_artists[$i]->getDayChange() > 0)
             {
@@ -676,7 +677,10 @@
                     </span>
                 ';
             }
-            echo "</p>";
+            echo "
+                </p>
+            </form>
+            ";
         }
     }
 
@@ -684,7 +688,7 @@
     {
         //Nothing to do now, will handle following and followed artist in the future
         echo '
-            <h3>Followed</h3>
+            <h3 class="h3-blue">Followed</h3>
         ';
     }
 
@@ -692,21 +696,27 @@
     {
         ArtistInfo::quickSort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Market Cap");
         echo '
-            <h3>Apex (Market Cap)</h3>
+            <h3 class="h3-blue">Apex (Market Cap)</h3>
+            <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
         ';
 
         for($i = 0; $i < sizeof($all_artists); $i++)
         {
             echo '
                 <p>
-                    '.$all_artists[$i]->getUsername().' ('.$all_artists[$i]->getMarketTag().') $'.$all_artists[$i]->getMarketCap().'
+                <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$all_artists[$i]->getUsername().'"> ('.$all_artists[$i]->getMarketTag().') $'.$all_artists[$i]->getMarketCap().'
                 </p>
             ';
         }
+
+        echo "</form>";
     }
 
     function localArtist()
     {
         //Nothing to do now, leave this for future implementation
+        echo '
+            <h3 class="h3-blue">Local artist</h3>
+        ';
     }
 ?>
