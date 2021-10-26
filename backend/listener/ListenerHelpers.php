@@ -583,6 +583,7 @@
             $artist->setUsername($row['username']);
             $artist->setMarketTag($ticker['ticker']);
             $artist->setDayChange($change);
+            $artist->setMarketCap($row['Market_cap']);
 
             array_push($ret, $artist);
             $counter++;
@@ -681,6 +682,7 @@
 
     function followedArtist()
     {
+        //Nothing to do now, will handle following and followed artist in the future
         echo '
             <h3>Followed</h3>
         ';
@@ -688,7 +690,7 @@
 
     function apex($all_artists)
     {
-        // ArtistInfo::quickSort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Market Cap");
+        ArtistInfo::quickSort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Market Cap");
         echo '
             <h3>Apex (Market Cap)</h3>
         ';
@@ -697,9 +699,14 @@
         {
             echo '
                 <p>
-                    '.$all_artists[$i]->getUsername().' ('.$all_artists[$i]->getMarketTag().') '.$all_artists[$i]->getMarketCap().'
+                    '.$all_artists[$i]->getUsername().' ('.$all_artists[$i]->getMarketTag().') $'.$all_artists[$i]->getMarketCap().'
                 </p>
             ';
         }
+    }
+
+    function localArtist()
+    {
+        //Nothing to do now, leave this for future implementation
     }
 ?>

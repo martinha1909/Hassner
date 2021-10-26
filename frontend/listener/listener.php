@@ -505,6 +505,8 @@ checkRaffleRoll();
                                 topsAndFlops($all_artists);
 
                                 apex($all_artists);
+
+                                localArtist();
                             }
 
                             // echo '
