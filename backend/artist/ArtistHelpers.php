@@ -180,26 +180,6 @@
             }
             else
             {
-                //Price displays the highest and lowest trades of the day
-                //Volumn displays how many total shares of the artist that was traded that day
-                //Value displays total amount of siliqas that was traded of the artist that day
-                //Trades displays the total number of trades that day
-                echo '
-                            <div class="py-4">
-                            <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Price(HIGH/LOW)</th>
-                                    <th scope="col">Volume</th>
-                                    <th scope="col">Value</th>
-                                    <th scope="col">Trades</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    </div>
-                ';
-
                 //Fetching arrays if shares repurchase was chosen
                 if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_REPURCHASE)
                 {
@@ -213,7 +193,34 @@
 
                 $trade_history_list = populateTradeHistory($conn, $res);
 
-                $trade_history_list->addListToTable();
+                if($trade_history_list->getListSize() > 0)
+                {
+                    //Price displays the highest and lowest trades of the day
+                    //Volumn displays how many total shares of the artist that was traded that day
+                    //Value displays total amount of siliqas that was traded of the artist that day
+                    //Trades displays the total number of trades that day
+                    echo '
+                                <div class="py-4">
+                                <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Price(HIGH/LOW)</th>
+                                        <th scope="col">Volume</th>
+                                        <th scope="col">Value</th>
+                                        <th scope="col">Trades</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        </div>
+                    ';
+
+                    $trade_history_list->addListToTable();
+                }
+                else
+                {
+                    echo '<h5>No trades found</h5>';
+                }
             }
 
             echo '
@@ -222,6 +229,17 @@
                     </div>
             ';
         }
+    }
+
+    function getArtistShareRepurchase($artist_username)
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchArtistRepurchaseShares($conn, $artist_username);
+        $ret = $res->fetch_assoc();
+
+        return $ret['shares_repurchase'];
     }
 
     function getAmountAvailableForRepurchase($artist_username): int

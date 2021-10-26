@@ -659,7 +659,6 @@ function injectionHistoryInit($artist_username)
                         <th scope="col">Ethos amount</th>
                         <th scope="col">Comment</th>
                         <th scope="col">Date Injected</th>
-                        <th scope="col">Time Injected</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -670,8 +669,7 @@ function injectionHistoryInit($artist_username)
                     <tr>
                         <th scope="row">' . $amount_injected[$i] . '</th>
                         <td>' . $comments[$i] . '</td>
-                        <td>' . $date_injected[$i] . '</td>
-                        <td>' . $time_injected[$i] . '</td>
+                        <td>' . $date_injected[$i] . ' at '.$time_injected[$i].'</td>
                     </tr>
             ';
     }
@@ -860,7 +858,14 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
         while($row = $res->fetch_assoc())
         {
-            $date = dateParser($row['date_purchased']);
+            if($_SESSION['account_type'] == AccountType::Artist)
+            {
+                $date = toYYYYMMDD($row['date_purchased']);
+            }
+            else if($_SESSION['account_type'] == AccountType::User)
+            {
+                $date = dateParser($row['date_purchased']);
+            }
             $time = timeParser($row['time_purchased']);
 
             array_push($prices, $row['price_per_share_when_bought']);

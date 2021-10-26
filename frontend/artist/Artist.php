@@ -366,12 +366,12 @@
                                 $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
                                 $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
                                 echo '
-                                            <h6>Price Per Share (q̶): ' . $account_info['price_per_share'] . '</h6>
-                                            <h6>Volumn: ' . $account_info['Share_Distributed'] . '</h6>
+                                            <h6>Price Per Share: $' . $account_info['price_per_share'] . '</h6>
+                                            <h6>Volumn: $' . $account_info['Share_Distributed'] . '</h6>
                                             <h6>Current Shareholders: ' . $shareholder_list->num_rows . '</h6>
-                                            <h6>Market cap (q̶): ' . $market_cap . '</h6>
-                                            <h6>Day High (q̶): ' . $high . '</h6>
-                                            <h6>Day Low (q̶): ' . $low . '</h6>
+                                            <h6>Market cap: $' . $market_cap . '</h6>
+                                            <h6>Day High: $' . $high . '</h6>
+                                            <h6>Day Low: $' . $low . '</h6>
                                             <br>
                                             <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
                                                 <input name="display_type" type="submit" class="btn btn-primary" value="Inject More Shares">
@@ -437,11 +437,15 @@
 
                                 $amount_repurchase_available = getAmountAvailableForRepurchase($_SESSION['username']);
                                 $price_for_all_available_repurchase = calculatePriceForAllRepurchase($_SESSION['username']);
+                                $owned_shares = getArtistShareRepurchase($_SESSION['username']);
 
                                 //Only to be used if artist clicks the button to buy back all shares that are being sold
                                 $_SESSION['repurchase_sell_orders'] = getAllRepurchaseSellOrdersInfo($_SESSION['username']);
 
-                                echo '<h6>Shares available for repurchase: '.$amount_repurchase_available.'</h6>';
+                                echo '
+                                    <h6>Your own shares: '.$owned_shares.'</h6>
+                                    <h6>Shares available for repurchase: '.$amount_repurchase_available.'</h6>
+                                ';
 
                                 sellOrderInit();
 
@@ -459,13 +463,16 @@
 
                                 askedPriceInit($_SESSION['username'], $_SESSION['account_type']);
 
-                                echo '
-                                            </tbody>
-                                        </table>
-                                        <form action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
-                                            <input type="submit" class="btn btn-primary" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
-                                        </form>
-                                ';
+                                if($amount_repurchase_available > 0)
+                                {
+                                    echo '
+                                                </tbody>
+                                            </table>
+                                            <form action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
+                                                <input type="submit" class="btn btn-primary" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
+                                            </form>
+                                    ';
+                                }
                             }
                             else if($_SESSION['ethos_dashboard_options'] == EthosOption::HISTORY)
                             {
@@ -484,15 +491,14 @@
                                 //Buy Back shares history 
                                 echo '
                                     <div class="col-6">
-                                        <h3 class="h3-blue py-2">Buy Back Shares History</h3>
+                                        <h3 class="h3-blue py-2">Buy Back History</h3>
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Seller</th>
-                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Price($)</th>
                                                     <th scope="col">Quantity</th>
-                                                    <th scope="col">Date Purchased</th>
-                                                    <th scope="col">Time Purchased</th>
+                                                    <th scope="col">Seller</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -510,11 +516,10 @@
                                 for ($i = 0; $i < sizeof($sellers); $i++) {
                                     echo '
                                                 <tr>
-                                                    <td>' . $sellers[$i] . '</td>
+                                                    <td>' . $date_purchase[$i] . '</td>
                                                     <td>' . $prices[$i] . '</td>
                                                     <td>' . $quantities[$i] . '</td>
-                                                    <td>' . $date_purchase[$i] . '</td>
-                                                    <td>' . $time_purchase[$i] . '</td>
+                                                    <td>' . $sellers[$i] . '</td>
                                                 </tr>
                                     ';
                                 }
@@ -526,7 +531,7 @@
 
                                 tradeHistoryInit($_SESSION['username']);
 
-                                echo '<h3>Inject history</h3>';
+                                echo '<h3 class="h3-blue">Inject history</h3>';
 
                                 injectionHistoryInit($_SESSION['username']);
                             }
