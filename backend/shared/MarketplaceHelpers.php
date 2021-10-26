@@ -922,14 +922,14 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
             $res_ticker = searchArtistTicker($conn, $artist_username);
             $artist_ticker = $res_ticker->fetch_assoc();
-            $ticker_info->setTag($artist_ticker);
+            $ticker_info->setTag($artist_ticker['ticker']);
 
             $res_pps = searchArtistCurrentPricePerShare($conn, $artist_username);
             $artist_pps = $res_pps->fetch_assoc();
-            $ticker_info->setPPS($artist_pps);
+            $ticker_info->setPPS($artist_pps['price_per_share']);
 
             //Will implement a last 24 change calculation later
-            $change = 0;
+            $change = 1;
             $ticker_info->setChange($change);
 
             array_push($ret, $ticker_info);

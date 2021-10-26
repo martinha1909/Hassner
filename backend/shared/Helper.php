@@ -205,42 +205,29 @@
                     <div class="card-body text-dark">
                         <marquee direction="left">
         ';
-        for($i = 0; $i < sizeof($temp); $i++)
+        for($i = 0; $i < sizeof($tickers); $i++)
         {
             echo '
-                <strong>'.$arr[$i].'</strong> '.$temp[$i].'
-                <mark class="markup-red">'.$p[$i].'</mark>
-            ';
-            // echo '
-                // <div class="card">
-                //     <div class="card-body text-dark">
-                //         <marquee direction="left">
-            //                 <strong>88GM</strong> 0.78
-            //                 <mark class="markup-red">-26.42% </mark>|
-            //                 <strong>00KW</strong> 14.07
-            //                 <mark class="markup-green">+2.78%</mark>|
-            //                 <strong>42WK</strong> 0.99
-            //                 <mark class="markup-green">+5.32%</mark>|
-            //                 <strong>21SV</strong> 28.81
-            //                 <mark class="markup-green">+2.89%</mark>|
-            //                 <strong>20SV</strong> 0.78
-            //                 <mark class="markup-red">-26.42%</mark>|
-            //                 <strong>19FH</strong> 26.88
-            //                 <mark class="markup-red">-6.42%</mark>|
-            //                 <strong>67MP</strong> 47.81
-            //                 <mark class="markup-red">-2.20%</mark>|
-            //                 <strong>88GM</strong> 0.78
-            //                 <mark class="markup-red">-26.42%</mark>|
-            //                 <strong>00KW</strong> 14.07
-            //                 <mark class="markup-green">+2.78%</mark>|
-            //                 <strong>42WK</strong> 0.99
-            //                 <mark class="markup-green">+5.32%</mark>|
-            //                 <strong>21SV</strong> 28.81
-            //                 <mark class="markup-green">+2.89%</mark>|
-            //             </marquee>
-            //         </div>
-            //     </div>
-            // ';
+                <strong>'.$tickers[$i]->getTag().'</strong> '.$tickers[$i]->getPPS().'';
+            
+            if($tickers[$i]->getChange() < 0)
+            {
+                echo '
+                    <mark class="markup-red">-'.$tickers[$i]->getChange().'%</mark>
+                ';
+            }
+            else if($tickers[$i]->getChange() > 0)
+            {
+                echo '
+                    <mark class="markup-green">+'.$tickers[$i]->getChange().'%</mark>
+                ';
+            }
+            if($tickers[$i]->getChange() == 0)
+            {
+                echo '
+                    <mark>'.$tickers[$i]->getChange().'%</mark>
+                ';
+            }
         }
         echo '
                         </marquee>
