@@ -489,34 +489,43 @@ checkRaffleRoll();
 
                         //displaying Top Invested Artist
                         else if ($_SESSION['display'] == MenuOption::Artists) {
+                            $all_artists = getAllArtist();
                             echo '
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "#"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Artist"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Shares bought"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Price per share (q̶)"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Rate"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Max Price"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Min Price"></th>
-                                            </tr>
-                                        </thead>
-                                    <tbody>
-                                ';
-                            echo '<form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">';
-                            $result = query_account('artist');
-                            if ($result->num_rows == 0) {
-                                echo '<h3> There are no artists to display </h3>';
-                            } else {
-                                $all_shares = array();
-                                $users = array();
-                                topInvestedArtistInit($all_shares, $users, $result);
-                                sortArrays($all_shares, $users);
-                                printTopInvestedArtistChart($users, $all_shares);
-                            }
-                            echo '</form>';
-                            echo '</table>';
+                                <h3>Followed</h3>
+                            ';
+
+                            echo '
+                                <h3>Tops And Flops</h3>
+                            
+                            ';
+                            // echo '
+                            //         <table class="table">
+                            //             <thead>
+                            //                 <tr>
+                            //                     <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "#"></th>
+                            //                     <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Artist"></th>
+                            //                     <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Shares bought"></th>
+                            //                     <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Price per share (q̶)"></th>
+                            //                     <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Rate"></th>
+                            //                     <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Max Price"></th>
+                            //                     <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Min Price"></th>
+                            //                 </tr>
+                            //             </thead>
+                            //         <tbody>
+                            //     ';
+                            // echo '<form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">';
+                            // $result = query_account('artist');
+                            // if ($result->num_rows == 0) {
+                            //     echo '<h3> There are no artists to display </h3>';
+                            // } else {
+                            //     $all_shares = array();
+                            //     $users = array();
+                            //     topInvestedArtistInit($all_shares, $users, $result);
+                            //     sortArrays($all_shares, $users);
+                            //     printTopInvestedArtistChart($users, $all_shares);
+                            // }
+                            // echo '</form>';
+                            // echo '</table>';
                         } else if ($_SESSION['display'] == MenuOption::Balance) {
                             fiatInit();
                         }

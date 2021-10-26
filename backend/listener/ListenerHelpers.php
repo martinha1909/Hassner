@@ -546,4 +546,16 @@
             }
         }
     }
+
+    function getAllArtist()
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = searchAccountType($conn, "artist");
+        while($row = $res->fetch_assoc())
+        {
+            array_push($ret, $row['username'])
+        }
+    }
 ?>
