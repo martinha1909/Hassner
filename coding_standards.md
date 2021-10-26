@@ -24,13 +24,15 @@ Coding Standards
 
 3. Files:
 
-    3.1 Backend files has to end with "<filename>Backend.php" (i.e LoginBackend.php)
+    3.1 Files that communicate with the database have to have this format: "<filename>Backend.php" (i.e `LoginBackend.php`)
+
+    3.2 Files that deal with the backend but only to set global variables to transfer to other files and don't communicate with the database have to have this format: "<filename>Switcher.php" (i.e `VarsSwitcher.php`)
     
-    3.2 File name has to have first word uppercase format (i.e SignupBackend.php)
+    3.3 File name has to have first word uppercase format (i.e `SignupBackend.php`)
 
-    3.3 No SQL queries should be happening in the frontend files. 
+    3.4 No SQL queries should be happening in the frontend files. 
 
-    3.4 Backend files should be used as the intermediary between frontend and the database
+    3.5 Backend files should be used as the intermediary between frontend, database, and variables manipulation
 
 4. Queries:
     4.1 Avoid arbitrary query identifier *. Should just select the columns that are needed to query instead of 
