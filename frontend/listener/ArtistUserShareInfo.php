@@ -8,7 +8,6 @@ include '../../backend/object/TradeHistory.php';
 include '../../backend/object/TradeHistoryList.php';
 include '../../backend/object/Node.php';
 
-$_SESSION['conversion_rate'];
 $_SESSION['usd'] = 0;
 $_SESSION['status'];
 
@@ -58,6 +57,11 @@ $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
                         </label>
                     </div>
                 </div>
+                    <div class="user-balance">
+                        <?php
+                        echo ' &nbsp;($USD): ';
+                        ?>
+                    </div>
             </nav>
         </div>
     </section>

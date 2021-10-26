@@ -6,6 +6,7 @@ include '../../backend/constants/LoggingModes.php';
 include '../../backend/constants/BalanceOption.php';
 include '../../backend/object/ParticipantList.php';
 include '../../backend/object/CampaignParticipant.php';
+include '../../backend/object/Node.php';
 
 $account = getAccount($_SESSION['username']);
 $_SESSION['user_balance'] = $account['balance'];
@@ -55,6 +56,12 @@ checkRaffleRoll();
                 <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span data-feather="grid"></span>
                 </button>
+
+                    <div class="user-balance">
+                        <?php
+                        echo ' &nbsp;($USD): ';
+                        ?>
+                    </div>
             </nav>
         </div>
     </section>
@@ -66,7 +73,7 @@ checkRaffleRoll();
     <section id="login">
         <div class="container-fluid">
             <div class="row">
-                <ul class="list-group">
+                <ul class="list-group bg-dark">
                     <?php
                     checkRaffleRoll();
                     //By default My Portfolio is selected
@@ -519,18 +526,17 @@ checkRaffleRoll();
                             echo '
                                     <section id="login">
                                         <div class="container">
-                                            <div class="col-4 mx-auto my-auto text-center">
-                                                <h3 class="h3-blue py-4">Verify your password to access personal page</h3>
+                                            <div class="text-center">
+                                                <h3 class="h3-blue">Verify your password to access personal page</h3>
                                                 <form action="../../backend/listener/PersonalPageBackend.php" method="post">
-                                                    <div class="form-group">
-                                                        <h5>Password</h5>
+                                                    <div class="form-group col-4 mx-auto">
                                                         <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">';
                             if ($_SESSION['logging_mode'] == LogModes::PERSONAL) {
                                 getStatusMessage("Incorrect Password, please try again", "");
                             }
                             echo '
                                                     </div>
-                                                    <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                                    <div class="text-center">
                                                         <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
                                                     </div>
                                                 </form>
@@ -546,7 +552,7 @@ checkRaffleRoll();
         </div>
     </section>
 
-    <a class="li-bottom btn btn-secondary" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
+    <a class="li-bottom btn btn-success py-2" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
 
     <!--scroll to top-->
     <div class="scroll-top">
