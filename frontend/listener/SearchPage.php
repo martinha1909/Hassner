@@ -1,6 +1,8 @@
 <?php
 include '../../backend/control/Dependencies.php';
 include '../../backend/listener/SearchArtistHelpers.php';
+include '../../backend/object/TickerInfo.php';
+include '../../backend/shared/MarketplaceHelpers.php';
 ?>
 
 <!doctype html>
@@ -59,7 +61,7 @@ include '../../backend/listener/SearchArtistHelpers.php';
     </section>
 
     <?php
-    frontendTicker();
+        displayTicker();
     ?>
 
     <div class="container my-auto mx-auto col-6">

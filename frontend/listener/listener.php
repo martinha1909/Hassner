@@ -8,6 +8,7 @@ include '../../backend/object/ParticipantList.php';
 include '../../backend/object/CampaignParticipant.php';
 include '../../backend/object/Node.php';
 include '../../backend/object/ArtistInfo.php';
+include '../../backend/object/TickerInfo.php';
 
 $account = getAccount($_SESSION['username']);
 $_SESSION['user_balance'] = $account['balance'];
@@ -68,7 +69,7 @@ checkRaffleRoll();
     </section>
 
     <?php
-    frontendTicker();
+        displayTicker();
     ?>
 
     <section id="login">

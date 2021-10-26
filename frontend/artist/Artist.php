@@ -10,6 +10,7 @@
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
+    include '../../backend/object/TickerInfo.php';
 
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
@@ -71,7 +72,7 @@
     </section>
 
     <?php
-    frontendTicker();
+        displayTicker();
     ?>
 
     <section id="login">
@@ -295,8 +296,8 @@
                             echo '
                                         <form action="../../backend/artist/DistributeShareBackend.php" method="post">
                                         <div class="form-group">
-                                            <h5>How much siliqas are you raising</h5>
-                                            <input name = "siliqas_raising" type="text" id="exampleInputPassword1" placeholder="Enter amount">
+                                            <h5>How much are you raising</h5>
+                                            <input name = "siliqas_raising" type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
                                         </div>
                                         <div class="form-group">
                                             <h5>How many shares are you distributing?</h5>
