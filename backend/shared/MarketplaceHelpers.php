@@ -907,4 +907,34 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
         return $trade_history_list;
     }
+
+    function getAllArtistTickers()
+    {
+        $ret = array();
+        $conn = connect();
+
+        //Searches all artists in the program
+        $res = searchAccountType($conn, "artist");
+        while($row = $res->fetch_assoc())
+        {
+            $ticker_info = new TickerInfo();
+            $artist_username = $row['username'];
+
+            $res_ticker = searchArtistTicker($conn, $artist_username);
+            $artist_ticker = $res_ticker->fetch_assoc();
+            $ticker_info->setTag($artist_ticker);
+
+            $res_pps = searchArtistCurrentPricePerShare($conn, $artist_username);
+            $artist_pps = $res_pps->fetch_assoc();
+            $ticker_info->setPPS($artist_pps);
+
+            //Will implement a last 24 change calculation later
+            $change = 0;
+            $ticker_info->setChange($change);
+
+            array_push($ret, $ticker_info);
+        }
+
+        return $ret;
+    }
 ?>

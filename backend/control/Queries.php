@@ -52,6 +52,25 @@
             
         }
 
+        function searchAllTickers($conn)
+        {
+            $sql = "SELECT ticker FROM artist_account_data";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result;
+        }
+
+        function searchArtistTicker($conn, $artist_username)
+        {
+            $sql = "SELECT ticker FROM artist_account_data WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result;
+        }
+
         function searchAccountType($conn, $type)
         {
             $sql = "SELECT * FROM account WHERE account_type = ?";

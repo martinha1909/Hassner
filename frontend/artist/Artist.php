@@ -71,7 +71,7 @@
     </section>
 
     <?php
-    frontendTicker();
+    displayTicker();
     ?>
 
     <section id="login">

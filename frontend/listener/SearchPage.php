@@ -59,7 +59,7 @@ include '../../backend/listener/SearchArtistHelpers.php';
     </section>
 
     <?php
-    frontendTicker();
+    displayTicker();
     ?>
 
     <div class="container my-auto mx-auto col-6">
