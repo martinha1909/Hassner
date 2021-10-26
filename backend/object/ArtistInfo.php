@@ -168,5 +168,91 @@
         {
             $this->day_change = $day_change;
         }
+
+        public static function copy(ArtistInfo $artist)
+        {
+            $ret = new ArtistInfo();
+
+            $ret->setUsername($artist->getUsername());
+            $ret->setMarketTag($artist->getMarketTag());
+            $ret->setSharesBought($artist->getSharesBought());
+            $ret->setShareDistributed($artist->getShareDistributed());
+            $ret->setPPS($artist->getPPS());
+            $ret->setMonthlyShareholder($artist->getMonthlyShareholder());
+            $ret->setMarketCap($artist->getMarketCap());
+            $ret->setShareRepurchase($artist->getShareRepurchase());
+            $ret->setDayChange($artist->getDayChange());
+
+            return $ret;
+        }
+
+        /**
+        * Swaps 2 elements of the array, using copy function as a variable placeholder
+        *
+        * @param  	arr array in which indices are swapped
+        * @param  	i   index to be swapped
+        * @param  	j   index to be swapped
+        */
+        public static function swap(&$arr, $i, $j)
+        {
+            $temp = ArtistInfo::copy($arr[$i]);
+            $arr[$i] = ArtistInfo::copy($arr[$j]);
+            $arr[$j] = $temp;
+        }
+
+        /**
+        * takes last element as pivot, places the pivot element at its correct position in sorted array, 
+        * and places all smaller (smaller than pivot) to left of pivot and all greater elements to right of pivot
+        *
+        * @param  	artist_info_arr	array to be partitiioned
+        * @param  	low	            starting index of the array
+        * @param  	high            ending index of the array
+        * @param  	option          descending or ascending option
+        */
+        public static function partition(&$artist_info_arr, $low, $high, $option)
+        {
+            $pivot = $artist_info_arr[$high]->getDayChange();
+            $i = $low - 1;
+
+            for($j = $low; $j <= $high - 1; $j++)
+            {
+                if($option == "Descending")
+                {
+                    if($artist_info_arr[$j]->getDayChange() > $pivot)
+                    {
+                        $i++;
+                        ArtistInfo::swap($artist_info_arr, $i, $j);
+                    }
+                }
+                else if($option == "Ascending")
+                {
+                    if($artist_info_arr[$j]->getDayChange() < $pivot)
+                    {
+                        $i++;
+                        ArtistInfo::swap($artist_info_arr, $i, $j);
+                    }
+                }
+            }
+            ArtistInfo::swap($artist_info_arr, ($i + 1), $high);
+            return ($i + 1);
+        }
+
+        /**
+        * Sort an ArtistInfo array using quick sort 
+        *
+        * @param  	artist_info_arr	array to be sorted
+        * @param  	low	            starting index of the array
+        * @param  	high            ending index of the array
+        */
+        public static function quickSort(&$artist_info_arr, $low, $high)
+        {
+            if($low < $high)
+            {
+                $pi = ArtistInfo::partition($artist_info_arr, $low, $high, "Descending");
+
+                ArtistInfo::quickSort($artist_info_arr, $low, ($pi - 1));
+                ArtistInfo::quickSort($artist_info_arr, ($pi + 1), $high);
+            }
+        }
     }
 ?>

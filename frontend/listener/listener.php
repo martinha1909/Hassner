@@ -490,56 +490,16 @@ checkRaffleRoll();
                         }
 
                         //displaying Top Invested Artist
-                        else if ($_SESSION['display'] == MenuOption::Artists) {
+                        else if ($_SESSION['display'] == MenuOption::Artists) 
+                        {
                             $all_artists = getAllArtist();
+                            ArtistInfo::quickSort($all_artists, 0, (sizeof($all_artists)-1));
 
                             echo '
                                 <h3>Followed</h3>
                             ';
 
-                            echo '
-                                <h3>Tops And Flops</h3>
-                            ';
-
-                            if(sizeof($all_artists) == 0)
-                            {
-                                echo '<p>No artists to display</p>';
-                            }
-                            else
-                            {
-                                for($i = 0; $i < sizeof($all_artists); $i++)
-                                {
-                                    echo '
-                                        <p>
-                                            '.$all_artists[$i]->getUsername().' ('.$all_artists[$i]->getMarketTag().')
-                                    ';
-                                    if($all_artists[$i]->getDayChange() > 0)
-                                    {
-                                        echo '
-                                            <span class="suc-msg">
-                                                +'.$all_artists[$i]->getDayChange().'%
-                                            </span>
-                                        ';
-                                    }
-                                    else if($all_artists[$i]->getDayChange() < 0)
-                                    {
-                                        echo '
-                                            <span class="error-msg">
-                                                '.$all_artists[$i]->getDayChange().'%
-                                            </span>
-                                        ';
-                                    }
-                                    else if($all_artists[$i]->getDayChange() == 0)
-                                    {
-                                        echo '
-                                            <span>
-                                                '.$all_artists[$i]->getDayChange().'%
-                                            </span>
-                                        ';
-                                    }
-                                    echo "</p>";
-                                }
-                            }
+                            topsAndFlops($all_artists);
                             // echo '
                             //         <table class="table">
                             //             <thead>
