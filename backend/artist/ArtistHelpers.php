@@ -250,7 +250,11 @@
         $res = searchSellOrderByArtist($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
-            $ret += $row['no_of_share'];
+            //skipping their own orders
+            if($row['user_username'] != $artist_username)
+            {
+                $ret += $row['no_of_share'];
+            }
         }
 
         return $ret;
@@ -264,8 +268,12 @@
         $res = searchSellOrderByArtist($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
-            $price_per_sell_order = $row['no_of_share'] * $row['selling_price'];
-            $ret += $price_per_sell_order;
+            //Skipping their own orders
+            if($row['user_username'] != $artist_username)
+            {
+                $price_per_sell_order = $row['no_of_share'] * $row['selling_price'];
+                $ret += $price_per_sell_order;
+            }
         }
 
         return $ret;
@@ -279,7 +287,11 @@
         $res = searchSellOrderByArtist($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
-            array_push($ret, $row['id']);
+            //Skipping their own orders
+            if($row['user_username'] != $artist_username)
+            {
+                array_push($ret, $row['id']);
+            }
         }
 
         return $ret;
@@ -293,15 +305,19 @@
         $res = searchSellOrderByArtist($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
-            //the fields that are being sent as "" means we do not need those fields for this case so they can be empty
-            $sell_order_item_info = new SellOrder($row['id'], 
-                                                  $row['user_username'], 
-                                                  "", 
-                                                  $row['selling_price'], 
-                                                  $row['no_of_share'], 
-                                                  "", 
-                                                  "");
-            array_push($ret, $sell_order_item_info);
+            //Skipping their own orders
+            if($row['user_username'] != $artist_username)
+            {
+                //the fields that are being sent as "" means we do not need those fields for this case so they can be empty
+                $sell_order_item_info = new SellOrder($row['id'], 
+                                                    $row['user_username'], 
+                                                    "", 
+                                                    $row['selling_price'], 
+                                                    $row['no_of_share'], 
+                                                    "", 
+                                                    "");
+                array_push($ret, $sell_order_item_info);
+            }
         }
 
         return $ret;
