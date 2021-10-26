@@ -195,44 +195,4 @@
             }
         }
     }
-
-    //Stock Ticker temporary waiting for backend to fill out values
-    function displayTicker()
-    {
-        $tickers = getAllArtistTickers();
-        echo '
-                <div class="card">
-                    <div class="card-body text-dark">
-                        <marquee direction="left">
-        ';
-        for($i = 0; $i < sizeof($tickers); $i++)
-        {
-            echo '
-                <strong>'.$tickers[$i]->getTag().'</strong> '.$tickers[$i]->getPPS().'';
-            
-            if($tickers[$i]->getChange() < 0)
-            {
-                echo '
-                    <mark class="markup-red">-'.$tickers[$i]->getChange().'%</mark>
-                ';
-            }
-            else if($tickers[$i]->getChange() > 0)
-            {
-                echo '
-                    <mark class="markup-green">+'.$tickers[$i]->getChange().'%</mark>
-                ';
-            }
-            if($tickers[$i]->getChange() == 0)
-            {
-                echo '
-                    <mark>'.$tickers[$i]->getChange().'%</mark>
-                ';
-            }
-        }
-        echo '
-                        </marquee>
-                    </div>
-                </div>
-        ';
-    }
 ?>

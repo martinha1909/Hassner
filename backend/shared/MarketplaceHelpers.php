@@ -1,14 +1,20 @@
 <?php
 include '../../backend/constants/StatusCodes.php';
 include '../../backend/constants/LoggingModes.php';
+include '../../backend/constants/AccountTypes.php';
 
-if ($_SESSION['dependencies'] == "FRONTEND") {
+if ($_SESSION['dependencies'] == "FRONTEND") 
+{
     //we want to limit the access of artist account to these functions
-    if ($_SESSION['account_type'] == "user") {
+    if ($_SESSION['account_type'] == AccountType::User) 
+    {
         include '../../backend/listener/ListenerHelpers.php';
     }
-} else if ($_SESSION['dependencies'] == "BACKEND") {
-    if ($_SESSION['account_type'] == "user") {
+} 
+else if ($_SESSION['dependencies'] == "BACKEND") 
+{
+    if ($_SESSION['account_type'] == AccountType::User) 
+    {
         include '../listener/ListenerHelpers.php';
     }
 }

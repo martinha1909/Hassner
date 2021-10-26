@@ -71,6 +71,16 @@
             return $result;
         }
 
+        function searchArtistByTicker($conn, $artist_ticker)
+        {
+            $sql = "SELECT artist_username FROM artist_account_data WHERE ticker = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_ticker);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result;
+        }
+
         function searchAccountType($conn, $type)
         {
             $sql = "SELECT * FROM account WHERE account_type = ?";

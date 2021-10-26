@@ -1,19 +1,20 @@
 <?php
-include '../../backend/control/dependencies.php';
-include '../../backend/shared/MarketplaceHelpers.php';
-include '../../backend/constants/StatusCodes.php';
-include '../../backend/constants/LoggingModes.php';
-include '../../backend/constants/ShareInteraction.php';
-include '../../backend/object/TradeHistory.php';
-include '../../backend/object/TradeHistoryList.php';
-include '../../backend/object/Node.php';
+    include '../../backend/control/dependencies.php';
+    include '../../backend/shared/MarketplaceHelpers.php';
+    include '../../backend/constants/StatusCodes.php';
+    include '../../backend/constants/LoggingModes.php';
+    include '../../backend/constants/ShareInteraction.php';
+    include '../../backend/object/TradeHistory.php';
+    include '../../backend/object/TradeHistoryList.php';
+    include '../../backend/object/Node.php';
+    include '../../backend/object/TickerInfo.php';
 
-$_SESSION['usd'] = 0;
-$_SESSION['status'];
+    $_SESSION['usd'] = 0;
+    $_SESSION['status'];
 
-refreshUserArtistShareTable();
+    refreshUserArtistShareTable();
 
-$available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
+    $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
 ?>
 
 <!doctype html>
