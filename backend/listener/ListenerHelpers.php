@@ -555,6 +555,7 @@
         $res = searchAccountType($conn, "artist");
         while($row = $res->fetch_assoc())
         {
+            $artist = new ArtistInfo();
             array_push($ret, $row['username'])
         }
     }

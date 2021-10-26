@@ -1,5 +1,5 @@
 <?php
-    class TradeHistoryItem
+    class ArtistInfo
     {
         private $username;
         private $market_tag;
