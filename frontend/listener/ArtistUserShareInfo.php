@@ -68,8 +68,8 @@
     </section>
 
     <?php
-    fetchMarketPrice($_SESSION['selected_artist']);
-    displayTicker();
+        fetchMarketPrice($_SESSION['selected_artist']);
+        displayTicker();
     ?>
 
     <!-- listener functionality -->

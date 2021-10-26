@@ -72,7 +72,7 @@
     </section>
 
     <?php
-    displayTicker();
+        displayTicker();
     ?>
 
     <section id="login">
