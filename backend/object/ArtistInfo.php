@@ -10,6 +10,7 @@
         private $monthly_shareholder;
         private $market_cap;
         private $share_repurchase;
+        private $day_change;
 
         function __construct()
         {
@@ -21,6 +22,7 @@
             $this->monthly_shareholder = 0;
             $this->market_cap = 0;
             $this->share_repurchase = 0;
+            $this->day_change = 0;
         } 
 
         /**
@@ -149,6 +151,22 @@
         public function setShareRepurchase($share_repurchase)
         {
             $this->share_repurchase = $share_repurchase;
+        }
+
+        /**
+         * Get the value of day_change
+         */ 
+        public function getDayChange()
+        {
+            return $this->day_change;
+        }
+
+        /**
+         * Set the value of day_change
+         */ 
+        public function setDayChange($day_change)
+        {
+            $this->day_change = $day_change;
         }
     }
 ?>

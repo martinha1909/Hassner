@@ -553,11 +553,42 @@
         $conn = connect();
 
         $res = searchAccountType($conn, "artist");
+        $counter = 0;
         while($row = $res->fetch_assoc())
         {
+            $res_ticker = searchArtistTicker($conn, $row['username']);
+            $ticker = $res_ticker->fetch_assoc();
+
+            //Changes in last 24 hours
+            if($counter == 0)
+            {
+                $change = 2;
+            }
+            if($counter == 1)
+            {
+                $change = -7;
+            }
+            if($counter == 2)
+            {
+                $change = 8;
+            }
+            if($counter == 3)
+            {
+                $change = -4;
+            }
+
             $artist = new ArtistInfo();
+
+            //only populate fields that we need to use in this case
+            $artist->setUsername($row['username']);
+            $artist->setMarketTag($ticker['ticker']);
+            $artist->setDayChange($change);
+
             array_push($ret, $artist);
+            $counter++;
         }
+
+        return $ret;
     }
 
     //Stock Ticker temporary waiting for backend to fill out values
