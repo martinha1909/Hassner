@@ -560,22 +560,7 @@
             $ticker = $res_ticker->fetch_assoc();
 
             //Changes in last 24 hours
-            if($counter == 0)
-            {
-                $change = 2;
-            }
-            if($counter == 1)
-            {
-                $change = -7;
-            }
-            if($counter == 2)
-            {
-                $change = 8;
-            }
-            if($counter == 3)
-            {
-                $change = -4;
-            }
+            $change = 0;
 
             $artist = new ArtistInfo();
 
