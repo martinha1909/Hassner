@@ -578,7 +578,6 @@
     }
 
     //Stock Ticker temporary waiting for backend to fill out values
-    // <input name = "artist_name" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$all_artists[$i].'">
     function displayTicker()
     {
         $tickers = getAllArtistTickers();
