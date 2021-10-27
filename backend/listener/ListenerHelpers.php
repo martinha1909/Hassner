@@ -679,17 +679,45 @@
             }
             echo "
                 </p>
-            </form>
             ";
         }
+        echo "</form>";
     }
 
-    function followedArtist()
+    function followedArtist($user_username)
     {
-        //Nothing to do now, will handle following and followed artist in the future
+        $followed_artists = array();
+        $conn = connect();
+
+        $res = searchFollowingArtist($conn, $user_username);
+        while($row = $res->fetch_assoc())
+        {
+            $artist_info = new ArtistInfo();
+
+            $res_ticker = searchArtistTicker($conn, $row['artist_username']);
+            $artist_ticker = $res_ticker->fetch_assoc();
+
+            $artist_info->setUsername($row['artist_username']);
+            $artist_info->setMarketTag($artist_ticker['ticker']);
+
+            array_push($followed_artists, $artist_info);
+        }
+
         echo '
             <h3 class="h3-blue">Followed</h3>
+            <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
         ';
+
+        for($i = 0; $i < sizeof($followed_artists); $i++)
+        {
+            echo '
+                <p>
+                <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$followed_artists[$i]->getUsername().'"> ('.$followed_artists[$i]->getMarketTag().')
+                </p>
+            ';
+        }
+
+        echo "</form>";
     }
 
     function apex($all_artists)

@@ -500,7 +500,7 @@ checkRaffleRoll();
                             }
                             else
                             {
-                                followedArtist();
+                                followedArtist($_SESSION['username']);
 
                                 topsAndFlops($all_artists);
 

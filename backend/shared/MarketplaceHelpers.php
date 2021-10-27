@@ -943,4 +943,17 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
         return $ret;
     }
+
+    function isAlreadyFollowed($user_username, $artist_username): bool
+    {
+        $ret = FALSE;
+        $conn = connect();
+
+        $res = searchSpecificFollow($conn, $user_username, $artist_username);
+        if($res->num_rows > 0)
+        {
+            $ret = TRUE;
+        }
+        return $ret;
+    }
 ?>

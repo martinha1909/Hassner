@@ -88,7 +88,21 @@
                             }
                         }
                         ?>
-                        <h2 class="h2-blue">Your shares with <?php echo $_SESSION['selected_artist']; ?> </h2>
+                        <h2 class="h2-blue">Your shares with <?php echo $_SESSION['selected_artist']; ?></h2>
+                                <?php
+                                    if(!isAlreadyFollowed($_SESSION['username'], $_SESSION['selected_artist']))
+                                    {
+                                        echo '
+                                            <p>
+                                                <form action="../../backend/listener/FollowArtistBackend.php" method="post">
+                                                    <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Follow">
+                                                </form>
+                                            </p>
+                                        ';
+                                    }
+                                ?>
+                            </form>
+                        </p>
                     </div>
 
                     <!-- displaying current share information between current user and selected artist -->
