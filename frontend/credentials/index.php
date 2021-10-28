@@ -35,19 +35,19 @@ hassnerInit();
     <!--navigation-->
     <section class="smart-scroll">
         <div class="container-fluid">
-            <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
-                <a class="navbar-brand" href="#" onclick='window.location.reload();'>
-                    HASSNER
+            <nav class="navbar navbar-expand-md navbar-dark bg-darkblue">
+                <a class="navbar-index" href="#" onclick='window.location.reload();'>
+                ❖ HX
                 </a>
                 <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav ml-auto">
                         <menu class="nav-item">
-                            <a class="nav-link page-scroll" href="#login">Log In</a>
+                            <a class="nav-link-index page-scroll" href="#login">Log In</a>
                         </menu>
                         <menu class="nav-item">
-                            <a class="nav-link page-scroll" href="#signup">Sign Up</a>
+                            <a class="nav-link-index page-scroll" href="#signup">Sign Up</a>
                         </menu>
                     </ul>
                 </div>
@@ -57,10 +57,13 @@ hassnerInit();
 
     <!--hero header-->
     <section class="py-md-0 bg-dark" id="home">
-        <div class="container">
-            <div class="row vh-md-100">
-                <div class="col-md-8 col-sm-10 col-12 mx-auto my-auto text-center">
-                    <h1 class="h1-blue">Investing&nbspis music&nbspto&nbspour&nbspears</h1>
+        <div class="container-video">
+            <video autoplay muted loop id="myVideo">
+                <source src="../Images/lines.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay">
+                <div class="text-center">
+                    <h1>Investing&nbspis music&nbspto&nbspour&nbspears</h1>
                     <h5 class="lead">Hassner is creating new opportunities for both listeners and artists. Sign&nbspup&nbspfor&nbspfree.</h5>
                     <a class="page-scroll" href="#signup">
                         <!--It loss the green background, but it scrolls to the bottom of the page now (or we can make it go to the signup page automatically)-->

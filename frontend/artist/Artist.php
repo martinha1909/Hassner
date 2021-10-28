@@ -500,7 +500,7 @@
         </div>
     </section>
 
-    <a class="li-bottom btn btn-success py-2" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
+    <a class="btn btn-success py-2" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
 
     <!--scroll to top-->
     <div class="scroll-top">
