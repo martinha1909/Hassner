@@ -70,7 +70,7 @@ include '../../backend/shared/MarketplaceHelpers.php';
                 <div class="row">
                     <ul class="list-group col">
                         <?php
-                        if ($_SESSION['found'] == 0) {
+                        if ($_SESSION['artist_found'] == 0) {
                             echo '<h3 class="mx-auto"> There are no artists to display </h3>';
                         } else {
                             echo '
