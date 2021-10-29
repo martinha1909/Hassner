@@ -52,7 +52,7 @@
             
         }
 
-        function searchAllTickers($conn)
+        function getAllTickers($conn)
         {
             $sql = "SELECT ticker FROM artist_account_data";
             $stmt = $conn->prepare($sql);
