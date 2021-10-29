@@ -592,8 +592,6 @@
                 $conn->rollBack();
                 echo "Failed: " . $e->getMessage();
             }
-            // $sql = "UPDATE account SET Market_cap = '$market_cap' WHERE username='$artist_username'";
-            // $conn->query($sql);
         }
 
         function updateArtistPPS($conn, $artist_username, $new_pps)
