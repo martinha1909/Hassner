@@ -60,7 +60,7 @@ function fetchMarketPrice($artist_username)
     //total number of shares bought accross all users with the selected artist
     $total_share_bought = 0;
     while ($row = $search_4->fetch_assoc()) {
-        $total_share_bought += $row['no_of_share_bought'];
+        $total_share_bought += $row['shares_owned'];
     }
     $search_5 = searchNumberOfShareDistributed($conn, $_SESSION['selected_artist']);
     //Number of share distributed by the selected artist
@@ -93,7 +93,7 @@ function fetchAskedPrice(&$ids, &$asked_prices, &$user_usernames, &$artist_usern
     singleSort($ids, "Descending");
 }
 
-function askedPriceInit()
+function askedPriceInit($artist_username, $account_type)
 {
     //displaying asked price marketplace
     $asked_prices = array();
@@ -107,12 +107,24 @@ function askedPriceInit()
     $ids = array();
     //sorting asked_price in a descending order, so the first index would be the lowest value, then swaps the other arrays 
     //to match with asked_price indices
-    fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $_SESSION['selected_artist']);
-    echo '
-            <div>
-                <h3 class="h3-blue py-5 text-center">Bid Price</h3>
-            </div>
+    fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $artist_username);
+
+    if($account_type == AccountType::User)
+    {
+        echo '
+                <div>
+                    <h3 class="h3-blue py-5 text-center">Bid Price</h3>
+                </div>
         ';
+    }
+    else if($account_type == AccountType::Artist)
+    {
+        echo '
+                <div>
+                    <h3 class="h3-blue py-5 text-center">Shares available at bid price</h3>
+                </div>
+        ';
+    }
     if (sizeof($asked_prices) > 0) {
         //displays the buy button when user has not clicked on it
         if ($_SESSION['buy_asked_price'] == 0) {
@@ -167,12 +179,12 @@ function askedPriceInit()
                     <table class="table">
                         <thead>
                             <tr>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">#</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Seller username</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Price per share(q̶)</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">Quantity</th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col"></th>
-                                <th style="background-color: #ff9100; border-color: #ff9100; color: #11171a;" scope="col">+</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Seller username</th>
+                                <th scope="col">Price per share(q̶)</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col"></th>
+                                <th scope="col">+</th>
                             </tr>
                         </thead>
                         <tbody>';
@@ -647,7 +659,6 @@ function injectionHistoryInit($artist_username)
                         <th scope="col">Ethos amount</th>
                         <th scope="col">Comment</th>
                         <th scope="col">Date Injected</th>
-                        <th scope="col">Time Injected</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -658,8 +669,7 @@ function injectionHistoryInit($artist_username)
                     <tr>
                         <th scope="row">' . $amount_injected[$i] . '</th>
                         <td>' . $comments[$i] . '</td>
-                        <td>' . $date_injected[$i] . '</td>
-                        <td>' . $time_injected[$i] . '</td>
+                        <td>' . $date_injected[$i] . ' at '.$time_injected[$i].'</td>
                     </tr>
             ';
     }
@@ -668,25 +678,6 @@ function injectionHistoryInit($artist_username)
                     </tbody>
                 </table>
         ';
-}
-
-function refreshUserArtistShareTable()
-{
-    $conn = connect();
-
-    $res = searchAllInvestments($conn);
-    while ($row = $res->fetch_assoc()) {
-        if ($row['no_of_share_bought'] <= 0) {
-            removeUserArtistShareZeroTuples(
-                $conn,
-                $row['user_username'],
-                $row['artist_username'],
-                $row['price_per_share_when_bought'],
-                $row['date_purchased'],
-                $row['time_purchased']
-            );
-        }
-    }
 }
 
 function refreshSellOrderTable()
@@ -848,7 +839,14 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
         while($row = $res->fetch_assoc())
         {
-            $date = dateParser($row['date_purchased']);
+            if($_SESSION['account_type'] == AccountType::Artist)
+            {
+                $date = toYYYYMMDD($row['date_purchased']);
+            }
+            else if($_SESSION['account_type'] == AccountType::User)
+            {
+                $date = dateParser($row['date_purchased']);
+            }
             $time = timeParser($row['time_purchased']);
 
             array_push($prices, $row['price_per_share_when_bought']);
@@ -906,5 +904,24 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         }
 
         return $trade_history_list;
+    }
+
+    function calculateMarketCap($artist_username)
+    {
+        $conn = connect();
+        $connPDO = connectPDO();
+        $market_cap = 0;
+        $res1 = searchArtistTotalSharesBought($conn, $artist_username);
+        $res2 = searchArtistCurrentPricePerShare($conn, $artist_username);
+        $pps = $res2->fetch_assoc();
+        while($row = $res1->fetch_assoc())
+        {
+            $market_cap += ($row['shares_owned'] * $pps['price_per_share']);
+        }
+
+        //update the market cap 
+        updateArtistMarketCap($connPDO, $artist_username, $market_cap);
+
+        return $market_cap;
     }
 ?>

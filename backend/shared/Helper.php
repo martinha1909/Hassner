@@ -4,6 +4,7 @@
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/MenuOption.php';
     include '../../backend/constants/BalanceOption.php';
+    include '../../backend/constants/EthosOption.php';
 
     function hassnerInit()
     {
@@ -23,6 +24,7 @@
         $_SESSION['trade_history_from'] = 0;
         $_SESSION['trade_history_to'] = 0;
         $_SESSION['trade_history_type'] = 0;
+        $_SESSION['ethos_dashboard_options'] = EthosOption::NONE;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
     }
 
