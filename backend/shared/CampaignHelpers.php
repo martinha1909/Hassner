@@ -3,40 +3,15 @@
     {
         $ret = 0;
         $total_share_of_each_participant = 0;
-        $participants = array();
         $conn = connect();
 
         $res = getArtistShareHoldersInfo($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
-            if(sizeof($participants) == 0)
+            if($row['shares_owned'] >= $criteria)
             {
-                array_push($participants, $row['user_username']);
-                $total_share_of_each_participant += $row['no_of_share_bought'];
+                $ret++;
             }
-            else
-            {
-                if($row['user_username'] == $participants[sizeof($participants)-1])
-                {
-                    $total_share_of_each_participant += $row['no_of_share_bought'];
-                }
-                //We have encounter a different user
-                else
-                {
-                    if($total_share_of_each_participant >= $criteria)
-                    {
-                        $ret++;
-                    }
-                    $total_share_of_each_participant = $row['no_of_share_bought'];
-                    array_push($participants, $row['user_username']);
-                }
-            }
-        }
-        //We need to check the case that the last index that comes in is the same as the previous one
-        //and we end the loop without adding the last one if it meets the criteria
-        if($total_share_of_each_participant >= $criteria)
-        {
-            $ret++;
         }
 
         return $ret;
