@@ -1,6 +1,8 @@
 <?php
 include '../../backend/control/Dependencies.php';
 include '../../backend/listener/SearchArtistHelpers.php';
+include '../../backend/object/TickerInfo.php';
+include '../../backend/shared/MarketplaceHelpers.php';
 ?>
 
 <!doctype html>
