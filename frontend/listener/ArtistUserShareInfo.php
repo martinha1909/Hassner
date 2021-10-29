@@ -12,7 +12,7 @@
     $_SESSION['status'];
 
     //only do actions if an artist is found
-    if($_SESSION['found'])
+    if($_SESSION['artist_found'])
     {
         //Refreshes market cap
         calculateMarketCap($_SESSION['selected_artist']);
@@ -72,7 +72,7 @@
     </section>
 
     <?php
-        if($_SESSION['found'])
+        if($_SESSION['artist_found'])
         {
             fetchMarketPrice($_SESSION['selected_artist']);
             frontendTicker();
@@ -86,7 +86,7 @@
                 <div class="mx-auto my-auto text-center col">
                     <div class="py-4 text-center">
                         <?php
-                        if($_SESSION['found'])
+                        if($_SESSION['artist_found'])
                         {
                             if ($_SESSION['logging_mode'] == LogModes::BUY_SHARE) {
                                 if ($_SESSION['status'] == "SILIQAS_ERR") {
@@ -129,7 +129,7 @@
                 </div>
                 <div class="mx-auto my-auto text-center col-5">
                     <?php
-                    if($_SESSION['found'])
+                    if($_SESSION['artist_found'])
                     {
                         //Sell shares button is only available if you own some shares
                         if ($_SESSION['shares_owned'] > 0) {
@@ -232,7 +232,7 @@
             <div class="row align-items-start">
                 <div class="my-auto text-center col">
                     <?php
-                        if($_SESSION['found'])
+                        if($_SESSION['artist_found'])
                         {
                             if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == 0) {
                                 echo '

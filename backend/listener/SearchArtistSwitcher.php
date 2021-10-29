@@ -3,7 +3,7 @@
     include '../control/Dependencies.php';
 
     $conn = connect();
-    $_SESSION['found'] = FALSE;
+    $_SESSION['artist_found'] = FALSE;
     $artist_name = $_POST['artist_search'];
 
     $result = searchArtist($conn, $artist_name);
@@ -11,7 +11,7 @@
     {
         $found_artist = $result->fetch_assoc();
         $_SESSION['selected_artist'] = $found_artist['username'];
-        $_SESSION['found'] = TRUE;
+        $_SESSION['artist_found'] = TRUE;
     }
     else
     {
