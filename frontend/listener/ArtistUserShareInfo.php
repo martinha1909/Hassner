@@ -229,7 +229,7 @@
 
     <section class="vh-md-100" id="Marketplace">
         <div class="container-fluid">
-            <div class="row vh-md-100 align-items-start">
+            <div class="row align-items-start">
                 <div class="my-auto text-center col">
                     <?php
                         if($_SESSION['found'])
