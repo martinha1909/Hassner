@@ -6,7 +6,8 @@
     //selected artist
     $_SESSION['selected_artist'] = $_POST['artist_name'];
 
-     
+    //Always set found to true in this file since user has already clicked on the artist name, which means it exists
+    $_SESSION['found'] = TRUE;
     
     $_SESSION['dependencies'] = "FRONTEND";
 
