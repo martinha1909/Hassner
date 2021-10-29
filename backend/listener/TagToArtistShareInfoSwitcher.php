@@ -10,6 +10,8 @@
     $res = searchArtistByTicker($conn, $artist_ticker);
     $artist_username = $res->fetch_assoc();
     $_SESSION['selected_artist'] = $artist_username['artist_username'];
+    
+    $_SESSION['found'] = TRUE;
 
     $_SESSION['dependencies'] = "FRONTEND";
 
