@@ -24,6 +24,16 @@
             return $result;
         }
 
+        function searchUserBalance($conn, $usernmae)
+        {
+            $sql = "SELECT balance FROM account WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $usernmae);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result;
+        }
+
         function searchEmail($conn, $email)
         {
             $sql = "SELECT username FROM account WHERE email = ?";
@@ -157,16 +167,6 @@
             return $result;
         }
 
-        function searchAllInvestments($conn)
-        {
-            $sql = "SELECT * FROM buy_history";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            return $result;
-        }
-
         function searchAllSellOrders($conn)
         {
             $sql = "SELECT * FROM sell_order";
@@ -288,7 +288,7 @@
 
         function searchArtistTotalSharesBought($conn, $artist_username)
         {
-            $sql = "SELECT no_of_share_bought FROM buy_history WHERE artist_username = ?";
+            $sql = "SELECT shares_owned FROM artist_shareholders WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -601,6 +601,26 @@
             }
 
             return $status;
+        }
+
+        function updateArtistMarketCap($conn, $artist_username, $market_cap)
+        {
+            try
+            {
+                $conn->beginTransaction();
+
+                $stmt = $conn->prepare("UPDATE account SET Market_cap = ? WHERE username = ?");
+                $stmt->bindValue(1, $market_cap);
+                $stmt->bindValue(2, $artist_username);
+                $stmt->execute(array($market_cap, $artist_username));
+
+                $conn->commit();
+            }
+            catch (PDOException $e) 
+            {
+                $conn->rollBack();
+                echo "Failed: " . $e->getMessage();
+            }
         }
 
         function updateArtistPPS($conn, $artist_username, $new_pps)
