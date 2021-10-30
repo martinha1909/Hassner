@@ -103,6 +103,16 @@
                                             </p>
                                         ';
                                     }
+                                    else
+                                    {
+                                        echo '
+                                            <p>
+                                                <form action="../../backend/listener/UnFollowArtistBackend.php" method="post">
+                                                    <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Unfollow">
+                                                </form>
+                                            </p>
+                                        ';
+                                    }
                                 ?>
                             </form>
                         </p>

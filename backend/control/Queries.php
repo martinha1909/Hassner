@@ -1212,6 +1212,14 @@
             $stmt->execute();
         }
 
+        function unFollowArtist($conn, $user_username, $followed_artist)
+        {
+            $sql = "DELETE FROM artist_followers WHERE artist_username = ? AND user_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $followed_artist, $user_username);
+            $stmt->execute();
+        }
+
         function removeSellOrder($conn, $order_id)
         {
             $sql = "DELETE FROM sell_order WHERE id = ?";
