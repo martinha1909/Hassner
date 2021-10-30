@@ -26,10 +26,9 @@
 
         function searchArtist($conn, $artist_username)
         {
-            $account_type = "artist";
-            $sql = "SELECT username FROM account WHERE username = ? AND account_type = ?";
+            $sql = "SELECT username FROM account WHERE username = ? AND account_type = 'artist'";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ss', $artist_username, $account_type);
+            $stmt->bind_param('s', $artist_username);
             $stmt->execute();
             $result = $stmt->get_result();
 
