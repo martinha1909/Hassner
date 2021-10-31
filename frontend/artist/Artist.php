@@ -1,6 +1,6 @@
 <?php
     include '../../backend/control/Dependencies.php';
-    include '../../backend/artist/ArtistHelpers.php';
+    include '../../backend/artist/include/ArtistHelpers.php';
     include '../../backend/shared/include/MarketplaceHelpers.php';
     include '../../backend/shared/include/CampaignHelpers.php';
     include '../../backend/constants/ShareInteraction.php';
