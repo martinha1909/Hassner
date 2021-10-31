@@ -2,7 +2,7 @@
     include '../../backend/control/Dependencies.php';
     include '../../backend/artist/ArtistHelpers.php';
     include '../../backend/shared/include/MarketplaceHelpers.php';
-    include '../../backend/shared/CampaignHelpers.php';
+    include '../../backend/shared/include/CampaignHelpers.php';
     include '../../backend/constants/ShareInteraction.php';
     include '../../backend/constants/TradeHistoryType.php';
     include '../../backend/constants/EthosOption.php';

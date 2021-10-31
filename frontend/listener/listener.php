@@ -1,7 +1,7 @@
 <?php
     include '../../backend/control/Dependencies.php';
     include '../../backend/shared/include/MarketplaceHelpers.php';
-    include '../../backend/shared/CampaignHelpers.php';
+    include '../../backend/shared/include/CampaignHelpers.php';
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/BalanceOption.php';
     include '../../backend/object/ParticipantList.php';

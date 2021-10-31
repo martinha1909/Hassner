@@ -1,7 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
-    include '../shared/CampaignHelpers.php';
+    include '../shared/include/CampaignHelpers.php';
     include '../constants/LoggingModes.php';
 
     $_SESSION['logging_mode'] = LogModes::CAMPAIGN;
