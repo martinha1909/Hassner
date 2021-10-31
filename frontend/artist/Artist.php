@@ -1,7 +1,7 @@
 <?php
     include '../../backend/control/Dependencies.php';
     include '../../backend/artist/ArtistHelpers.php';
-    include '../../backend/shared/MarketplaceHelpers.php';
+    include '../../backend/shared/include/MarketplaceHelpers.php';
     include '../../backend/shared/CampaignHelpers.php';
     include '../../backend/constants/ShareInteraction.php';
     include '../../backend/constants/TradeHistoryType.php';

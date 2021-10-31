@@ -3,7 +3,7 @@
     include '../control/Dependencies.php';
     include '../constants/AccountTypes.php';
     include '../constants/LoggingModes.php';
-    include 'MarketplaceHelpers.php';
+    include 'include/MarketplaceHelpers.php';
 
     $_SESSION['logging_mode'] = LogModes::BUY_SHARE;
 
