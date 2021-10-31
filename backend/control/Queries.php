@@ -24,6 +24,17 @@
             return $result;
         }
 
+        function searchArtist($conn, $artist_username)
+        {
+            $sql = "SELECT username FROM account WHERE username = ? AND account_type = 'artist'";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchUserBalance($conn, $usernmae)
         {
             $sql = "SELECT balance FROM account WHERE username = ?";

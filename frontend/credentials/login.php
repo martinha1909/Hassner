@@ -75,7 +75,10 @@ hassnerInit();
             </div>
 
             <div class="form-group">
-              <p><?php getStatusMessage("Your credentials do not match", "Account created successfully"); ?></p>
+              <p><?php
+                      getStatusMessage("Your credentials do not match", "Account created successfully");
+                  ?>
+              </p>
             </div>
 
 

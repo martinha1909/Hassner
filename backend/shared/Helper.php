@@ -197,15 +197,4 @@
             }
         }
     }
-
-    // function sortObjectArrayDescending(&$arr, $low, $high)
-    // {
-    //     if($low < $high)
-    //     {
-    //         $pi = partition($arr, $low, $high, "Descending");
-
-    //         sortObjectArrayDescending($arr, $low, ($pi - 1));
-    //         sortObjectArrayDescending($arr, ($pi + 1), $high);
-    //     }
-    // }
 ?>
