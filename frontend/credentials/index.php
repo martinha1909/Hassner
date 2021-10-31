@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../../backend/shared/Helper.php';
+include '../../backend/shared/include/Helper.php';
 include '../../backend/shared/TimeUtil.php';
 include '../../backend/constants/LoggingModes.php';
 
