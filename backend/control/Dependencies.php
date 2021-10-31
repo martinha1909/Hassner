@@ -15,13 +15,13 @@
         include '../../backend/control/Queries.php';
         include '../../backend/control/connection.php';
         include '../../backend/shared/include/Helper.php';
-        include '../../backend/shared/TimeUtil.php';
+        include '../../backend/shared/include/TimeUtil.php';
     }
     else if($_SESSION['dependencies'] == "BACKEND")
     {
         include '../control/Queries.php';
         include '../control/connection.php';
         include '../shared/include/Helper.php';
-        include '../shared/TimeUtil.php';
+        include '../shared/include/TimeUtil.php';
     }
 ?>
