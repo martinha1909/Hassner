@@ -624,7 +624,7 @@
 
     function topsAndFlops($all_artists)
     {
-        ArtistInfo::quickSort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Day Change");
+        ArtistInfo::sort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Day Change");
 
         echo '
             <h3 class="h3-blue">Tops And Flops</h3>
@@ -706,7 +706,7 @@
 
     function apex($all_artists)
     {
-        ArtistInfo::quickSort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Market Cap");
+        ArtistInfo::sort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Market Cap");
         echo '
             <h3 class="h3-blue">Apex (Market Cap)</h3>
             <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">

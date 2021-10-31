@@ -276,14 +276,14 @@
         * @param  	high            ending index of the array
         * @param  	item            variable to use as a base to sort
         */
-        public static function quickSort(&$artist_info_arr, $low, $high, $option, $item)
+        public static function sort(&$artist_info_arr, $low, $high, $option, $item)
         {
             if($low < $high)
             {
                 $pi = ArtistInfo::partition($artist_info_arr, $low, $high, $option, $item);
 
-                ArtistInfo::quickSort($artist_info_arr, $low, ($pi - 1), $option, $item);
-                ArtistInfo::quickSort($artist_info_arr, ($pi + 1), $high, $option, $item);
+                ArtistInfo::sort($artist_info_arr, $low, ($pi - 1), $option, $item);
+                ArtistInfo::sort($artist_info_arr, ($pi + 1), $high, $option, $item);
             }
         }
     }
