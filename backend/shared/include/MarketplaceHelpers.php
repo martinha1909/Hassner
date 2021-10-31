@@ -8,14 +8,14 @@ if ($_SESSION['dependencies'] == "FRONTEND")
     //we want to limit the access of artist account to these functions
     if ($_SESSION['account_type'] == AccountType::User) 
     {
-        include '../../backend/listener/ListenerHelpers.php';
+        include '../../backend/listener/include/ListenerHelpers.php';
     }
 } 
 else if ($_SESSION['dependencies'] == "BACKEND") 
 {
     if ($_SESSION['account_type'] == AccountType::User) 
     {
-        include '../listener/ListenerHelpers.php';
+        include '../listener/include/ListenerHelpers.php';
     }
 }
 
