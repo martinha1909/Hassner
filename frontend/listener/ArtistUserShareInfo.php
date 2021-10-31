@@ -7,6 +7,10 @@
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
+    include '../../backend/object/TickerInfo.php';
+
+    $_SESSION['usd'] = 0;
+    $_SESSION['status'];
 
     $_SESSION['usd'] = 0;
     $_SESSION['status'];
@@ -67,8 +71,8 @@
     </section>
 
     <?php
-    fetchMarketPrice($_SESSION['selected_artist']);
-    frontendTicker();
+        fetchMarketPrice($_SESSION['selected_artist']);
+        displayTicker();
     ?>
 
     <!-- listener functionality -->

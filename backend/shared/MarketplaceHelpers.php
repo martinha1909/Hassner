@@ -1,14 +1,20 @@
 <?php
 include '../../backend/constants/StatusCodes.php';
 include '../../backend/constants/LoggingModes.php';
+include '../../backend/constants/AccountTypes.php';
 
-if ($_SESSION['dependencies'] == "FRONTEND") {
+if ($_SESSION['dependencies'] == "FRONTEND") 
+{
     //we want to limit the access of artist account to these functions
-    if ($_SESSION['account_type'] == "user") {
+    if ($_SESSION['account_type'] == AccountType::User) 
+    {
         include '../../backend/listener/ListenerHelpers.php';
     }
-} else if ($_SESSION['dependencies'] == "BACKEND") {
-    if ($_SESSION['account_type'] == "user") {
+} 
+else if ($_SESSION['dependencies'] == "BACKEND") 
+{
+    if ($_SESSION['account_type'] == AccountType::User) 
+    {
         include '../listener/ListenerHelpers.php';
     }
 }
@@ -904,6 +910,36 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         }
 
         return $trade_history_list;
+    }
+
+    function getAllArtistTickers()
+    {
+        $ret = array();
+        $conn = connect();
+
+        //Searches all artists in the program
+        $res = searchAccountType($conn, "artist");
+        while($row = $res->fetch_assoc())
+        {
+            $ticker_info = new TickerInfo();
+            $artist_username = $row['username'];
+
+            $res_ticker = searchArtistTicker($conn, $artist_username);
+            $artist_ticker = $res_ticker->fetch_assoc();
+            $ticker_info->setTag($artist_ticker['ticker']);
+
+            $res_pps = searchArtistCurrentPricePerShare($conn, $artist_username);
+            $artist_pps = $res_pps->fetch_assoc();
+            $ticker_info->setPPS($artist_pps['price_per_share']);
+
+            //Will implement a last 24 change calculation later
+            $change = 1;
+            $ticker_info->setChange($change);
+
+            array_push($ret, $ticker_info);
+        }
+
+        return $ret;
     }
 
     function calculateMarketCap($artist_username)

@@ -1,6 +1,8 @@
 <?php
 include '../../backend/control/Dependencies.php';
 include '../../backend/listener/SearchArtistHelpers.php';
+include '../../backend/object/TickerInfo.php';
+include '../../backend/shared/MarketplaceHelpers.php';
 ?>
 
 <!doctype html>
@@ -59,7 +61,7 @@ include '../../backend/listener/SearchArtistHelpers.php';
     </section>
 
     <?php
-    frontendTicker();
+        displayTicker();
     ?>
 
     <div class="container my-auto mx-auto col-6">
@@ -68,7 +70,7 @@ include '../../backend/listener/SearchArtistHelpers.php';
                 <div class="row">
                     <ul class="list-group col">
                         <?php
-                        if ($_SESSION['found'] == 0) {
+                        if ($_SESSION['artist_found'] == 0) {
                             echo '<h3 class="mx-auto"> There are no artists to display </h3>';
                         } else {
                             echo '
