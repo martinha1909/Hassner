@@ -9,12 +9,6 @@
     include '../../backend/object/Node.php';
     include '../../backend/object/TickerInfo.php';
 
-    $_SESSION['usd'] = 0;
-    $_SESSION['status'];
-
-    $_SESSION['usd'] = 0;
-    $_SESSION['status'];
-
     //only do actions if an artist is found
     if($_SESSION['artist_found'])
     {
