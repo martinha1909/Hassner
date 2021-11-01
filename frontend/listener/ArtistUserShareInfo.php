@@ -38,6 +38,12 @@
     <link rel="stylesheet" href="../css/searchbar.css" id="theme-color">
     <link rel="stylesheet" href="../css/slidebar.css" id="theme-color">
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
+    <style>
+        .chart-container {
+            width: 640px;
+            height: auto;
+        }
+    </style>
 </head>
 
 <body class="bg-dark">
@@ -122,32 +128,15 @@
                         </p>
                     </div>
 
+                    <div class="chart-container">
+                        <?php
+                            $dummy_values = getDummyValues("Drake");
+                        ?>
+                        <canvas id="mycanvas"></canvas>
+                    </div>
+
                     <!-- displaying current share information between current user and selected artist -->
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Owned Shares</th>
-                                <th scope="col">Shares selling</th>
-                                <th scope="col">Shares requesting</th>
-                                <th scope="col">Current price per share (q̶)</th>
-                                <th scope="col">Issued Shares</th>
-                                <th scope="col">Available Shares</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <!-- displaying Amount of shares owned, selected artist name, 
-                                market price per share of artist, profit since last bought, 
-                                and amount of available shares for purchase, respectively -->
-                                <th scope="row"><?php echo $_SESSION['shares_owned']; ?></th>
-                                <td><?php echo getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
-                                <td><?php echo getAmountSharesRequesting($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
-                                <td><?php echo round($_SESSION['current_pps']['price_per_share'], 2); ?></td>
-                                <td><?php echo totalShareDistributed($_SESSION['selected_artist']); ?></td>
-                                <td><?php echo $_SESSION['available_shares']; }?></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <?php }?>
                 </div>
                 <div class="mx-auto my-auto text-center col-5">
                     <?php
@@ -441,7 +430,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <script type="text/javascript" id="current_script" myvar='<?= $dummy_values; ?>'></script>
+    <script type="text/javascript" src="../js/Chart.min.js"></script>
+    <script type="text/javascript" src="../js/linegraph.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");

@@ -973,4 +973,24 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
         return $market_cap;
     }
+
+    function getDummyValues($artist_username)
+    {
+        $conn = connect();
+
+        $sql = "SELECT artist_username, price_per_share, time_recorded FROM artist_stock_change WHERE artist_username = ? ORDER BY time_recorded";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $artist_username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = array();
+        while($row = $result->fetch_assoc())
+        {
+            $data[] = $row;
+        }
+
+        //now print the data
+        return json_encode($data);
+    }
 ?>
