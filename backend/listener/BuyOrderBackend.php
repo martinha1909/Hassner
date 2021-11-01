@@ -30,7 +30,6 @@
                                      $request_quantity, 
                                      $request_price);
 
-        refreshUserArtistShareTable();
         refreshSellOrderTable();
 
         if($new_quantity > 0)

@@ -4,6 +4,7 @@
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/MenuOption.php';
     include '../../backend/constants/BalanceOption.php';
+    include '../../backend/constants/EthosOption.php';
 
     function hassnerInit()
     {
@@ -23,6 +24,7 @@
         $_SESSION['trade_history_from'] = 0;
         $_SESSION['trade_history_to'] = 0;
         $_SESSION['trade_history_type'] = 0;
+        $_SESSION['ethos_dashboard_options'] = EthosOption::NONE;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
     }
 
@@ -194,40 +196,5 @@
                 $arr[$j + 1] = $key;
             }
         }
-    }
-
-    //Stock Ticker temporary waiting for backend to fill out values
-    function frontendTicker()
-    {
-        echo '
-            <div class="card">
-                <div class="card-body text-dark">
-                    <marquee direction="left">
-                        <strong>88GM</strong> 0.78
-                        <mark class="markup-red">-26.42% </mark>|
-                        <strong>00KW</strong> 14.07
-                        <mark class="markup-green">+2.78%</mark>|
-                        <strong>42WK</strong> 0.99
-                        <mark class="markup-green">+5.32%</mark>|
-                        <strong>21SV</strong> 28.81
-                        <mark class="markup-green">+2.89%</mark>|
-                        <strong>20SV</strong> 0.78
-                        <mark class="markup-red">-26.42%</mark>|
-                        <strong>19FH</strong> 26.88
-                        <mark class="markup-red">-6.42%</mark>|
-                        <strong>67MP</strong> 47.81
-                        <mark class="markup-red">-2.20%</mark>|
-                        <strong>88GM</strong> 0.78
-                        <mark class="markup-red">-26.42%</mark>|
-                        <strong>00KW</strong> 14.07
-                        <mark class="markup-green">+2.78%</mark>|
-                        <strong>42WK</strong> 0.99
-                        <mark class="markup-green">+5.32%</mark>|
-                        <strong>21SV</strong> 28.81
-                        <mark class="markup-green">+2.89%</mark>|
-                    </marquee>
-                </div>
-            </div>
-        ';
     }
 ?>

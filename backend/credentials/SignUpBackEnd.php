@@ -36,7 +36,29 @@
         {
             $usr_res = searchAccount($conn, $username);
             $email_res = searchEmail($conn, $email);
-            $ticker_res = searchTicker($conn, $ticker);
+
+            if($account_type == AccountType::Artist)
+            {
+                $ticker_res = searchTicker($conn, $ticker);
+                // Validate ticker
+                if($ticker_res->num_rows > 0)
+                {
+                    $_SESSION['status'] = StatusCodes::ErrTickerDuplicate;
+                    $_SESSION['dependencies'] = "FRONTEND";
+                    header("Location: ../../frontend/credentials/signup.php");
+                }
+                else if(strlen($ticker) != 4 ||
+                        !is_numeric($ticker[0]) || 
+                        !is_numeric($ticker[1]) ||
+                        !ctype_alpha($ticker[2]) ||
+                        !ctype_alpha($ticker[3]))
+                {
+                    $_SESSION['status'] = StatusCodes::ErrTickerFormat;
+                    $_SESSION['dependencies'] = "FRONTEND";
+                    header("Location: ../../frontend/credentials/signup.php");
+                }
+            }
+
             if($usr_res->num_rows > 0)
             {
                 $_SESSION['status'] = StatusCodes::ErrUsername;
@@ -49,28 +71,11 @@
                 $_SESSION['dependencies'] = "FRONTEND";
                 header("Location: ../../frontend/credentials/signup.php");
             }
-            // Validate ticker
-            else if($ticker_res->num_rows > 0)
-            {
-                $_SESSION['status'] = StatusCodes::ErrTickerDuplicate;
-                $_SESSION['dependencies'] = "FRONTEND";
-                header("Location: ../../frontend/credentials/signup.php");
-            }
-            else if(strlen($ticker) != 4 ||
-                    !is_numeric($ticker[0]) || 
-                    !is_numeric($ticker[1]) ||
-                    !ctype_alpha($ticker[2]) ||
-                    !ctype_alpha($ticker[3]))
-            {
-                $_SESSION['status'] = StatusCodes::ErrTickerFormat;
-                $_SESSION['dependencies'] = "FRONTEND";
-                header("Location: ../../frontend/credentials/signup.php");
-            }
             else
             {
                 
-                $res = signup($connPDO, $username, $password, $account_type, $email, $ticker);
-                if($res == StatusCodes::Success)
+                $_SESSION['status'] = signup($connPDO, $username, $password, $account_type, $email, $ticker);
+                if($_SESSION['status'] == StatusCodes::Success)
                 {
                     $_SESSION['dependencies'] = "FRONTEND";
                     header("Location: ../../frontend/credentials/login.php");

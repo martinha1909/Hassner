@@ -1,17 +1,20 @@
 <?php
-include '../../backend/control/Dependencies.php';
-include '../../backend/shared/MarketplaceHelpers.php';
-include '../../backend/shared/CampaignHelpers.php';
-include '../../backend/constants/LoggingModes.php';
-include '../../backend/constants/BalanceOption.php';
-include '../../backend/object/ParticipantList.php';
-include '../../backend/object/CampaignParticipant.php';
-include '../../backend/object/Node.php';
+    include '../../backend/control/Dependencies.php';
+    include '../../backend/shared/MarketplaceHelpers.php';
+    include '../../backend/shared/CampaignHelpers.php';
+    include '../../backend/constants/LoggingModes.php';
+    include '../../backend/constants/BalanceOption.php';
+    include '../../backend/object/ParticipantList.php';
+    include '../../backend/object/CampaignParticipant.php';
+    include '../../backend/object/Node.php';
+    include '../../backend/object/TickerInfo.php';
 
-$account = getAccount($_SESSION['username']);
-$_SESSION['user_balance'] = $account['balance'];
+    $_SESSION['selected_artist'] = 0;
 
-checkRaffleRoll();
+    $account = getAccount($_SESSION['username']);
+    $_SESSION['user_balance'] = $account['balance'];
+
+    checkRaffleRoll();
 ?>
 
 <!doctype html>
@@ -47,7 +50,7 @@ checkRaffleRoll();
                     <div class="container-searchbar">
                         <label>
                             <span class="screen-reader-text">Search for...</span>
-                            <form class="form-inline" action="../../backend/listener/SearchPageBackend.php" method="post">
+                            <form class="form-inline" action="../../backend/listener/SearchArtistSwitcher.php" method="post">
                                 <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_search" />
                             </form>
                         </label>
@@ -67,7 +70,7 @@ checkRaffleRoll();
     </section>
 
     <?php
-    frontendTicker();
+        displayTicker();
     ?>
 
     <section id="login">
