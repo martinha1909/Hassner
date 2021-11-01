@@ -546,4 +546,49 @@
             }
         }
     }
+
+    //Stock Ticker temporary waiting for backend to fill out values
+    function displayTicker()
+    {
+        $tickers = getAllArtistTickers();
+        echo '
+                <div class="card">
+                    <div class="card-body text-dark">
+                        <marquee direction="left">
+                            <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method = "post">
+        ';
+        for($i = 0; $i < sizeof($tickers); $i++)
+        {
+            echo '
+                                <strong><input name = "artist_ticker" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold;" aria-pressed="true" value ="'.$tickers[$i]->getTag().'"></strong> '.$tickers[$i]->getPPS().'
+            ';
+            
+            if($tickers[$i]->getChange() < 0)
+            {
+                echo '
+                                <mark class="markup-red">-'.$tickers[$i]->getChange().'%</mark>
+                ';
+            }
+            else if($tickers[$i]->getChange() > 0)
+            {
+                echo '
+                                <mark class="markup-green">+'.$tickers[$i]->getChange().'%</mark>
+                ';
+            }
+            if($tickers[$i]->getChange() == 0)
+            {
+                echo '
+                                <mark>'.$tickers[$i]->getChange().'%</mark>
+                ';
+            }
+
+            echo " | ";
+        }
+        echo '
+                            </form>
+                        </marquee>
+                    </div>
+                </div>
+        ';
+    }
 ?>

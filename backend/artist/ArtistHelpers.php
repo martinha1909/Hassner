@@ -14,23 +14,6 @@
         return getArtistShareHolders($conn, $artist_username);
     }
 
-    function calculateMarketCap($artist_username)
-    {
-        $conn = connect();
-        $market_cap = 0;
-        $res1 = searchArtistTotalSharesBought($conn, $artist_username);
-        $res2 = searchArtistCurrentPricePerShare($conn, $artist_username);
-        $pps = $res2->fetch_assoc();
-        while($row = $res1->fetch_assoc())
-        {
-            $market_cap += ($row['no_of_share_bought'] * $pps['price_per_share']);
-        }
-
-         
-
-        return $market_cap;
-    }
-
     function artistShareHoldersDurationInit($artist_username, &$shareholder_names, &$share_holder_selling_price, &$shareholder_shares_sold, &$shareholder_shares_duration)
     {
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
@@ -180,26 +163,6 @@
             }
             else
             {
-                //Price displays the highest and lowest trades of the day
-                //Volumn displays how many total shares of the artist that was traded that day
-                //Value displays total amount of siliqas that was traded of the artist that day
-                //Trades displays the total number of trades that day
-                echo '
-                            <div class="py-4">
-                            <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Price(HIGH/LOW)</th>
-                                    <th scope="col">Volume</th>
-                                    <th scope="col">Value</th>
-                                    <th scope="col">Trades</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    </div>
-                ';
-
                 //Fetching arrays if shares repurchase was chosen
                 if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_REPURCHASE)
                 {
@@ -213,7 +176,34 @@
 
                 $trade_history_list = populateTradeHistory($conn, $res);
 
-                $trade_history_list->addListToTable();
+                if($trade_history_list->getListSize() > 0)
+                {
+                    //Price displays the highest and lowest trades of the day
+                    //Volumn displays how many total shares of the artist that was traded that day
+                    //Value displays total amount of siliqas that was traded of the artist that day
+                    //Trades displays the total number of trades that day
+                    echo '
+                                <div class="py-4">
+                                <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Price(HIGH/LOW)</th>
+                                        <th scope="col">Volume</th>
+                                        <th scope="col">Value</th>
+                                        <th scope="col">Trades</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        </div>
+                    ';
+
+                    $trade_history_list->addListToTable();
+                }
+                else
+                {
+                    echo '<h5>No trades found</h5>';
+                }
             }
 
             echo '
@@ -222,5 +212,138 @@
                     </div>
             ';
         }
+    }
+
+    //Stock Ticker temporary waiting for backend to fill out values
+    function displayTicker()
+    {
+        $tickers = getAllArtistTickers();
+        echo '
+                <div class="card">
+                    <div class="card-body text-dark">
+                        <marquee direction="left">
+        ';
+        for($i = 0; $i < sizeof($tickers); $i++)
+        {
+            echo '
+                        <strong>'.$tickers[$i]->getTag().'</strong> '.$tickers[$i]->getPPS().'
+            ';
+            
+            if($tickers[$i]->getChange() < 0)
+            {
+                echo '
+                        <mark class="markup-red">-'.$tickers[$i]->getChange().'%</mark>
+                ';
+            }
+            else if($tickers[$i]->getChange() > 0)
+            {
+                echo '
+                        <mark class="markup-green">+'.$tickers[$i]->getChange().'%</mark>
+                ';
+            }
+            if($tickers[$i]->getChange() == 0)
+            {
+                echo '
+                        <mark>'.$tickers[$i]->getChange().'%</mark>
+                ';
+            }
+        }
+        echo '
+                        </marquee>
+                    </div>
+                </div>
+        ';
+    }
+
+    function getArtistShareRepurchase($artist_username)
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchArtistRepurchaseShares($conn, $artist_username);
+        $ret = $res->fetch_assoc();
+
+        return $ret['shares_repurchase'];
+    }
+
+    function getAmountAvailableForRepurchase($artist_username): int
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchSellOrderByArtist($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            //skipping their own orders
+            if($row['user_username'] != $artist_username)
+            {
+                $ret += $row['no_of_share'];
+            }
+        }
+
+        return $ret;
+    }
+
+    function calculatePriceForAllRepurchase($artist_username): float
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchSellOrderByArtist($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            //Skipping their own orders
+            if($row['user_username'] != $artist_username)
+            {
+                $price_per_sell_order = $row['no_of_share'] * $row['selling_price'];
+                $ret += $price_per_sell_order;
+            }
+        }
+
+        return $ret;
+    }
+
+    function getAllSellOrderIDsForRepurchase($artist_username)
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = searchSellOrderByArtist($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            //Skipping their own orders
+            if($row['user_username'] != $artist_username)
+            {
+                array_push($ret, $row['id']);
+            }
+        }
+
+        return $ret;
+    }
+
+    function getAllRepurchaseSellOrdersInfo($artist_username)
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = searchSellOrderByArtist($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            //Skipping their own orders
+            if($row['user_username'] != $artist_username)
+            {
+                //the fields that are being sent as "" means we do not need those fields for this case so they can be empty
+                $sell_order_item_info = new SellOrder($row['id'], 
+                                                    $row['user_username'], 
+                                                    "", 
+                                                    $row['selling_price'], 
+                                                    $row['no_of_share'], 
+                                                    "", 
+                                                    "");
+                array_push($ret, $sell_order_item_info);
+            }
+        }
+
+        return $ret;
     }
 ?>
