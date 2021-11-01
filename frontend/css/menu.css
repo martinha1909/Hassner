@@ -275,5 +275,6 @@ select#dark {
   top:35%;
   left:30%;
   z-index:1;
+  align-self: center;
 }
 
