@@ -62,7 +62,7 @@ hassnerInit();
                 <source src="../Images/lines.mp4" type="video/mp4">
             </video>
             <div class="video-overlay">
-                <div class="text-center">
+                <div id="topTest" class="text-center">
                     <h1>Investing&nbspis music&nbspto&nbspour&nbspears</h1>
                     <h5 class="lead">Hassner is creating new opportunities for both listeners and artists. Sign&nbspup&nbspfor&nbspfree.</h5>
                     <a class="page-scroll" href="#signup">

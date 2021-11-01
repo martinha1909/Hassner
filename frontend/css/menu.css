@@ -265,8 +265,6 @@ select#dark {
 
 #myVideo {
   position: relative;
-  min-width: 100%;
-  min-height: 100%;
   z-index: 0;
 }
 
@@ -275,6 +273,10 @@ select#dark {
   top:35%;
   left:30%;
   z-index:1;
-  align-self: center;
 }
 
+#topText {
+  color: white;
+  font-size: 20px;
+  align-self: center;
+}
