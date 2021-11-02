@@ -748,8 +748,10 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                 //In the case of buying in asked price, the new market price will become the last purchased price
                 $new_pps = $asked_price;
 
+                $connPDO = connectPDO();
+
                 purchaseAskedPriceShare(
-                    $conn,
+                    $connPDO,
                     $row['user_username'],
                     $user_username,
                     $artist_username,
@@ -795,8 +797,10 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                 //In the case of buying in asked price, the new market price will become the last purchased price
                 $new_pps = $asked_price;
 
+                $connPDO = connectPDO();
+
                 purchaseAskedPriceShare(
-                    $conn,
+                    $connPDO,
                     $row['user_username'],
                     $user_username,
                     $artist_username,

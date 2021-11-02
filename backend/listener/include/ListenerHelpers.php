@@ -285,7 +285,9 @@
                         //In the case of buying in asked price, the new market price will become the last purchased price
                         $new_pps = $row['selling_price'];
 
-                        purchaseAskedPriceShare($conn, 
+                        $connPDO = connectPDO();
+
+                        purchaseAskedPriceShare($connPDO, 
                                                 $_SESSION['username'], 
                                                 $row['user_username'], 
                                                 $_SESSION['selected_artist'],
@@ -331,7 +333,9 @@
                         //In the case of buying in asked price, the new market price will become the last purchased price
                         $new_pps = $row['selling_price'];
 
-                        purchaseAskedPriceShare($conn, 
+                        $connPDO = connectPDO();
+
+                        purchaseAskedPriceShare($connPDO, 
                                                 $_SESSION['username'], 
                                                 $row['user_username'], 
                                                 $_SESSION['selected_artist'],

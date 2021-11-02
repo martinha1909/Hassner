@@ -989,6 +989,15 @@
                 $stmt->bindValue(1, $amount_bought);
                 $stmt->bindValue(2, $artist_username);
                 $stmt->execute(array($amount_bought, $artist_username));
+
+                $stmt = $conn->prepare("INSERT INTO artist_stock_change (artist_username, price_per_share, time_recorded, date_recorded)
+                                        VALUES(?, ?, ?, ?)");
+                $stmt->bindValue(1, $artist_username);
+                $stmt->bindValue(2, $new_pps);
+                //We don't care about the seconds
+                $stmt->bindValue(3, substr($time_purchased, 0, 5));
+                $stmt->bindValue(4, $date_purchased);
+                $stmt->execute(array($artist_username, $new_pps, substr($time_purchased, 0, 5), $date_purchased));
                 
                 $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                                         VALUES(?, ?, ?, ?, ?, ?, ?)");
