@@ -39,12 +39,6 @@
     <link rel="stylesheet" href="../css/searchbar.css" id="theme-color">
     <link rel="stylesheet" href="../css/slidebar.css" id="theme-color">
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
-    <style>
-        .chart-container {
-            width: 640px;
-            height: auto;
-        }
-    </style>
 </head>
 
 <body class="bg-dark">

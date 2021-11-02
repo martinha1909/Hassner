@@ -10710,3 +10710,8 @@ a#dashboard-hover:hover {
 .suc-msg {
   color: green;
 }
+
+.chart-container {
+  width: 640px;
+  height: auto;
+}
