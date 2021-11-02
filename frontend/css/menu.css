@@ -260,3 +260,20 @@ select#dark {
   border-left: 4px solid #11171a;
   border-right: 4px solid white;
 }
+
+/* Video ID */
+
+#myVideo {
+  position: relative;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: 0;
+}
+
+.video-overlay {
+  position:absolute;
+  top:35%;
+  left:30%;
+  z-index:1;
+}
+
