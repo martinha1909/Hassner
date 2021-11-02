@@ -219,7 +219,6 @@
     {
         $tickers = getAllArtistTickers();
         echo '
-                <div>
                     <div class="marquee">
                             <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method = "post">
                             <p>
