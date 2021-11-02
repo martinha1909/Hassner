@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     var json_transfer = JSON.parse(document.querySelector('#artist_user_share_info_script').getAttribute('artist_json'));
     var artist_market_tag = document.querySelector('#artist_user_share_info_script').getAttribute('artist_tag');
     var y_axis = [];
@@ -7,10 +6,8 @@ $(document).ready(function() {
     var len = json_transfer.length;
 
     for (var i = 0; i < len; i++) {
-        if (json_transfer[i].artist_username == "Drake") {
-            y_axis.push(json_transfer[i].price_per_share);
-            x_axis.push(json_transfer[i].time_recorded);
-        }
+        y_axis.push(json_transfer[i].price_per_share);
+        x_axis.push(json_transfer[i].time_recorded);
     }
 
     var ctx = $("#mycanvas");
