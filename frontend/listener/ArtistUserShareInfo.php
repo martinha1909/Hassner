@@ -16,6 +16,7 @@
         calculateMarketCap($_SESSION['selected_artist']);
 
         $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
+        $artist_market_tag = getArtistMarketTag($_SESSION['selected_artist']);
     }
 ?>
 
@@ -128,6 +129,7 @@
                         </p>
                     </div>
 
+                    <!-- Displaying stock graph -->
                     <div class="chart-container">
                         <?php
                             //data to be used and transfered to js files with script tag below
@@ -431,7 +433,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <script type="text/javascript" id="artist_user_share_info_script" artist_json='<?= $graph_jason_data; ?>'></script>
+    <script 
+        type="text/javascript" 
+        id="artist_user_share_info_script" 
+        artist_tag='<?= $artist_market_tag; ?>' 
+        artist_json='<?= $graph_jason_data; ?>'
+    ></script>
     <script type="text/javascript" src="../js/Chart.min.js"></script>
     <script type="text/javascript" src="../js/linegraph.js"></script>
     <script>

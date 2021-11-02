@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
     var json_transfer = JSON.parse(document.querySelector('#artist_user_share_info_script').getAttribute('artist_json'));
+    var artist_market_tag = document.querySelector('#artist_user_share_info_script').getAttribute('artist_tag');
     var y_axis = [];
     var x_axis = [];
     var len = json_transfer.length;
@@ -33,7 +34,7 @@ $(document).ready(function() {
         title : {
             display : true,
             position : "top",
-            text : "Drake last 24hr",
+            text : artist_market_tag + " (" + json_transfer[0].artist_username + ")",
             fontSize : 18,
             fontColor : "#e2cda9ff"
         },

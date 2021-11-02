@@ -986,7 +986,26 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
             $ret[] = $row;
         }
 
+        closeCon($conn);
+
         //now print the data
         return json_encode($ret);
+    }
+
+    function getArtistMarketTag($artist_username)
+    {
+        $ret = "Error in getting artist market tag";
+        $conn = connect();
+
+        $res = searchArtistTicker($conn, $artist_username);
+        if($res->num_rows > 0)
+        {
+            $artist_tag = $res->fetch_assoc();
+            $ret = $artist_tag['ticker'];
+        }
+
+        closeCon($conn);
+
+        return $ret;
     }
 ?>
