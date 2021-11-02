@@ -1,7 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
-    include '../shared/MarketplaceHelpers.php';
+    include '../shared/include/MarketplaceHelpers.php';
     include '../constants/LoggingModes.php';
     include '../constants/StatusCodes.php';
     include '../constants/BalanceOption.php';

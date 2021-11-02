@@ -3,7 +3,7 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../object/SellOrder.php';
     include '../control/Dependencies.php';
-    include '../shared/MarketplaceHelpers.php';
+    include '../shared/include/MarketplaceHelpers.php';
 
     $_SESSION['logging_mode'] = LogModes::BUY_SHARE;
 

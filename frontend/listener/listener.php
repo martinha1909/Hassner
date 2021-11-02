@@ -1,7 +1,7 @@
 <?php
     include '../../backend/control/Dependencies.php';
-    include '../../backend/shared/MarketplaceHelpers.php';
-    include '../../backend/shared/CampaignHelpers.php';
+    include '../../backend/shared/include/MarketplaceHelpers.php';
+    include '../../backend/shared/include/CampaignHelpers.php';
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/BalanceOption.php';
     include '../../backend/object/ParticipantList.php';
@@ -188,7 +188,7 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="color: white;" class="bg-dark">#</th>
-                                                <form action="../../backend/listener/SortPortfolioArtistHelpers.php">
+                                                <form action="../../backend/listener/include/SortPortfolioArtistHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
                                 ';
                             //sort Artist ascending alphabetically
@@ -204,7 +204,7 @@
                             echo '
                                                 </th>
                                                 </form>
-                                                <form action="../../backend/listener/SortPortfolioShareHelpers.php">
+                                                <form action="../../backend/listener/include/SortPortfolioShareHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
                             //sort Shares bought ascending alphabetically
                             if ($_SESSION['sort_type'] == 2) {
@@ -219,7 +219,7 @@
                             echo '
                                                 </th>
                                                 </form>
-                                                <form action = "../../backend/listener/SortPortfolioPPSHelpers.php">
+                                                <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
                             //sort Price per share ascending alphabetically
                             if ($_SESSION['sort_type'] == 3) {
@@ -235,7 +235,7 @@
                             echo '
                                                 </th>
                                                 </form>
-                                                <form action = "../../backend/listener/SortPortfolioRateHelpers.php">
+                                                <form action = "../../backend/listener/include/SortPortfolioRateHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
                             //sort Rate ascending alphabetically
                             if ($_SESSION['sort_type'] == 0) {
