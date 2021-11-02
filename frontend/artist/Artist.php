@@ -468,7 +468,7 @@
                                     echo '
                                                 </tbody>
                                             </table>
-                                            <form class="text-right mx-2" action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
+                                            <form class="text-center my-6" action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
                                                 <input type="submit" class="btn btn-primary" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
                                             </form>
                                     ';
@@ -490,7 +490,7 @@
 
                                 //Buy Back shares history 
                                 echo '
-                                    <div class="mx-auto text-center py-2 col-8">
+                                    <div class="mx-auto text-center py-2 col-6">
                                         <h3 class="h3-blue">Buy Back History</h3>
                                         <table class="table">
                                             <thead>
@@ -546,7 +546,7 @@
                                 <section id="login">
                                 <div class="container">
                                     <div">
-                                        <div class="text-center py-6">
+                                        <div class="text-center my-6">
                                             <h3 class="h3-blue">Verify your password to access personal page</h3>
                                             <form action="../../backend/artist/PersonalPageBackend.php" method="post">
                                                 <div class="form-group col-4 mx-auto">';

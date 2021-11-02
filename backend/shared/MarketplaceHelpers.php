@@ -135,6 +135,7 @@ function askedPriceInit($artist_username, $account_type)
         //displays the buy button when user has not clicked on it
         if ($_SESSION['buy_asked_price'] == 0) {
             echo '
+                <div class="col-6 mx-auto">
                     <table class="table">
                         <thead>
                             <tr>
@@ -177,7 +178,8 @@ function askedPriceInit($artist_username, $account_type)
             echo '
                     </tbody>
                 </table>
-                ';
+            </div>
+            ';
         }
         //replaces the Buy button with a slide bar ranging from 0 to the quantity that other users are selling
         else {
