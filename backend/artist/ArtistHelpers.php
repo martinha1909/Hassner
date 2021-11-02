@@ -81,7 +81,7 @@
         if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
         {
             echo '
-                <div class="col-6">
+                <div class="mx-auto text-center py-2 col-8">
                     <h3 class="h3-blue py-2">Trade History</h3>
                     <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
                         <h6>From</h6>
@@ -95,7 +95,7 @@
         else
         {
             echo '
-                <div class="col-6">
+                <div class="mx-auto text-center py-2 col-8">
                     <h3 class="h3-blue py-2">Trade History</h3>
                     <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
                         <h6>From</h6>

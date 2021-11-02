@@ -292,7 +292,7 @@
                         }
                     }
 
-                    //Artists portfolio
+                    //Artists Ethos
                     else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) {
                         if ($account_info['Share_Distributed'] == 0) {
                             echo '
@@ -318,7 +318,7 @@
 
                             echo '
 
-                                        <div class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                        <div class="mx-auto pt-5 text-center">
                                             <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
                                         </div>
 
@@ -331,8 +331,8 @@
                             {
                                 echo '
                                         <div class="py-4">
-                                            <form action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
-                                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                            <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
+                                                <div>
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
@@ -345,8 +345,8 @@
                             {
                                 echo '
                                         <div class="py-4">
-                                            <form action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
-                                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                            <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
+                                                <div>
                                                     <input name = "ethos_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
@@ -360,8 +360,9 @@
                                 $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
                                 $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
                                 echo '
+                                        <div class="text-center py-4">
                                             <h6>Price Per Share: $' . $account_info['price_per_share'] . '</h6>
-                                            <h6>Volumn: $' . $account_info['Share_Distributed'] . '</h6>
+                                            <h6>Volumn: ' . $account_info['Share_Distributed'] . '</h6>
                                             <h6>Current Shareholders: ' . $shareholder_list->num_rows . '</h6>
                                             <h6>Market cap: $' . $market_cap . '</h6>
                                             <h6>Day High: $' . $high . '</h6>
@@ -370,19 +371,22 @@
                                             <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
                                                 <input name="display_type" type="submit" class="btn btn-primary" value="Inject More Shares">
                                             </form>
+                                        </div>
                                 ';
 
                                 if ($_SESSION['share_distribute'] != 0) {
                                     echo '
+                                        <div class="col-6 mx-auto">
                                             <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
                                                 <p>How many shares would you like to inject?</p>
-                                                <input type="text" name = "share_distributing" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter amount">
+                                                <input type="text" name = "share_distributing" class="form-control form-control-sm col-6" placeholder="Enter amount">
                                                 <p>Comments</p>
-                                                <input type="text" name = "inject_comment" class="form-control form-control-sm" style="border-color: white;" placeholder="Enter comment">
-                                                <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Save">  
+                                                <input type="text" name = "inject_comment" class="form-control form-control-sm" placeholder="Enter comment">
+                                                <div class="text-center">
+                                                <input type = "submit" class="btn btn-primary my-2" role="button" aria-pressed="true" name = "button" value = "Save">  
                                                 </div>
                                             </form>
+                                        </div>
                                     ';
                                 }
                                 
@@ -391,8 +395,8 @@
                             {
                                 echo '
                                         <div class="py-4">
-                                            <form action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
-                                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                            <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
+                                                <div>
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
@@ -437,8 +441,10 @@
                                 $_SESSION['repurchase_sell_orders'] = getAllRepurchaseSellOrdersInfo($_SESSION['username']);
 
                                 echo '
-                                    <h6>Your own shares: '.$owned_shares.'</h6>
+                                <div class="text-center px-4">
+                                    <h6>Your owned shares: '.$owned_shares.'</h6>
                                     <h6>Shares available for repurchase: '.$amount_repurchase_available.'</h6>
+                                </div>
                                 ';
 
                                 sellOrderInit();
@@ -462,7 +468,7 @@
                                     echo '
                                                 </tbody>
                                             </table>
-                                            <form action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
+                                            <form class="text-right mx-2" action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
                                                 <input type="submit" class="btn btn-primary" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
                                             </form>
                                     ';
@@ -472,8 +478,8 @@
                             {
                                 echo '
                                         <div class="py-4">
-                                            <form action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
-                                                <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                            <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
+                                                <div>
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
@@ -484,8 +490,8 @@
 
                                 //Buy Back shares history 
                                 echo '
-                                    <div class="col-6">
-                                        <h3 class="h3-blue py-2">Buy Back History</h3>
+                                    <div class="mx-auto text-center py-2 col-8">
+                                        <h3 class="h3-blue">Buy Back History</h3>
                                         <table class="table">
                                             <thead>
                                                 <tr>
@@ -540,7 +546,7 @@
                                 <section id="login">
                                 <div class="container">
                                     <div">
-                                        <div class="text-center">
+                                        <div class="text-center py-6">
                                             <h3 class="h3-blue">Verify your password to access personal page</h3>
                                             <form action="../../backend/artist/PersonalPageBackend.php" method="post">
                                                 <div class="form-group col-4 mx-auto">';
