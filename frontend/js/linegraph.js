@@ -18,7 +18,7 @@ $(document).ready(function() {
         labels : x_axis,
         datasets : [
             {
-                label : "Drake stock",
+                label : json_transfer[0].artist_username,
                 data : y_axis,
                 backgroundColor : "#0a60d0",
                 borderColor : "#0a60d0",

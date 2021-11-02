@@ -131,7 +131,7 @@
                     <div class="chart-container">
                         <?php
                             //data to be used and transfered to js files with script tag below
-                            $graph_jason_data = getArtistJSONChange("Drake");
+                            $graph_jason_data = getArtistJSONChange($_SESSION['selected_artist']);
                         ?>
                         <canvas id="mycanvas"></canvas>
                     </div>
