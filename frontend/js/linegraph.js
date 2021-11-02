@@ -1,15 +1,14 @@
 $(document).ready(function() {
 
-    var transfer = JSON.parse(document.querySelector('#current_script').getAttribute('myvar'));
-    console.log(transfer);
+    var json_transfer = JSON.parse(document.querySelector('#artist_user_share_info_script').getAttribute('artist_json'));
     var y_axis = [];
     var x_axis = [];
-    var len = transfer.length;
+    var len = json_transfer.length;
 
     for (var i = 0; i < len; i++) {
-        if (transfer[i].artist_username == "Drake") {
-            y_axis.push(transfer[i].price_per_share);
-            x_axis.push(transfer[i].time_recorded);
+        if (json_transfer[i].artist_username == "Drake") {
+            y_axis.push(json_transfer[i].price_per_share);
+            x_axis.push(json_transfer[i].time_recorded);
         }
     }
 

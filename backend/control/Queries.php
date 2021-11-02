@@ -102,6 +102,17 @@
             return $result;
         }
 
+        function getArtistPPSChange($conn, $artist_username)
+        {
+            $sql = "SELECT artist_username, price_per_share, time_recorded FROM artist_stock_change WHERE artist_username = ? ORDER BY time_recorded";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchAccountType($conn, $type)
         {
             $sql = "SELECT * FROM account WHERE account_type = ?";
