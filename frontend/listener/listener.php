@@ -7,6 +7,7 @@
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
     include '../../backend/object/Node.php';
+    include '../../backend/object/ArtistInfo.php';
     include '../../backend/object/TickerInfo.php';
 
     $_SESSION['selected_artist'] = 0;
@@ -491,35 +492,24 @@
                         }
 
                         //displaying Top Invested Artist
-                        else if ($_SESSION['display'] == MenuOption::Artists) {
-                            echo '
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "#"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Artist"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Shares bought"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Price per share (q̶)"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Rate"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Max Price"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Min Price"></th>
-                                            </tr>
-                                        </thead>
-                                    <tbody>
-                                ';
-                            echo '<form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">';
-                            $result = query_account('artist');
-                            if ($result->num_rows == 0) {
-                                echo '<h3> There are no artists to display </h3>';
-                            } else {
-                                $all_shares = array();
-                                $users = array();
-                                topInvestedArtistInit($all_shares, $users, $result);
-                                sortArrays($all_shares, $users);
-                                printTopInvestedArtistChart($users, $all_shares);
+                        else if ($_SESSION['display'] == MenuOption::Artists) 
+                        {
+                            $all_artists = getAllArtist();
+
+                            if(sizeof($all_artists) == 0)
+                            {
+                                echo "<h3>No artists to display<h3>";
                             }
-                            echo '</form>';
-                            echo '</table>';
+                            else
+                            {
+                                followedArtist($_SESSION['username']);
+
+                                topsAndFlops($all_artists);
+
+                                apex($all_artists);
+
+                                localArtist();
+                            }
                         } else if ($_SESSION['display'] == MenuOption::Balance) {
                             fiatInit();
                         }
