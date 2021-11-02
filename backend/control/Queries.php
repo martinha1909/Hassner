@@ -789,6 +789,14 @@
                 $stmt->bindValue(1, $artist);
                 $stmt->execute(array($artist));
 
+                $stmt = $conn->prepare("INSERT INTO artist_stock_change (artist_username, price_per_share, time_recorded, date_recorded)
+                                        VALUES(?, ?, ?, ?)");
+                $stmt->bindValue(1, $artist);
+                $stmt->bindValue(2, $new_pps);
+                $stmt->bindValue(3, substr($time_purchased, 0, 5));
+                $stmt->bindValue(4, $date_purchased);
+                $stmt->execute(array($artist, $new_pps, substr($time_purchased, 0, 5), $date_purchased));
+
                 $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                                         VALUES(?, ?, ?, ?, ?, ?, ?)");
                 $stmt->bindValue(1, $buyer);
@@ -874,6 +882,15 @@
                 $stmt = $conn->prepare("UPDATE account SET price_per_share = '$new_pps' WHERE username = ?");
                 $stmt->bindValue(1, $artist);
                 $stmt->execute(array($artist));
+
+                $stmt = $conn->prepare("INSERT INTO artist_stock_change (artist_username, price_per_share, time_recorded, date_recorded)
+                                        VALUES(?, ?, ?, ?)");
+                $stmt->bindValue(1, $artist);
+                $stmt->bindValue(2, $new_pps);
+                //We don't care about the seconds
+                $stmt->bindValue(3, substr($time_purchased, 0, 5));
+                $stmt->bindValue(4, $date_purchased);
+                $stmt->execute(array($artist, $new_pps, substr($time_purchased, 0, 5), $date_purchased));
 
                 $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                                         VALUES(?, ?, ?, ?, ?, ?, ?)");

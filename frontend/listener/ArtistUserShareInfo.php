@@ -128,8 +128,15 @@
                         <?php
                             //data to be used and transfered to js files with script tag below
                             $graph_jason_data = getArtistJSONChange($_SESSION['selected_artist']);
+                            if(count(json_decode($graph_jason_data)) == 0)
+                            {
+                                echo '<h3>Graph information is not available</h3>';
+                            }
+                            else
+                            {
+                                echo '<canvas id="mycanvas"></canvas>';
+                            }
                         ?>
-                        <canvas id="mycanvas"></canvas>
                     </div>
 
                     <!-- displaying current share information between current user and selected artist -->
