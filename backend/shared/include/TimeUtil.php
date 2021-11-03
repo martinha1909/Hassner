@@ -211,11 +211,16 @@
         return $ret;
     }
 
+    /**
+    * Determines if a day is in the future of the current day
+    *
+    * @param  	current_day	    Today's date, has format of DD-MM-YYYY
+    * @param  	day_to_check    day to compare with today's date, has format of DD-MM-YYYY
+    * @return 	ret	            a boolean, true if today is in the future compared to day_to_check, 
+    *                           false otherwise
+    */
     function dateIsInTheFuture($current_day, $day_to_check)
     {
-        // echo $current_day;
-        // echo "<br>";
-        // echo $day_to_check;
         $ret = FALSE;
 
         $current_day = strtotime($current_day);
