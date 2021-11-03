@@ -153,7 +153,7 @@
                             }
 
                             echo '
-                                    <form action="#" method="post">
+                                    <form action="../../backend/shared/GraphOptionSwitcher.php" method="post">
                                         <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::ONE_DAY.'">
                                         <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::FIVE_DAY.'">
                                         <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::ONE_MONTH.'">
