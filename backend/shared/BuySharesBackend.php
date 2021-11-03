@@ -14,8 +14,23 @@
     {
         $asked_price = key($_POST['asked_price']);
     }
+    $log_pps = FALSE;
     $current_date_time = getCurrentDate("America/Edmonton");
     $date_parser = dayAndTimeSplitter($current_date_time);
+    
+    $res_latest_time = getArtistLatestPPSChangeTimeByDay($conn, $_SESSION['selected_artist'], $date_parser[0]);
+    $fetch = $res_latest_time->fetch_assoc();
+    $latest_time = new DateTime($fetch['latest_time']);
+    //We only care about the hours and minutes, not the seconds
+    $current_time = new DateTime(substr($date_parser[1], 0, 5));
+    $interval = $current_time->diff($latest_time);
+
+    //Only update the pps if it has been more than the specified interval
+    if($interval->format("%i") > $_SESSION['update_pps_interval'])
+    {
+        $log_pps = TRUE;
+    }
+
     //not enough siliqas
     if($_SESSION['user_balance'] < ($amount_bought * $_SESSION['purchase_price']))
     {
@@ -53,6 +68,7 @@
 
             //in the case of buying with market price, the price per share doesn't change
             $new_pps = $_SESSION['current_pps']['price_per_share'];
+            
             $_SESSION['status'] = purchaseMarketPriceShare($connPDO, 
                                                            $_SESSION['username'], 
                                                            $_SESSION['selected_artist'], 
@@ -64,7 +80,8 @@
                                                            $_SESSION['shares_owned'], 
                                                            $amount_bought,
                                                            $date_parser[0],
-                                                           $date_parser[1]);
+                                                           $date_parser[1],
+                                                           $log_pps);
             $_SESSION['buy_market_price'] = 0;
             $_SESSION['buy_asked_price'] = 0;
             $_SESSION['buy_sell'] = 0;
@@ -113,7 +130,8 @@
                                                               $_SESSION['seller_toggle'],
                                                               $date_parser[0],
                                                               $date_parser[1],
-                                                              "AUTO_PURCHASE");
+                                                              "AUTO_PURCHASE",
+                                                              $log_pps);
                 refreshSellOrderTable();
                 refreshBuyOrderTable();
             }
@@ -139,7 +157,8 @@
                                                     $_SESSION['seller_toggle'],
                                                     $sell_order_info['selling_price'],
                                                     $date_parser[0],
-                                                    $date_parser[1]);
+                                                    $date_parser[1],
+                                                    $log_pps);
 
                 refreshSellOrderTable();
                 refreshBuyOrderTable();
