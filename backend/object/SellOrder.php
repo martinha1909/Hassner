@@ -110,7 +110,7 @@
             * @param  	i   index to be swapped
             * @param  	j   index to be swapped
             */
-            public static function swap(&$arr, $i, $j)
+            private static function swap(&$arr, $i, $j)
             {
                 $temp = SellOrder::copy($arr[$i]);
                 $arr[$i] = SellOrder::copy($arr[$j]);
@@ -127,7 +127,7 @@
             * @param  	option          descending or ascending option
             * @param  	item            variable to use as a base to sort
             */
-            public static function partition(&$sell_order_arr, $low, $high, $option, $item)
+            private static function partition(&$sell_order_arr, $low, $high, $option, $item)
             {
                 if($item == "Price")
                 {
