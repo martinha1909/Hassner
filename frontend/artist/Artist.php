@@ -347,7 +347,7 @@
                                         <div class="py-4">
                                             <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
                                                 <div>
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
+                                                    <input name = "ethos_options" type = "submit" class="btn btn-warning" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
                                                 </div>
@@ -398,7 +398,7 @@
                                             <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
                                                 <div>
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
+                                                    <input name = "ethos_options" type = "submit" class="btn btn-warning" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
                                                 </div>
                                             </form>
@@ -407,15 +407,18 @@
 
                                 if (artistCanCreateSellOrder($_SESSION['username'])) {
                                     echo '
+                                            <div class="text-right mx-6">
                                                 <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
-                                                    <input name="buy_sell" type="submit" id="menu-style-invert" style=" border:1px orange; background-color: transparent;" value="-Sell your shares">
+                                                    <input name="buy_sell" type="submit" id="menu-style-invert" class="cursor-context" value="-Sell your shares">
                                                 </form>
+                                            </div>
                                     ';
                                 }
 
                                 if ($_SESSION['buy_sell'] == ShareInteraction::SELL) {
                                     $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
                                     echo '
+                                        <div class="text-right mx-6">
                                             <h6>How many shares are you selling?</h6>
                                             <div class="wrapper-searchbar">
                                                 <div class="container-searchbar mx-auto">
@@ -423,12 +426,13 @@
                                                         <form action="../../backend/shared/SellOrderBackend.php" method="post">
                                                             <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
                                                             <p>Quantity: <span id="demo"></span></p>
-                                                            <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter siliqas">
-                                                            <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
+                                                            <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter price per share">
+                                                            <input type="submit" class="btn btn-primary my-2 py-2" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
                                                         </form>
                                                     </label> 
                                                 </div>
                                             </div>
+                                        </div>
                                     ';
                                     $_SESSION['buy_sell'] = 0;
                                 }
@@ -469,7 +473,7 @@
                                                 </tbody>
                                             </table>
                                             <form class="text-center my-6" action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
-                                                <input type="submit" class="btn btn-primary" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
+                                                <input type="submit" class="btn btn-primary py-2" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
                                             </form>
                                     ';
                                 }
@@ -482,7 +486,7 @@
                                                 <div>
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
                                                     <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
+                                                    <input name = "ethos_options" type = "submit" class="btn btn-warning" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
                                                 </div>
                                             </form>
                                         </div>
