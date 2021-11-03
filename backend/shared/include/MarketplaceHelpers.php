@@ -748,27 +748,40 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                 //In the case of buying in asked price, the new market price will become the last purchased price
                 $new_pps = $asked_price;
 
+                $res_latest_time = getArtistLatestPPSChangeTimeByDay($conn, $_SESSION['selected_artist'], $date_parser[0]);
+                $fetch = $res_latest_time->fetch_assoc();
+                $latest_time = new DateTime($fetch['latest_time']);
+                //We only care about the hours and minutes, not the seconds
+                $current_time = new DateTime(substr($date_parser[1], 0, 5));
+                $interval = $current_time->diff($latest_time);
+
+                $log_pps = FALSE;
+                //Only update the pps if it has been more than the specified interval
+                if($interval->format("%i") > $_SESSION['update_pps_interval'])
+                {
+                    $log_pps = TRUE;
+                }
+
                 $connPDO = connectPDO();
 
-                purchaseAskedPriceShare(
-                    $connPDO,
-                    $row['user_username'],
-                    $user_username,
-                    $artist_username,
-                    $buyer_new_balance,
-                    $seller_new_balance,
-                    $_SESSION['current_pps']['price_per_share'],
-                    $new_pps,
-                    $buyer_new_share_amount,
-                    $seller_new_share_amount,
-                    $_SESSION['shares_owned'],
-                    $row['quantity'],
-                    $row['siliqas_requested'],
-                    $row['id'],
-                    $date_parser[0],
-                    $date_parser[1],
-                    "AUTO_SELL"
-                );
+                purchaseAskedPriceShare($connPDO,
+                                        $row['user_username'],
+                                        $user_username,
+                                        $artist_username,
+                                        $buyer_new_balance,
+                                        $seller_new_balance,
+                                        $_SESSION['current_pps']['price_per_share'],
+                                        $new_pps,
+                                        $buyer_new_share_amount,
+                                        $seller_new_share_amount,
+                                        $_SESSION['shares_owned'],
+                                        $row['quantity'],
+                                        $row['siliqas_requested'],
+                                        $row['id'],
+                                        $date_parser[0],
+                                        $date_parser[1],
+                                        "AUTO_SELL",
+                                        $log_pps);
 
                 updateBuyOrderQuantity($conn, $row['id'], 0);
 
@@ -797,27 +810,40 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                 //In the case of buying in asked price, the new market price will become the last purchased price
                 $new_pps = $asked_price;
 
+                $res_latest_time = getArtistLatestPPSChangeTimeByDay($conn, $_SESSION['selected_artist'], $date_parser[0]);
+                $fetch = $res_latest_time->fetch_assoc();
+                $latest_time = new DateTime($fetch['latest_time']);
+                //We only care about the hours and minutes, not the seconds
+                $current_time = new DateTime(substr($date_parser[1], 0, 5));
+                $interval = $current_time->diff($latest_time);
+
+                $log_pps = FALSE;
+                //Only update the pps if it has been more than the specified interval
+                if($interval->format("%i") > $_SESSION['update_pps_interval'])
+                {
+                    $log_pps = TRUE;
+                }
+
                 $connPDO = connectPDO();
 
-                purchaseAskedPriceShare(
-                    $connPDO,
-                    $row['user_username'],
-                    $user_username,
-                    $artist_username,
-                    $buyer_new_balance,
-                    $seller_new_balance,
-                    $_SESSION['current_pps']['price_per_share'],
-                    $new_pps,
-                    $buyer_new_share_amount,
-                    $seller_new_share_amount,
-                    $_SESSION['shares_owned'],
-                    $quantity,
-                    $row['siliqas_requested'],
-                    $row['id'],
-                    $date_parser[0],
-                    $date_parser[1],
-                    "AUTO_SELL"
-                );
+                purchaseAskedPriceShare($connPDO,
+                                        $row['user_username'],
+                                        $user_username,
+                                        $artist_username,
+                                        $buyer_new_balance,
+                                        $seller_new_balance,
+                                        $_SESSION['current_pps']['price_per_share'],
+                                        $new_pps,
+                                        $buyer_new_share_amount,
+                                        $seller_new_share_amount,
+                                        $_SESSION['shares_owned'],
+                                        $quantity,
+                                        $row['siliqas_requested'],
+                                        $row['id'],
+                                        $date_parser[0],
+                                        $date_parser[1],
+                                        "AUTO_SELL",
+                                        $log_pps);
 
                 //The return value should be the amount of share requested subtracted by the amount that 
                 //is automatically bought
