@@ -8,6 +8,7 @@
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
     include '../../backend/object/TickerInfo.php';
+    include '../../backend/object/SellOrder.php';
 
     //only do actions if an artist is found
     if($_SESSION['artist_found'])

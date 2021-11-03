@@ -80,40 +80,31 @@ function fetchMarketPrice($artist_username)
 }
 
 //gets all the users that has lowest price listed with the passed artist_username param
-function fetchAskedPrice(&$ids, &$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
+function fetchAskedPrice($artist_username)
 {
+    $ret = array();
     $conn = connect();
     $result = searchSellOrderByArtist($conn, $artist_username);
     //loading up data so all the arrays have corresponding indices that map to the database
     while ($row = $result->fetch_assoc()) {
         if ($row['no_of_share'] > 0 && (strcmp($row['user_username'], $_SESSION['username']) != 0)) {
-            array_push($ids, $row['id']);
-            array_push($asked_prices, $row['selling_price']);
-            array_push($user_usernames, $row['user_username']);
-            array_push($artist_usernames, $row['artist_username']);
-            array_push($quantities, $row['no_of_share']);
+            $sell_order = new SellOrder($row['id'], 
+                                        $row['user_username'], 
+                                        $row['artist_username'], 
+                                        $row['selling_price'], 
+                                        $row['no_of_share'], 
+                                        $row['date_posted'], 
+                                        $row['time_posted']);
+
+            array_push($ret, $sell_order);
         }
     }
-    //using insertion sort in MyPortfiolioBackend.php file
-    insertionSort($asked_prices, $user_usernames, $artist_usernames, $quantities, "Descending");
-    singleSort($ids, "Descending");
+    SellOrder::sort($ret, )
 }
 
 function askedPriceInit($artist_username, $account_type)
 {
-    //displaying asked price marketplace
-    $asked_prices = array();
-    //displaying corresponding user_username
-    $user_usernames = array();
-    //displaying corresponding artist_username
-    $artist_usernames = array();
-    //displaying the quantity that are being sold
-    $quantities = array();
-    //storing unique id of sell orders
-    $ids = array();
-    //sorting asked_price in a descending order, so the first index would be the lowest value, then swaps the other arrays 
-    //to match with asked_price indices
-    fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $artist_username);
+    $sell_orders = fetchAskedPrice($artist_username);
 
     if($account_type == AccountType::User)
     {
