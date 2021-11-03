@@ -1008,12 +1008,33 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
     {
         $conn = connect();
         $ret = array();
+        $update_interval = $_SESSION['update_pps_interval'];
+        $current_date_time = getCurrentDate("America/Edmonton");
+        $date_parser = dayAndTimeSplitter($current_date_time);
+        $current_day = $date_parser[0];
+        $current_time = $date_parser[1];
 
-        $res = getArtistPPSChange($conn, $artist_username);
-
-        while($row = $res->fetch_assoc())
+        if($graph_option == GraphOption::ONE_DAY)
         {
-            $ret[] = $row;
+            $one_day_ago = date('d-m-Y', strtotime('-1 day', strtotime($date_parser[0])));
+
+            $res = getArtistPPSChange($conn, $artist_username);
+            while($row = $res->fetch_assoc())
+            {
+                if(isInRange($row['date_recorded'], $one_day_ago, $current_day))
+                {
+                    // echo $row['date_recorded']."/".$row['time_recorded'];
+                    // echo "<br>";
+                    if(sizeof($ret) == 0)
+                    {
+                        array_push($ret, $row);
+                    }
+                    else if(isOutSideOfUpdateInterval($ret[sizeof($ret) - 1]['time_recorded'], $row['time_recorded'], $update_interval))
+                    {
+                        array_push($ret, $row);
+                    }
+                }
+            }
         }
 
         closeCon($conn);

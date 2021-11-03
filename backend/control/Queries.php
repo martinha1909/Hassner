@@ -104,7 +104,7 @@
 
         function getArtistPPSChange($conn, $artist_username)
         {
-            $sql = "SELECT artist_username, price_per_share, time_recorded FROM artist_stock_change WHERE artist_username = ? ORDER BY time_recorded";
+            $sql = "SELECT artist_username, price_per_share, time_recorded, date_recorded FROM artist_stock_change WHERE artist_username = ? ORDER BY time_recorded";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -596,6 +596,14 @@
         function getArtistLatestPPSChangeTimeByDay($conn, $artist_username, $selected_date)
         {
             $sql = "SELECT MAX(time_recorded) AS latest_time FROM artist_stock_change WHERE artist_username = '$artist_username' AND date_recorded = '$selected_date'";
+            $result = mysqli_query($conn,$sql);
+            
+            return $result;
+        }
+
+        function getArtistLatestPPSChangeInDay($conn, $artist_username)
+        {
+            $sql = "SELECT MAX(date_recorded) AS latest_day FROM artist_stock_change WHERE artist_username = '$artist_username'";
             $result = mysqli_query($conn,$sql);
             
             return $result;

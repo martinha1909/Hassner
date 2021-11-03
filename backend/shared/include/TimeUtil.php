@@ -211,6 +211,24 @@
         return $ret;
     }
 
+    function dateIsInTheFuture($current_day, $day_to_check)
+    {
+        // echo $current_day;
+        // echo "<br>";
+        // echo $day_to_check;
+        $ret = FALSE;
+
+        $current_day = strtotime($current_day);
+        $day_to_check = strtotime($day_to_check);
+
+        if($current_day > $day_to_check)
+        {
+            $ret = TRUE;
+        }
+
+        return $ret;
+    }
+
     function calculateTimeLeft($current_date, $current_time, $date_expires, $time_expires): string
     {
         //Assuming error check
@@ -416,6 +434,33 @@
 
         $date = explode("-", $date);
         $ret = $date[2]."/".$date[1]."/".$date[0];
+
+        return $ret;
+    }
+
+    /**
+    * Checks to see if a time object has passed the update interval or not
+    *
+    * @param  	latest_updated_time	    last time that was updated, has format of HH:MM (24-hour format)
+    * @param  	time_to_check	        time to be determined if in range between the last updated time and the interval
+    * @param  	update_interval	        A specified update interval, in minutes
+    * @return 	ret	                    true if time_to_check falls outside of the latest_updated_time and the update interval
+    *                                   false otherwise
+    */
+    function isOutSideOfUpdateInterval($latest_updated_time, $time_to_check, $update_interval)
+    {
+        $ret = FALSE;
+
+        $latest_updated_time = new DateTime($latest_updated_time);
+        //We only care about the hours and minutes, not the seconds
+        $current_time = new DateTime(substr($time_to_check, 0, 5));
+        $interval = $current_time->diff($latest_updated_time);
+
+        //Only update the pps if it has been more than the specified interval
+        if($interval->format("%i") > $update_interval)
+        {
+            $ret = TRUE;
+        }
 
         return $ret;
     }

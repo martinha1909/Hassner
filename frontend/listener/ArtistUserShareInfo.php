@@ -129,7 +129,7 @@
                     <!-- Displaying stock graph -->
                     <div class="chart-container">
                         <?php
-                            $change = -1;
+                            $change = 0;
                             echo '
                                     <h2>'.$_SESSION['current_pps']['price_per_share'].'</h2>
                                 ';

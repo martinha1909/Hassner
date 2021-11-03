@@ -14,21 +14,28 @@
     {
         $asked_price = key($_POST['asked_price']);
     }
+
     $log_pps = FALSE;
     $current_date_time = getCurrentDate("America/Edmonton");
     $date_parser = dayAndTimeSplitter($current_date_time);
-    
-    $res_latest_time = getArtistLatestPPSChangeTimeByDay($conn, $_SESSION['selected_artist'], $date_parser[0]);
-    $fetch = $res_latest_time->fetch_assoc();
-    $latest_time = new DateTime($fetch['latest_time']);
-    //We only care about the hours and minutes, not the seconds
-    $current_time = new DateTime(substr($date_parser[1], 0, 5));
-    $interval = $current_time->diff($latest_time);
 
-    //Only update the pps if it has been more than the specified interval
-    if($interval->format("%i") > $_SESSION['update_pps_interval'])
+    $res_latest_day = getArtistLatestPPSChangeInDay($conn, $_SESSION['selected_artist']);
+    $latest_day = $res_latest_day->fetch_assoc();
+    
+    //if today is already in the future of the latest logging date, we log the change
+    if(dateIsInTheFuture($date_parser[0], $latest_day['latest_day']))
     {
         $log_pps = TRUE;
+    }
+    //If it is the same day, we check the time
+    else
+    {
+        $res_latest_time = getArtistLatestPPSChangeTimeByDay($conn, $_SESSION['selected_artist'], $date_parser[0]);
+        $latest_time = $res_latest_time->fetch_assoc();
+        //We only care about the hours and minutes, not the seconds
+        $current_time = substr($date_parser[1], 0, 5);
+
+        $log_pps = isOutSideOfUpdateInterval($latest_time['latest_time'], $current_time, $_SESSION['update_pps_interval']);
     }
 
     //not enough siliqas
