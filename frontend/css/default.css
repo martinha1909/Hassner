@@ -10711,7 +10711,8 @@ a#dashboard-hover:hover {
   color: green;
 }
 
-.chart-container {
-  width: 640px;
-  height: auto;
+.input-no-background {
+  border:1px transparent; 
+  background-color: transparent; 
+  font-weight: bold;
 }

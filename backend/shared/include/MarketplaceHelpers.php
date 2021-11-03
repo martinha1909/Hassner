@@ -978,7 +978,7 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         return $market_cap;
     }
 
-    function getArtistJSONChange($artist_username)
+    function getArtistJSONChange($artist_username, $graph_option)
     {
         $conn = connect();
         $ret = array();

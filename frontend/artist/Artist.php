@@ -40,12 +40,6 @@
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
     <link rel="stylesheet" href="../css/date_picker.css" type="text/css">
     <link rel="stylesheet" href="../css/slidebar.css" type="text/css">
-    <style>
-        .chart-container {
-            width: 640px;
-            height: auto;
-        }
-    </style>
 </head>
 
 
@@ -579,11 +573,6 @@
                     } 
                     else if ($_SESSION['display'] == MenuOption::Investors) 
                     {
-                        echo '
-                            <div class="chart-container">
-                                <canvas id="mycanvas"></canvas>
-                            </div>
-                        ';
                     }
                     ?>
                 </div>

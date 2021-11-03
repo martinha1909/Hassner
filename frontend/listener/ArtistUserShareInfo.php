@@ -4,6 +4,7 @@
     include '../../backend/constants/StatusCodes.php';
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/ShareInteraction.php';
+    include '../../backend/constants/GraphOption.php';
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
@@ -39,6 +40,7 @@
     <link rel="stylesheet" href="../css/searchbar.css" id="theme-color">
     <link rel="stylesheet" href="../css/slidebar.css" id="theme-color">
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
+    <link rel="stylesheet" href="../css/linegraph.css" id="theme-color">
 </head>
 
 <body class="bg-dark">
@@ -96,29 +98,30 @@
                                 }
                             }
                         ?>
-                        <h2 class="h2-blue">Your shares with <?php echo $_SESSION['selected_artist']; ?></h2>
-                                <?php
-                                    if(!isAlreadyFollowed($_SESSION['username'], $_SESSION['selected_artist']))
-                                    {
-                                        echo '
-                                            <p>
-                                                <form action="../../backend/listener/FollowArtistBackend.php" method="post">
-                                                    <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Follow">
-                                                </form>
-                                            </p>
-                                        ';
-                                    }
-                                    else
-                                    {
-                                        echo '
-                                            <p>
-                                                <form action="../../backend/listener/UnFollowArtistBackend.php" method="post">
-                                                    <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Unfollow">
-                                                </form>
-                                            </p>
-                                        ';
-                                    }
-                                ?>
+                        <h2 class="h2-blue"><?php echo $_SESSION['selected_artist']; ?></h2>
+                        <h4 class="h4-blue">(<?php echo $artist_market_tag; ?>)</h4>
+                        <?php
+                            if(!isAlreadyFollowed($_SESSION['username'], $_SESSION['selected_artist']))
+                            {
+                                echo '
+                                    <p>
+                                        <form action="../../backend/listener/FollowArtistBackend.php" method="post">
+                                            <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Follow">
+                                        </form>
+                                    </p>
+                                ';
+                            }
+                            else
+                            {
+                                echo '
+                                    <p>
+                                        <form action="../../backend/listener/UnFollowArtistBackend.php" method="post">
+                                            <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Unfollow">
+                                        </form>
+                                    </p>
+                                ';
+                            }
+                        ?>
                             </form>
                         </p>
                     </div>
@@ -126,8 +129,44 @@
                     <!-- Displaying stock graph -->
                     <div class="chart-container">
                         <?php
+                            $change = -1;
+                            echo '
+                                    <h2>'.$_SESSION['current_pps']['price_per_share'].'</h2>
+                                ';
+                            if($change == 0)
+                            {
+                                echo '
+                                    <h3>'.$change.'%</h3>
+                                ';
+                            }
+                            else if($change > 0)
+                            {
+                                echo '
+                                    <h3 class="suc-msg">+'.$change.'%</h3>
+                                ';
+                            }
+                            else
+                            {
+                                echo '
+                                    <h3 class="error-msg">'.$change.'%</h3>
+                                ';
+                            }
+
+                            echo '
+                                    <form action="#" method="post">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::ONE_DAY.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::FIVE_DAY.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::ONE_MONTH.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::SIX_MONTH.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::YEAR_TO_DATE.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::ONE_YEAR.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::FIVE_YEAR.'">
+                                    </form>
+                            ';
+
                             //data to be used and transfered to js files with script tag below
-                            $graph_jason_data = getArtistJSONChange($_SESSION['selected_artist']);
+                            $graph_jason_data = getArtistJSONChange($_SESSION['selected_artist'], $_SESSION['graph_options']);
+
                             if(count(json_decode($graph_jason_data)) == 0)
                             {
                                 echo '<h3>Graph information is not available</h3>';
