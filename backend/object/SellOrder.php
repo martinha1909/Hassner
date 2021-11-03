@@ -131,7 +131,7 @@
             {
                 if($item == "Price")
                 {
-                    $pivot = $sell_order_arr[$high]->getDayChange();
+                    $pivot = $sell_order_arr[$high]->getSellingPrice();
                 }
 
                 $i = $low - 1;
