@@ -547,20 +547,20 @@
         }
     }
 
-    //Stock Ticker temporary waiting for backend to fill out values
+//Stock Ticker temporary waiting for backend to fill out values
     function displayTicker()
     {
         $tickers = getAllArtistTickers();
         echo '
-                <div class="card">
-                    <div class="card-body text-dark">
-                        <marquee direction="left">
+                <div>
+                    <div class="marquee">
                             <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method = "post">
+                            <p>
         ';
         for($i = 0; $i < sizeof($tickers); $i++)
         {
             echo '
-                                <strong><input name = "artist_ticker" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold;" aria-pressed="true" value ="'.$tickers[$i]->getTag().'"></strong> '.$tickers[$i]->getPPS().'
+                                <input name = "artist_ticker" type = "submit" class="bold-ticker" aria-pressed="true" value ="'.$tickers[$i]->getTag().'"> '.$tickers[$i]->getPPS().'
             ';
             
             if($tickers[$i]->getChange() < 0)
@@ -585,9 +585,8 @@
             echo " | ";
         }
         echo '
-                            </form>
-                        </marquee>
-                    </div>
+                        </p>
+                    </form>
                 </div>
         ';
     }
