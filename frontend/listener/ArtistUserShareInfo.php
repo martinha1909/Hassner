@@ -165,16 +165,16 @@
                             ';
 
                             //data to be used and transfered to js files with script tag below
-                            $graph_jason_data = getArtistJSONChange($_SESSION['selected_artist'], $_SESSION['graph_options']);
+                            // $graph_jason_data = getArtistJSONChange($_SESSION['selected_artist'], $_SESSION['graph_options']);
 
-                            if(count(json_decode($graph_jason_data)) == 0)
-                            {
-                                echo '<h3>Graph information is not available</h3>';
-                            }
-                            else
-                            {
-                                echo '<canvas id="mycanvas"></canvas>';
-                            }
+                            // if(count(json_decode($graph_jason_data)) == 0)
+                            // {
+                            //     echo '<h3>Graph information is not available</h3>';
+                            // }
+                            // else
+                            // {
+                            echo '<canvas id="stock_graph"></canvas>';
+                            // }
                         ?>
                     </div>
 
@@ -476,8 +476,7 @@
     <script
         type="text/javascript" 
         id="artist_user_share_info_script" 
-        artist_tag='<?= $artist_market_tag; ?>' 
-        artist_json='<?= $graph_jason_data; ?>'
+        artist_tag='<?= $artist_market_tag; ?>'
         graph_option='<?= $_SESSION['graph_options']; ?>'
     ></script>
     <script type="text/javascript" src="../js/Chart.min.js"></script>
