@@ -418,11 +418,18 @@
     */
     function isInRange($date_check, $date_from, $date_to)
     {
+        $ret = FALSE;
+
         $date_from = strtotime($date_from);
         $date_to = strtotime($date_to);
         $date_check = strtotime($date_check);
 
-        return (($date_from <= $date_check ) && ($date_check <= $date_to));
+        if(($date_from <= $date_check ) && ($date_check <= $date_to))
+        {
+            $ret = true;
+        }
+
+        return $ret;
     }
 
     /**
@@ -454,6 +461,10 @@
     */
     function isOutSideOfUpdateInterval($latest_updated_time, $time_to_check, $update_interval)
     {
+        // echo $latest_updated_time;
+        // echo "--";
+        // echo $time_to_check;
+        // echo "<br>";
         $ret = FALSE;
 
         $latest_updated_time = new DateTime($latest_updated_time);

@@ -1,6 +1,7 @@
 <?php
         include '../../backend/constants/StatusCodes.php';
         include '../../backend/constants/AccountTypes.php';
+        include '../../backend/constants/GraphOption.php';
         
         //logs in with provided user info and password, then use SQL query to query database 
         //after qurerying return the result
@@ -102,13 +103,26 @@
             return $result;
         }
 
-        function getArtistPPSChange($conn, $artist_username)
+        function getArtistPPSChange($conn, $artist_username, $option)
         {
-            $sql = "SELECT artist_username, price_per_share, time_recorded, date_recorded FROM artist_stock_change WHERE artist_username = ? ORDER BY time_recorded";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('s', $artist_username);
-            $stmt->execute();
-            $result = $stmt->get_result();
+            $result = 0;
+
+            if($option == GraphOption::ONE_DAY)
+            {
+                $sql = "SELECT artist_username, price_per_share, time_recorded, date_recorded FROM artist_stock_change WHERE artist_username = ? ORDER BY time_recorded";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('s', $artist_username);
+                $stmt->execute();
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                $sql = "SELECT artist_username, price_per_share, time_recorded, date_recorded FROM artist_stock_change WHERE artist_username = ? ORDER BY date_recorded";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('s', $artist_username);
+                $stmt->execute();
+                $result = $stmt->get_result();
+            }
 
             return $result;
         }

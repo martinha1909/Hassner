@@ -1,13 +1,24 @@
 $(document).ready(function() {
     var json_transfer = JSON.parse(document.querySelector('#artist_user_share_info_script').getAttribute('artist_json'));
     var artist_market_tag = document.querySelector('#artist_user_share_info_script').getAttribute('artist_tag');
+    var graph_option = document.querySelector('#artist_user_share_info_script').getAttribute('graph_option');
     var y_axis = [];
     var x_axis = [];
     var len = json_transfer.length;
 
-    for (var i = 0; i < len; i++) {
-        y_axis.push(json_transfer[i].price_per_share);
-        x_axis.push(json_transfer[i].time_recorded);
+    if(graph_option === "1D")
+    {
+        for (var i = 0; i < len; i++) {
+            y_axis.push(json_transfer[i].price_per_share);
+            x_axis.push(json_transfer[i].time_recorded);
+        }
+    }
+    else if(graph_option === "5D")
+    {
+        for (var i = 0; i < len; i++) {
+            y_axis.push(json_transfer[i].price_per_share);
+            x_axis.push(json_transfer[i].date_recorded);
+        }
     }
 
     var ctx = $("#mycanvas");

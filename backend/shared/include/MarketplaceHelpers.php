@@ -1008,6 +1008,7 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
     {
         $conn = connect();
         $ret = array();
+        //update interval, in minutes. Default is set to the global variable of update interval
         $update_interval = $_SESSION['update_pps_interval'];
         $current_date_time = getCurrentDate("America/Edmonton");
         $date_parser = dayAndTimeSplitter($current_date_time);
@@ -1016,16 +1017,41 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
         if($graph_option == GraphOption::ONE_DAY)
         {
+            $res = getArtistPPSChange($conn, $artist_username, $graph_option);
             $one_day_ago = date('d-m-Y', strtotime('-1 day', strtotime($date_parser[0])));
 
-            $res = getArtistPPSChange($conn, $artist_username);
             while($row = $res->fetch_assoc())
             {
                 if(isInRange($row['date_recorded'], $one_day_ago, $current_day))
                 {
-                    // echo $row['date_recorded']."/".$row['time_recorded'];
-                    // echo "<br>";
                     if(sizeof($ret) == 0)
+                    {
+                        array_push($ret, $row);
+                    }
+                    else if(isOutSideOfUpdateInterval($ret[sizeof($ret) - 1]['time_recorded'], $row['time_recorded'], $update_interval))
+                    {
+                        array_push($ret, $row);
+                    }
+                }
+            }
+        }
+        else if($graph_option == GraphOption::FIVE_DAY)
+        {
+            $res = getArtistPPSChange($conn, $artist_username, $graph_option);
+            $five_days_ago = date('d-m-Y', strtotime('-5 days', strtotime($date_parser[0])));
+            $update_interval = 60;
+            while($row = $res->fetch_assoc())
+            {
+                if(isInRange($row['date_recorded'], $five_days_ago, $current_day))
+                {
+                    echo $row['time_recorded'];
+                    echo "--".$row['date_recorded'];
+                    echo "<br>";
+                    if(sizeof($ret) == 0)
+                    {
+                        array_push($ret, $row);
+                    }
+                    else if(dateIsInTheFuture($current_day, $row['date_recorded']))
                     {
                         array_push($ret, $row);
                     }

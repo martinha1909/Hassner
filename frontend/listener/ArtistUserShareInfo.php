@@ -478,6 +478,7 @@
         id="artist_user_share_info_script" 
         artist_tag='<?= $artist_market_tag; ?>' 
         artist_json='<?= $graph_jason_data; ?>'
+        graph_option='<?= $_SESSION['graph_options']; ?>'
     ></script>
     <script type="text/javascript" src="../js/Chart.min.js"></script>
     <script type="text/javascript" src="../js/linegraph.js"></script>
