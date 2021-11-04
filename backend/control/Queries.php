@@ -791,7 +791,7 @@
             header("Location: ../../frontend/listener/listener.php");
         }
 
-        function purchaseMarketPriceShare($conn, $buyer, $artist, $buyer_new_balance, $artist_new_balance, $inital_pps, $new_pps, $buyer_new_share_amount, $shares_owned, $amount, $date_purchased, $time_purchased, $log_pps)
+        function purchaseMarketPriceShare($conn, $buyer, $artist, $buyer_new_balance, $artist_new_balance, $inital_pps, $new_pps, $buyer_new_share_amount, $shares_owned, $amount, $date_purchased, $time_purchased)
         {
             $status = 0;
             try {
@@ -818,17 +818,6 @@
                 $stmt = $conn->prepare("UPDATE account SET price_per_share = '$new_pps' WHERE username = ?");
                 $stmt->bindValue(1, $artist);
                 $stmt->execute(array($artist));
-
-                if($log_pps)
-                {
-                    $stmt = $conn->prepare("INSERT INTO artist_stock_change (artist_username, price_per_share, time_recorded, date_recorded)
-                                            VALUES(?, ?, ?, ?)");
-                    $stmt->bindValue(1, $artist);
-                    $stmt->bindValue(2, $new_pps);
-                    $stmt->bindValue(3, substr($time_purchased, 0, 5));
-                    $stmt->bindValue(4, $date_purchased);
-                    $stmt->execute(array($artist, $new_pps, substr($time_purchased, 0, 5), $date_purchased));
-                }
 
                 $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                                         VALUES(?, ?, ?, ?, ?, ?, ?)");
@@ -876,7 +865,7 @@
             return $status;
         }
 
-        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $time_purchased, $indicator, $log_pps)
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $time_purchased, $indicator)
         {
             $status = 0;
 
@@ -915,18 +904,6 @@
                 $stmt = $conn->prepare("UPDATE account SET price_per_share = '$new_pps' WHERE username = ?");
                 $stmt->bindValue(1, $artist);
                 $stmt->execute(array($artist));
-
-                if($log_pps)
-                {
-                    $stmt = $conn->prepare("INSERT INTO artist_stock_change (artist_username, price_per_share, time_recorded, date_recorded)
-                                            VALUES(?, ?, ?, ?)");
-                    $stmt->bindValue(1, $artist);
-                    $stmt->bindValue(2, $new_pps);
-                    //We don't care about the seconds
-                    $stmt->bindValue(3, substr($time_purchased, 0, 5));
-                    $stmt->bindValue(4, $date_purchased);
-                    $stmt->execute(array($artist, $new_pps, substr($time_purchased, 0, 5), $date_purchased));
-                }
 
                 $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                                         VALUES(?, ?, ?, ?, ?, ?, ?)");
@@ -998,7 +975,7 @@
             return $status;
         }
 
-        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $buyer_new_share_amount, $initial_pps, $new_pps, $amount_bought, $sell_order_id, $selling_price, $date_purchased, $time_purchased, $log_pps)
+        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $buyer_new_share_amount, $initial_pps, $new_pps, $amount_bought, $sell_order_id, $selling_price, $date_purchased, $time_purchased)
         {
             $status = 0;
 
@@ -1025,18 +1002,6 @@
                 $stmt->bindValue(1, $amount_bought);
                 $stmt->bindValue(2, $artist_username);
                 $stmt->execute(array($amount_bought, $artist_username));
-
-                if($log_pps)
-                {
-                    $stmt = $conn->prepare("INSERT INTO artist_stock_change (artist_username, price_per_share, time_recorded, date_recorded)
-                                            VALUES(?, ?, ?, ?)");
-                    $stmt->bindValue(1, $artist_username);
-                    $stmt->bindValue(2, $new_pps);
-                    //We don't care about the seconds
-                    $stmt->bindValue(3, substr($time_purchased, 0, 5));
-                    $stmt->bindValue(4, $date_purchased);
-                    $stmt->execute(array($artist_username, $new_pps, substr($time_purchased, 0, 5), $date_purchased));
-                }
 
                 $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                                         VALUES(?, ?, ?, ?, ?, ?, ?)");
