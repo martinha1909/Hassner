@@ -14,12 +14,8 @@
     {
         $asked_price = key($_POST['asked_price']);
     }
-
     $current_date_time = getCurrentDate("America/Edmonton");
     $date_parser = dayAndTimeSplitter($current_date_time);
-
-    $res_latest_day = getArtistLatestPPSChangeInDay($conn, $_SESSION['selected_artist']);
-    $latest_day = $res_latest_day->fetch_assoc();
 
     //not enough siliqas
     if($_SESSION['user_balance'] < ($amount_bought * $_SESSION['purchase_price']))
@@ -77,7 +73,7 @@
             $_SESSION['buy_options'] = 0;
             $_SESSION['dependencies'] = "FRONTEND";
              
-            // header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+            header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
         }
         //if the user chooses a seller from bid price section
         else if($_SESSION['buy_asked_price'] == 1)
