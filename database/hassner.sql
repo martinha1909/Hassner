@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2021 at 09:14 PM
+-- Generation Time: Nov 04, 2021 at 11:50 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -20,6 +20,32 @@ SET time_zone = "+00:00";
 --
 -- Database: `hassner`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `log_artist_pps` ()  BEGIN
+  DECLARE done INT DEFAULT FALSE;
+  DECLARE x VARCHAR(20);
+  DECLARE cur1 CURSOR FOR SELECT username FROM account WHERE account_type = 'artist';
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+  OPEN cur1;
+
+  read_loop: LOOP
+    FETCH cur1 INTO x;
+    IF done THEN
+      LEAVE read_loop;
+    END IF;
+      INSERT INTO artist_stock_change(artist_username, price_per_share, time_recorded, date_recorded) 
+      VALUES (x, (SELECT price_per_share FROM account WHERE username = x), CURTIME(), CURDATE());
+  END LOOP;
+
+  CLOSE cur1;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -150,10 +176,14 @@ CREATE TABLE `artist_stock_change` (
 --
 
 INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `time_recorded`, `date_recorded`) VALUES
-('88GLAM', 4, '13:59:41', '2021-11-04'),
-('88GLAM', 4, '14:04:41', '2021-11-04'),
-('88GLAM', 4, '14:09:41', '2021-11-04'),
-('88GLAM', 4, '14:14:41', '2021-11-04');
+('21 Savage', 1.33333, '16:41:00', '2021-11-04'),
+('21 Savage', 1.33333, '16:46:00', '2021-11-04'),
+('88Glam', 4, '16:41:00', '2021-11-04'),
+('88Glam', 4, '16:46:00', '2021-11-04'),
+('Drake', 1, '16:41:00', '2021-11-04'),
+('Drake', 1, '16:46:00', '2021-11-04'),
+('NAV', 3, '16:41:00', '2021-11-04'),
+('NAV', 3, '16:46:00', '2021-11-04');
 
 -- --------------------------------------------------------
 
@@ -259,6 +289,16 @@ CREATE TABLE `campaign` (
   `minimum_ethos` float NOT NULL,
   `eligible_participants` int(11) NOT NULL,
   `winner` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dummy`
+--
+
+CREATE TABLE `dummy` (
+  `artist_username` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -467,8 +507,7 @@ DELIMITER $$
 --
 -- Events
 --
-CREATE DEFINER=`root`@`localhost` EVENT `log_artist_pps` ON SCHEDULE EVERY 5 MINUTE STARTS '2021-11-04 13:54:41' ON COMPLETION NOT PRESERVE ENABLE DO INSERT INTO artist_stock_change(artist_username, price_per_share, time_recorded, date_recorded)
-    VALUES('88GLAM', (SELECT price_per_share FROM account WHERE username = '88Glam'), CURTIME(), CURDATE())$$
+CREATE DEFINER=`root`@`localhost` EVENT `log_artist_pps` ON SCHEDULE EVERY 5 MINUTE STARTS '2021-11-04 16:41:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL log_artist_pps$$
 
 DELIMITER ;
 COMMIT;
