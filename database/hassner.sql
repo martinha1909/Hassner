@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2021 at 11:50 PM
+-- Generation Time: Nov 04, 2021 at 11:51 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -178,12 +178,16 @@ CREATE TABLE `artist_stock_change` (
 INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `time_recorded`, `date_recorded`) VALUES
 ('21 Savage', 1.33333, '16:41:00', '2021-11-04'),
 ('21 Savage', 1.33333, '16:46:00', '2021-11-04'),
+('21 Savage', 1.33333, '16:51:00', '2021-11-04'),
 ('88Glam', 4, '16:41:00', '2021-11-04'),
 ('88Glam', 4, '16:46:00', '2021-11-04'),
+('88Glam', 4, '16:51:00', '2021-11-04'),
 ('Drake', 1, '16:41:00', '2021-11-04'),
 ('Drake', 1, '16:46:00', '2021-11-04'),
+('Drake', 1, '16:51:00', '2021-11-04'),
 ('NAV', 3, '16:41:00', '2021-11-04'),
-('NAV', 3, '16:46:00', '2021-11-04');
+('NAV', 3, '16:46:00', '2021-11-04'),
+('NAV', 3, '16:51:00', '2021-11-04');
 
 -- --------------------------------------------------------
 
@@ -507,7 +511,7 @@ DELIMITER $$
 --
 -- Events
 --
-CREATE DEFINER=`root`@`localhost` EVENT `log_artist_pps` ON SCHEDULE EVERY 5 MINUTE STARTS '2021-11-04 16:41:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL log_artist_pps$$
+CREATE DEFINER=`root`@`localhost` EVENT `log_artist_pps` ON SCHEDULE EVERY 15 MINUTE STARTS '2021-11-04 16:41:00' ON COMPLETION NOT PRESERVE DISABLE DO CALL log_artist_pps$$
 
 DELIMITER ;
 COMMIT;
