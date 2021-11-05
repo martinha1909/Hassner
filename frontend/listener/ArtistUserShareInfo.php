@@ -219,14 +219,8 @@
                             }
                         }
 
-                        if (canCreateBuyOrder(
-                            $_SESSION['username'],
-                            $_SESSION['selected_artist'],
-                            getAmountSharesRequesting(
-                                $_SESSION['username'],
-                                $_SESSION['selected_artist']
-                            )
-                        )) {
+                        if (canCreateBuyOrder($_SESSION['username'], $_SESSION['selected_artist'], getAmountSharesRequesting($_SESSION['username'], $_SESSION['selected_artist']))) 
+                        {
                             echo '
                                 <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
                                     <input name="buy_sell" type="submit" id="menu-style-invert" class="menu-text py-2" value="+Buy shares">

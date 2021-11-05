@@ -435,8 +435,7 @@
     /**
     * Converts a date to YYYY/MM/DD format
     *
-    * @param  	date	    date to be determined if in range
-    *                       has format of DD-MM-YYYY
+    * @param  	date	    date to be converted, has format of DD/MM/YYYY
     * @return 	ret	        a string of date formatted to YYYY/MM/DD
     */
     function toYYYYMMDD($date): string
@@ -445,7 +444,24 @@
         $ret = "Error in parsing";
 
         $date = explode("-", $date);
-        $ret = $date[2]."/".$date[1]."/".$date[0];
+        $ret = $date[2]."-".$date[1]."-".$date[0];
+
+        return $ret;
+    }
+
+    /**
+    * Converts a date to DD/MM/YYYY format
+    *
+    * @param  	date	    date to be converted, has format of YYYY/MM/DD
+    * @return 	ret	        a string of date formatted to DD/MM/YYYY
+    */
+    function toDDMMYYYY($date): string
+    {
+        //assume error check
+        $ret = "Error in parsing";
+
+        $date = explode("-", $date);
+        $ret = $date[2]."-".$date[1]."-".$date[0];
 
         return $ret;
     }

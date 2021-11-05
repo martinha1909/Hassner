@@ -9,10 +9,27 @@ $(document).ready(function(){
             var y_axis = [];
             var x_axis = [];
             var len = data.length;
+            var last_fetched_date = "";
 
-            for (var i = 0; i < len; i++) {
-                y_axis.push(data[i].price_per_share);
-                x_axis.push(data[i].time_recorded);
+            for (var i = 0; i < len; i++) 
+            {
+                if(x_axis.length === 0)
+                {
+                    y_axis.push(data[i].price_per_share);
+                    x_axis.push(data[i].date_recorded);
+                    last_fetched_date = data[i].date_recorded;
+                }
+                else if(data[i].date_recorded === last_fetched_date)
+                {
+                    y_axis.push(data[i].price_per_share);
+                    x_axis.push(data[i].time_recorded);
+                }
+                else if(data[i].date_recorded != last_fetched_date)
+                {
+                    y_axis.push(data[i].price_per_share);
+                    x_axis.push(data[i].date_recorded);
+                    last_fetched_date = data[i].date_recorded;
+                }
             }
             
             var ctx = $("#stock_graph");
