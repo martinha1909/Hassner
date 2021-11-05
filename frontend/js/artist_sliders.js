@@ -55,4 +55,12 @@ $( function() {
       collapsible: true,
       active: false
     });
+
+    $("#buy_order").click(function(){
+      // AJAX
+    })
+
+    $("#sell_order").click(function(){
+      // AJAX
+    })
   } );
