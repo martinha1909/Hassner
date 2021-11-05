@@ -980,10 +980,10 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
     //     $ret = array();
     //     //update interval, in minutes. Default is set to the global variable of update interval
     //     $update_interval = $_SESSION['update_pps_interval'];
-    //     $current_date_time = getCurrentDate("America/Edmonton");
-    //     $date_parser = dayAndTimeSplitter($current_date_time);
-    //     $current_day = $date_parser[0];
-    //     $current_time = $date_parser[1];
+        // $current_date_time = getCurrentDate("America/Edmonton");
+        // $date_parser = dayAndTimeSplitter($current_date_time);
+        // $current_day = $date_parser[0];
+        // $current_time = $date_parser[1];
 
     //     if($graph_option == GraphOption::ONE_DAY)
     //     {

@@ -25,7 +25,6 @@
         $_SESSION['trade_history_from'] = 0;
         $_SESSION['trade_history_to'] = 0;
         $_SESSION['trade_history_type'] = 0;
-        $_SESSION['update_pps_interval'] = 15;
         $_SESSION['graph_options'] = GraphOption::NONE;
         $_SESSION['ethos_dashboard_options'] = EthosOption::NONE;
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
