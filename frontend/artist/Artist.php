@@ -369,7 +369,7 @@
                                             <h6>Day Low: $' . $low . '</h6>
                                             <br>
                                             <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
-                                                <input name="display_type" type="submit" class="btn btn-primary" value="Inject More Shares">
+                                                <input name="display_type" type="submit" class="btn btn-primary py-2" value="Inject More Shares">
                                             </form>
                                         </div>
                                 ';
@@ -378,12 +378,12 @@
                                     echo '
                                         <div class="col-6 mx-auto">
                                             <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
-                                                <p>How many shares would you like to inject?</p>
-                                                <input type="text" name = "share_distributing" class="form-control form-control-sm col-6" placeholder="Enter amount">
+                                                <p class="text-center">How many shares are you injecting?</p>
+                                                <input type="text" name = "share_distributing" class="form-control form-control-sm col-4 mx-auto" placeholder="Enter amount">
                                                 <p>Comments</p>
-                                                <input type="text" name = "inject_comment" class="form-control form-control-sm" placeholder="Enter comment">
+                                                <input type="text" name = "inject_comment" class="form-control form-control-sm py-3" placeholder="Enter comment">
                                                 <div class="text-center">
-                                                <input type = "submit" class="btn btn-primary my-2" role="button" aria-pressed="true" name = "button" value = "Save">  
+                                                <input type = "submit" class="btn btn-primary my-4" role="button" aria-pressed="true" name = "button" value = "Save">  
                                                 </div>
                                             </form>
                                         </div>
