@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2021 at 11:51 PM
+-- Generation Time: Nov 06, 2021 at 02:51 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -25,7 +25,7 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `log_artist_pps` ()  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `log_artist_pps_15` ()  BEGIN
   DECLARE done INT DEFAULT FALSE;
   DECLARE x VARCHAR(20);
   DECLARE cur1 CURSOR FOR SELECT username FROM account WHERE account_type = 'artist';
@@ -38,7 +38,67 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `log_artist_pps` ()  BEGIN
     IF done THEN
       LEAVE read_loop;
     END IF;
-      INSERT INTO artist_stock_change(artist_username, price_per_share, time_recorded, date_recorded) 
+      INSERT INTO artist_stock_change_15(artist_username, price_per_share, time_recorded, date_recorded) 
+      VALUES (x, (SELECT price_per_share FROM account WHERE username = x), CURTIME(), CURDATE());
+  END LOOP;
+
+  CLOSE cur1;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `log_artist_pps_1d` ()  BEGIN
+  DECLARE done INT DEFAULT FALSE;
+  DECLARE x VARCHAR(20);
+  DECLARE cur1 CURSOR FOR SELECT username FROM account WHERE account_type = 'artist';
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+  OPEN cur1;
+
+  read_loop: LOOP
+    FETCH cur1 INTO x;
+    IF done THEN
+      LEAVE read_loop;
+    END IF;
+      INSERT INTO artist_stock_change_1d(artist_username, price_per_share, time_recorded, date_recorded) 
+      VALUES (x, (SELECT price_per_share FROM account WHERE username = x), CURTIME(), CURDATE());
+  END LOOP;
+
+  CLOSE cur1;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `log_artist_pps_30` ()  BEGIN
+  DECLARE done INT DEFAULT FALSE;
+  DECLARE x VARCHAR(20);
+  DECLARE cur1 CURSOR FOR SELECT username FROM account WHERE account_type = 'artist';
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+  OPEN cur1;
+
+  read_loop: LOOP
+    FETCH cur1 INTO x;
+    IF done THEN
+      LEAVE read_loop;
+    END IF;
+      INSERT INTO artist_stock_change_30(artist_username, price_per_share, time_recorded, date_recorded) 
+      VALUES (x, (SELECT price_per_share FROM account WHERE username = x), CURTIME(), CURDATE());
+  END LOOP;
+
+  CLOSE cur1;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `log_artist_pps_5d` ()  BEGIN
+  DECLARE done INT DEFAULT FALSE;
+  DECLARE x VARCHAR(20);
+  DECLARE cur1 CURSOR FOR SELECT username FROM account WHERE account_type = 'artist';
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+  OPEN cur1;
+
+  read_loop: LOOP
+    FETCH cur1 INTO x;
+    IF done THEN
+      LEAVE read_loop;
+    END IF;
+      INSERT INTO artist_stock_change_5d(artist_username, price_per_share, time_recorded, date_recorded) 
       VALUES (x, (SELECT price_per_share FROM account WHERE username = x), CURTIME(), CURDATE());
   END LOOP;
 
@@ -86,11 +146,11 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `shares_repurchase`) VALUES
 ('21 Savage', 'artist', 'artist', 6, 2386, 3181.33, 0, 150000, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 1.33333, 0, 0, 3181.33, 0),
-('88Glam', 'artist', 'artist', 2, 4406, 8797.2, 0, 100000, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 4, 0, 0, 17624, 4),
+('88Glam', 'artist', 'artist', 2, 4406, 8797.2, 0, 100000, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 6, 0, 0, 26436, 4),
 ('daniel', 'user', 'user', 8, 0, 100000, 0, 0, 'iosrghn@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('Drake', 'artist', 'artist', 11, 859, 859, 0, 30000, 'qwerty@gmail.com', 'Drake', '', '', '', '', '', '', '', '', '', 1, 0, 0, 859, 0),
-('kai', 'user', 'user', 4, 358, 98970.6, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('martin', 'user', 'user', 1, 4041, 88197.9, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
+('kai', 'user', 'user', 4, 358, 98964.2, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
+('martin', 'user', 'user', 1, 4041, 88204.3, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
 ('NAV', 'artist', 'artist', 3, 0, 0, 0, 1000, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 3, 0, 0, 0, 0),
 ('riley', 'user', 'user', 7, 0, 100000, 0, 0, 'efin@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('vitor', 'user', 'user', 5, 3, 99994, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
@@ -161,10 +221,36 @@ INSERT INTO `artist_shareholders` (`user_username`, `artist_username`, `shares_o
 -- --------------------------------------------------------
 
 --
--- Table structure for table `artist_stock_change`
+-- Table structure for table `artist_stock_change_1d`
 --
 
-CREATE TABLE `artist_stock_change` (
+CREATE TABLE `artist_stock_change_1d` (
+  `artist_username` varchar(20) NOT NULL,
+  `price_per_share` float NOT NULL,
+  `time_recorded` varchar(20) NOT NULL,
+  `date_recorded` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `artist_stock_change_5d`
+--
+
+CREATE TABLE `artist_stock_change_5d` (
+  `artist_username` varchar(20) NOT NULL,
+  `price_per_share` float NOT NULL,
+  `time_recorded` varchar(20) NOT NULL,
+  `date_recorded` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `artist_stock_change_15`
+--
+
+CREATE TABLE `artist_stock_change_15` (
   `artist_username` varchar(20) NOT NULL,
   `price_per_share` float NOT NULL,
   `time_recorded` varchar(20) NOT NULL,
@@ -172,22 +258,125 @@ CREATE TABLE `artist_stock_change` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `artist_stock_change`
+-- Dumping data for table `artist_stock_change_15`
 --
 
-INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `time_recorded`, `date_recorded`) VALUES
-('21 Savage', 1.33333, '16:41:00', '2021-11-04'),
-('21 Savage', 1.33333, '16:46:00', '2021-11-04'),
-('21 Savage', 1.33333, '16:51:00', '2021-11-04'),
-('88Glam', 4, '16:41:00', '2021-11-04'),
-('88Glam', 4, '16:46:00', '2021-11-04'),
-('88Glam', 4, '16:51:00', '2021-11-04'),
-('Drake', 1, '16:41:00', '2021-11-04'),
-('Drake', 1, '16:46:00', '2021-11-04'),
-('Drake', 1, '16:51:00', '2021-11-04'),
-('NAV', 3, '16:41:00', '2021-11-04'),
-('NAV', 3, '16:46:00', '2021-11-04'),
-('NAV', 3, '16:51:00', '2021-11-04');
+INSERT INTO `artist_stock_change_15` (`artist_username`, `price_per_share`, `time_recorded`, `date_recorded`) VALUES
+('21 Savage', 1.33333, '00:03:21', '2021-11-05'),
+('21 Savage', 1.33333, '16:48:21', '2021-11-05'),
+('21 Savage', 1.33333, '17:03:21', '2021-11-05'),
+('21 Savage', 1.33333, '17:18:21', '2021-11-05'),
+('21 Savage', 1.33333, '18:46:15', '2021-11-05'),
+('21 Savage', 1.33333, '18:48:21', '2021-11-05'),
+('21 Savage', 1.33333, '21:08:52', '2021-11-04'),
+('21 Savage', 1.33333, '21:11:21', '2021-11-04'),
+('21 Savage', 1.33333, '21:12:21', '2021-11-04'),
+('21 Savage', 1.33333, '21:13:21', '2021-11-04'),
+('21 Savage', 1.33333, '21:14:21', '2021-11-04'),
+('21 Savage', 1.33333, '21:18:21', '2021-11-04'),
+('21 Savage', 1.33333, '21:33:21', '2021-11-04'),
+('21 Savage', 1.33333, '21:48:21', '2021-11-04'),
+('21 Savage', 1.33333, '22:03:21', '2021-11-04'),
+('21 Savage', 1.33333, '22:18:21', '2021-11-04'),
+('21 Savage', 1.33333, '22:33:21', '2021-11-04'),
+('21 Savage', 1.33333, '22:48:21', '2021-11-04'),
+('21 Savage', 1.33333, '23:03:21', '2021-11-04'),
+('21 Savage', 1.33333, '23:18:21', '2021-11-04'),
+('21 Savage', 1.33333, '23:33:21', '2021-11-04'),
+('21 Savage', 1.33333, '23:48:21', '2021-11-04'),
+('88Glam', 6, '00:03:21', '2021-11-05'),
+('88Glam', 6, '16:48:21', '2021-11-05'),
+('88Glam', 6, '17:03:21', '2021-11-05'),
+('88Glam', 6, '17:18:21', '2021-11-05'),
+('88Glam', 6, '18:46:15', '2021-11-05'),
+('88Glam', 6, '18:48:21', '2021-11-05'),
+('88Glam', 4, '21:08:52', '2021-11-04'),
+('88Glam', 4, '21:11:21', '2021-11-04'),
+('88Glam', 3.6, '21:12:21', '2021-11-04'),
+('88Glam', 1, '21:13:21', '2021-11-04'),
+('88Glam', 5, '21:14:21', '2021-11-04'),
+('88Glam', 6, '21:18:21', '2021-11-04'),
+('88Glam', 6, '21:33:21', '2021-11-04'),
+('88Glam', 6, '21:48:21', '2021-11-04'),
+('88Glam', 6, '22:03:21', '2021-11-04'),
+('88Glam', 6, '22:18:21', '2021-11-04'),
+('88Glam', 6, '22:33:21', '2021-11-04'),
+('88Glam', 6, '22:48:21', '2021-11-04'),
+('88Glam', 6, '23:03:21', '2021-11-04'),
+('88Glam', 6, '23:18:21', '2021-11-04'),
+('88Glam', 6, '23:33:21', '2021-11-04'),
+('88Glam', 6, '23:48:21', '2021-11-04'),
+('Drake', 1, '00:03:21', '2021-11-05'),
+('Drake', 1, '16:48:21', '2021-11-05'),
+('Drake', 1, '17:03:21', '2021-11-05'),
+('Drake', 1, '17:18:21', '2021-11-05'),
+('Drake', 1, '18:46:15', '2021-11-05'),
+('Drake', 1, '18:48:21', '2021-11-05'),
+('Drake', 1, '21:08:52', '2021-11-04'),
+('Drake', 1, '21:11:21', '2021-11-04'),
+('Drake', 1, '21:12:21', '2021-11-04'),
+('Drake', 1, '21:13:21', '2021-11-04'),
+('Drake', 1, '21:14:21', '2021-11-04'),
+('Drake', 1, '21:18:21', '2021-11-04'),
+('Drake', 1, '21:33:21', '2021-11-04'),
+('Drake', 1, '21:48:21', '2021-11-04'),
+('Drake', 1, '22:03:21', '2021-11-04'),
+('Drake', 1, '22:18:21', '2021-11-04'),
+('Drake', 1, '22:33:21', '2021-11-04'),
+('Drake', 1, '22:48:21', '2021-11-04'),
+('Drake', 1, '23:03:21', '2021-11-04'),
+('Drake', 1, '23:18:21', '2021-11-04'),
+('Drake', 1, '23:33:21', '2021-11-04'),
+('Drake', 1, '23:48:21', '2021-11-04'),
+('NAV', 3, '00:03:21', '2021-11-05'),
+('NAV', 3, '16:48:21', '2021-11-05'),
+('NAV', 3, '17:03:21', '2021-11-05'),
+('NAV', 3, '17:18:21', '2021-11-05'),
+('NAV', 3, '18:46:15', '2021-11-05'),
+('NAV', 3, '18:48:21', '2021-11-05'),
+('NAV', 3, '21:08:52', '2021-11-04'),
+('NAV', 3, '21:11:21', '2021-11-04'),
+('NAV', 3, '21:12:21', '2021-11-04'),
+('NAV', 3, '21:13:21', '2021-11-04'),
+('NAV', 3, '21:14:21', '2021-11-04'),
+('NAV', 3, '21:18:21', '2021-11-04'),
+('NAV', 3, '21:33:21', '2021-11-04'),
+('NAV', 3, '21:48:21', '2021-11-04'),
+('NAV', 3, '22:03:21', '2021-11-04'),
+('NAV', 3, '22:18:21', '2021-11-04'),
+('NAV', 3, '22:33:21', '2021-11-04'),
+('NAV', 3, '22:48:21', '2021-11-04'),
+('NAV', 3, '23:03:21', '2021-11-04'),
+('NAV', 3, '23:18:21', '2021-11-04'),
+('NAV', 3, '23:33:21', '2021-11-04'),
+('NAV', 3, '23:48:21', '2021-11-04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `artist_stock_change_30`
+--
+
+CREATE TABLE `artist_stock_change_30` (
+  `artist_username` varchar(20) NOT NULL,
+  `price_per_share` float NOT NULL,
+  `time_recorded` varchar(20) NOT NULL,
+  `date_recorded` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `artist_stock_change_30`
+--
+
+INSERT INTO `artist_stock_change_30` (`artist_username`, `price_per_share`, `time_recorded`, `date_recorded`) VALUES
+('21 Savage', 1.33333, '19:13:21', '2021-11-05'),
+('21 Savage', 1.33333, '19:14:21', '2021-11-05'),
+('88Glam', 6, '19:13:21', '2021-11-05'),
+('88Glam', 6, '19:14:21', '2021-11-05'),
+('Drake', 1, '19:13:21', '2021-11-05'),
+('Drake', 1, '19:14:21', '2021-11-05'),
+('NAV', 3, '19:13:21', '2021-11-05'),
+('NAV', 3, '19:14:21', '2021-11-05');
 
 -- --------------------------------------------------------
 
@@ -218,6 +407,8 @@ INSERT INTO `buy_history` (`user_username`, `seller_username`, `artist_username`
 ('kai', 'Drake', 'Drake', 859, 1, '01-11-2021', '18:33:32'),
 ('kai', 'martin', '88Glam', 1, 3, '02-11-2021', '17:05:05'),
 ('kai', 'martin', '88Glam', 6, 2, '02-11-2021', '18:01:45'),
+('kai', 'martin', '88Glam', 1, 1, '04-11-2021', '21:13:33'),
+('kai', 'martin', '88Glam', 1, 5, '04-11-2021', '21:14:30'),
 ('martin', '21 Savage', '21 Savage', 2386, 1.33333, '02-11-2021', '16:35:27'),
 ('martin', '88Glam', '88Glam', 1, 2, '02-11-2021', '16:34:02'),
 ('martin', '88Glam', '88Glam', 1, 2, '02-11-2021', '16:34:59'),
@@ -247,6 +438,8 @@ INSERT INTO `buy_history` (`user_username`, `seller_username`, `artist_username`
 ('martin', 'kai', '88Glam', 1, 3.6, '02-11-2021', '19:47:05'),
 ('martin', 'kai', '88Glam', 43, 3.6, '02-11-2021', '19:53:27'),
 ('martin', 'kai', '88Glam', 1, 3, '02-11-2021', '19:55:53'),
+('martin', 'kai', '88Glam', 1, 4, '04-11-2021', '21:12:11'),
+('martin', 'kai', '88Glam', 1, 3.6, '04-11-2021', '21:13:08'),
 ('vitor', '88Glam', '88Glam', 1, 1, '03-11-2021', '19:14:34'),
 ('vitor', 'kai', '88Glam', 1, 1, '03-11-2021', '19:15:09'),
 ('vitor', 'martin', '88Glam', 1, 1, '03-11-2021', '19:14:05');
@@ -298,16 +491,6 @@ CREATE TABLE `campaign` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dummy`
---
-
-CREATE TABLE `dummy` (
-  `artist_username` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `inject_history`
 --
 
@@ -352,9 +535,8 @@ CREATE TABLE `sell_order` (
 
 INSERT INTO `sell_order` (`id`, `user_username`, `artist_username`, `selling_price`, `no_of_share`, `date_posted`, `time_posted`) VALUES
 (1, 'martin', '88Glam', 6, 460, '02-11-2021', '18:01:27'),
-(2, 'kai', '88Glam', 3.6, 28, '02-11-2021', '18:02:00'),
-(3, 'kai', '88Glam', 1, 20, '02-11-2021', '19:54:28'),
-(4, 'martin', '88Glam', 4, 1, '03-11-2021', '19:12:50');
+(2, 'kai', '88Glam', 3.6, 27, '02-11-2021', '18:02:00'),
+(3, 'kai', '88Glam', 1, 19, '02-11-2021', '19:54:28');
 
 --
 -- Indexes for dumped tables
@@ -388,9 +570,27 @@ ALTER TABLE `artist_shareholders`
   ADD KEY `shareholder_artist_key` (`artist_username`);
 
 --
--- Indexes for table `artist_stock_change`
+-- Indexes for table `artist_stock_change_1d`
 --
-ALTER TABLE `artist_stock_change`
+ALTER TABLE `artist_stock_change_1d`
+  ADD PRIMARY KEY (`artist_username`,`time_recorded`,`date_recorded`);
+
+--
+-- Indexes for table `artist_stock_change_5d`
+--
+ALTER TABLE `artist_stock_change_5d`
+  ADD PRIMARY KEY (`artist_username`,`time_recorded`,`date_recorded`);
+
+--
+-- Indexes for table `artist_stock_change_15`
+--
+ALTER TABLE `artist_stock_change_15`
+  ADD PRIMARY KEY (`artist_username`,`time_recorded`,`date_recorded`);
+
+--
+-- Indexes for table `artist_stock_change_30`
+--
+ALTER TABLE `artist_stock_change_30`
   ADD PRIMARY KEY (`artist_username`,`time_recorded`,`date_recorded`);
 
 --
@@ -467,10 +667,28 @@ ALTER TABLE `artist_shareholders`
   ADD CONSTRAINT `shareholder_username_key` FOREIGN KEY (`user_username`) REFERENCES `account` (`username`);
 
 --
--- Constraints for table `artist_stock_change`
+-- Constraints for table `artist_stock_change_1d`
 --
-ALTER TABLE `artist_stock_change`
+ALTER TABLE `artist_stock_change_1d`
+  ADD CONSTRAINT `artist_1m_key` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`);
+
+--
+-- Constraints for table `artist_stock_change_5d`
+--
+ALTER TABLE `artist_stock_change_5d`
+  ADD CONSTRAINT `artist_5day_key` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`);
+
+--
+-- Constraints for table `artist_stock_change_15`
+--
+ALTER TABLE `artist_stock_change_15`
   ADD CONSTRAINT `artist_username_key` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`);
+
+--
+-- Constraints for table `artist_stock_change_30`
+--
+ALTER TABLE `artist_stock_change_30`
+  ADD CONSTRAINT `artist_5d_key` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`);
 
 --
 -- Constraints for table `buy_history`
@@ -511,7 +729,13 @@ DELIMITER $$
 --
 -- Events
 --
-CREATE DEFINER=`root`@`localhost` EVENT `log_artist_pps` ON SCHEDULE EVERY 15 MINUTE STARTS '2021-11-04 16:41:00' ON COMPLETION NOT PRESERVE DISABLE DO CALL log_artist_pps$$
+CREATE DEFINER=`root`@`localhost` EVENT `log_artist_pps_15` ON SCHEDULE EVERY 15 MINUTE STARTS '2021-11-06 09:00:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL log_artist_pps_15$$
+
+CREATE DEFINER=`root`@`localhost` EVENT `log_artist_pps_30` ON SCHEDULE EVERY 30 MINUTE STARTS '2021-11-06 09:00:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL log_artist_pps_30$$
+
+CREATE DEFINER=`root`@`localhost` EVENT `log_artist_pps_1d` ON SCHEDULE EVERY 1 DAY STARTS '2021-11-06 09:00:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL log_artist_pps_1d$$
+
+CREATE DEFINER=`root`@`localhost` EVENT `log_artist_pps_5d` ON SCHEDULE EVERY 5 DAY STARTS '2021-11-06 09:00:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL log_artist_pps_5d$$
 
 DELIMITER ;
 COMMIT;

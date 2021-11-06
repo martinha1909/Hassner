@@ -127,6 +127,28 @@
             return $result;
         }
 
+        function getDatesWithinInterval5D($conn, $artist_username, $days_ago, $current_day)
+        {
+            $sql = "SELECT DISTINCT date_recorded FROM artist_stock_change_30 WHERE artist_username = ? AND date_recorded >= ? AND date_recorded <= ? ORDER BY date_recorded";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('sss', $artist_username, $days_ago, $current_day);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function getData5D($conn, $artist_username, $date)
+        {
+            $sql = "SELECT artist_username, price_per_share, time_recorded, date_recorded FROM artist_stock_change_30 WHERE artist_username = ? AND date_recorded = ? ORDER BY time_recorded";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $artist_username, $date);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchAccountType($conn, $type)
         {
             $sql = "SELECT * FROM account WHERE account_type = ?";
