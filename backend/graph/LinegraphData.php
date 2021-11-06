@@ -45,12 +45,29 @@
             $counter++;
         }
     }
-    else if($_SESSION['graph_options'] == GraphOption::ONE_MONTH)
+    //group these conditions together since 1-month, 6-month, YTD, and 1 year graphs all have intervals of 1 day
+    else if($_SESSION['graph_options'] == GraphOption::ONE_MONTH || $_SESSION['graph_options'] == GraphOption::SIX_MONTH || $_SESSION['graph_options'] == GraphOption::YEAR_TO_DATE || $_SESSION['graph_options'] == GraphOption::ONE_YEAR)
     {
         $all_pps_in_a_day = array();
         $last_fetched_day = "";
         $day_high_pps = 0;
-        $days_ago = date("Y-m-d H:i:s", strtotime("-1 month"));
+        if($_SESSION['graph_options'] == GraphOption::ONE_MONTH)
+        {
+            $days_ago = date("Y-m-d H:i:s", strtotime("-1 month"));
+        }
+        else if($_SESSION['graph_options'] == GraphOption::SIX_MONTH)
+        {
+            $days_ago = date("Y-m-d H:i:s", strtotime("-6 months"));
+        }
+        else if($_SESSION['graph_options'] == GraphOption::YEAR_TO_DATE)
+        {
+            //gets first day of the current year
+            $days_ago = date("Y-m-d H:i:s", strtotime(date('Y-01-01')));
+        }
+        else if($_SESSION['graph_options'] == GraphOption::ONE_YEAR)
+        {
+            $days_ago = date("Y-m-d H:i:s", strtotime("-1 year"));
+        }
         
         $res = getJSONDataWithinInterval($conn, $_SESSION['selected_artist'], $days_ago, $db_current_date_time);
         //fetch data from the first row, since we know that it will always be a new date
