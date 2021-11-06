@@ -3,18 +3,18 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
     include '../constants/GraphOption.php';
+    include '../shared/include/MarketplaceHelpers.php';
 
     date_default_timezone_set("America/Edmonton");
 
     $conn = connect();
     $json_data = array();
     $db_current_date_time = date('Y-m-d H:i:s');
-    // //Contains distinct dates that will be appearing on the graph, in ascending order
     $days_ago = "";
 
     if($_SESSION['graph_options'] == GraphOption::ONE_DAY || $_SESSION['graph_options'] == GraphOption::NONE)
     {
-        $days_ago = date("Y-m-d H:i:s", strtotime("-5 day"));
+        $days_ago = date("Y-m-d H:i:s", strtotime("-1 day"));
 
         //No need to specify the log interval here since event scheduler in the db is scheduled to log 
         //every 15 minutes by default
@@ -22,30 +22,85 @@
 
         while($row = $res->fetch_assoc())
         {
+            $row['price_per_share'] = round($row['price_per_share'], 2);
             array_push($json_data, $row);
         }
     }
-    // else if($_SESSION['graph_options'] == GraphOption::FIVE_DAY)
-    // {
-    //     $days_ago = date('Y-m-d', strtotime('-5 days', strtotime($date_parser[0])));
+    else if($_SESSION['graph_options'] == GraphOption::FIVE_DAY)
+    {
+        $counter = 0;
+        $days_ago = date("Y-m-d H:i:s", strtotime("-5 days"));
 
-    //     $result = getDatesWithinInterval5D($conn, $_SESSION['selected_artist'], $days_ago, $current_day);
+        $res = getJSONDataWithinInterval($conn, $_SESSION['selected_artist'], $days_ago, $db_current_date_time);
 
-    //     while($row = $result->fetch_assoc())
-    //     {
-    //         array_push($graph_dates, $row['date_recorded']);
-    //     }
+        while($row = $res->fetch_assoc())
+        {
+            //since the event scheduler logs every 15 mins, we skip every other row so the data is 30 mins apart
+            if($counter % 2 == 0)
+            {
+                $row['price_per_share'] = round($row['price_per_share'], 2);
+                array_push($json_data, $row);
+            }
 
-    //     for($i = 0; $i < sizeof($graph_dates); $i++)
-    //     {
-    //         $result = getData5D($conn, $_SESSION['selected_artist'], $graph_dates[$i]);
+            $counter++;
+        }
+    }
+    else if($_SESSION['graph_options'] == GraphOption::ONE_MONTH)
+    {
+        $all_pps_in_a_day = array();
+        $last_fetched_day = "";
+        $day_high_pps = 0;
+        $days_ago = date("Y-m-d H:i:s", strtotime("-1 month"));
+        
+        $res = getJSONDataWithinInterval($conn, $_SESSION['selected_artist'], $days_ago, $db_current_date_time);
+        //fetch data from the first row, since we know that it will always be a new date
+        $prev_row = $res->fetch_assoc();
+        array_push($all_pps_in_a_day, $prev_row['price_per_share']);
+        //Grab the date and don't care about the time in 1-month graph
+        $last_fetched_day = (explode(" ", $prev_row['date_recorded']))[0];
+        while($row = $res->fetch_assoc())
+        {
+            $json_date_split = explode(" ", $row['date_recorded']);
+            $date = $json_date_split[0];
+            $time = $json_date_split[1];
+            //If we have hit a new date, we grab the date and details from the previous row, which contains
+            //the date that we have been storing
+            if($date != $last_fetched_day)
+            {
+                //gets the highest price per share from that day
+                $day_high_pps = getMaxPPS($all_pps_in_a_day);
 
-    //         while($row = $result->fetch_assoc())
-    //         {
-    //             array_push($json_data, $row);
-    //         }
-    //     }
-    // }
+                $prev_row['price_per_share'] = round($day_high_pps, 2);
+                //don't care about the time in 1-month graph
+                $prev_row['date_recorded'] = (explode(" ", $prev_row['date_recorded']))[0];
+
+                array_push($json_data, $prev_row);
+
+                //reset the array and make the first index to be the current row's price_per_share
+                $all_pps_in_a_day = array($row['price_per_share']);
+                $day_high_pps = 0;
+                //we have seen a new date, so update last_fetched_day
+                $last_fetched_day = $date;
+            }
+            else
+            {
+                array_push($all_pps_in_a_day, $row['price_per_share']);
+            }
+
+            $prev_row = $row;
+        }
+
+        //This section here considers the last element of the query, since the above loop only push to json_data
+        //values in prev_row
+        array_push($all_pps_in_a_day, $prev_row['price_per_share']);
+        $day_high_pps = getMaxPPS($all_pps_in_a_day);
+
+        $prev_row['price_per_share'] = round($day_high_pps, 2);
+        //don't care about the time in 1-month graph
+        $prev_row['date_recorded'] = (explode(" ", $prev_row['date_recorded']))[0];
+
+        array_push($json_data, $prev_row);
+    }
 
     closeCon($conn);
 

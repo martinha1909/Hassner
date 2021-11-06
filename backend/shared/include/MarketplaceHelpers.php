@@ -1055,4 +1055,24 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
         return $ret;
     }
+
+    function getMaxPPS($all_pps_in_a_day)
+    {
+        $ret = 0;
+
+        if(sizeof($all_pps_in_a_day) != 0)
+        {
+            $ret = $all_pps_in_a_day[0];
+
+            for($i = 0; $i < sizeof($all_pps_in_a_day); $i++)
+            {
+                if($all_pps_in_a_day[$i] > $ret)
+                {
+                    $ret = $all_pps_in_a_day[$i];
+                }
+            }
+        }
+
+        return $ret;
+    }
 ?>

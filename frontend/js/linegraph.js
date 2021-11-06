@@ -11,31 +11,44 @@ $(document).ready(function(){
             var len = data.length;
             var last_fetched_date = "";
 
-            for (var i = 0; i < len; i++) 
+            //one-day graph and five-day graph are filtered for x axis here
+            if(graph_option === "1D" || graph_option === "5D")
             {
-                const json_date_split = data[i].date_recorded.split(" ");
-                var date_recorded = json_date_split[0];
-                var time_recorded = json_date_split[1];
-                
-                //don't care about the seconds
-                time_recorded = time_recorded.substring(0, 5);
-                
-                if(x_axis.length === 0)
+                for (var i = 0; i < len; i++) 
                 {
-                    x_axis.push(date_recorded);
-                    y_axis.push(data[i].price_per_share);
-                    last_fetched_date = date_recorded;
+                    const json_date_split = data[i].date_recorded.split(" ");
+                    var date_recorded = json_date_split[0];
+                    var time_recorded = json_date_split[1];
+                    
+                    //don't care about the seconds
+                    time_recorded = time_recorded.substring(0, 5);
+                    
+                    if(x_axis.length === 0)
+                    {
+                        x_axis.push(date_recorded);
+                        y_axis.push(data[i].price_per_share);
+                        last_fetched_date = date_recorded;
+                    }
+                    else if(date_recorded === last_fetched_date)
+                    {
+                        x_axis.push(time_recorded);
+                        y_axis.push(data[i].price_per_share);
+                    }
+                    else if(date_recorded != last_fetched_date)
+                    {
+                        x_axis.push(date_recorded);
+                        y_axis.push(data[i].price_per_share);
+                        last_fetched_date = date_recorded;
+                    }
                 }
-                else if(date_recorded === last_fetched_date)
+            }
+            //one-month graph, 6-month graph, YTD graph, and 1-year graph are pre-filtered
+            else if(graph_option === "1M" || graph_option === "6M" || graph_option === "YTD" || graph_option == "1Y")
+            {
+                for (var i = 0; i < len; i++)
                 {
-                    x_axis.push(time_recorded);
+                    x_axis.push(data[i].date_recorded);
                     y_axis.push(data[i].price_per_share);
-                }
-                else if(date_recorded != last_fetched_date)
-                {
-                    x_axis.push(date_recorded);
-                    y_axis.push(data[i].price_per_share);
-                    last_fetched_date = date_recorded;
                 }
             }
             
