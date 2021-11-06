@@ -13,22 +13,29 @@ $(document).ready(function(){
 
             for (var i = 0; i < len; i++) 
             {
+                const json_date_split = data[i].date_recorded.split(" ");
+                var date_recorded = json_date_split[0];
+                var time_recorded = json_date_split[1];
+                
+                //don't care about the seconds
+                time_recorded = time_recorded.substring(0, 5);
+                
                 if(x_axis.length === 0)
                 {
+                    x_axis.push(date_recorded);
                     y_axis.push(data[i].price_per_share);
-                    x_axis.push(data[i].date_recorded);
-                    last_fetched_date = data[i].date_recorded;
+                    last_fetched_date = date_recorded;
                 }
-                else if(data[i].date_recorded === last_fetched_date)
+                else if(date_recorded === last_fetched_date)
                 {
+                    x_axis.push(time_recorded);
                     y_axis.push(data[i].price_per_share);
-                    x_axis.push(data[i].time_recorded);
                 }
-                else if(data[i].date_recorded != last_fetched_date)
+                else if(date_recorded != last_fetched_date)
                 {
+                    x_axis.push(date_recorded);
                     y_axis.push(data[i].price_per_share);
-                    x_axis.push(data[i].date_recorded);
-                    last_fetched_date = data[i].date_recorded;
+                    last_fetched_date = date_recorded;
                 }
             }
             
@@ -38,13 +45,13 @@ $(document).ready(function(){
                 labels : x_axis,
                 datasets : [
                     {
-                        label : "88Glam",
+                        label : data[0].artist_username,
                         data : y_axis,
                         backgroundColor : "#0a60d0",
                         borderColor : "#0a60d0",
                         fill : false,
                         lineTension : 0,
-                        pointRadius : 5
+                        pointRadius : 2
                     }
                 ]
             };
@@ -53,7 +60,7 @@ $(document).ready(function(){
                 title : {
                     display : true,
                     position : "top",
-                    text : artist_market_tag + " (" + data[0].artist_username + ")",
+                    text : artist_market_tag.toUpperCase() + " (" + data[0].artist_username + ")",
                     fontSize : 18,
                     fontColor : "#e2cda9ff"
                 },
