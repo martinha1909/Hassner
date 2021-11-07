@@ -172,11 +172,13 @@
                             //displaying stock graph
                             echo '
                                 <canvas id="stock_graph"></canvas>
-                                <h6>Mkt Cap: '.$market_cap.'</h6>
-                                <h6>Volume: '.$volume.'</h6>
-                                <h6>Open: '.$open.'</h6>
-                                <h6>High: '.$high.'</h6>
-                                <h6>Low: '.$low.'</h6>
+                                <div class="text-left">
+                                    <h6>Mkt Cap: '.$market_cap.'</h6>
+                                    <h6>Volume: '.$volume.'</h6>
+                                    <h6>Open: '.$open.'</h6>
+                                    <h6>High: '.$high.'</h6>
+                                    <h6>Low: '.$low.'</h6>
+                                </div>
                             ';
                         ?>
                     </div>
