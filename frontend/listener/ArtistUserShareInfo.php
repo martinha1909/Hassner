@@ -130,6 +130,11 @@
                     <div class="chart-container">
                         <?php
                             $change = 0;
+                            $market_cap = calculateMarketCap($_SESSION['selected_artist']);
+                            $volume = getArtistShareVolume($_SESSION['selected_artist']);
+                            $open = getArtistPricePerShare($_SESSION['selected_artist']);
+                            $high = getHighestOrLowestPPS($_SESSION['selected_artist'], "MAX");
+                            $low = getHighestOrLowestPPS($_SESSION['selected_artist'], "MIN");
                             echo '
                                     <h2>'.$_SESSION['current_pps']['price_per_share'].'</h2>
                                 ';
@@ -165,7 +170,14 @@
                             ';
 
                             //displaying stock graph
-                            echo '<canvas id="stock_graph"></canvas>';
+                            echo '
+                                <canvas id="stock_graph"></canvas>
+                                <h6>Mkt Cap: '.$market_cap.'</h6>
+                                <h6>Volume: '.$volume.'</h6>
+                                <h6>Open: '.$open.'</h6>
+                                <h6>High: '.$high.'</h6>
+                                <h6>Low: '.$low.'</h6>
+                            ';
                         ?>
                     </div>
 
