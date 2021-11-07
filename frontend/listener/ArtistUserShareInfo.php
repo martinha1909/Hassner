@@ -164,17 +164,8 @@
                                     </form>
                             ';
 
-                            //data to be used and transfered to js files with script tag below
-                            // $graph_jason_data = getArtistJSONChange($_SESSION['selected_artist'], $_SESSION['graph_options']);
-
-                            // if(count(json_decode($graph_jason_data)) == 0)
-                            // {
-                            //     echo '<h3>Graph information is not available</h3>';
-                            // }
-                            // else
-                            // {
+                            //displaying stock graph
                             echo '<canvas id="stock_graph"></canvas>';
-                            // }
                         ?>
                     </div>
 

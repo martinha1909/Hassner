@@ -974,6 +974,13 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         return $market_cap;
     }
 
+    /**
+    * Get artist's 4-letter market tag
+    *
+    * @param  	artist_username   given username of the artist to search for their market tag
+    *
+    * @return 	ret	              a string, containing 4 letters of the artist market tag
+    */
     function getArtistMarketTag($artist_username)
     {
         $ret = "Error in getting artist market tag";
@@ -991,6 +998,13 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         return $ret;
     }
 
+    /**
+    * Get the maximum price per share of an artist within a given day
+    *
+    * @param  	all_pps_in_a_day   an array containing all price per share of a specific day
+    *
+    * @return 	ret	               maximum value in the array all_pps_in_a_day
+    */
     function getMaxPPSByDay($all_pps_in_a_day)
     {
         $ret = 0;
