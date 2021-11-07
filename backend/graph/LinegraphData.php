@@ -68,6 +68,10 @@
         {
             $days_ago = date("Y-m-d H:i:s", strtotime("-1 year"));
         }
+        else if($_SESSION['graph_options'] == GraphOption::FIVE_YEAR)
+        {
+            $days_ago = date("Y-m-d H:i:s", strtotime("-5 years"));
+        }
         
         $res = getJSONDataWithinInterval($conn, $_SESSION['selected_artist'], $days_ago, $db_current_date_time);
         //fetch data from the first row, since we know that it will always be a new date
