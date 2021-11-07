@@ -12,7 +12,7 @@ $(document).ready(function(){
             var last_fetched_date = "";
 
             //one-day graph and five-day graph are filtered for x axis here
-            if(graph_option === "1D" || graph_option === "5D")
+            if(graph_option === "1D" || graph_option === "5D" || graph_option === 0)
             {
                 for (var i = 0; i < len; i++) 
                 {
@@ -41,6 +41,8 @@ $(document).ready(function(){
                         last_fetched_date = date_recorded;
                     }
                 }
+
+                console.log(x_axis);
             }
             //one-month graph, 6-month graph, YTD graph, and 1-year graph are pre-filtered
             else
