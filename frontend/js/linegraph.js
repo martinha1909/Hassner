@@ -43,12 +43,30 @@ $(document).ready(function(){
                 }
             }
             //one-month graph, 6-month graph, YTD graph, and 1-year graph are pre-filtered
-            else if(graph_option === "1M" || graph_option === "6M" || graph_option === "YTD" || graph_option == "1Y")
+            else
             {
-                for (var i = 0; i < len; i++)
+                //Since the data is pre-filtered by day, 5-day graph would add to the axis every 5 data points
+                if(graph_option == "5Y")
                 {
-                    x_axis.push(data[i].date_recorded);
-                    y_axis.push(data[i].price_per_share);
+                    // console.log(data);
+                    var counter = 0;
+                    for (var i = 0; i < len; i++)
+                    {
+                        if(counter % 5 === 0)
+                        {
+                            x_axis.push(data[i].date_recorded);
+                            y_axis.push(data[i].price_per_share);
+                        }
+                        counter++;
+                    }
+                }
+                else
+                {
+                    for (var i = 0; i < len; i++)
+                    {
+                        x_axis.push(data[i].date_recorded);
+                        y_axis.push(data[i].price_per_share);
+                    }
                 }
             }
             

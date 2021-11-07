@@ -46,7 +46,7 @@
         }
     }
     //group these conditions together since 1-month, 6-month, YTD, and 1 year graphs all have intervals of 1 day
-    else if($_SESSION['graph_options'] == GraphOption::ONE_MONTH || $_SESSION['graph_options'] == GraphOption::SIX_MONTH || $_SESSION['graph_options'] == GraphOption::YEAR_TO_DATE || $_SESSION['graph_options'] == GraphOption::ONE_YEAR)
+    else
     {
         $all_pps_in_a_day = array();
         $last_fetched_day = "";
@@ -85,7 +85,7 @@
             if($date != $last_fetched_day)
             {
                 //gets the highest price per share from that day
-                $day_high_pps = getMaxPPS($all_pps_in_a_day);
+                $day_high_pps = getMaxPPSByDay($all_pps_in_a_day);
 
                 $prev_row['price_per_share'] = round($day_high_pps, 2);
                 //don't care about the time in 1-month graph
@@ -110,7 +110,7 @@
         //This section here considers the last element of the query, since the above loop only push to json_data
         //values in prev_row
         array_push($all_pps_in_a_day, $prev_row['price_per_share']);
-        $day_high_pps = getMaxPPS($all_pps_in_a_day);
+        $day_high_pps = getMaxPPSByDay($all_pps_in_a_day);
 
         $prev_row['price_per_share'] = round($day_high_pps, 2);
         //don't care about the time in 1-month graph
