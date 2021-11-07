@@ -99,7 +99,7 @@
                             }
                         ?>
                         <h2 class="h2-blue"><?php echo $_SESSION['selected_artist']; ?></h2>
-                        <h4 class="h4-blue">(<?php echo $artist_market_tag; ?>)</h4>
+                        <h4 class="h4-blue">(<?php echo strtoupper($artist_market_tag); ?>)</h4>
                         <?php
                             if(!isAlreadyFollowed($_SESSION['username'], $_SESSION['selected_artist']))
                             {
