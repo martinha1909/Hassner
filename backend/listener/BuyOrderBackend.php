@@ -1,7 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
-    include '../shared/MarketplaceHelpers.php';
+    include '../shared/include/MarketplaceHelpers.php';
 
     $_SESSION['logging_mode'] = "BUY_ORDER";
 

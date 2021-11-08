@@ -1,13 +1,15 @@
 <?php
     include '../../backend/control/dependencies.php';
-    include '../../backend/shared/MarketplaceHelpers.php';
+    include '../../backend/shared/include/MarketplaceHelpers.php';
     include '../../backend/constants/StatusCodes.php';
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/ShareInteraction.php';
+    include '../../backend/constants/GraphOption.php';
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
     include '../../backend/object/TickerInfo.php';
+    include '../../backend/object/SellOrder.php';
 
     //only do actions if an artist is found
     if($_SESSION['artist_found'])
@@ -16,6 +18,7 @@
         calculateMarketCap($_SESSION['selected_artist']);
 
         $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
+        $artist_market_tag = getArtistMarketTag($_SESSION['selected_artist']);
     }
 ?>
 
@@ -38,6 +41,9 @@
     <link rel="stylesheet" href="../css/searchbar.css" id="theme-color">
     <link rel="stylesheet" href="../css/slidebar.css" id="theme-color">
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
+    <link rel="stylesheet" href="../css/linegraph.css" id="theme-color">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="../css/slider.css">
 </head>
 
 <body class="bg-dark">
@@ -95,129 +101,133 @@
                                 }
                             }
                         ?>
-                        <h2 class="h2-blue">Your shares with <?php echo $_SESSION['selected_artist']; ?> </h2>
+                        <h2 class="h2-blue"><?php echo $_SESSION['selected_artist']; ?></h2>
+                        <h4 class="h4-blue">(<?php echo strtoupper($artist_market_tag); ?>)</h4>
+                        <?php
+                            if(!isAlreadyFollowed($_SESSION['username'], $_SESSION['selected_artist']))
+                            {
+                                echo '
+                                    <p>
+                                        <form action="../../backend/listener/FollowArtistBackend.php" method="post">
+                                            <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Follow">
+                                        </form>
+                                    </p>
+                                ';
+                            }
+                            else
+                            {
+                                echo '
+                                    <p>
+                                        <form action="../../backend/listener/UnFollowArtistBackend.php" method="post">
+                                            <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Unfollow">
+                                        </form>
+                                    </p>
+                                ';
+                            }
+                        ?>
+                            </form>
+                        </p>
+                    </div>
+
+                    <!-- Displaying stock graph -->
+                    <div class="chart-container">
+                        <?php
+                            $change = 0;
+                            $market_cap = calculateMarketCap($_SESSION['selected_artist']);
+                            $volume = getArtistShareVolume($_SESSION['selected_artist']);
+                            $open = getArtistPricePerShare($_SESSION['selected_artist']);
+                            $high = getHighestOrLowestPPS($_SESSION['selected_artist'], "MAX");
+                            $low = getHighestOrLowestPPS($_SESSION['selected_artist'], "MIN");
+                            echo '
+                                    <h2>'.$_SESSION['current_pps']['price_per_share'].'</h2>
+                                ';
+                            if($change == 0)
+                            {
+                                echo '
+                                    <h3>'.$change.'%</h3>
+                                ';
+                            }
+                            else if($change > 0)
+                            {
+                                echo '
+                                    <h3 class="suc-msg">+'.$change.'%</h3>
+                                ';
+                            }
+                            else
+                            {
+                                echo '
+                                    <h3 class="error-msg">'.$change.'%</h3>
+                                ';
+                            }
+
+                            echo '
+                                    <button id = "'.GraphOption::ONE_DAY.'" class="btn btn-secondary">'.GraphOption::ONE_DAY.'</button>
+                                    <button id = "'.GraphOption::FIVE_DAY.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_DAY.'</button>
+                                    <button id = "'.GraphOption::ONE_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_MONTH.'</button>
+                                    <button id = "'.GraphOption::SIX_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::SIX_MONTH.'</button>
+                                    <button id = "'.GraphOption::YEAR_TO_DATE.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::YEAR_TO_DATE.'</button>
+                                    <button id = "'.GraphOption::ONE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_YEAR.'</button>
+                                    <button id = "'.GraphOption::FIVE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_YEAR.'</button>
+                            ';
+
+                            //displaying stock graph
+                            echo '
+                                <canvas id="stock_graph"></canvas>
+                                <div class="text-left">
+                                    <h6>Mkt Cap: '.$market_cap.'</h6>
+                                    <h6>Volume: '.$volume.'</h6>
+                                    <h6>Open: '.$open.'</h6>
+                                    <h6>High: '.$high.'</h6>
+                                    <h6>Low: '.$low.'</h6>
+                                </div>
+                            ';
+                        ?>
                     </div>
 
                     <!-- displaying current share information between current user and selected artist -->
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Owned Shares</th>
-                                <th scope="col">Shares selling</th>
-                                <th scope="col">Shares requesting</th>
-                                <th scope="col">Current price per share (q̶)</th>
-                                <th scope="col">Issued Shares</th>
-                                <th scope="col">Available Shares</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <!-- displaying Amount of shares owned, selected artist name, 
-                                market price per share of artist, profit since last bought, 
-                                and amount of available shares for purchase, respectively -->
-                                <th scope="row"><?php echo $_SESSION['shares_owned']; ?></th>
-                                <td><?php echo getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
-                                <td><?php echo getAmountSharesRequesting($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
-                                <td><?php echo round($_SESSION['current_pps']['price_per_share'], 2); ?></td>
-                                <td><?php echo totalShareDistributed($_SESSION['selected_artist']); ?></td>
-                                <td><?php echo $_SESSION['available_shares']; }?></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <?php }?>
                 </div>
-                <div class="mx-auto my-auto text-center col-5">
+                <div class="mx-auto my-auto text-center col-5 buy_sell_container">
                     <?php
                     if($_SESSION['artist_found'])
                     {
-                        //Sell shares button is only available if you own some shares
-                        if ($_SESSION['shares_owned'] > 0) {
-                            if (canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist'])) {
-                                if ($_SESSION['logging_mode'] == LogModes::SELL_SHARE) {
-                                    if ($_SESSION['status'] == "EMPTY_ERR") {
-                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                        getStatusMessage("Please fill out all fields", "");
-                                    }
-                                }
-                                echo '
-                                    <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
-                                        <input name="buy_sell" type="submit" id="menu-style-invert" class="menu-text" value="-Sell your shares">
-                                    </form>
-                                ';
-                            } else if ($_SESSION['logging_mode'] == LogModes::SELL_SHARE) {
-                                $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                getStatusMessage("All shares are currently being sold", "");
-                            }
+                        echo '
+                        <div class="accordion" id="buy_accordion">
+                            <h3 class="shares_header">Buy Shares</h3>
+                            <div class="slider_container">
+                                <div class="textbox_container">
+                                    <label for="buy_min">Buy min:</label>
+                                    <input type="text" class="slider_text" id="buy_min" style="border:0; color:#f6931f; font-weight:bold;">
 
-                            echo "<br>";
-                            if ($_SESSION['logging_mode'] == LogModes::NON_EXIST) {
-                                getStatusMessage("", "Sell order created successfully");
-                            } else if ($_SESSION['logging_mode'] == LogModes::EXIST) {
-                                getStatusMessage("", "Sell order updated successfully");
-                            }
-
-                            if ($_SESSION['logging_mode'] == "BUY_ORDER") {
-                                if ($_SESSION['status'] == "NOT_ENOUGH_SILIQAS") {
-                                    $_SESSION['status'] = "ERROR";
-                                    getStatusMessage("Not enough siliqas for requested amout", "");
-                                }
-                            }
-                        }
-
-                        if (canCreateBuyOrder(
-                            $_SESSION['username'],
-                            $_SESSION['selected_artist'],
-                            getAmountSharesRequesting(
-                                $_SESSION['username'],
-                                $_SESSION['selected_artist']
-                            )
-                        )) {
-                            echo '
-                                <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
-                                    <input name="buy_sell" type="submit" id="menu-style-invert" class="menu-text py-2" value="+Buy shares">
-                                </form>
-                                <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
-                                    <input name="buy_sell" type="submit" id="menu-style-invert" class="menu-text py-2" value="+Create buy order">
-                                </form>
-                            ';
-                        }
-                        //displaying sell shares button if user chooses the options
-                        if ($_SESSION['buy_sell'] == ShareInteraction::SELL) {
-                            $max = $_SESSION['shares_owned'] - getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']);
-                            echo '
-                                <h6>How many shares are you selling?</h6>
-                                <div class="wrapper-searchbar py-2">
-                                    <div class="container-searchbar mx-auto">
-                                        <label>
-                                            <form action="../../backend/shared/SellOrderBackend.php" method="post">
-                                                <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
-                                                <p>Quantity: <span id="demo"></span></p>
-                                                <input type="text" name="asked_price" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter # in Siliqas">
-                                                <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
-                                            </form>
-                                        </label> 
-                                    </div>
+                                    <label for="buy_max">Buy max:</label>
+                                    <input type="text" class="slider_text" id="buy_max" style="border:0; color:#f6931f; font-weight:bold;">
                                 </div>
-                            ';
-                            $_SESSION['buy_sell'] = 0;
-                        } else if ($_SESSION['buy_sell'] == "BUY_ORDER") {
-                            //Users can still request a buy order up to the max total of share distributed
-                            echo '
-                                <h6>How many shares are you buying?</h6>
-                                <div class="wrapper-searchbar py-2">
-                                    <div class="container-searchbar mx-auto">
-                                        <label>
-                                            <form action="../../backend/listener/BuyOrderBackend.php" method="post">
-                                                <input name = "request_quantity" type="range" min="1" max=' . totalShareDistributed($_SESSION['selected_artist']) - getAmountSharesRequesting($_SESSION['username'], $_SESSION['selected_artist']) . ' value="1" class="slider" id="myRange">
-                                                <p>Quantity: <span id="demo"></span></p>
-                                                <input type="text" name="request_price" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter # in Siliqas">
-                                                <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
-                                            </form>
-                                        </label> 
-                                    </div>
+
+                                <div class="slider_slider" id="buy_slider"></div>
+                                <div class="order_btn_container">
+                                  <button id="buy_order">Buy</button>
                                 </div>
-                            ';
-                            $_SESSION['buy_sell'] = 0;
-                        }
+                            </div>
+                        </div>
+                        <div class="spacer"></div>
+                        <div class="accordion" id="sell_accordion">
+                          <h3 class="shares_header">Sell Shares</h3>
+                            <div class="slider_container">
+                            <div class="textbox_container">
+                                <label for="sell_min">Sell min:</label>
+                                <input type="text" class="slider_text" id="sell_min" style="border:0; color:#f6931f; font-weight:bold;">
+
+                                <label for="sell_max">Sell max:</label>
+                                <input type="text" class="slider_text" id="sell_max" style="border:0; color:#f6931f; font-weight:bold;">
+                            </div>
+                                <div class="slider_slider" id="sell_slider"></div>
+                                <div class="order_btn_container">
+                                  <button id="sell_order">Sell</button>
+                                </div>
+                            </div>
+                        </div>
+                        ';
+                        
                     }
                     ?>
                 </div>
@@ -232,34 +242,7 @@
                     <?php
                         if($_SESSION['artist_found'])
                         {
-                            if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == 0) {
-                                echo '
-                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                                <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method = "post">
-                                                    <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();"> 
-                                                    <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
-                                                </form>
-                                            </div>
-                                    ';
-                            } else if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "BID") {
-                                echo '
-                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                                <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method = "post">
-                                                    <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();"> 
-                                                    <input name = "buy_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
-                                                </form>
-                                            </div>
-                                    ';
-                                askedPriceInit($_SESSION['selected_artist'], $_SESSION['account_type']);
-                            } else if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "MARKET") {
-                                echo '
-                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                                <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method="post"> 
-                                                    <input name = "buy_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();">
-                                                    <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
-                                                </form>
-                                            </div>
-                                    ';
+                            if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "MARKET") {
                                 echo '
                                         <div class="py-4 center-text">
                                             <h3 class="h3-blue py-5">Market Price</h3>
@@ -412,12 +395,20 @@
 
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <script
+        type="text/javascript" 
+        id="artist_user_share_info_script" 
+        artist_tag='<?= $artist_market_tag; ?>'
+    ></script>
+    <script type="text/javascript" src="../js/Chart.min.js"></script>
+    <script type="text/javascript" src="../js/linegraph.js"></script>
+    <script type="text/javascript" src="../js/artist_sliders.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");

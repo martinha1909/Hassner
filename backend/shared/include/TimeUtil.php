@@ -211,6 +211,29 @@
         return $ret;
     }
 
+    /**
+    * Determines if a day is in the future of the current day
+    *
+    * @param  	current_day	    Today's date, has format of DD-MM-YYYY
+    * @param  	day_to_check    day to compare with today's date, has format of DD-MM-YYYY
+    * @return 	ret	            a boolean, true if today is in the future compared to day_to_check, 
+    *                           false otherwise
+    */
+    function dateIsInTheFuture($current_day, $day_to_check)
+    {
+        $ret = FALSE;
+
+        $current_day = strtotime($current_day);
+        $day_to_check = strtotime($day_to_check);
+
+        if($current_day > $day_to_check)
+        {
+            $ret = TRUE;
+        }
+
+        return $ret;
+    }
+
     function calculateTimeLeft($current_date, $current_time, $date_expires, $time_expires): string
     {
         //Assuming error check
@@ -395,18 +418,24 @@
     */
     function isInRange($date_check, $date_from, $date_to)
     {
+        $ret = FALSE;
+
         $date_from = strtotime($date_from);
         $date_to = strtotime($date_to);
         $date_check = strtotime($date_check);
 
-        return (($date_from <= $date_check ) && ($date_check <= $date_to));
+        if(($date_from <= $date_check ) && ($date_check <= $date_to))
+        {
+            $ret = true;
+        }
+
+        return $ret;
     }
 
     /**
     * Converts a date to YYYY/MM/DD format
     *
-    * @param  	date	    date to be determined if in range
-    *                       has format of DD-MM-YYYY
+    * @param  	date	    date to be converted, has format of DD/MM/YYYY
     * @return 	ret	        a string of date formatted to YYYY/MM/DD
     */
     function toYYYYMMDD($date): string
@@ -415,7 +444,55 @@
         $ret = "Error in parsing";
 
         $date = explode("-", $date);
-        $ret = $date[2]."/".$date[1]."/".$date[0];
+        $ret = $date[2]."-".$date[1]."-".$date[0];
+
+        return $ret;
+    }
+
+    /**
+    * Converts a date to DD/MM/YYYY format
+    *
+    * @param  	date	    date to be converted, has format of YYYY/MM/DD
+    * @return 	ret	        a string of date formatted to DD/MM/YYYY
+    */
+    function toDDMMYYYY($date): string
+    {
+        //assume error check
+        $ret = "Error in parsing";
+
+        $date = explode("-", $date);
+        $ret = $date[2]."-".$date[1]."-".$date[0];
+
+        return $ret;
+    }
+
+    /**
+    * Checks to see if a time object has passed the update interval or not
+    *
+    * @param  	latest_updated_time	    last time that was updated, has format of HH:MM (24-hour format)
+    * @param  	time_to_check	        time to be determined if in range between the last updated time and the interval
+    * @param  	update_interval	        A specified update interval, in minutes
+    * @return 	ret	                    true if time_to_check falls outside of the latest_updated_time and the update interval
+    *                                   false otherwise
+    */
+    function isOutSideOfUpdateInterval($latest_updated_time, $time_to_check, $update_interval)
+    {
+        // echo $latest_updated_time;
+        // echo "--";
+        // echo $time_to_check;
+        // echo "<br>";
+        $ret = FALSE;
+
+        $latest_updated_time = new DateTime($latest_updated_time);
+        //We only care about the hours and minutes, not the seconds
+        $current_time = new DateTime(substr($time_to_check, 0, 5));
+        $interval = $current_time->diff($latest_updated_time);
+
+        //Only update the pps if it has been more than the specified interval
+        if($interval->format("%i") > $update_interval)
+        {
+            $ret = TRUE;
+        }
 
         return $ret;
     }

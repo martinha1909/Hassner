@@ -1,11 +1,12 @@
 <?php
     include '../../backend/control/Dependencies.php';
-    include '../../backend/artist/ArtistHelpers.php';
-    include '../../backend/shared/MarketplaceHelpers.php';
-    include '../../backend/shared/CampaignHelpers.php';
+    include '../../backend/artist/include/ArtistHelpers.php';
+    include '../../backend/shared/include/MarketplaceHelpers.php';
+    include '../../backend/shared/include/CampaignHelpers.php';
     include '../../backend/constants/ShareInteraction.php';
     include '../../backend/constants/TradeHistoryType.php';
     include '../../backend/constants/EthosOption.php';
+    include '../../backend/constants/GraphOption.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
     include '../../backend/object/TradeHistory.php';
@@ -17,6 +18,8 @@
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
     $_SESSION['user_balance'] = $account_info['balance'];
+
+    $artist_market_tag = getArtistMarketTag($_SESSION['selected_artist']);
 
     checkRaffleRoll();
 ?>
@@ -40,6 +43,7 @@
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
     <link rel="stylesheet" href="../css/date_picker.css" type="text/css">
     <link rel="stylesheet" href="../css/slidebar.css" type="text/css">
+    <link rel="stylesheet" href="../css/linegraph.css" id="theme-color">
 </head>
 
 
@@ -390,6 +394,19 @@
                                     ';
                                 }
                                 
+                                echo '
+                                    <button id = "'.GraphOption::ONE_DAY.'" class="btn btn-secondary">'.GraphOption::ONE_DAY.'</button>
+                                    <button id = "'.GraphOption::FIVE_DAY.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_DAY.'</button>
+                                    <button id = "'.GraphOption::ONE_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_MONTH.'</button>
+                                    <button id = "'.GraphOption::SIX_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::SIX_MONTH.'</button>
+                                    <button id = "'.GraphOption::YEAR_TO_DATE.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::YEAR_TO_DATE.'</button>
+                                    <button id = "'.GraphOption::ONE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_YEAR.'</button>
+                                    <button id = "'.GraphOption::FIVE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_YEAR.'</button>
+                                    <div class="chart-container">
+                                        <canvas id="stock_graph"></canvas>
+                                    </div>
+                                ';
+                                
                             }
                             else if($_SESSION['ethos_dashboard_options'] == EthosOption::BUY_BACK_SHARES)
                             {
@@ -616,7 +633,13 @@
             output.innerHTML = this.value;
         }
     </script>
-    <script src="js/scripts.js"></script>
+    <script
+        type="text/javascript" 
+        id="artist_user_share_info_script" 
+        artist_tag='<?= $artist_market_tag; ?>'
+    ></script>
+    <script type="text/javascript" src="../js/Chart.min.js"></script>
+    <script type="text/javascript" src="../js/linegraph.js"></script>
 </body>
 
 </html>

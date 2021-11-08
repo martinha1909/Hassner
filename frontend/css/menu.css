@@ -140,6 +140,15 @@ select#dark {
 
 /* Text Classes */
 
+.input-tan {
+  color: #e2cda9ff;
+  font-weight: 800;
+}
+
+.p-white {
+  color: white;
+}
+
 .h1-tan {
   font-size: 3rem;
   color: #e2cda9ff;
