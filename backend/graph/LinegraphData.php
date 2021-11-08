@@ -13,7 +13,7 @@
     $db_current_date_time = date('Y-m-d H:i:s');
     $days_ago = "";
 
-    if($graph_options == GraphOption::ONE_DAY || $graph_options == GraphOption::NONE)
+    if($graph_options == GraphOption::ONE_DAY)
     {
         $days_ago = date("Y-m-d H:i:s", strtotime("-1 day"));
 
