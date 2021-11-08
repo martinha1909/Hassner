@@ -101,7 +101,7 @@
                             }
                         ?>
                         <h2 class="h2-blue"><?php echo $_SESSION['selected_artist']; ?></h2>
-                        <h4 class="h4-blue">(<?php echo $artist_market_tag; ?>)</h4>
+                        <h4 class="h4-blue">(<?php echo strtoupper($artist_market_tag); ?>)</h4>
                         <?php
                             if(!isAlreadyFollowed($_SESSION['username'], $_SESSION['selected_artist']))
                             {
@@ -132,6 +132,11 @@
                     <div class="chart-container">
                         <?php
                             $change = 0;
+                            $market_cap = calculateMarketCap($_SESSION['selected_artist']);
+                            $volume = getArtistShareVolume($_SESSION['selected_artist']);
+                            $open = getArtistPricePerShare($_SESSION['selected_artist']);
+                            $high = getHighestOrLowestPPS($_SESSION['selected_artist'], "MAX");
+                            $low = getHighestOrLowestPPS($_SESSION['selected_artist'], "MIN");
                             echo '
                                     <h2>'.$_SESSION['current_pps']['price_per_share'].'</h2>
                                 ';
@@ -166,17 +171,17 @@
                                     </form>
                             ';
 
-                            //data to be used and transfered to js files with script tag below
-                            // $graph_jason_data = getArtistJSONChange($_SESSION['selected_artist'], $_SESSION['graph_options']);
-
-                            // if(count(json_decode($graph_jason_data)) == 0)
-                            // {
-                            //     echo '<h3>Graph information is not available</h3>';
-                            // }
-                            // else
-                            // {
-                                echo '<canvas id="stock_graph"></canvas>';
-                            // }
+                            //displaying stock graph
+                            echo '
+                                <canvas id="stock_graph"></canvas>
+                                <div class="text-left">
+                                    <h6>Mkt Cap: '.$market_cap.'</h6>
+                                    <h6>Volume: '.$volume.'</h6>
+                                    <h6>Open: '.$open.'</h6>
+                                    <h6>High: '.$high.'</h6>
+                                    <h6>Low: '.$low.'</h6>
+                                </div>
+                            ';
                         ?>
                     </div>
 

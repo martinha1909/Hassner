@@ -42,7 +42,6 @@ $( function() {
       $("#sell_slider").slider("values",1,$(this).val());
     });
 
-
     // Accoridon init
     $( "#buy_accordion" ).accordion({
       heightStyle: "content",

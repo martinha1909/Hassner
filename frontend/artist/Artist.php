@@ -6,6 +6,7 @@
     include '../../backend/constants/ShareInteraction.php';
     include '../../backend/constants/TradeHistoryType.php';
     include '../../backend/constants/EthosOption.php';
+    include '../../backend/constants/GraphOption.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
     include '../../backend/object/TradeHistory.php';
@@ -17,6 +18,8 @@
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
     $_SESSION['user_balance'] = $account_info['balance'];
+
+    $artist_market_tag = getArtistMarketTag($_SESSION['selected_artist']);
 
     checkRaffleRoll();
 ?>
@@ -40,6 +43,7 @@
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
     <link rel="stylesheet" href="../css/date_picker.css" type="text/css">
     <link rel="stylesheet" href="../css/slidebar.css" type="text/css">
+    <link rel="stylesheet" href="../css/linegraph.css" id="theme-color">
 </head>
 
 
@@ -386,6 +390,21 @@
                                     ';
                                 }
                                 
+                                echo '
+                                    <form action="../../backend/shared/GraphOptionSwitcher.php" method="post">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::ONE_DAY.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::FIVE_DAY.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::ONE_MONTH.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::SIX_MONTH.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::YEAR_TO_DATE.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::ONE_YEAR.'">
+                                        <input name = "graph_options" type = "submit" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::FIVE_YEAR.'">
+                                    </form>
+                                    <div class="chart-container">
+                                        <canvas id="stock_graph"></canvas>
+                                    </div>
+                                ';
+                                
                             }
                             else if($_SESSION['ethos_dashboard_options'] == EthosOption::BUY_BACK_SHARES)
                             {
@@ -606,7 +625,12 @@
             output.innerHTML = this.value;
         }
     </script>
-    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script
+        type="text/javascript" 
+        id="artist_user_share_info_script" 
+        artist_tag='<?= $artist_market_tag; ?>'
+        graph_option='<?= $_SESSION['graph_options']; ?>'
+    ></script>
     <script type="text/javascript" src="../js/Chart.min.js"></script>
     <script type="text/javascript" src="../js/linegraph.js"></script>
 </body>

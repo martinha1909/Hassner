@@ -203,6 +203,19 @@
         return $rate['rate'];
     }
 
+    function getArtistShareVolume($artist_username)
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchArtistCurrentPricePerShare($conn, $artist_username);
+        $volume = $res->fetch_assoc();
+        $ret = $volume['price_per_share'];
+
+        closeCon($conn);
+        return $ret;
+    }
+
     function printTopInvestedArtistChart($users, $all_shares)
     {
         $id = 1;

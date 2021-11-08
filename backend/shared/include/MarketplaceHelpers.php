@@ -404,9 +404,18 @@ function getAmountSharesRequesting($user_username, $artist_username)
     return $ret;
 }
 
+/**
+    * Get artist highest or lowest sell order, depends on the selected option
+    *
+    * @param  	artist_username	  artist username to retrieve all the sell orders from
+    * @param  	indicator	      option to have action upon, lowest or highest
+    *
+    * @return 	the price of the sell order, as indicated by indicator
+    */
 function getHighestOrLowestPPS($artist_username, $indicator)
 {
-    if ($indicator == "MAX") {
+    if ($indicator == "MAX") 
+    {
         $conn = connect();
 
         $res1 = searchArtistCurrentPricePerShare($conn, $artist_username);
@@ -428,33 +437,24 @@ function getHighestOrLowestPPS($artist_username, $indicator)
 
         //if both are the same, then return one of them, in this case return market price
         return $market_price['price_per_share'];
-    } else {
+    } 
+    else 
+    {
         $conn = connect();
 
         $res1 = searchArtistCurrentPricePerShare($conn, $artist_username);
         $market_price = $res1->fetch_assoc();
 
-        $res2 = searchSellOrderByArtist($conn, $_SESSION['username']);
-
-        //If there are no users that are selling this artist's shares other than himself, 
-        //return the market price per share 
-        if ($res2->num_rows == 0) {
-            return $market_price['price_per_share'];
-        }
-
-        $res3 = searchArtistLowestPrice($conn, $artist_username);
-        if ($res3->num_rows == 0) {
-            return $market_price['price_per_share'];
-        }
-        $lowest_asked_price = $res3->fetch_assoc();
+        $res2 = searchArtistLowestPrice($conn, $artist_username);
+        $lowest_asked_price = $res2->fetch_assoc();
 
         //if market price is lower, return that as a lowest value
         if ($market_price['price_per_share'] < $lowest_asked_price['minimum']) {
             return $market_price['price_per_share'];
         }
 
-        //if somebody is selling lower than market price and lower than other sellers, 
-        //return that as a lowest value
+        //if somebody is selling higher than market price and higher than other sellers, 
+        //return that as a highest value
         if ($market_price['price_per_share'] > $lowest_asked_price['minimum']) {
             return $lowest_asked_price['minimum'];
         }
@@ -974,71 +974,13 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         return $market_cap;
     }
 
-    // function getArtistJSONChange($artist_username, $graph_option)
-    // {
-    //     $conn = connect();
-    //     $ret = array();
-    //     //update interval, in minutes. Default is set to the global variable of update interval
-    //     $update_interval = $_SESSION['update_pps_interval'];
-    //     $current_date_time = getCurrentDate("America/Edmonton");
-    //     $date_parser = dayAndTimeSplitter($current_date_time);
-    //     $current_day = $date_parser[0];
-    //     $current_time = $date_parser[1];
-
-    //     if($graph_option == GraphOption::ONE_DAY)
-    //     {
-    //         $res = getArtistPPSChange($conn, $artist_username, $graph_option);
-    //         $one_day_ago = date('d-m-Y', strtotime('-1 day', strtotime($date_parser[0])));
-
-    //         while($row = $res->fetch_assoc())
-    //         {
-    //             if(isInRange($row['date_recorded'], $one_day_ago, $current_day))
-    //             {
-    //                 if(sizeof($ret) == 0)
-    //                 {
-    //                     array_push($ret, $row);
-    //                 }
-    //                 else if(isOutSideOfUpdateInterval($ret[sizeof($ret) - 1]['time_recorded'], $row['time_recorded'], $update_interval))
-    //                 {
-    //                     array_push($ret, $row);
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     else if($graph_option == GraphOption::FIVE_DAY)
-    //     {
-    //         $res = getArtistPPSChange($conn, $artist_username, $graph_option);
-    //         $five_days_ago = date('d-m-Y', strtotime('-5 days', strtotime($date_parser[0])));
-    //         $update_interval = 60;
-    //         while($row = $res->fetch_assoc())
-    //         {
-    //             if(isInRange($row['date_recorded'], $five_days_ago, $current_day))
-    //             {
-    //                 echo $row['time_recorded'];
-    //                 echo "--".$row['date_recorded'];
-    //                 echo "<br>";
-    //                 if(sizeof($ret) == 0)
-    //                 {
-    //                     array_push($ret, $row);
-    //                 }
-    //                 else if(dateIsInTheFuture($current_day, $row['date_recorded']))
-    //                 {
-    //                     array_push($ret, $row);
-    //                 }
-    //                 else if(isOutSideOfUpdateInterval($ret[sizeof($ret) - 1]['time_recorded'], $row['time_recorded'], $update_interval))
-    //                 {
-    //                     array_push($ret, $row);
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     closeCon($conn);
-
-    //     //now print the data
-    //     return json_encode($ret);
-    // }
-
+    /**
+    * Get artist's 4-letter market tag
+    *
+    * @param  	artist_username   given username of the artist to search for their market tag
+    *
+    * @return 	ret	              a string, containing 4 letters of the artist market tag
+    */
     function getArtistMarketTag($artist_username)
     {
         $ret = "Error in getting artist market tag";
@@ -1052,6 +994,33 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         }
 
         closeCon($conn);
+
+        return $ret;
+    }
+
+    /**
+    * Get the maximum price per share of an artist within a given day
+    *
+    * @param  	all_pps_in_a_day   an array containing all price per share of a specific day
+    *
+    * @return 	ret	               maximum value in the array all_pps_in_a_day
+    */
+    function getMaxPPSByDay($all_pps_in_a_day)
+    {
+        $ret = 0;
+
+        if(sizeof($all_pps_in_a_day) != 0)
+        {
+            $ret = $all_pps_in_a_day[0];
+
+            for($i = 0; $i < sizeof($all_pps_in_a_day); $i++)
+            {
+                if($all_pps_in_a_day[$i] > $ret)
+                {
+                    $ret = $all_pps_in_a_day[$i];
+                }
+            }
+        }
 
         return $ret;
     }

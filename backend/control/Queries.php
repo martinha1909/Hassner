@@ -127,6 +127,17 @@
             return $result;
         }
 
+        function getJSONDataWithinInterval($conn, $artist_username, $date_from, $date_to)
+        {
+            $sql = "SELECT artist_username, price_per_share, date_recorded FROM artist_stock_change WHERE artist_username = ? AND date_recorded >=? AND date_recorded <= ? ORDER BY date_recorded";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('sss', $artist_username, $date_from, $date_to);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchAccountType($conn, $type)
         {
             $sql = "SELECT * FROM account WHERE account_type = ?";
