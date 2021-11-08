@@ -129,7 +129,7 @@
             */
             private static function partition(&$sell_order_arr, $low, $high, $option, $item)
             {
-                if($item == "Price")
+                if($item == "PRICE")
                 {
                     $pivot = $sell_order_arr[$high]->getSellingPrice();
                 }
@@ -138,9 +138,9 @@
 
                 for($j = $low; $j <= $high - 1; $j++)
                 {
-                    if($option == "Descending")
+                    if($option == "DESCENDING")
                     {
-                        if($item == "Price")
+                        if($item == "PRICE")
                         {
                             if($sell_order_arr[$j]->getSellingPrice() > $pivot)
                             {
@@ -149,9 +149,9 @@
                             }
                         }
                     }
-                    else if($option == "Ascending")
+                    else if($option == "ASCENDING")
                     {
-                        if($item == "Price")
+                        if($item == "PRICE")
                         {
                             if($sell_order_arr[$j]->getSellingPrice() < $pivot)
                             {
@@ -175,6 +175,8 @@
             */
             public static function sort(&$sell_order_arr, $low, $high, $option, $item)
             {
+                $option = strtoupper($option);
+                $item = strtoupper($item);
                 if($low < $high)
                 {
                     $pi = SellOrder::partition($sell_order_arr, $low, $high, $option, $item);

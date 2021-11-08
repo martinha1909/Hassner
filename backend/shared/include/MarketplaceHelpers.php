@@ -99,7 +99,7 @@ function fetchAskedPrice($artist_username)
             array_push($ret, $sell_order);
         }
     }
-    SellOrder::sort($ret, 0, (sizeof($ret) - 1), "Ascending", "Price");
+    SellOrder::sort($ret, 0, (sizeof($ret) - 1), "ASCENDING", "PRICE");
 
     return $ret;
 }
