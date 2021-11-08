@@ -4,6 +4,7 @@
     include '../../backend/constants/StatusCodes.php';
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/ShareInteraction.php';
+    include '../../backend/constants/GraphOption.php';
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
@@ -17,6 +18,7 @@
         calculateMarketCap($_SESSION['selected_artist']);
 
         $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
+        $artist_market_tag = getArtistMarketTag($_SESSION['selected_artist']);
     }
 ?>
 
@@ -39,6 +41,7 @@
     <link rel="stylesheet" href="../css/searchbar.css" id="theme-color">
     <link rel="stylesheet" href="../css/slidebar.css" id="theme-color">
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
+    <link rel="stylesheet" href="../css/linegraph.css" id="theme-color">
 </head>
 
 <body class="bg-dark">
@@ -96,59 +99,91 @@
                                 }
                             }
                         ?>
-                        <h2 class="h2-blue">Your shares with <?php echo $_SESSION['selected_artist']; ?></h2>
-                                <?php
-                                    if(!isAlreadyFollowed($_SESSION['username'], $_SESSION['selected_artist']))
-                                    {
-                                        echo '
-                                            <p>
-                                                <form action="../../backend/listener/FollowArtistBackend.php" method="post">
-                                                    <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Follow">
-                                                </form>
-                                            </p>
-                                        ';
-                                    }
-                                    else
-                                    {
-                                        echo '
-                                            <p>
-                                                <form action="../../backend/listener/UnFollowArtistBackend.php" method="post">
-                                                    <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Unfollow">
-                                                </form>
-                                            </p>
-                                        ';
-                                    }
-                                ?>
+                        <h2 class="h2-blue"><?php echo $_SESSION['selected_artist']; ?></h2>
+                        <h4 class="h4-blue">(<?php echo strtoupper($artist_market_tag); ?>)</h4>
+                        <?php
+                            if(!isAlreadyFollowed($_SESSION['username'], $_SESSION['selected_artist']))
+                            {
+                                echo '
+                                    <p>
+                                        <form action="../../backend/listener/FollowArtistBackend.php" method="post">
+                                            <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Follow">
+                                        </form>
+                                    </p>
+                                ';
+                            }
+                            else
+                            {
+                                echo '
+                                    <p>
+                                        <form action="../../backend/listener/UnFollowArtistBackend.php" method="post">
+                                            <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Unfollow">
+                                        </form>
+                                    </p>
+                                ';
+                            }
+                        ?>
                             </form>
                         </p>
                     </div>
 
+                    <!-- Displaying stock graph -->
+                    <div class="chart-container">
+                        <?php
+                            $change = 0;
+                            $market_cap = calculateMarketCap($_SESSION['selected_artist']);
+                            $volume = getArtistShareVolume($_SESSION['selected_artist']);
+                            $open = getArtistPricePerShare($_SESSION['selected_artist']);
+                            $high = getHighestOrLowestPPS($_SESSION['selected_artist'], "MAX");
+                            $low = getHighestOrLowestPPS($_SESSION['selected_artist'], "MIN");
+                            echo '
+                                    <h2>'.$_SESSION['current_pps']['price_per_share'].'</h2>
+                                ';
+                            if($change == 0)
+                            {
+                                echo '
+                                    <h3>'.$change.'%</h3>
+                                ';
+                            }
+                            else if($change > 0)
+                            {
+                                echo '
+                                    <h3 class="suc-msg">+'.$change.'%</h3>
+                                ';
+                            }
+                            else
+                            {
+                                echo '
+                                    <h3 class="error-msg">'.$change.'%</h3>
+                                ';
+                            }
+
+                            echo '
+                                    <button id = "'.GraphOption::ONE_DAY.'" class="btn btn-secondary">'.GraphOption::ONE_DAY.'</button>
+                                    <button id = "'.GraphOption::FIVE_DAY.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_DAY.'</button>
+                                    <button id = "'.GraphOption::ONE_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_MONTH.'</button>
+                                    <button id = "'.GraphOption::SIX_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::SIX_MONTH.'</button>
+                                    <button id = "'.GraphOption::YEAR_TO_DATE.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::YEAR_TO_DATE.'</button>
+                                    <button id = "'.GraphOption::ONE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_YEAR.'</button>
+                                    <button id = "'.GraphOption::FIVE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_YEAR.'</button>
+                            ';
+
+                            //displaying stock graph
+                            echo '
+                                <canvas id="stock_graph"></canvas>
+                                <div class="text-left">
+                                    <h6>Mkt Cap: '.$market_cap.'</h6>
+                                    <h6>Volume: '.$volume.'</h6>
+                                    <h6>Open: '.$open.'</h6>
+                                    <h6>High: '.$high.'</h6>
+                                    <h6>Low: '.$low.'</h6>
+                                </div>
+                            ';
+                        ?>
+                    </div>
+
                     <!-- displaying current share information between current user and selected artist -->
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Owned Shares</th>
-                                <th scope="col">Shares selling</th>
-                                <th scope="col">Shares requesting</th>
-                                <th scope="col">Current price per share (q̶)</th>
-                                <th scope="col">Issued Shares</th>
-                                <th scope="col">Available Shares</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <!-- displaying Amount of shares owned, selected artist name, 
-                                market price per share of artist, profit since last bought, 
-                                and amount of available shares for purchase, respectively -->
-                                <th scope="row"><?php echo $_SESSION['shares_owned']; ?></th>
-                                <td><?php echo getAmountSharesSelling($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
-                                <td><?php echo getAmountSharesRequesting($_SESSION['username'], $_SESSION['selected_artist']); ?></td>
-                                <td><?php echo round($_SESSION['current_pps']['price_per_share'], 2); ?></td>
-                                <td><?php echo totalShareDistributed($_SESSION['selected_artist']); ?></td>
-                                <td><?php echo $_SESSION['available_shares']; }?></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <?php }?>
                 </div>
                 <div class="mx-auto my-auto text-center col-5">
                     <?php
@@ -188,14 +223,8 @@
                             }
                         }
 
-                        if (canCreateBuyOrder(
-                            $_SESSION['username'],
-                            $_SESSION['selected_artist'],
-                            getAmountSharesRequesting(
-                                $_SESSION['username'],
-                                $_SESSION['selected_artist']
-                            )
-                        )) {
+                        if (canCreateBuyOrder($_SESSION['username'], $_SESSION['selected_artist'], getAmountSharesRequesting($_SESSION['username'], $_SESSION['selected_artist']))) 
+                        {
                             echo '
                                 <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
                                     <input name="buy_sell" type="submit" id="menu-style-invert" class="menu-text py-2" value="+Buy shares">
@@ -442,7 +471,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <script
+        type="text/javascript" 
+        id="artist_user_share_info_script" 
+        artist_tag='<?= $artist_market_tag; ?>'
+    ></script>
+    <script type="text/javascript" src="../js/Chart.min.js"></script>
+    <script type="text/javascript" src="../js/linegraph.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");

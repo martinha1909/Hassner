@@ -1,6 +1,7 @@
 <?php
         include '../../backend/constants/StatusCodes.php';
         include '../../backend/constants/AccountTypes.php';
+        include '../../backend/constants/GraphOption.php';
         
         //logs in with provided user info and password, then use SQL query to query database 
         //after qurerying return the result
@@ -99,6 +100,41 @@
             $stmt->bind_param('s', $artist_ticker);
             $stmt->execute();
             $result = $stmt->get_result();
+            return $result;
+        }
+
+        function getArtistPPSChange($conn, $artist_username, $option)
+        {
+            $result = 0;
+
+            if($option == GraphOption::ONE_DAY)
+            {
+                $sql = "SELECT artist_username, price_per_share, time_recorded, date_recorded FROM artist_stock_change WHERE artist_username = ? ORDER BY time_recorded";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('s', $artist_username);
+                $stmt->execute();
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                $sql = "SELECT artist_username, price_per_share, time_recorded, date_recorded FROM artist_stock_change WHERE artist_username = ? ORDER BY date_recorded";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('s', $artist_username);
+                $stmt->execute();
+                $result = $stmt->get_result();
+            }
+
+            return $result;
+        }
+
+        function getJSONDataWithinInterval($conn, $artist_username, $date_from, $date_to)
+        {
+            $sql = "SELECT artist_username, price_per_share, date_recorded FROM artist_stock_change WHERE artist_username = ? AND date_recorded >=? AND date_recorded <= ? ORDER BY date_recorded";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('sss', $artist_username, $date_from, $date_to);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
             return $result;
         }
 
@@ -961,7 +997,7 @@
                 $stmt->bindValue(1, $amount_bought);
                 $stmt->bindValue(2, $artist_username);
                 $stmt->execute(array($amount_bought, $artist_username));
-                
+
                 $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
                                         VALUES(?, ?, ?, ?, ?, ?, ?)");
                 $stmt->bindValue(1, $artist_username);

@@ -5,6 +5,7 @@
     include '../../backend/constants/MenuOption.php';
     include '../../backend/constants/BalanceOption.php';
     include '../../backend/constants/EthosOption.php';
+    include '../../backend/constants/GraphOption.php';
 
     function hassnerInit()
     {

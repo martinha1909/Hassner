@@ -397,9 +397,18 @@ function getAmountSharesRequesting($user_username, $artist_username)
     return $ret;
 }
 
+/**
+    * Get artist highest or lowest sell order, depends on the selected option
+    *
+    * @param  	artist_username	  artist username to retrieve all the sell orders from
+    * @param  	indicator	      option to have action upon, MAX would get the highest and MIN would get the lowest
+    *
+    * @return 	the price of the sell order, as indicated by indicator
+    */
 function getHighestOrLowestPPS($artist_username, $indicator)
 {
-    if ($indicator == "MAX") {
+    if ($indicator == "MAX") 
+    {
         $conn = connect();
 
         $res1 = searchArtistCurrentPricePerShare($conn, $artist_username);
@@ -421,33 +430,24 @@ function getHighestOrLowestPPS($artist_username, $indicator)
 
         //if both are the same, then return one of them, in this case return market price
         return $market_price['price_per_share'];
-    } else {
+    } 
+    else 
+    {
         $conn = connect();
 
         $res1 = searchArtistCurrentPricePerShare($conn, $artist_username);
         $market_price = $res1->fetch_assoc();
 
-        $res2 = searchSellOrderByArtist($conn, $_SESSION['username']);
-
-        //If there are no users that are selling this artist's shares other than himself, 
-        //return the market price per share 
-        if ($res2->num_rows == 0) {
-            return $market_price['price_per_share'];
-        }
-
-        $res3 = searchArtistLowestPrice($conn, $artist_username);
-        if ($res3->num_rows == 0) {
-            return $market_price['price_per_share'];
-        }
-        $lowest_asked_price = $res3->fetch_assoc();
+        $res2 = searchArtistLowestPrice($conn, $artist_username);
+        $lowest_asked_price = $res2->fetch_assoc();
 
         //if market price is lower, return that as a lowest value
         if ($market_price['price_per_share'] < $lowest_asked_price['minimum']) {
             return $market_price['price_per_share'];
         }
 
-        //if somebody is selling lower than market price and lower than other sellers, 
-        //return that as a lowest value
+        //if somebody is selling higher than market price and higher than other sellers, 
+        //return that as a highest value
         if ($market_price['price_per_share'] > $lowest_asked_price['minimum']) {
             return $lowest_asked_price['minimum'];
         }
@@ -741,25 +741,25 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                 //In the case of buying in asked price, the new market price will become the last purchased price
                 $new_pps = $asked_price;
 
-                purchaseAskedPriceShare(
-                    $conn,
-                    $row['user_username'],
-                    $user_username,
-                    $artist_username,
-                    $buyer_new_balance,
-                    $seller_new_balance,
-                    $_SESSION['current_pps']['price_per_share'],
-                    $new_pps,
-                    $buyer_new_share_amount,
-                    $seller_new_share_amount,
-                    $_SESSION['shares_owned'],
-                    $row['quantity'],
-                    $row['siliqas_requested'],
-                    $row['id'],
-                    $date_parser[0],
-                    $date_parser[1],
-                    "AUTO_SELL"
-                );
+                $connPDO = connectPDO();
+
+                purchaseAskedPriceShare($connPDO,
+                                        $row['user_username'],
+                                        $user_username,
+                                        $artist_username,
+                                        $buyer_new_balance,
+                                        $seller_new_balance,
+                                        $_SESSION['current_pps']['price_per_share'],
+                                        $new_pps,
+                                        $buyer_new_share_amount,
+                                        $seller_new_share_amount,
+                                        $_SESSION['shares_owned'],
+                                        $row['quantity'],
+                                        $row['siliqas_requested'],
+                                        $row['id'],
+                                        $date_parser[0],
+                                        $date_parser[1],
+                                        "AUTO_SELL");
 
                 updateBuyOrderQuantity($conn, $row['id'], 0);
 
@@ -788,25 +788,25 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                 //In the case of buying in asked price, the new market price will become the last purchased price
                 $new_pps = $asked_price;
 
-                purchaseAskedPriceShare(
-                    $conn,
-                    $row['user_username'],
-                    $user_username,
-                    $artist_username,
-                    $buyer_new_balance,
-                    $seller_new_balance,
-                    $_SESSION['current_pps']['price_per_share'],
-                    $new_pps,
-                    $buyer_new_share_amount,
-                    $seller_new_share_amount,
-                    $_SESSION['shares_owned'],
-                    $quantity,
-                    $row['siliqas_requested'],
-                    $row['id'],
-                    $date_parser[0],
-                    $date_parser[1],
-                    "AUTO_SELL"
-                );
+                $connPDO = connectPDO();
+
+                purchaseAskedPriceShare($connPDO,
+                                        $row['user_username'],
+                                        $user_username,
+                                        $artist_username,
+                                        $buyer_new_balance,
+                                        $seller_new_balance,
+                                        $_SESSION['current_pps']['price_per_share'],
+                                        $new_pps,
+                                        $buyer_new_share_amount,
+                                        $seller_new_share_amount,
+                                        $_SESSION['shares_owned'],
+                                        $quantity,
+                                        $row['siliqas_requested'],
+                                        $row['id'],
+                                        $date_parser[0],
+                                        $date_parser[1],
+                                        "AUTO_SELL");
 
                 //The return value should be the amount of share requested subtracted by the amount that 
                 //is automatically bought
@@ -965,5 +965,56 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         updateArtistMarketCap($connPDO, $artist_username, $market_cap);
 
         return $market_cap;
+    }
+
+    /**
+    * Get artist's 4-letter market tag
+    *
+    * @param  	artist_username   given username of the artist to search for their market tag
+    *
+    * @return 	ret	              a string, containing 4 letters of the artist market tag
+    */
+    function getArtistMarketTag($artist_username)
+    {
+        $ret = "Error in getting artist market tag";
+        $conn = connect();
+
+        $res = searchArtistTicker($conn, $artist_username);
+        if($res->num_rows > 0)
+        {
+            $artist_tag = $res->fetch_assoc();
+            $ret = $artist_tag['ticker'];
+        }
+
+        closeCon($conn);
+
+        return $ret;
+    }
+
+    /**
+    * Get the maximum price per share of an artist within a given day
+    *
+    * @param  	all_pps_in_a_day   an array containing all price per share of a specific day
+    *
+    * @return 	ret	               maximum value in the array all_pps_in_a_day
+    */
+    function getMaxPPSByDay($all_pps_in_a_day)
+    {
+        $ret = 0;
+
+        if(sizeof($all_pps_in_a_day) != 0)
+        {
+            $ret = $all_pps_in_a_day[0];
+
+            for($i = 0; $i < sizeof($all_pps_in_a_day); $i++)
+            {
+                if($all_pps_in_a_day[$i] > $ret)
+                {
+                    $ret = $all_pps_in_a_day[$i];
+                }
+            }
+        }
+
+        return $ret;
     }
 ?>

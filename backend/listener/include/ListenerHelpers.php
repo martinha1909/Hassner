@@ -203,6 +203,19 @@
         return $rate['rate'];
     }
 
+    function getArtistShareVolume($artist_username)
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchArtistCurrentPricePerShare($conn, $artist_username);
+        $volume = $res->fetch_assoc();
+        $ret = $volume['price_per_share'];
+
+        closeCon($conn);
+        return $ret;
+    }
+
     function printTopInvestedArtistChart($users, $all_shares)
     {
         $id = 1;
@@ -285,7 +298,9 @@
                         //In the case of buying in asked price, the new market price will become the last purchased price
                         $new_pps = $row['selling_price'];
 
-                        purchaseAskedPriceShare($conn, 
+                        $connPDO = connectPDO();
+
+                        purchaseAskedPriceShare($connPDO, 
                                                 $_SESSION['username'], 
                                                 $row['user_username'], 
                                                 $_SESSION['selected_artist'],
@@ -331,7 +346,9 @@
                         //In the case of buying in asked price, the new market price will become the last purchased price
                         $new_pps = $row['selling_price'];
 
-                        purchaseAskedPriceShare($conn, 
+                        $connPDO = connectPDO();
+
+                        purchaseAskedPriceShare($connPDO, 
                                                 $_SESSION['username'], 
                                                 $row['user_username'], 
                                                 $_SESSION['selected_artist'],
