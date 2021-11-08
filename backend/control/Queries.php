@@ -618,22 +618,6 @@
             return $result;
         }
 
-        function getArtistLatestPPSChangeTimeByDay($conn, $artist_username, $selected_date)
-        {
-            $sql = "SELECT MAX(time_recorded) AS latest_time FROM artist_stock_change WHERE artist_username = '$artist_username' AND date_recorded = '$selected_date'";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
-
-        function getArtistLatestPPSChangeInDay($conn, $artist_username)
-        {
-            $sql = "SELECT MAX(date_recorded) AS latest_day FROM artist_stock_change WHERE artist_username = '$artist_username'";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
-
         function updateCampaignEligibleParticipants($conn, $campaign_id, $eligible_participant)
         {
             $sql = "UPDATE campaign SET eligible_participants = '$eligible_participant' WHERE id='$campaign_id'";
