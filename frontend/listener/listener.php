@@ -1,12 +1,13 @@
 <?php
     include '../../backend/control/Dependencies.php';
-    include '../../backend/shared/MarketplaceHelpers.php';
-    include '../../backend/shared/CampaignHelpers.php';
+    include '../../backend/shared/include/MarketplaceHelpers.php';
+    include '../../backend/shared/include/CampaignHelpers.php';
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/BalanceOption.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
     include '../../backend/object/Node.php';
+    include '../../backend/object/ArtistInfo.php';
     include '../../backend/object/TickerInfo.php';
 
     $_SESSION['selected_artist'] = 0;
@@ -187,7 +188,7 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="color: white;" class="bg-dark">#</th>
-                                                <form action="../../backend/listener/SortPortfolioArtistHelpers.php">
+                                                <form action="../../backend/listener/include/SortPortfolioArtistHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
                                 ';
                             //sort Artist ascending alphabetically
@@ -203,7 +204,7 @@
                             echo '
                                                 </th>
                                                 </form>
-                                                <form action="../../backend/listener/SortPortfolioShareHelpers.php">
+                                                <form action="../../backend/listener/include/SortPortfolioShareHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
                             //sort Shares bought ascending alphabetically
                             if ($_SESSION['sort_type'] == 2) {
@@ -218,7 +219,7 @@
                             echo '
                                                 </th>
                                                 </form>
-                                                <form action = "../../backend/listener/SortPortfolioPPSHelpers.php">
+                                                <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
                             //sort Price per share ascending alphabetically
                             if ($_SESSION['sort_type'] == 3) {
@@ -234,7 +235,7 @@
                             echo '
                                                 </th>
                                                 </form>
-                                                <form action = "../../backend/listener/SortPortfolioRateHelpers.php">
+                                                <form action = "../../backend/listener/include/SortPortfolioRateHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
                             //sort Rate ascending alphabetically
                             if ($_SESSION['sort_type'] == 0) {
@@ -491,35 +492,24 @@
                         }
 
                         //displaying Top Invested Artist
-                        else if ($_SESSION['display'] == MenuOption::Artists) {
-                            echo '
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "#"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Artist"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Shares bought"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Price per share (q̶)"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Rate"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Max Price"></th>
-                                                <th scope="col" id="href-hover";"><input class="th-dark" type = "submit" aria-pressed="true" value = "Min Price"></th>
-                                            </tr>
-                                        </thead>
-                                    <tbody>
-                                ';
-                            echo '<form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">';
-                            $result = query_account('artist');
-                            if ($result->num_rows == 0) {
-                                echo '<h3> There are no artists to display </h3>';
-                            } else {
-                                $all_shares = array();
-                                $users = array();
-                                topInvestedArtistInit($all_shares, $users, $result);
-                                sortArrays($all_shares, $users);
-                                printTopInvestedArtistChart($users, $all_shares);
+                        else if ($_SESSION['display'] == MenuOption::Artists) 
+                        {
+                            $all_artists = getAllArtist();
+
+                            if(sizeof($all_artists) == 0)
+                            {
+                                echo "<h3>No artists to display<h3>";
                             }
-                            echo '</form>';
-                            echo '</table>';
+                            else
+                            {
+                                followedArtist($_SESSION['username']);
+
+                                topsAndFlops($all_artists);
+
+                                apex($all_artists);
+
+                                localArtist();
+                            }
                         } else if ($_SESSION['display'] == MenuOption::Balance) {
                             fiatInit();
                         }

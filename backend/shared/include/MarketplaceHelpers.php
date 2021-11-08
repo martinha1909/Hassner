@@ -8,14 +8,14 @@ if ($_SESSION['dependencies'] == "FRONTEND")
     //we want to limit the access of artist account to these functions
     if ($_SESSION['account_type'] == AccountType::User) 
     {
-        include '../../backend/listener/ListenerHelpers.php';
+        include '../../backend/listener/include/ListenerHelpers.php';
     }
 } 
 else if ($_SESSION['dependencies'] == "BACKEND") 
 {
     if ($_SESSION['account_type'] == AccountType::User) 
     {
-        include '../listener/ListenerHelpers.php';
+        include '../listener/include/ListenerHelpers.php';
     }
 }
 
@@ -80,40 +80,33 @@ function fetchMarketPrice($artist_username)
 }
 
 //gets all the users that has lowest price listed with the passed artist_username param
-function fetchAskedPrice(&$ids, &$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
+function fetchAskedPrice($artist_username)
 {
+    $ret = array();
     $conn = connect();
     $result = searchSellOrderByArtist($conn, $artist_username);
     //loading up data so all the arrays have corresponding indices that map to the database
     while ($row = $result->fetch_assoc()) {
         if ($row['no_of_share'] > 0 && (strcmp($row['user_username'], $_SESSION['username']) != 0)) {
-            array_push($ids, $row['id']);
-            array_push($asked_prices, $row['selling_price']);
-            array_push($user_usernames, $row['user_username']);
-            array_push($artist_usernames, $row['artist_username']);
-            array_push($quantities, $row['no_of_share']);
+            $sell_order = new SellOrder($row['id'], 
+                                        $row['user_username'], 
+                                        $row['artist_username'], 
+                                        $row['selling_price'], 
+                                        $row['no_of_share'], 
+                                        $row['date_posted'], 
+                                        $row['time_posted']);
+
+            array_push($ret, $sell_order);
         }
     }
-    //using insertion sort in MyPortfiolioBackend.php file
-    insertionSort($asked_prices, $user_usernames, $artist_usernames, $quantities, "Descending");
-    singleSort($ids, "Descending");
+    SellOrder::sort($ret, 0, (sizeof($ret) - 1), "ASCENDING", "PRICE");
+
+    return $ret;
 }
 
 function askedPriceInit($artist_username, $account_type)
 {
-    //displaying asked price marketplace
-    $asked_prices = array();
-    //displaying corresponding user_username
-    $user_usernames = array();
-    //displaying corresponding artist_username
-    $artist_usernames = array();
-    //displaying the quantity that are being sold
-    $quantities = array();
-    //storing unique id of sell orders
-    $ids = array();
-    //sorting asked_price in a descending order, so the first index would be the lowest value, then swaps the other arrays 
-    //to match with asked_price indices
-    fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $artist_username);
+    $sell_orders = fetchAskedPrice($artist_username);
 
     if($account_type == AccountType::User)
     {
@@ -131,7 +124,7 @@ function askedPriceInit($artist_username, $account_type)
                 </div>
         ';
     }
-    if (sizeof($asked_prices) > 0) {
+    if (sizeof($sell_orders) > 0) {
         //displays the buy button when user has not clicked on it
         if ($_SESSION['buy_asked_price'] == 0) {
             echo '
@@ -147,18 +140,18 @@ function askedPriceInit($artist_username, $account_type)
                             </tr>
                         </thead>
                         <tbody>';
-            for ($i = 0; $i < sizeof($artist_usernames); $i++) {
+            for ($i = 0; $i < sizeof($sell_orders); $i++) {
                 echo '
                             <tr>
-                                <th scope="row">' . $ids[$i] . '</th>
-                                <td>' . $user_usernames[$i] . '</td>
-                                <td>' . $asked_prices[$i] . '</td>
-                                <td>' . $quantities[$i] . '</td>
+                                <th scope="row">' . $sell_orders[$i]->getID() . '</th>
+                                <td>' . $sell_orders[$i]->getUser() . '</td>
+                                <td>' . $sell_orders[$i]->getSellingPrice() . '</td>
+                                <td>' . $sell_orders[$i]->getNoOfShare() . '</td>
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
                     ';
-                if (hasEnoughSiliqas($asked_prices[0], $_SESSION['user_balance'])) {
+                if (hasEnoughSiliqas($sell_orders[$i]->getSellingPrice(), $_SESSION['user_balance'])) {
                     echo '
-                                        <td><input name="buy_user_selling_price[' . $ids[$i] . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                                        <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
                         ';
                 } else {
                     $_SESSION['status'] = "ERROR";
@@ -196,32 +189,32 @@ function askedPriceInit($artist_username, $account_type)
                             </tr>
                         </thead>
                         <tbody>';
-            for ($i = 0; $i < sizeof($artist_usernames); $i++) {
+            for ($i = 0; $i < sizeof($sell_orders); $i++) {
                 echo '
                             <tr>
-                                <th scope="row">' . $ids[$i] . '</th>
-                                <td>' . $user_usernames[$i] . '</td>
-                                <td>' . $asked_prices[$i] . '</td>
-                                <td>' . $quantities[$i] . '</td>
+                                <th scope="row">' . $sell_orders[$i]->getID() . '</th>
+                                <td>' . $sell_orders[$i]->getUser() . '</td>
+                                <td>' . $sell_orders[$i]->getSellingPrice() . '</td>
+                                <td>' . $sell_orders[$i]->getNoOfShare() . '</td>
                                 <td>
                     ';
-                if ($_SESSION['seller'] == $ids[$i]) {
-                    $_SESSION['purchase_price'] = $asked_prices[$i];
-                    $_SESSION['seller_toggle'] = $ids[$i];
+                if ($_SESSION['seller'] == $sell_orders[$i]->getID()) {
+                    $_SESSION['purchase_price'] = $sell_orders[$i]->getSellingPrice();
+                    $_SESSION['seller_toggle'] = $sell_orders[$i]->getID();
                     echo '
                                 <form action="../../backend/shared/BuySharesBackend.php" method="post">
-                                    <input name = "purchase_quantity" type="range" min="1" max=' . $quantities[$i] . ' value="1" class="slider" id="myRange">
+                                    <input name = "purchase_quantity" type="range" min="1" max=' . $sell_orders[$i]->getNoOfShare() . ' value="1" class="slider" id="myRange">
                                     <p>Quantity: <span id="demo"></span></p>
-                                    <input name="asked_price[' . $asked_prices[$i] . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
+                                    <input name="asked_price[' . $sell_orders[$i]->getSellingPrice() . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
                                 </form>
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                                    <td><input name="buy_user_selling_price[' . $ids[$i] . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                    <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
                                 </form>
                         ';
                 } else {
                     echo '
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                                <td><input name="buy_user_selling_price[' . $ids[$i] . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                                <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
                                 </form>
                                 </td>
                             </tr>
@@ -406,9 +399,18 @@ function getAmountSharesRequesting($user_username, $artist_username)
     return $ret;
 }
 
+/**
+    * Get artist highest or lowest sell order, depends on the selected option
+    *
+    * @param  	artist_username	  artist username to retrieve all the sell orders from
+    * @param  	indicator	      option to have action upon, MAX would get the highest and MIN would get the lowest
+    *
+    * @return 	the price of the sell order, as indicated by indicator
+    */
 function getHighestOrLowestPPS($artist_username, $indicator)
 {
-    if ($indicator == "MAX") {
+    if ($indicator == "MAX") 
+    {
         $conn = connect();
 
         $res1 = searchArtistCurrentPricePerShare($conn, $artist_username);
@@ -430,33 +432,24 @@ function getHighestOrLowestPPS($artist_username, $indicator)
 
         //if both are the same, then return one of them, in this case return market price
         return $market_price['price_per_share'];
-    } else {
+    } 
+    else 
+    {
         $conn = connect();
 
         $res1 = searchArtistCurrentPricePerShare($conn, $artist_username);
         $market_price = $res1->fetch_assoc();
 
-        $res2 = searchSellOrderByArtist($conn, $_SESSION['username']);
-
-        //If there are no users that are selling this artist's shares other than himself, 
-        //return the market price per share 
-        if ($res2->num_rows == 0) {
-            return $market_price['price_per_share'];
-        }
-
-        $res3 = searchArtistLowestPrice($conn, $artist_username);
-        if ($res3->num_rows == 0) {
-            return $market_price['price_per_share'];
-        }
-        $lowest_asked_price = $res3->fetch_assoc();
+        $res2 = searchArtistLowestPrice($conn, $artist_username);
+        $lowest_asked_price = $res2->fetch_assoc();
 
         //if market price is lower, return that as a lowest value
         if ($market_price['price_per_share'] < $lowest_asked_price['minimum']) {
             return $market_price['price_per_share'];
         }
 
-        //if somebody is selling lower than market price and lower than other sellers, 
-        //return that as a lowest value
+        //if somebody is selling higher than market price and higher than other sellers, 
+        //return that as a highest value
         if ($market_price['price_per_share'] > $lowest_asked_price['minimum']) {
             return $lowest_asked_price['minimum'];
         }
@@ -750,25 +743,25 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                 //In the case of buying in asked price, the new market price will become the last purchased price
                 $new_pps = $asked_price;
 
-                purchaseAskedPriceShare(
-                    $conn,
-                    $row['user_username'],
-                    $user_username,
-                    $artist_username,
-                    $buyer_new_balance,
-                    $seller_new_balance,
-                    $_SESSION['current_pps']['price_per_share'],
-                    $new_pps,
-                    $buyer_new_share_amount,
-                    $seller_new_share_amount,
-                    $_SESSION['shares_owned'],
-                    $row['quantity'],
-                    $row['siliqas_requested'],
-                    $row['id'],
-                    $date_parser[0],
-                    $date_parser[1],
-                    "AUTO_SELL"
-                );
+                $connPDO = connectPDO();
+
+                purchaseAskedPriceShare($connPDO,
+                                        $row['user_username'],
+                                        $user_username,
+                                        $artist_username,
+                                        $buyer_new_balance,
+                                        $seller_new_balance,
+                                        $_SESSION['current_pps']['price_per_share'],
+                                        $new_pps,
+                                        $buyer_new_share_amount,
+                                        $seller_new_share_amount,
+                                        $_SESSION['shares_owned'],
+                                        $row['quantity'],
+                                        $row['siliqas_requested'],
+                                        $row['id'],
+                                        $date_parser[0],
+                                        $date_parser[1],
+                                        "AUTO_SELL");
 
                 updateBuyOrderQuantity($conn, $row['id'], 0);
 
@@ -797,25 +790,25 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                 //In the case of buying in asked price, the new market price will become the last purchased price
                 $new_pps = $asked_price;
 
-                purchaseAskedPriceShare(
-                    $conn,
-                    $row['user_username'],
-                    $user_username,
-                    $artist_username,
-                    $buyer_new_balance,
-                    $seller_new_balance,
-                    $_SESSION['current_pps']['price_per_share'],
-                    $new_pps,
-                    $buyer_new_share_amount,
-                    $seller_new_share_amount,
-                    $_SESSION['shares_owned'],
-                    $quantity,
-                    $row['siliqas_requested'],
-                    $row['id'],
-                    $date_parser[0],
-                    $date_parser[1],
-                    "AUTO_SELL"
-                );
+                $connPDO = connectPDO();
+
+                purchaseAskedPriceShare($connPDO,
+                                        $row['user_username'],
+                                        $user_username,
+                                        $artist_username,
+                                        $buyer_new_balance,
+                                        $seller_new_balance,
+                                        $_SESSION['current_pps']['price_per_share'],
+                                        $new_pps,
+                                        $buyer_new_share_amount,
+                                        $seller_new_share_amount,
+                                        $_SESSION['shares_owned'],
+                                        $quantity,
+                                        $row['siliqas_requested'],
+                                        $row['id'],
+                                        $date_parser[0],
+                                        $date_parser[1],
+                                        "AUTO_SELL");
 
                 //The return value should be the amount of share requested subtracted by the amount that 
                 //is automatically bought
@@ -944,6 +937,19 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         return $ret;
     }
 
+    function isAlreadyFollowed($user_username, $artist_username): bool
+    {
+        $ret = FALSE;
+        $conn = connect();
+
+        $res = searchSpecificFollow($conn, $user_username, $artist_username);
+        if($res->num_rows > 0)
+        {
+            $ret = TRUE;
+        }
+        return $ret;
+    }
+
     function calculateMarketCap($artist_username)
     {
         $conn = connect();
@@ -961,5 +967,56 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         updateArtistMarketCap($connPDO, $artist_username, $market_cap);
 
         return $market_cap;
+    }
+
+    /**
+    * Get artist's 4-letter market tag
+    *
+    * @param  	artist_username   given username of the artist to search for their market tag
+    *
+    * @return 	ret	              a string, containing 4 letters of the artist market tag
+    */
+    function getArtistMarketTag($artist_username)
+    {
+        $ret = "Error in getting artist market tag";
+        $conn = connect();
+
+        $res = searchArtistTicker($conn, $artist_username);
+        if($res->num_rows > 0)
+        {
+            $artist_tag = $res->fetch_assoc();
+            $ret = $artist_tag['ticker'];
+        }
+
+        closeCon($conn);
+
+        return $ret;
+    }
+
+    /**
+    * Get the maximum price per share of an artist within a given day
+    *
+    * @param  	all_pps_in_a_day   an array containing all price per share of a specific day
+    *
+    * @return 	ret	               maximum value in the array all_pps_in_a_day
+    */
+    function getMaxPPSByDay($all_pps_in_a_day)
+    {
+        $ret = 0;
+
+        if(sizeof($all_pps_in_a_day) != 0)
+        {
+            $ret = $all_pps_in_a_day[0];
+
+            for($i = 0; $i < sizeof($all_pps_in_a_day); $i++)
+            {
+                if($all_pps_in_a_day[$i] > $ret)
+                {
+                    $ret = $all_pps_in_a_day[$i];
+                }
+            }
+        }
+
+        return $ret;
     }
 ?>

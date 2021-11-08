@@ -1,6 +1,6 @@
 <?php
 include '../../backend/control/Dependencies.php';
-include '../../backend/shared/CampaignHelpers.php';
+include '../../backend/shared/include/CampaignHelpers.php';
 ?>
 <!DOCTYPE html>
 <html>

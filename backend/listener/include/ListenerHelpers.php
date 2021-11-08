@@ -203,6 +203,19 @@
         return $rate['rate'];
     }
 
+    function getArtistShareVolume($artist_username)
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchArtistCurrentPricePerShare($conn, $artist_username);
+        $volume = $res->fetch_assoc();
+        $ret = $volume['price_per_share'];
+
+        closeCon($conn);
+        return $ret;
+    }
+
     function printTopInvestedArtistChart($users, $all_shares)
     {
         $id = 1;
@@ -285,7 +298,9 @@
                         //In the case of buying in asked price, the new market price will become the last purchased price
                         $new_pps = $row['selling_price'];
 
-                        purchaseAskedPriceShare($conn, 
+                        $connPDO = connectPDO();
+
+                        purchaseAskedPriceShare($connPDO, 
                                                 $_SESSION['username'], 
                                                 $row['user_username'], 
                                                 $_SESSION['selected_artist'],
@@ -331,7 +346,9 @@
                         //In the case of buying in asked price, the new market price will become the last purchased price
                         $new_pps = $row['selling_price'];
 
-                        purchaseAskedPriceShare($conn, 
+                        $connPDO = connectPDO();
+
+                        purchaseAskedPriceShare($connPDO, 
                                                 $_SESSION['username'], 
                                                 $row['user_username'], 
                                                 $_SESSION['selected_artist'],
@@ -547,7 +564,36 @@
         }
     }
 
-//Stock Ticker temporary waiting for backend to fill out values
+    function getAllArtist()
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = searchAccountType($conn, "artist");
+        $counter = 0;
+        while($row = $res->fetch_assoc())
+        {
+            $res_ticker = searchArtistTicker($conn, $row['username']);
+            $ticker = $res_ticker->fetch_assoc();
+
+            //Changes in last 24 hours
+            $change = 0;
+
+            $artist = new ArtistInfo();
+
+            //only populate fields that we need to use in this case
+            $artist->setUsername($row['username']);
+            $artist->setMarketTag($ticker['ticker']);
+            $artist->setDayChange($change);
+            $artist->setMarketCap($row['Market_cap']);
+
+            array_push($ret, $artist);
+            $counter++;
+        }
+
+        return $ret;
+    }
+
     function displayTicker()
     {
         $tickers = getAllArtistTickers();
@@ -588,6 +634,116 @@
                         </p>
                     </form>
                 </div>
+        ';
+    }
+
+    function topsAndFlops($all_artists)
+    {
+        ArtistInfo::sort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Day Change");
+
+        echo '
+            <h3 class="h3-blue">Tops And Flops</h3>
+            <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
+        ';
+
+        for($i = 0; $i < sizeof($all_artists); $i++)
+        {
+            echo '
+                <p>
+                <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$all_artists[$i]->getUsername().'"> ('.$all_artists[$i]->getMarketTag().')
+            ';
+            if($all_artists[$i]->getDayChange() > 0)
+            {
+                echo '
+                    <span class="suc-msg">
+                        +'.$all_artists[$i]->getDayChange().'%
+                    </span>
+                ';
+            }
+            else if($all_artists[$i]->getDayChange() < 0)
+            {
+                echo '
+                    <span class="error-msg">
+                        '.$all_artists[$i]->getDayChange().'%
+                    </span>
+                ';
+            }
+            else if($all_artists[$i]->getDayChange() == 0)
+            {
+                echo '
+                    <span>
+                        '.$all_artists[$i]->getDayChange().'%
+                    </span>
+                ';
+            }
+            echo "
+                </p>
+            ";
+        }
+        echo "</form>";
+    }
+
+    function followedArtist($user_username)
+    {
+        $followed_artists = array();
+        $conn = connect();
+
+        $res = searchFollowingArtist($conn, $user_username);
+        while($row = $res->fetch_assoc())
+        {
+            $artist_info = new ArtistInfo();
+
+            $res_ticker = searchArtistTicker($conn, $row['artist_username']);
+            $artist_ticker = $res_ticker->fetch_assoc();
+
+            $artist_info->setUsername($row['artist_username']);
+            $artist_info->setMarketTag($artist_ticker['ticker']);
+
+            array_push($followed_artists, $artist_info);
+        }
+
+        echo '
+            <h3 class="h3-blue">Followed</h3>
+            <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
+        ';
+
+        for($i = 0; $i < sizeof($followed_artists); $i++)
+        {
+            echo '
+                <p>
+                <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$followed_artists[$i]->getUsername().'"> ('.$followed_artists[$i]->getMarketTag().')
+                </p>
+            ';
+        }
+
+        echo "</form>";
+    }
+
+    function apex($all_artists)
+    {
+        ArtistInfo::sort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Market Cap");
+        echo '
+            <h3 class="h3-blue">Apex (Market Cap)</h3>
+            <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
+        ';
+
+        for($i = 0; $i < sizeof($all_artists); $i++)
+        {
+            echo '
+                <p>
+                <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$all_artists[$i]->getUsername().'"> ('.$all_artists[$i]->getMarketTag().') $'.$all_artists[$i]->getMarketCap().'
+                </p>
+            ';
+        }
+
+        echo "</form>";
+    }
+
+    function localArtist()
+    {
+        //Nothing to do now, leave this for future implementation
+        echo '
+            <h3 class="h3-blue">Local artist</h3>
         ';
     }
 ?>

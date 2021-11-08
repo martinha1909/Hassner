@@ -10705,3 +10705,9 @@ a#dashboard-hover:hover {
 .suc-msg {
   color: green;
 }
+
+.input-no-background {
+  border:1px transparent; 
+  background-color: transparent; 
+  font-weight: bold;
+}

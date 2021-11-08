@@ -3,7 +3,7 @@
     include '../control/Dependencies.php';
     include '../constants/AccountTypes.php';
     include '../constants/LoggingModes.php';
-    include 'MarketplaceHelpers.php';
+    include 'include/MarketplaceHelpers.php';
 
     $_SESSION['logging_mode'] = LogModes::BUY_SHARE;
 
@@ -16,6 +16,7 @@
     }
     $current_date_time = getCurrentDate("America/Edmonton");
     $date_parser = dayAndTimeSplitter($current_date_time);
+
     //not enough siliqas
     if($_SESSION['user_balance'] < ($amount_bought * $_SESSION['purchase_price']))
     {
@@ -53,6 +54,7 @@
 
             //in the case of buying with market price, the price per share doesn't change
             $new_pps = $_SESSION['current_pps']['price_per_share'];
+            
             $_SESSION['status'] = purchaseMarketPriceShare($connPDO, 
                                                            $_SESSION['username'], 
                                                            $_SESSION['selected_artist'], 
