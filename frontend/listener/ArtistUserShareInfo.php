@@ -243,34 +243,7 @@
                     <?php
                         if($_SESSION['artist_found'])
                         {
-                            if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == 0) {
-                                echo '
-                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                                <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method = "post">
-                                                    <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();"> 
-                                                    <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
-                                                </form>
-                                            </div>
-                                    ';
-                            } else if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "BID") {
-                                echo '
-                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                                <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method = "post">
-                                                    <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();"> 
-                                                    <input name = "buy_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
-                                                </form>
-                                            </div>
-                                    ';
-                                askedPriceInit($_SESSION['selected_artist'], $_SESSION['account_type']);
-                            } else if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "MARKET") {
-                                echo '
-                                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                                <form action="../../backend/listener/ToggleBuyOptionsBackend.php" method="post"> 
-                                                    <input name = "buy_options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Market Price" onclick="window.location.reload();">
-                                                    <input name = "buy_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "Bid Price" onclick="window.location.reload();"> 
-                                                </form>
-                                            </div>
-                                    ';
+                            if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "MARKET") {
                                 echo '
                                         <div class="py-4 center-text">
                                             <h3 class="h3-blue py-5">Market Price</h3>

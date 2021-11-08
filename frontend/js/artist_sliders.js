@@ -1,4 +1,4 @@
-$( function() {
+$( function() {  
     // Buy slider init
     $( "#buy_slider" ).slider({
       range: true,
