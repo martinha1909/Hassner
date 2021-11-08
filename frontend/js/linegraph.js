@@ -34,7 +34,7 @@ $(document).ready(function(){
 function JSONToAJAX(graph_option)
 {
     $.ajax({
-        url : "http://localhost:8080/Hassner/backend/graph/LineGraphData.php",
+        url : "http://localhost/Hassner/backend/graph/LineGraphData.php",
         method : "POST",
         data:{
             graph_option: graph_option
