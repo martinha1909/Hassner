@@ -1036,6 +1036,13 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         return $ret;
     }
 
+    /**
+        * Calculates artist last 24 hours stock change
+        *
+        * @param  	artist_username username of artist to get the last 24-hour price change
+        *
+        * @return   ret             last 24 hours change, in percentage
+        */
     function getArtistDayChange($artist_username)
     {
         $ret = 0;
@@ -1055,7 +1062,7 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
         $prev_day_high = round(getMaxPPSByDay($all_pps_in_a_day), 2);
         //Day change is compared between yesterday's high vs current price per share
-        $ret = round(($current_pps['price_per_share'] - $prev_day_high)/$prev_day_high, 2);
+        $ret = round((($current_pps['price_per_share'] - $prev_day_high)/$prev_day_high) * 100, 2);
 
         return $ret;
     }

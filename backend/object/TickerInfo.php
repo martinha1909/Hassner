@@ -42,6 +42,13 @@
             $this->change = $change;
         }
 
+        /**
+        * Copy a TickerInfo object
+        *
+        * @param  	ticker TickerInfo object to be copied off of
+        *
+        * @return   ret    a newly created TickerInfo object
+        */
         public static function copy(TickerInfo $ticker): TickerInfo
         {
             $ret = new TickerInfo();
@@ -71,11 +78,11 @@
         * takes last element as pivot, places the pivot element at its correct position in sorted array, 
         * and places all smaller (smaller than pivot) to left of pivot and all greater elements to right of pivot
         *
-        * @param  	artist_info_arr	array to be partitiioned
-        * @param  	low	            starting index of the array
-        * @param  	high            ending index of the array
-        * @param  	option          descending or ascending option
-        * @param  	item            variable to use as a base to sort
+        * @param  	ticker_arr	array to be partitiioned
+        * @param  	low	        starting index of the array
+        * @param  	high        ending index of the array
+        * @param  	option      descending or ascending option
+        * @param  	item        variable to use as a base to sort
         */
         private static function partition(&$ticker_arr, $low, $high, $option, $item)
         {
@@ -116,12 +123,12 @@
         }
 
         /**
-        * Sort an SellOrder array using quick sort 
+        * Sort an TickerInfo array using quick sort 
         *
-        * @param  	sell_order_arr	array to be sorted
-        * @param  	low	            starting index of the array
-        * @param  	high            ending index of the array
-        * @param  	item            variable to use as a base to sort
+        * @param  	ticker_arr	array to be sorted
+        * @param  	low	        starting index of the array
+        * @param  	high        ending index of the array
+        * @param  	item        variable to use as a base to sort
         */
         public static function sort(&$ticker_arr, $low, $high, $option, $item)
         {
