@@ -56,21 +56,18 @@ hassnerInit();
     </section>
 
     <!--hero header-->
-    <section class="py-md-0 bg-dark" id="home">
+    <section class="bg-dark" id="home">
         <div class="container-video">
             <video autoplay muted loop id="myVideo">
                 <source src="../Images/lines.mp4" type="video/mp4">
             </video>
-            <div class="video-overlay">
-                <div class="text-center">
+                <div class="video-overlay">
                     <h1>Investing&nbspis music&nbspto&nbspour&nbspears</h1>
                     <h5 class="lead">Hassner is creating new opportunities for both listeners and artists. Sign&nbspup&nbspfor&nbspfree.</h5>
                     <a class="page-scroll" href="#signup">
-                        <!--It loss the green background, but it scrolls to the bottom of the page now (or we can make it go to the signup page automatically)-->
                         Get started now
                     </a>
                 </div>
-            </div>
         </div>
     </section>
 

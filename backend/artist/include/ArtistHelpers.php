@@ -81,7 +81,7 @@
         if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
         {
             echo '
-                <div class="col-6">
+                <div class="mx-auto text-center py-2 col-8">
                     <h3 class="h3-blue py-2">Trade History</h3>
                     <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
                         <h6>From</h6>
@@ -95,7 +95,7 @@
         else
         {
             echo '
-                <div class="col-6">
+                <div class="mx-auto text-center py-2 col-8">
                     <h3 class="h3-blue py-2">Trade History</h3>
                     <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
                         <h6>From</h6>
@@ -219,39 +219,39 @@
     {
         $tickers = getAllArtistTickers();
         echo '
-                <div class="card">
-                    <div class="card-body text-dark">
-                        <marquee direction="left">
+                    <div class="marquee">
+                            <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method = "post">
+                            <p>
         ';
         for($i = 0; $i < sizeof($tickers); $i++)
         {
             echo '
-                        <strong>'.$tickers[$i]->getTag().'</strong> '.$tickers[$i]->getPPS().'
+                                <input name = "artist_ticker" type = "submit" class="bold-ticker" aria-pressed="true" value ="'.$tickers[$i]->getTag().'"> '.$tickers[$i]->getPPS().'
             ';
             
             if($tickers[$i]->getChange() < 0)
             {
                 echo '
-                        <mark class="markup-red">'.$tickers[$i]->getChange().'%</mark>
+                                <mark class="markup-red">'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
             else if($tickers[$i]->getChange() > 0)
             {
                 echo '
-                        <mark class="markup-green">+'.$tickers[$i]->getChange().'%</mark>
+                                <mark class="markup-green">+'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
             if($tickers[$i]->getChange() == 0)
             {
                 echo '
-                        <mark>'.$tickers[$i]->getChange().'%</mark>
+                                <mark>'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
             echo " | ";
         }
         echo '
-                        </marquee>
-                    </div>
+                        </p>
+                    </form>
                 </div>
         ';
     }
