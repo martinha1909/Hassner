@@ -265,15 +265,41 @@ select#dark {
 
 #myVideo {
   position: relative;
-  min-width: 100%;
-  min-height: 100%;
   z-index: 0;
 }
 
 .video-overlay {
   position:absolute;
-  top:35%;
-  left:30%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index:1;
+  text-align: center;
 }
 
+/* Marquee Replacer & Ticker Classes */
+
+.marquee {
+  width: 100%;
+  line-height: 10px;
+  background-color: rgb(255, 255, 255);
+  color: #11171a;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.marquee p {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 25s linear infinite;
+}
+@keyframes marquee {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(-100%, 0); }
+}
+
+.bold-ticker {
+  border:1px transparent; 
+  background-color: transparent; 
+  font-weight: bold;
+}

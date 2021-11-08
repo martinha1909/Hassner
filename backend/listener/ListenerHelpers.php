@@ -467,9 +467,9 @@
         if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
         {
             echo '
-                <div class="col-6">
-                    <h3 class="h3-blue py-2">Trade History</h3>
-                    <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
+                <div class="mx-auto text-center py-2 col-8">
+                    <h3 class="h3-blue">Trade History</h3>
+                    <form class="form-inline" action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
                         <h6>From</h6>
                         <input type="date" name="trade_history_from">
                         <h6>To</h6>
@@ -481,9 +481,9 @@
         else
         {
             echo '
-                <div class="col-6">
-                    <h3 class="h3-blue py-2">Trade History</h3>
-                    <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
+                <div class="mx-auto text-center py-2 col-8">
+                    <h3 class="h3-blue">Trade History</h3>
+                    <form class="form-inline" action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
                         <h6>From</h6>
                         <input type="date" name="trade_history_from" value="'.$_SESSION['trade_history_from'].'">
                         <h6>To</h6>
@@ -547,20 +547,20 @@
         }
     }
 
-    //Stock Ticker temporary waiting for backend to fill out values
+//Stock Ticker temporary waiting for backend to fill out values
     function displayTicker()
     {
         $tickers = getAllArtistTickers();
         echo '
-                <div class="card">
-                    <div class="card-body text-dark">
-                        <marquee direction="left">
+                <div>
+                    <div class="marquee">
                             <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method = "post">
+                            <p>
         ';
         for($i = 0; $i < sizeof($tickers); $i++)
         {
             echo '
-                                <strong><input name = "artist_ticker" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold;" aria-pressed="true" value ="'.$tickers[$i]->getTag().'"></strong> '.$tickers[$i]->getPPS().'
+                                <input name = "artist_ticker" type = "submit" class="bold-ticker" aria-pressed="true" value ="'.$tickers[$i]->getTag().'"> '.$tickers[$i]->getPPS().'
             ';
             
             if($tickers[$i]->getChange() < 0)
@@ -585,9 +585,8 @@
             echo " | ";
         }
         echo '
-                            </form>
-                        </marquee>
-                    </div>
+                        </p>
+                    </form>
                 </div>
         ';
     }
