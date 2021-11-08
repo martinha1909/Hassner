@@ -931,7 +931,6 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
             array_push($ret, $ticker_info);
         }
-        // SellOrder::sort($ret, 0, (sizeof($ret) - 1), "ASCENDING", "PRICE");
         TickerInfo::sort($ret, 0, (sizeof($ret) - 1), "DESCENDING", "CHANGE");
 
         return $ret;
