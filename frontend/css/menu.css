@@ -145,6 +145,10 @@ select#dark {
   font-weight: 800;
 }
 
+.p-white {
+  color: white;
+}
+
 .h1-tan {
   font-size: 3rem;
   color: #e2cda9ff;

@@ -649,7 +649,7 @@
         for($i = 0; $i < sizeof($all_artists); $i++)
         {
             echo '
-                <p>
+                <p class="p-white">
                 <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$all_artists[$i]->getUsername().'"> ('.$all_artists[$i]->getMarketTag().')
             ';
             if($all_artists[$i]->getDayChange() > 0)
@@ -676,9 +676,9 @@
                     </span>
                 ';
             }
-            echo "
+            echo '
                 </p>
-            ";
+            ';
         }
         echo "</form>";
     }
@@ -730,7 +730,7 @@
         for($i = 0; $i < sizeof($all_artists); $i++)
         {
             echo '
-                <p>
+                <p class="p-white">
                 <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$all_artists[$i]->getUsername().'"> ('.$all_artists[$i]->getMarketTag().') $'.$all_artists[$i]->getMarketCap().'
                 </p>
             ';
