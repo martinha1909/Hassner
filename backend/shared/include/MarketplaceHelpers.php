@@ -80,40 +80,33 @@ function fetchMarketPrice($artist_username)
 }
 
 //gets all the users that has lowest price listed with the passed artist_username param
-function fetchAskedPrice(&$ids, &$asked_prices, &$user_usernames, &$artist_usernames, &$quantities,  $artist_username)
+function fetchAskedPrice($artist_username)
 {
+    $ret = array();
     $conn = connect();
     $result = searchSellOrderByArtist($conn, $artist_username);
     //loading up data so all the arrays have corresponding indices that map to the database
     while ($row = $result->fetch_assoc()) {
         if ($row['no_of_share'] > 0 && (strcmp($row['user_username'], $_SESSION['username']) != 0)) {
-            array_push($ids, $row['id']);
-            array_push($asked_prices, $row['selling_price']);
-            array_push($user_usernames, $row['user_username']);
-            array_push($artist_usernames, $row['artist_username']);
-            array_push($quantities, $row['no_of_share']);
+            $sell_order = new SellOrder($row['id'], 
+                                        $row['user_username'], 
+                                        $row['artist_username'], 
+                                        $row['selling_price'], 
+                                        $row['no_of_share'], 
+                                        $row['date_posted'], 
+                                        $row['time_posted']);
+
+            array_push($ret, $sell_order);
         }
     }
-    //using insertion sort in MyPortfiolioBackend.php file
-    insertionSort($asked_prices, $user_usernames, $artist_usernames, $quantities, "Descending");
-    singleSort($ids, "Descending");
+    SellOrder::sort($ret, 0, (sizeof($ret) - 1), "ASCENDING", "PRICE");
+
+    return $ret;
 }
 
 function askedPriceInit($artist_username, $account_type)
 {
-    //displaying asked price marketplace
-    $asked_prices = array();
-    //displaying corresponding user_username
-    $user_usernames = array();
-    //displaying corresponding artist_username
-    $artist_usernames = array();
-    //displaying the quantity that are being sold
-    $quantities = array();
-    //storing unique id of sell orders
-    $ids = array();
-    //sorting asked_price in a descending order, so the first index would be the lowest value, then swaps the other arrays 
-    //to match with asked_price indices
-    fetchAskedPrice($ids, $asked_prices, $user_usernames, $artist_usernames, $quantities, $artist_username);
+    $sell_orders = fetchAskedPrice($artist_username);
 
     if($account_type == AccountType::User)
     {
@@ -131,7 +124,7 @@ function askedPriceInit($artist_username, $account_type)
                 </div>
         ';
     }
-    if (sizeof($asked_prices) > 0) {
+    if (sizeof($sell_orders) > 0) {
         //displays the buy button when user has not clicked on it
         if ($_SESSION['buy_asked_price'] == 0) {
             echo '
@@ -146,18 +139,18 @@ function askedPriceInit($artist_username, $account_type)
                             </tr>
                         </thead>
                         <tbody>';
-            for ($i = 0; $i < sizeof($artist_usernames); $i++) {
+            for ($i = 0; $i < sizeof($sell_orders); $i++) {
                 echo '
                             <tr>
-                                <th scope="row">' . $ids[$i] . '</th>
-                                <td>' . $user_usernames[$i] . '</td>
-                                <td>' . $asked_prices[$i] . '</td>
-                                <td>' . $quantities[$i] . '</td>
+                                <th scope="row">' . $sell_orders[$i]->getID() . '</th>
+                                <td>' . $sell_orders[$i]->getUser() . '</td>
+                                <td>' . $sell_orders[$i]->getSellingPrice() . '</td>
+                                <td>' . $sell_orders[$i]->getNoOfShare() . '</td>
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
                     ';
-                if (hasEnoughSiliqas($asked_prices[0], $_SESSION['user_balance'])) {
+                if (hasEnoughSiliqas($sell_orders[$i]->getSellingPrice(), $_SESSION['user_balance'])) {
                     echo '
-                                        <td><input name="buy_user_selling_price[' . $ids[$i] . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                                        <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
                         ';
                 } else {
                     $_SESSION['status'] = "ERROR";
@@ -194,32 +187,32 @@ function askedPriceInit($artist_username, $account_type)
                             </tr>
                         </thead>
                         <tbody>';
-            for ($i = 0; $i < sizeof($artist_usernames); $i++) {
+            for ($i = 0; $i < sizeof($sell_orders); $i++) {
                 echo '
                             <tr>
-                                <th scope="row">' . $ids[$i] . '</th>
-                                <td>' . $user_usernames[$i] . '</td>
-                                <td>' . $asked_prices[$i] . '</td>
-                                <td>' . $quantities[$i] . '</td>
+                                <th scope="row">' . $sell_orders[$i]->getID() . '</th>
+                                <td>' . $sell_orders[$i]->getUser() . '</td>
+                                <td>' . $sell_orders[$i]->getSellingPrice() . '</td>
+                                <td>' . $sell_orders[$i]->getNoOfShare() . '</td>
                                 <td>
                     ';
-                if ($_SESSION['seller'] == $ids[$i]) {
-                    $_SESSION['purchase_price'] = $asked_prices[$i];
-                    $_SESSION['seller_toggle'] = $ids[$i];
+                if ($_SESSION['seller'] == $sell_orders[$i]->getID()) {
+                    $_SESSION['purchase_price'] = $sell_orders[$i]->getSellingPrice();
+                    $_SESSION['seller_toggle'] = $sell_orders[$i]->getID();
                     echo '
                                 <form action="../../backend/shared/BuySharesBackend.php" method="post">
-                                    <input name = "purchase_quantity" type="range" min="1" max=' . $quantities[$i] . ' value="1" class="slider" id="myRange">
+                                    <input name = "purchase_quantity" type="range" min="1" max=' . $sell_orders[$i]->getNoOfShare() . ' value="1" class="slider" id="myRange">
                                     <p>Quantity: <span id="demo"></span></p>
-                                    <input name="asked_price[' . $asked_prices[$i] . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
+                                    <input name="asked_price[' . $sell_orders[$i]->getSellingPrice() . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
                                 </form>
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                                    <td><input name="buy_user_selling_price[' . $ids[$i] . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                    <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
                                 </form>
                         ';
                 } else {
                     echo '
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                                <td><input name="buy_user_selling_price[' . $ids[$i] . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                                <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
                                 </form>
                                 </td>
                             </tr>

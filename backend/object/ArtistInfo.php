@@ -169,7 +169,7 @@
             $this->day_change = $day_change;
         }
 
-        public static function copy(ArtistInfo $artist)
+        private static function copy(ArtistInfo $artist)
         {
             $ret = new ArtistInfo();
 
@@ -193,7 +193,7 @@
         * @param  	i   index to be swapped
         * @param  	j   index to be swapped
         */
-        public static function swap(&$arr, $i, $j)
+        private static function swap(&$arr, $i, $j)
         {
             $temp = ArtistInfo::copy($arr[$i]);
             $arr[$i] = ArtistInfo::copy($arr[$j]);
@@ -210,7 +210,7 @@
         * @param  	option          descending or ascending option
         * @param  	item            variable to use as a base to sort
         */
-        public static function partition(&$artist_info_arr, $low, $high, $option, $item)
+        private static function partition(&$artist_info_arr, $low, $high, $option, $item)
         {
             if($item == "Day Change")
             {
