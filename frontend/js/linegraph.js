@@ -40,7 +40,6 @@ function JSONToAJAX(graph_option)
             graph_option: graph_option
         },
         success : function(data){
-            // var graph_option = document.querySelector('#artist_user_share_info_script').getAttribute('graph_option');
             var artist_market_tag = document.querySelector('#artist_user_share_info_script').getAttribute('artist_tag');
             var y_axis = [];
             var x_axis = [];

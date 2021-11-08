@@ -9,6 +9,7 @@
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
     include '../../backend/object/TickerInfo.php';
+    include '../../backend/object/SellOrder.php';
 
     //only do actions if an artist is found
     if($_SESSION['artist_found'])
@@ -184,7 +185,7 @@
                     </div>
 
                     <!-- displaying current share information between current user and selected artist -->
-                            <?php }?>
+                        <?php }?>
                 </div>
                 <div class="mx-auto my-auto text-center col-5 buy_sell_container">
                     <?php
