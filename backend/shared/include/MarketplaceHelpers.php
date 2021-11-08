@@ -933,11 +933,13 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
             $ticker_info->setPPS($artist_pps['price_per_share']);
 
             //Will implement a last 24 change calculation later
-            $change = 1;
+            $change = getArtistDayChange($row['username']);
             $ticker_info->setChange($change);
 
             array_push($ret, $ticker_info);
         }
+
+        
 
         return $ret;
     }
@@ -1021,6 +1023,30 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                 }
             }
         }
+
+        return $ret;
+    }
+
+    function getArtistDayChange($artist_username)
+    {
+        $ret = 0;
+        $conn = connect();
+        $all_pps_in_a_day = array();
+        $db_current_date_time = date('Y-m-d H:i:s');
+        $days_ago = date("Y-m-d H:i:s", strtotime("-1 day"));
+
+        $res = searchArtistCurrentPricePerShare($conn, $artist_username);
+        $current_pps = $res->fetch_assoc();
+
+        $res = getJSONDataWithinInterval($conn, $artist_username, $days_ago, $db_current_date_time);
+        while($row = $res->fetch_assoc())
+        {
+            array_push($all_pps_in_a_day, $row['price_per_share']);
+        }
+
+        $prev_day_high = round(getMaxPPSByDay($all_pps_in_a_day), 2);
+        //Day change is compared between yesterday's high vs current price per share
+        $ret = round(($current_pps['price_per_share'] - $prev_day_high)/$prev_day_high, 2);
 
         return $ret;
     }

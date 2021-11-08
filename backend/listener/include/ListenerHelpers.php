@@ -577,7 +577,7 @@
             $ticker = $res_ticker->fetch_assoc();
 
             //Changes in last 24 hours
-            $change = 0;
+            $change = getArtistDayChange($row['username']);
 
             $artist = new ArtistInfo();
 
