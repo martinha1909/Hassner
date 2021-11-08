@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2021 at 07:31 PM
+-- Generation Time: Nov 09, 2021 at 12:29 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -85,13 +85,13 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `shares_repurchase`) VALUES
-('21 Savage', 'artist', 'artist', 6, 2386, 3181.33, 0, 150000, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 1.33333, 0, 0, 3181.33, 0),
-('88Glam', 'artist', 'artist', 2, 4406, 8797.2, 0, 100000, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 3.6, 0, 0, 15861.6, 4),
+('21 Savage', 'artist', 'artist', 6, 2386, 3181.33, 0, 150000, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 2, 0, 0, 4772, 0),
+('88Glam', 'artist', 'artist', 2, 4406, 8797.2, 0, 100000, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 4.7, 0, 0, 20708.2, 4),
 ('daniel', 'user', 'user', 8, 0, 100000, 0, 0, 'iosrghn@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('Drake', 'artist', 'artist', 11, 859, 859, 0, 30000, 'qwerty@gmail.com', 'Drake', '', '', '', '', '', '', '', '', '', 1, 0, 0, 859, 0),
+('Drake', 'artist', 'artist', 11, 859, 859, 0, 30000, 'qwerty@gmail.com', 'Drake', '', '', '', '', '', '', '', '', '', 2.2, 0, 0, 859, 0),
 ('kai', 'user', 'user', 4, 356, 98968.8, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('martin', 'user', 'user', 1, 4043, 88199.7, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
-('NAV', 'artist', 'artist', 3, 0, 0, 0, 1000, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 3, 0, 0, 0, 0),
+('NAV', 'artist', 'artist', 3, 0, 0, 0, 1000, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 1.5, 0, 0, 0, 0),
 ('riley', 'user', 'user', 7, 0, 100000, 0, 0, 'efin@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('vitor', 'user', 'user', 5, 3, 99994, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
 
@@ -132,6 +132,7 @@ CREATE TABLE `artist_followers` (
 --
 
 INSERT INTO `artist_followers` (`artist_username`, `user_username`) VALUES
+('21 Savage', 'martin'),
 ('Drake', 'martin');
 
 -- --------------------------------------------------------
@@ -184,6 +185,10 @@ INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `date_r
 ('21 Savage', 1.33333, '2021-11-07 15:30:00'),
 ('21 Savage', 1.33333, '2021-11-07 21:30:00'),
 ('21 Savage', 1.33333, '2021-11-07 21:45:00'),
+('21 Savage', 1.33333, '2021-11-08 11:45:00'),
+('21 Savage', 1.33333, '2021-11-08 12:00:00'),
+('21 Savage', 1.33333, '2021-11-08 12:15:00'),
+('21 Savage', 1.33333, '2021-11-08 12:30:00'),
 ('88Glam', 2.5, '2021-10-26 19:30:00'),
 ('88Glam', 2.2, '2021-10-27 19:30:00'),
 ('88Glam', 3.2, '2021-10-28 19:30:00'),
@@ -206,6 +211,10 @@ INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `date_r
 ('88Glam', 3.6, '2021-11-07 15:30:00'),
 ('88Glam', 6, '2021-11-07 21:30:00'),
 ('88Glam', 6, '2021-11-07 21:45:00'),
+('88Glam', 3.6, '2021-11-08 11:45:00'),
+('88Glam', 3.6, '2021-11-08 12:00:00'),
+('88Glam', 3.6, '2021-11-08 12:15:00'),
+('88Glam', 3.6, '2021-11-08 12:30:00'),
 ('Drake', 1, '2021-11-06 19:30:00'),
 ('Drake', 1, '2021-11-06 19:45:00'),
 ('Drake', 1, '2021-11-06 20:00:00'),
@@ -215,6 +224,10 @@ INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `date_r
 ('Drake', 1, '2021-11-07 15:30:00'),
 ('Drake', 1, '2021-11-07 21:30:00'),
 ('Drake', 1, '2021-11-07 21:45:00'),
+('Drake', 1, '2021-11-08 11:45:00'),
+('Drake', 1, '2021-11-08 12:00:00'),
+('Drake', 1, '2021-11-08 12:15:00'),
+('Drake', 1, '2021-11-08 12:30:00'),
 ('NAV', 3, '2021-11-06 19:30:00'),
 ('NAV', 3, '2021-11-06 19:45:00'),
 ('NAV', 3, '2021-11-06 20:00:00'),
@@ -223,7 +236,11 @@ INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `date_r
 ('NAV', 3, '2021-11-07 15:15:00'),
 ('NAV', 3, '2021-11-07 15:30:00'),
 ('NAV', 3, '2021-11-07 21:30:00'),
-('NAV', 3, '2021-11-07 21:45:00');
+('NAV', 3, '2021-11-07 21:45:00'),
+('NAV', 3, '2021-11-08 11:45:00'),
+('NAV', 3, '2021-11-08 12:00:00'),
+('NAV', 3, '2021-11-08 12:15:00'),
+('NAV', 3, '2021-11-08 12:30:00');
 
 -- --------------------------------------------------------
 
