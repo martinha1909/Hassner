@@ -18,13 +18,14 @@
         {
             $res_pps = searchArtistCurrentPricePerShare($conn, $row['artist_username']);
             $current_pps = $res_pps->fetch_assoc();
+            $change = getArtistDayChange($row['artist_username']);
 
             array_push($all_artists, $row['artist_username']);
             array_push($all_shares_bought, $row['shares_owned']);
             array_push($all_price_per_share, $current_pps['price_per_share']);
             //This is to calculate the change of artist's stock in the last 24 hours, 
             //will have a separate PR for this
-            array_push($all_rates, 0);
+            array_push($all_rates, $change);
         }
     }
 

@@ -322,7 +322,24 @@ function askedPriceInit($artist_username, $account_type)
                                     <td>' . $artist_usernames[$i] . '</th>
                                     <td>' . $selling_prices[$i] . '</td>
                                     <td>' . $share_amounts[$i] . '</td>
-                                    <td>' . $roi[$i] . '%</td>
+            ';
+            if($roi[$i] > 0)
+            {
+                echo'
+                                    <td class="suc-msg">+' . $roi[$i] . '%</td>';
+            }
+            if($roi[$i] < 0)
+            {
+                echo'
+                                    <td class="error-msg">' . $roi[$i] . '%</td>';
+            }
+            if($roi[$i] == 0)
+            {
+                echo'
+                                    <td>' . $roi[$i] . '%</td>';
+            }
+            
+            echo '
                                     <td>' . $profits[$i] . '</td>
                                     <td>' . $date_posted[$i] . '</td>
                                     <td><input type="submit" id="abc" class="cursor-context" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
