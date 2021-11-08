@@ -391,13 +391,13 @@
                                 }
                                 
                                 echo '
-                                    <input name = "graph_options" type = "submit" id = "'.GraphOption::ONE_DAY.'" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::ONE_DAY.'">
-                                    <input name = "graph_options" type = "submit" id = "'.GraphOption::FIVE_DAY.'" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::FIVE_DAY.'">
-                                    <input name = "graph_options" type = "submit" id = "'.GraphOption::ONE_MONTH.'" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::ONE_MONTH.'">
-                                    <input name = "graph_options" type = "submit" id = "'.GraphOption::SIX_MONTH.'" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::SIX_MONTH.'">
-                                    <input name = "graph_options" type = "submit" id = "'.GraphOption::YEAR_TO_DATE.'" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::YEAR_TO_DATE.'">
-                                    <input name = "graph_options" type = "submit" id = "'.GraphOption::ONE_YEAR.'" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::ONE_YEAR.'">
-                                    <input name = "graph_options" type = "submit" id = "'.GraphOption::FIVE_YEAR.'" class="input-no-background input-tan" aria-pressed="true" value ="'.GraphOption::FIVE_YEAR.'">
+                                    <button id = "'.GraphOption::ONE_DAY.'" class="btn btn-secondary">'.GraphOption::ONE_DAY.'</button>
+                                    <button id = "'.GraphOption::FIVE_DAY.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_DAY.'</button>
+                                    <button id = "'.GraphOption::ONE_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_MONTH.'</button>
+                                    <button id = "'.GraphOption::SIX_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::SIX_MONTH.'</button>
+                                    <button id = "'.GraphOption::YEAR_TO_DATE.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::YEAR_TO_DATE.'</button>
+                                    <button id = "'.GraphOption::ONE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_YEAR.'</button>
+                                    <button id = "'.GraphOption::FIVE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_YEAR.'</button>
                                     <div class="chart-container">
                                         <canvas id="stock_graph"></canvas>
                                     </div>
