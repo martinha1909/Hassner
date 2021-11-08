@@ -408,7 +408,7 @@ function getAmountSharesRequesting($user_username, $artist_username)
     * Get artist highest or lowest sell order, depends on the selected option
     *
     * @param  	artist_username	  artist username to retrieve all the sell orders from
-    * @param  	indicator	      option to have action upon, lowest or highest
+    * @param  	indicator	      option to have action upon, MAX would get the highest and MIN would get the lowest
     *
     * @return 	the price of the sell order, as indicated by indicator
     */
