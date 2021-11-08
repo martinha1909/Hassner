@@ -6,13 +6,14 @@
     include '../shared/include/MarketplaceHelpers.php';
 
     date_default_timezone_set("America/Edmonton");
+    $graph_options = $_POST['graph_option'];
 
     $conn = connect();
     $json_data = array();
     $db_current_date_time = date('Y-m-d H:i:s');
     $days_ago = "";
 
-    if($_SESSION['graph_options'] == GraphOption::ONE_DAY || $_SESSION['graph_options'] == GraphOption::NONE)
+    if($graph_options == GraphOption::ONE_DAY || $graph_options == GraphOption::NONE)
     {
         $days_ago = date("Y-m-d H:i:s", strtotime("-1 day"));
 
@@ -26,7 +27,7 @@
             array_push($json_data, $row);
         }
     }
-    else if($_SESSION['graph_options'] == GraphOption::FIVE_DAY)
+    else if($graph_options == GraphOption::FIVE_DAY)
     {
         $counter = 0;
         $days_ago = date("Y-m-d H:i:s", strtotime("-5 days"));
@@ -51,24 +52,24 @@
         $all_pps_in_a_day = array();
         $last_fetched_day = "";
         $day_high_pps = 0;
-        if($_SESSION['graph_options'] == GraphOption::ONE_MONTH)
+        if($graph_options == GraphOption::ONE_MONTH)
         {
             $days_ago = date("Y-m-d H:i:s", strtotime("-1 month"));
         }
-        else if($_SESSION['graph_options'] == GraphOption::SIX_MONTH)
+        else if($graph_options == GraphOption::SIX_MONTH)
         {
             $days_ago = date("Y-m-d H:i:s", strtotime("-6 months"));
         }
-        else if($_SESSION['graph_options'] == GraphOption::YEAR_TO_DATE)
+        else if($graph_options == GraphOption::YEAR_TO_DATE)
         {
             //gets first day of the current year
             $days_ago = date("Y-m-d H:i:s", strtotime(date('Y-01-01')));
         }
-        else if($_SESSION['graph_options'] == GraphOption::ONE_YEAR)
+        else if($graph_options == GraphOption::ONE_YEAR)
         {
             $days_ago = date("Y-m-d H:i:s", strtotime("-1 year"));
         }
-        else if($_SESSION['graph_options'] == GraphOption::FIVE_YEAR)
+        else if($graph_options == GraphOption::FIVE_YEAR)
         {
             $days_ago = date("Y-m-d H:i:s", strtotime("-5 years"));
         }

@@ -1,10 +1,46 @@
 $(document).ready(function(){
+    var graph_option = "1D";
+    JSONToAJAX(graph_option);
+    $("#1D").click(function (){
+        graph_option = "1D";
+        JSONToAJAX(graph_option);
+    });
+    $("#5D").click(function (){
+        graph_option = "5D";
+        JSONToAJAX(graph_option);
+    });
+    $("#1M").click(function (){
+        graph_option = "1M";
+        JSONToAJAX(graph_option);
+    });
+    $("#6M").click(function (){
+        graph_option = "6M";
+        JSONToAJAX(graph_option);
+    });
+    $("#YTD").click(function (){
+        graph_option = "YTD";
+        JSONToAJAX(graph_option);
+    });
+    $("#1Y").click(function (){
+        graph_option = "1Y";
+        JSONToAJAX(graph_option);
+    });
+    $("#5Y").click(function (){
+        graph_option = "5Y";
+        JSONToAJAX(graph_option);
+    });
+});
+
+function JSONToAJAX(graph_option)
+{
     $.ajax({
         url : "http://localhost:8080/Hassner/backend/graph/LineGraphData.php",
-        type : "GET",
+        method : "POST",
+        data:{
+            graph_option: graph_option
+        },
         success : function(data){
-            // console.log(data);
-            var graph_option = document.querySelector('#artist_user_share_info_script').getAttribute('graph_option');
+            // var graph_option = document.querySelector('#artist_user_share_info_script').getAttribute('graph_option');
             var artist_market_tag = document.querySelector('#artist_user_share_info_script').getAttribute('artist_tag');
             var y_axis = [];
             var x_axis = [];
@@ -114,4 +150,4 @@ $(document).ready(function(){
 
         }
     });
-});
+}
