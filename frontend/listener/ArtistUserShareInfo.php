@@ -185,7 +185,7 @@
                     </div>
 
                     <!-- displaying current share information between current user and selected artist -->
-                            <?php }?>
+                        <?php }?>
                 </div>
                 <div class="mx-auto my-auto text-center col-5 buy_sell_container">
                     <?php
