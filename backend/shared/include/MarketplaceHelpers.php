@@ -942,7 +942,6 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
             $artist_pps = $res_pps->fetch_assoc();
             $ticker_info->setPPS($artist_pps['price_per_share']);
 
-            //Will implement a last 24 change calculation later
             $change = getArtistDayChange($row['username']);
             $ticker_info->setChange($change);
 
