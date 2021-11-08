@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2021 at 03:23 AM
+-- Generation Time: Nov 08, 2021 at 07:31 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -86,11 +86,11 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `shares_repurchase`) VALUES
 ('21 Savage', 'artist', 'artist', 6, 2386, 3181.33, 0, 150000, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 1.33333, 0, 0, 3181.33, 0),
-('88Glam', 'artist', 'artist', 2, 4406, 8797.2, 0, 100000, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 6, 0, 0, 26436, 4),
+('88Glam', 'artist', 'artist', 2, 4406, 8797.2, 0, 100000, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 3.6, 0, 0, 15861.6, 4),
 ('daniel', 'user', 'user', 8, 0, 100000, 0, 0, 'iosrghn@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('Drake', 'artist', 'artist', 11, 859, 859, 0, 30000, 'qwerty@gmail.com', 'Drake', '', '', '', '', '', '', '', '', '', 1, 0, 0, 859, 0),
-('kai', 'user', 'user', 4, 358, 98964.2, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('martin', 'user', 'user', 1, 4041, 88204.3, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
+('kai', 'user', 'user', 4, 356, 98968.8, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
+('martin', 'user', 'user', 1, 4043, 88199.7, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
 ('NAV', 'artist', 'artist', 3, 0, 0, 0, 1000, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 3, 0, 0, 0, 0),
 ('riley', 'user', 'user', 7, 0, 100000, 0, 0, 'efin@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('vitor', 'user', 'user', 5, 3, 99994, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
@@ -152,10 +152,10 @@ CREATE TABLE `artist_shareholders` (
 
 INSERT INTO `artist_shareholders` (`user_username`, `artist_username`, `shares_owned`) VALUES
 ('88Glam', '88Glam', 4),
-('kai', '88Glam', 358),
+('kai', '88Glam', 356),
 ('kai', 'Drake', 859),
 ('martin', '21 Savage', 2386),
-('martin', '88Glam', 4041),
+('martin', '88Glam', 4043),
 ('vitor', '88Glam', 3);
 
 -- --------------------------------------------------------
@@ -178,6 +178,12 @@ INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `date_r
 ('21 Savage', 1.33333, '2021-11-06 19:30:00'),
 ('21 Savage', 1.33333, '2021-11-06 19:45:00'),
 ('21 Savage', 1.33333, '2021-11-06 20:00:00'),
+('21 Savage', 1.33333, '2021-11-07 14:52:30'),
+('21 Savage', 1.33333, '2021-11-07 15:00:00'),
+('21 Savage', 1.33333, '2021-11-07 15:15:00'),
+('21 Savage', 1.33333, '2021-11-07 15:30:00'),
+('21 Savage', 1.33333, '2021-11-07 21:30:00'),
+('21 Savage', 1.33333, '2021-11-07 21:45:00'),
 ('88Glam', 2.5, '2021-10-26 19:30:00'),
 ('88Glam', 2.2, '2021-10-27 19:30:00'),
 ('88Glam', 3.2, '2021-10-28 19:30:00'),
@@ -194,12 +200,30 @@ INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `date_r
 ('88Glam', 6, '2021-11-06 19:30:00'),
 ('88Glam', 6, '2021-11-06 19:45:00'),
 ('88Glam', 6, '2021-11-06 20:00:00'),
+('88Glam', 6, '2021-11-07 14:52:30'),
+('88Glam', 6, '2021-11-07 15:00:00'),
+('88Glam', 3.6, '2021-11-07 15:15:00'),
+('88Glam', 3.6, '2021-11-07 15:30:00'),
+('88Glam', 6, '2021-11-07 21:30:00'),
+('88Glam', 6, '2021-11-07 21:45:00'),
 ('Drake', 1, '2021-11-06 19:30:00'),
 ('Drake', 1, '2021-11-06 19:45:00'),
 ('Drake', 1, '2021-11-06 20:00:00'),
+('Drake', 1, '2021-11-07 14:52:30'),
+('Drake', 1, '2021-11-07 15:00:00'),
+('Drake', 1, '2021-11-07 15:15:00'),
+('Drake', 1, '2021-11-07 15:30:00'),
+('Drake', 1, '2021-11-07 21:30:00'),
+('Drake', 1, '2021-11-07 21:45:00'),
 ('NAV', 3, '2021-11-06 19:30:00'),
 ('NAV', 3, '2021-11-06 19:45:00'),
-('NAV', 3, '2021-11-06 20:00:00');
+('NAV', 3, '2021-11-06 20:00:00'),
+('NAV', 3, '2021-11-07 14:52:30'),
+('NAV', 3, '2021-11-07 15:00:00'),
+('NAV', 3, '2021-11-07 15:15:00'),
+('NAV', 3, '2021-11-07 15:30:00'),
+('NAV', 3, '2021-11-07 21:30:00'),
+('NAV', 3, '2021-11-07 21:45:00');
 
 -- --------------------------------------------------------
 
@@ -263,6 +287,8 @@ INSERT INTO `buy_history` (`user_username`, `seller_username`, `artist_username`
 ('martin', 'kai', '88Glam', 1, 3, '02-11-2021', '19:55:53'),
 ('martin', 'kai', '88Glam', 1, 4, '04-11-2021', '21:12:11'),
 ('martin', 'kai', '88Glam', 1, 3.6, '04-11-2021', '21:13:08'),
+('martin', 'kai', '88Glam', 1, 6, '07-11-2021', '15:03:31'),
+('martin', 'kai', '88Glam', 1, 1, '07-11-2021', '15:03:56'),
 ('vitor', '88Glam', '88Glam', 1, 1, '03-11-2021', '19:14:34'),
 ('vitor', 'kai', '88Glam', 1, 1, '03-11-2021', '19:15:09'),
 ('vitor', 'martin', '88Glam', 1, 1, '03-11-2021', '19:14:05');
@@ -380,8 +406,8 @@ CREATE TABLE `sell_order` (
 
 INSERT INTO `sell_order` (`id`, `user_username`, `artist_username`, `selling_price`, `no_of_share`, `date_posted`, `time_posted`) VALUES
 (1, 'martin', '88Glam', 6, 460, '02-11-2021', '18:01:27'),
-(2, 'kai', '88Glam', 3.6, 27, '02-11-2021', '18:02:00'),
-(3, 'kai', '88Glam', 1, 19, '02-11-2021', '19:54:28');
+(2, 'kai', '88Glam', 3.6, 26, '02-11-2021', '18:02:00'),
+(3, 'kai', '88Glam', 1, 18, '02-11-2021', '19:54:28');
 
 --
 -- Indexes for dumped tables
@@ -538,7 +564,7 @@ DELIMITER $$
 --
 -- Events
 --
-CREATE DEFINER=`root`@`localhost` EVENT `log_artist_pps` ON SCHEDULE EVERY 15 MINUTE STARTS '2021-11-05 09:00:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL log_artist_pps$$
+CREATE DEFINER=`root`@`localhost` EVENT `log_artist_pps` ON SCHEDULE EVERY 15 MINUTE STARTS '2021-11-05 09:00:00' ON COMPLETION NOT PRESERVE DISABLE DO CALL log_artist_pps$$
 
 DELIMITER ;
 COMMIT;
