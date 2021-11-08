@@ -649,11 +649,7 @@
         for($i = 0; $i < sizeof($all_artists); $i++)
         {
             echo '
-<<<<<<< HEAD:backend/listener/include/ListenerHelpers.php
-                <p>
-=======
                 <p class="p-white">
->>>>>>> hn_backend:backend/listener/ListenerHelpers.php
                 <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$all_artists[$i]->getUsername().'"> ('.$all_artists[$i]->getMarketTag().')
             ';
             if($all_artists[$i]->getDayChange() > 0)
@@ -680,15 +676,9 @@
                     </span>
                 ';
             }
-<<<<<<< HEAD:backend/listener/include/ListenerHelpers.php
-            echo "
-                </p>
-            ";
-=======
             echo '
                 </p>
             ';
->>>>>>> hn_backend:backend/listener/ListenerHelpers.php
         }
         echo "</form>";
     }
