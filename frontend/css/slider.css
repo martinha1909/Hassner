@@ -1,0 +1,44 @@
+.slider_container {
+    height: auto;
+  }
+
+.slider_text {
+  width: 15%;
+  background: none;
+}
+
+.slider_slider {
+  margin-top: 5%;
+  width: 60%;
+  margin-left:25%;
+}
+
+.buy_sell_container {
+  display: flex;
+}
+
+.accordion {
+  width: 50%;
+}
+
+.ui-widget-content {
+  border: 0;
+  background: none;
+  color: white;
+}
+
+.shares_header {
+  font-weight: bold;
+  color: white;
+  background: #052b51;
+  border: none;
+  border-radius: 5px;
+}
+
+.spacer {
+  width: 5%;
+}
+
+.order_btn_container{
+  margin-top: 5%;
+}
