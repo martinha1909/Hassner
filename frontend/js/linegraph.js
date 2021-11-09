@@ -33,8 +33,9 @@ $(document).ready(function(){
 
 function JSONToAJAX(graph_option)
 {
+    var url = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/graph/LineGraphData.php";
     $.ajax({
-        url : "http://localhost/Hassner/backend/graph/LineGraphData.php",
+        url : url,
         method : "POST",
         data:{
             graph_option: graph_option
