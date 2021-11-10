@@ -53,9 +53,7 @@
         {
             $ret = new TickerInfo();
 
-            $ret->setTag($ticker->getTag());
-            $ret->setPPS($ticker->getPPS());
-            $ret->setChange($ticker->getChange());
+            $ret = clone $ticker;
 
             return $ret;
         }
