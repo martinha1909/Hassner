@@ -496,12 +496,6 @@
                                                 </form>
                                         ';
                                     }
-                                    else
-                                    {
-                                        echo '
-                                            <h6 class="error-msg">Out of trading hours<h6>
-                                        ';
-                                    }
                                 }
                             }
                             else if($_SESSION['ethos_dashboard_options'] == EthosOption::HISTORY)

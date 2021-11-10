@@ -497,20 +497,21 @@
         return $ret;
     }
 
-    function isTradingTime($timezone): bool
+    /**
+    * Checks to see if the current hour is within trading hours range
+    *
+    * @param  	timezone	    Timezone to be set
+    *
+    * @return 	ret	            true if it is within trading hours range, false otherwise
+    */
+    function isTradingTime($timezone)
     {
         date_default_timezone_set($timezone);
 
-        $ret = FALSE;
         $current_date_time = date('d-m-Y H:i:s');
         $trading_hours_start = date('d-m-Y 09:30:00');
         $trading_hours_end = date('d-m-Y 16:00:00');
 
-        if(isInRange($current_date_time, $trading_hours_start, $trading_hours_end))
-        {
-            $ret = TRUE;
-        }
-
-        return $ret;
+        return (isInRange($current_date_time, $trading_hours_start, $trading_hours_end));
     }
 ?>
