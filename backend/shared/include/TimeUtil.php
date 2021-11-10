@@ -504,7 +504,7 @@
         $ret = FALSE;
         $current_date_time = date('d-m-Y H:i:s');
         $trading_hours_start = date('d-m-Y 09:30:00');
-        $trading_hours_end = date('d-m-Y 16:30:00');
+        $trading_hours_end = date('d-m-Y 16:00:00');
 
         if(isInRange($current_date_time, $trading_hours_start, $trading_hours_end))
         {
