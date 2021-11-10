@@ -26,6 +26,7 @@
         $_SESSION['trade_history_to'] = 0;
         $_SESSION['trade_history_type'] = 0;
         $_SESSION['ethos_dashboard_options'] = EthosOption::NONE;
+        $_SESSION['trade_time'] = isTradingTime('America/Edmonton');
         $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
     }
 

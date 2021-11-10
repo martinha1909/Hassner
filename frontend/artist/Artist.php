@@ -486,13 +486,22 @@
 
                                 if($amount_repurchase_available > 0)
                                 {
-                                    echo '
-                                                </tbody>
-                                            </table>
-                                            <form class="text-center my-6" action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
-                                                <input type="submit" class="btn btn-primary py-2" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
-                                            </form>
-                                    ';
+                                    if($_SESSION['trade_time'])
+                                    {
+                                        echo '
+                                                    </tbody>
+                                                </table>
+                                                <form class="text-center my-6" action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
+                                                    <input type="submit" class="btn btn-primary py-2" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
+                                                </form>
+                                        ';
+                                    }
+                                    else
+                                    {
+                                        echo '
+                                            <h6 class="error-msg">Out of trading hours<h6>
+                                        ';
+                                    }
                                 }
                             }
                             else if($_SESSION['ethos_dashboard_options'] == EthosOption::HISTORY)

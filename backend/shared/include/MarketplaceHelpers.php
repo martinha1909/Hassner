@@ -124,9 +124,11 @@ function askedPriceInit($artist_username, $account_type)
                 </div>
         ';
     }
-    if (sizeof($sell_orders) > 0) {
+    if (sizeof($sell_orders) > 0) 
+    {
         //displays the buy button when user has not clicked on it
-        if ($_SESSION['buy_asked_price'] == 0) {
+        if ($_SESSION['buy_asked_price'] == 0) 
+        {
             echo '
                 <div class="col-6 mx-auto">
                     <table class="table">
@@ -140,7 +142,8 @@ function askedPriceInit($artist_username, $account_type)
                             </tr>
                         </thead>
                         <tbody>';
-            for ($i = 0; $i < sizeof($sell_orders); $i++) {
+            for ($i = 0; $i < sizeof($sell_orders); $i++) 
+            {
                 echo '
                             <tr>
                                 <th scope="row">' . $sell_orders[$i]->getID() . '</th>
@@ -149,11 +152,23 @@ function askedPriceInit($artist_username, $account_type)
                                 <td>' . $sell_orders[$i]->getNoOfShare() . '</td>
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
                     ';
-                if (hasEnoughSiliqas($sell_orders[$i]->getSellingPrice(), $_SESSION['user_balance'])) {
-                    echo '
-                                        <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                if (hasEnoughSiliqas($sell_orders[$i]->getSellingPrice(), $_SESSION['user_balance'])) 
+                {
+                    if($_SESSION['trade_time'])
+                    {
+                        echo '
+                                            <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                            ';
+                    }
+                    else
+                    {
+                        echo '
+                            <td class="error-msg">Out of trading hours<td>
                         ';
-                } else {
+                    }
+                } 
+                else 
+                {
                     $_SESSION['status'] = "ERROR";
                     echo '
                                         <td>
@@ -175,7 +190,8 @@ function askedPriceInit($artist_username, $account_type)
             ';
         }
         //replaces the Buy button with a slide bar ranging from 0 to the quantity that other users are selling
-        else {
+        else 
+        {
             echo '
                     <table class="table">
                         <thead>
@@ -189,7 +205,8 @@ function askedPriceInit($artist_username, $account_type)
                             </tr>
                         </thead>
                         <tbody>';
-            for ($i = 0; $i < sizeof($sell_orders); $i++) {
+            for ($i = 0; $i < sizeof($sell_orders); $i++) 
+            {
                 echo '
                             <tr>
                                 <th scope="row">' . $sell_orders[$i]->getID() . '</th>
@@ -198,7 +215,8 @@ function askedPriceInit($artist_username, $account_type)
                                 <td>' . $sell_orders[$i]->getNoOfShare() . '</td>
                                 <td>
                     ';
-                if ($_SESSION['seller'] == $sell_orders[$i]->getID()) {
+                if ($_SESSION['seller'] == $sell_orders[$i]->getID()) 
+                {
                     $_SESSION['purchase_price'] = $sell_orders[$i]->getSellingPrice();
                     $_SESSION['seller_toggle'] = $sell_orders[$i]->getID();
                     echo '
@@ -211,7 +229,9 @@ function askedPriceInit($artist_username, $account_type)
                                     <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
                                 </form>
                         ';
-                } else {
+                } 
+                else 
+                {
                     echo '
                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
                                 <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
@@ -229,7 +249,8 @@ function askedPriceInit($artist_username, $account_type)
     }
     
     //If other users are selling shares, displays nothing
-    else {
+    else 
+    {
         echo '
                 <div class="py-4 text-center">
                     <h4>No shares are currently sold by other users</h4>
