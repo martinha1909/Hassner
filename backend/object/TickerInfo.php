@@ -80,7 +80,8 @@
         * @param  	low	        starting index of the array
         * @param  	high        ending index of the array
         * @param  	option      descending or ascending option
-        * @param  	item        variable to use as a base to sort
+        * @param  	item        variable to use as a base to sort, supported options are:
+        *                       - CHANGE -> sort by day change
         */
         private static function partition(&$ticker_arr, $low, $high, $option, $item)
         {
