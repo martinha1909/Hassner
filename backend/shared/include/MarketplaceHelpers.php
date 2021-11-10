@@ -324,7 +324,24 @@ function askedPriceInit($artist_username, $account_type)
                                     <td>' . $artist_usernames[$i] . '</th>
                                     <td>' . $selling_prices[$i] . '</td>
                                     <td>' . $share_amounts[$i] . '</td>
-                                    <td>' . $roi[$i] . '%</td>
+            ';
+            if($roi[$i] > 0)
+            {
+                echo'
+                                    <td class="suc-msg">+' . $roi[$i] . '%</td>';
+            }
+            if($roi[$i] < 0)
+            {
+                echo'
+                                    <td class="error-msg">' . $roi[$i] . '%</td>';
+            }
+            if($roi[$i] == 0)
+            {
+                echo'
+                                    <td>' . $roi[$i] . '%</td>';
+            }
+            
+            echo '
                                     <td>' . $profits[$i] . '</td>
                                     <td>' . $date_posted[$i] . '</td>
                                     <td><input type="submit" id="abc" class="cursor-context" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
@@ -927,12 +944,12 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
             $artist_pps = $res_pps->fetch_assoc();
             $ticker_info->setPPS($artist_pps['price_per_share']);
 
-            //Will implement a last 24 change calculation later
-            $change = 1;
+            $change = getArtistDayChange($row['username']);
             $ticker_info->setChange($change);
 
             array_push($ret, $ticker_info);
         }
+        TickerInfo::sort($ret, 0, (sizeof($ret) - 1), "DESCENDING", "CHANGE");
 
         return $ret;
     }
@@ -1015,6 +1032,47 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
                     $ret = $all_pps_in_a_day[$i];
                 }
             }
+        }
+
+        return $ret;
+    }
+
+    /**
+        * Calculates artist last 24 hours stock change
+        *
+        * @param  	artist_username username of artist to get the last 24-hour price change
+        *
+        * @return   ret             last 24 hours change, in percentage
+        */
+    function getArtistDayChange($artist_username)
+    {
+        $ret = 0;
+        $conn = connect();
+        $all_pps_in_a_day = array();
+        $db_current_date_time = date('Y-m-d H:i:s');
+        $db_current_date_time = date("Y-m-d H:i:s", strtotime("-3 days"));
+        $days_ago = date("Y-m-d H:i:s", strtotime("-4 day"));
+
+        $res = searchArtistCurrentPricePerShare($conn, $artist_username);
+        $current_pps = $res->fetch_assoc();
+
+        $res = getJSONDataWithinInterval($conn, $artist_username, $days_ago, $db_current_date_time);
+        while($row = $res->fetch_assoc())
+        {
+            array_push($all_pps_in_a_day, $row['price_per_share']);
+        }
+
+        $prev_day_high = round(getMaxPPSByDay($all_pps_in_a_day), 2);
+        //if the return value from getMaxPPSByDay is 0, it means that there was no trade going on in the previous day
+        //In this case we can just return 0
+        if($prev_day_high == 0)
+        {
+            $ret = 0;
+        }
+        else
+        {
+            //Day change is compared between yesterday's high vs current price per share
+            $ret = round((($current_pps['price_per_share'] - $prev_day_high)/$prev_day_high) * 100, 2);
         }
 
         return $ret;

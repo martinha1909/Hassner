@@ -132,7 +132,7 @@
                     <!-- Displaying stock graph -->
                     <div class="chart-container">
                         <?php
-                            $change = 0;
+                            $change = getArtistDayChange($_SESSION['selected_artist']);
                             $market_cap = calculateMarketCap($_SESSION['selected_artist']);
                             $volume = getArtistShareVolume($_SESSION['selected_artist']);
                             $open = getArtistPricePerShare($_SESSION['selected_artist']);
