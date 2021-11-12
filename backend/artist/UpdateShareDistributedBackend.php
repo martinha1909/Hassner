@@ -6,8 +6,8 @@
 
     $additional_shares = $_POST['share_distributing'];
     $comment = $_POST['inject_comment'];
-    $current_date = getCurrentDate("America/Edmonton");
-    $date_parser = dayAndTimeSplitter($current_date);
+    date_default_timezone_set($_SESSION['timezone']);
+    $current_date = date('Y-m-d H:i:s');
 
     if(empty($comment))
     {
@@ -28,8 +28,7 @@
                            $new_shares_distributed, 
                            $additional_shares, 
                            $comment, 
-                           $date_parser[0], 
-                           $date_parser[1]);
+                           $current_date);
 
     $_SESSION['share_distribute'] = 0;
     $_SESSION['dependencies'] = "FRONTEND";

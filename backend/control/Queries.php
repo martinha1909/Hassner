@@ -639,34 +639,47 @@
             $conn->query($sql);
         }
 
-        function artistShareDistributionInit($conn, $artist_username, $share_distributing, $initial_pps, $comment, $date, $time)
+        function artistShareDistributionInit($connPDO, $artist_username, $share_distributing, $initial_pps, $comment, $date)
         {
             $status = 0;
+            $injection_id = 0;
 
-            $sql = "UPDATE account SET Share_Distributed = '$share_distributing' WHERE username='$artist_username'";
-            if($conn->query($sql))
-            {
+            try {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("UPDATE account SET Share_Distributed = ? WHERE username = ?");
+                $stmt->bindValue(1, $share_distributing);
+                $stmt->bindValue(2, $artist_username);
+                $stmt->execute(array($share_distributing, $artist_username));
+
+                $stmt = $connPDO->prepare("UPDATE account SET price_per_share = ? WHERE username = ?");
+                $stmt->bindValue(1, $initial_pps);
+                $stmt->bindValue(2, $artist_username);
+                $stmt->execute(array($initial_pps, $artist_username));
+            
+                $conn = connect();
+                $res = getMaxInjectionID($conn);
+                if($res->num_rows > 0)
+                {
+                    $max_id = $res->fetch_assoc();
+                    $injection_id = $max_id["max_id"] + 1;
+                }
+                $stmt = $connPDO->prepare("INSERT INTO inject_history (id, artist_username, amount, comment, date_injected)
+                                           VALUES(?, ?, ?, ?, ?)");
+                $stmt->bindValue(1, $injection_id);
+                $stmt->bindValue(2, $artist_username);
+                $stmt->bindValue(3, $share_distributing);
+                $stmt->bindValue(4, $comment);
+                $stmt->bindValue(5, $date);
+                $stmt->execute(array($injection_id, $artist_username, $share_distributing, $comment, $date));
+                
+                $connPDO->commit();
                 $status = StatusCodes::Success;
-            }
-            else
-            {
-                return StatusCodes::ErrGeneric;
-            }
+            } catch (PDOException $e) {
+                $connPDO->rollBack();
+                echo "Failed: " . $e->getMessage();
 
-            $sql = "UPDATE account SET price_per_share = '$initial_pps' WHERE username='$artist_username'";
-            if($conn->query($sql))
-            {
-                $status = StatusCodes::Success;
-            }
-            else
-            {
-                return StatusCodes::ErrGeneric;
-            }
-
-            $status = addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date, $time);
-            if($status == "ERROR")
-            {
-                return "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }
 
             return $status;
@@ -698,12 +711,12 @@
             $conn->query($sql);
         }
 
-        function updateShareDistributed($conn, $artist_username, $new_share_distributed, $added_shares, $comment, $date, $time)
+        function updateShareDistributed($conn, $artist_username, $new_share_distributed, $added_shares, $comment, $date)
         {
             $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username='$artist_username'";
             $conn->query($sql);
 
-            addToInjectionHistory($conn, $artist_username, $added_shares, $comment, $date, $time);
+            addToInjectionHistory($conn, $artist_username, $added_shares, $comment, $date);
         }
 
         function saveUserPaymentInfo($conn, $username, $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number)
@@ -1125,22 +1138,22 @@
             return $status;
         }
 
-        function addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date, $time)
+        function addToInjectionHistory($connPDO, $artist_username, $share_distributing, $comment, $date)
         {
             $status = 0;
             $injection_id = 0;
 
-            $res = getMaxInjectionID($conn);
+            $res = getMaxInjectionID($connPDO);
             if($res->num_rows > 0)
             {
                 $max_id = $res->fetch_assoc();
                 $injection_id = $max_id["max_id"] + 1;
             }
 
-            $sql = "INSERT INTO inject_history (id, artist_username, amount, date_injected, time_injected, comment)
-                    VALUES(?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('isisss', $injection_id, $artist_username, $share_distributing, $date, $time, $comment);
+            $sql = "INSERT INTO inject_history (id, artist_username, amount, comment, date_injected)
+                    VALUES(?, ?, ?, ?, ?)";
+            $stmt = $connPDO->prepare($sql);
+            $stmt->bind_param('isiss', $injection_id, $artist_username, $share_distributing, $comment, $date);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;

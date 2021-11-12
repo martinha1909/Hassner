@@ -6,15 +6,15 @@
 
     $_SESSION['logging_mode'] = LogModes::SHARE_DIST;
 
-    $conn = connect();
+    $connPDO = connectPDO();
     $shares_distributing = 0;
     $shares_distributing = $_POST['distribute_share'];
     $siliqas_raising = $_POST['siliqas_raising'];
 
     //For now the first time artists distribute their share will just have this comment to keep things consistent
     $comment = "IPO";
-    $current_date = getCurrentDate("America/Edmonton");
-    $date_parser = dayAndTimeSplitter($current_date);
+    date_default_timezone_set($_SESSION['timezone']);
+    $current_date = date('Y-m-d H:i:s');
 
     if(empty($shares_distributing) || empty($siliqas_raising))
     {
@@ -30,13 +30,12 @@
     {
         $initial_pps = $siliqas_raising/$shares_distributing;
 
-        artistShareDistributionInit($conn, 
+        artistShareDistributionInit($connPDO, 
                                     $_SESSION['username'], 
                                     $shares_distributing, 
                                     $initial_pps, 
                                     $comment, 
-                                    $date_parser[0],
-                                    $date_parser[1]);
+                                    $current_date);
 
         $_SESSION['dependencies'] = "FRONTEND";
 
