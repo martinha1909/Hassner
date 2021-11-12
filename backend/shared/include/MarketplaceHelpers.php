@@ -154,7 +154,7 @@ function askedPriceInit($artist_username, $account_type)
                     ';
                 if (hasEnoughSiliqas($sell_orders[$i]->getSellingPrice(), $_SESSION['user_balance'])) 
                 {
-                    if($_SESSION['trade_time'])
+                    if(isTradingTime('America/Edmonton'))
                     {
                         echo '
                                             <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>

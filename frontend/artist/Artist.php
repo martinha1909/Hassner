@@ -486,7 +486,7 @@
 
                                 if($amount_repurchase_available > 0)
                                 {
-                                    if($_SESSION['trade_time'])
+                                    if(isTradingTime('America/Edmonton'))
                                     {
                                         echo '
                                                     </tbody>

@@ -191,7 +191,7 @@
                     <?php
                     if($_SESSION['artist_found'])
                     {
-                        if($_SESSION['trade_time'])
+                        if(isTradingTime('America/Edmonton'))
                         {
                             echo '
                                 <div class="accordion" id="buy_accordion">
@@ -250,7 +250,7 @@
                     <?php
                         if($_SESSION['artist_found'])
                         {
-                            if($_SESSION['trade_time'])
+                            if(isTradingTime('America/Edmonton'))
                             {
                                 if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "MARKET") 
                                 {
