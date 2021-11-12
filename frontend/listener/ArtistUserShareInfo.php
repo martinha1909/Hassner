@@ -5,11 +5,13 @@
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/ShareInteraction.php';
     include '../../backend/constants/GraphOption.php';
+    include '../../backend/constants/CampaignType.php';
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
     include '../../backend/object/TickerInfo.php';
     include '../../backend/object/SellOrder.php';
+    include '../../backend/object/Campaign.php';
 
     //only do actions if an artist is found
     if($_SESSION['artist_found'])
@@ -380,6 +382,49 @@
                             echo '<h3 class="h3-blue py-5">Ethos Injection History</h3>';
 
                             injectionHistoryInit($_SESSION['selected_artist']);
+
+                            $current_campaigns = artistCurrentCampaigns($_SESSION['selected_artist']);
+
+                            echo '
+                                <h3 class="h3-blue py-5">Current Campaigns</h3>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Offering</th>
+                                            <th scope="col">Minimum Shares</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Date Commenced</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                            ';
+
+                            for($i = 0; $i < sizeof($current_campaigns); $i++)
+                            {
+                                $type = "Error in parsing type";
+                                if($current_campaigns[$i]->getType() == CampaignType::RAFFLE)
+                                {
+                                    $type = "♢";
+                                }
+                                else if($current_campaigns[$i]->getType() == CampaignType::BENCHMARK)
+                                {
+                                    $type = "♧";
+                                }
+                                $date_commenced = dateParser($current_campaigns[$i]->getDatePosted())." at ".timeParser($current_campaigns[$i]->getTimePosted());
+                                echo '
+                                        <tr>
+                                            <th scope="row">' . $current_campaigns[$i]->getOffering() . '</th>
+                                            <td>' . $current_campaigns[$i]->getMinEthos() . '</td>
+                                            <td>' . $type .'</td>
+                                            <td>'. $date_commenced .'</td>
+                                        </tr>
+                                ';
+                            }
+
+                            echo '
+                                    </tbody>
+                                </table>
+                            ';
                     }
                     else
                     {
