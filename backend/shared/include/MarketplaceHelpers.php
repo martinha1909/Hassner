@@ -1043,7 +1043,7 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         * @param  	artist_username username of artist to get the last 24-hour price change
         *
         * @return   ret             last 24 hours change, in percentage
-        */
+    */
     function getArtistDayChange($artist_username)
     {
         $ret = 0;
@@ -1078,6 +1078,13 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         return $ret;
     }
 
+    /**
+        * Gets current active campaign of a selected artist
+        *
+        * @param  	artist_username username of artist to get current active campaigns
+        *
+        * @return   ret             an array of current active campaigns
+    */
     function artistCurrentCampaigns($artist_username)
     {
         $ret = array();
