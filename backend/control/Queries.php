@@ -1138,12 +1138,12 @@
             return $status;
         }
 
-        function addToInjectionHistory($connPDO, $artist_username, $share_distributing, $comment, $date)
+        function addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date)
         {
             $status = 0;
             $injection_id = 0;
 
-            $res = getMaxInjectionID($connPDO);
+            $res = getMaxInjectionID($conn);
             if($res->num_rows > 0)
             {
                 $max_id = $res->fetch_assoc();
@@ -1152,7 +1152,7 @@
 
             $sql = "INSERT INTO inject_history (id, artist_username, amount, comment, date_injected)
                     VALUES(?, ?, ?, ?, ?)";
-            $stmt = $connPDO->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->bind_param('isiss', $injection_id, $artist_username, $share_distributing, $comment, $date);
             if($stmt->execute() == TRUE)
             {
