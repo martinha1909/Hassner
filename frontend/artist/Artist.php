@@ -396,6 +396,19 @@
                                 ';
 
                                 if ($_SESSION['share_distribute'] != 0) {
+                                    if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
+                                    {
+                                        if($_SESSION['status'] == StatusCodes::ErrEmpty)
+                                        {
+                                            $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                            getStatusMessage("Amount cannot be empty", "");
+                                        }
+                                        else if($_SESSION['status'] == StatusCodes::ErrNum)
+                                        {
+                                            $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                            getStatusMessage("Amount has to be a number", "");
+                                        }
+                                    }
                                     echo '
                                         <div class="col-6 mx-auto">
                                             <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
