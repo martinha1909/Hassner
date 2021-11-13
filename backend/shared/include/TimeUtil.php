@@ -30,10 +30,8 @@
         $ret = "Error in parsing db date time";
 
         $splitter = explode(" ", $date_time_object);
-        $day_splitter = explode("-", $splitter[0]);
 
-        $new_day_format = $day_splitter[2]."-".$day_splitter[1]."-".$day_splitter[0];
-        $ret = dateParser($new_day_format)." at ".timeParser($splitter[1]);
+        $ret = dateParser($splitter[0])." at ".timeParser($splitter[1]);
 
         return $ret;
     }
@@ -428,6 +426,23 @@
         // reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
         $date = new DateTime($date);
         $ret = $date->format('d-m-Y');
+
+        return $ret;
+    }
+
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	date_time	date time object received from the db datetime class
+    *                       has format of YYYY-MM-DD HH:MM:SS
+    *
+    * @return 	ret	        a string of reformatted date time, has format DD-MM-YYYY HH:MM:SS
+    */
+    function reformatDateTime($date_time)
+    {
+        $ret = "Error in parsing date time from db";
+        $date_time_formatted = new DateTime($date_time);
+        $ret = $date_time_formatted->format('d-m-Y H:i:s');
 
         return $ret;
     }

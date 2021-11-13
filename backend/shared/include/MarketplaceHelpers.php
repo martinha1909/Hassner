@@ -645,11 +645,13 @@ function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, 
 
     $res = getInjectionHistory($conn, $artist_username);
 
-    while ($row = $res->fetch_assoc()) {
+    while ($row = $res->fetch_assoc()) 
+    {
+        $date_from_db = reformatDateTime($row['date_injected']);
 
         array_push($comments, $row['comment']);
         array_push($amount_injected, $row['amount']);
-        array_push($date_injected, $row['date_injected']);
+        array_push($date_injected, $date_from_db);
     }
 }
 
