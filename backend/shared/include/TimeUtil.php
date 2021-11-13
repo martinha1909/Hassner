@@ -17,6 +17,14 @@
         return explode(" ", $date);
     }
 
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	date_time_object	date time object received from the db datetime class
+    *                               has format of YYYY-MM-DD HH:MM:SS
+    *
+    * @return 	ret	                a string of human readable date and time
+    */
     function dbDateTimeParser($date_time_object)
     {
         $ret = "Error in parsing db date time";
