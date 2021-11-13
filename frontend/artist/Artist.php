@@ -297,8 +297,25 @@
                     }
 
                     //Artists Ethos
-                    else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) {
+                    else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) 
+                    {
                         if ($account_info['Share_Distributed'] == 0) {
+                            if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
+                            {
+                                if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
+                                {
+                                    if($_SESSION['status'] == StatusCodes::ErrEmpty)
+                                    {
+                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                        getStatusMessage("Please fill out all fields and try again", "");
+                                    }
+                                    else if($_SESSION['status'] = StatusCodes::ErrNum)
+                                    {
+                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
+                                        getStatusMessage("Format error", "");
+                                    }
+                                }
+                            }
                             echo '
                                         <form action="../../backend/artist/DistributeShareBackend.php" method="post">
                                         <div class="form-group">

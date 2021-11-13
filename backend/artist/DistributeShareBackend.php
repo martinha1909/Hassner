@@ -19,12 +19,12 @@
     if(empty($shares_distributing) || empty($siliqas_raising))
     {
         $_SESSION['status'] = StatusCodes::ErrEmpty;
-        header("Location: ../../frontend/artist/PersonalPage.php");
+        returnToMainPage();
     }
     else if(!is_numeric($shares_distributing) || !is_numeric($siliqas_raising))
     {
         $_SESSION['status'] = StatusCodes::ErrNum;
-        header("Location: ../../frontend/artist/PersonalPage.php");
+        returnToMainPage();
     }
     else
     {
