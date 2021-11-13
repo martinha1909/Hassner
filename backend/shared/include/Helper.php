@@ -27,7 +27,7 @@
         $_SESSION['trade_history_type'] = 0;
         $_SESSION['ethos_dashboard_options'] = EthosOption::NONE;
         $_SESSION['timezone'] = 'America/Edmonton';
-        $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
+        $_SESSION['current_date'] = getCurrentDate($_SESSION['timezone']);
     }
 
     function getStatusMessage($err_msg, $suc_msg)

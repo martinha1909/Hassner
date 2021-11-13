@@ -17,10 +17,26 @@
         return explode(" ", $date);
     }
 
-    //return array will have:
-    //First index: day (DD)
-    //Second index: month(MM)
-    //Third index: year(YYYY)
+    function dbDateTimeParser($date_time_object)
+    {
+        $ret = "Error in parsing db date time";
+
+        $splitter = explode(" ", $date_time_object);
+        $day_splitter = explode("-", $splitter[0]);
+
+        $new_day_format = $day_splitter[2]."-".$day_splitter[1]."-".$day_splitter[0];
+        $ret = dateParser($new_day_format)." at ".timeParser($splitter[1]);
+
+        return $ret;
+    }
+
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	date	        date to parse to humanreadable format. Input has format of DD-MM-YYYY
+    *
+    * @return 	ret	            a string of human readable date
+    */
     function dateParser($date)
     {
         $date_parser = explode("-", $date);
@@ -31,10 +47,13 @@
         return $ret;
     }
 
-    //return array will have:
-    //first index: hour
-    //Second index: minute
-    //Third index: second
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	time	        time to parse to humanreadable format. Input has format of HH:MM:SS
+    *
+    * @return 	ret	            a string of human readable time
+    */
     function timeParser($time)
     {
         $time_parser = explode(":", $time);
