@@ -14,6 +14,8 @@
     $expiration_date = $_POST['campaign_duration'];
     $type = $_POST['raffle_or_benchmark'];
     $minimum_ethos = $_POST['minimum_ethos'];
+    date_default_timezone_set($_SESSION['timezone']);
+    $current_date = date('Y-m-d H:i:s');
 
     if(empty($offer) || empty($expiration_date) || empty($type) || empty($minimum_ethos))
     {
@@ -23,25 +25,18 @@
     }
     else
     {
-        //First index contains date
-        //Second index contains time
-        $expiration_date = datePickerParser($_POST['campaign_duration']);
-        //first index contains year
-        //second index contains month
-        //third index contains day
-        $exp_day = explode("-", $expiration_date[0]);
-        $exp_time = explode(":", $expiration_date[1]);
+        $expiration_date = campaignDatePickerParser($expiration_date);
 
-        //First index contains date
-        //Second index contains time
-        $release_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
-        //first index contains day
-        //second index contains month
-        //third index contains year
-        $release_day = explode("-", $release_date[0]);
-        $release_time = explode(":", $release_date[1]);
+        $exp_day = explode(" ", $expiration_date)[0];
+        $release_day = (new DateTime(explode(" ", $current_date)[0]))->format('d-m-Y');
+        //We don't care about the seconds in determining if the time is in the future or not
+        $exp_time = substr(explode(" ", $expiration_date)[1], 0, 5);
+        $release_time = explode(" ", $current_date)[1];
 
-        if(isInTheFuture($exp_day, $release_day, $exp_time, $release_time))
+        if(isInTheFuture(explode("-", $exp_day), 
+                         explode("-", $release_day), 
+                         explode(":", $exp_time), 
+                         explode(":", $release_time)))
         {
             if($offer == "other")
             {
@@ -49,10 +44,8 @@
                 postCampaign($conn, 
                              $_SESSION['username'], 
                              $other_offer, 
-                             $release_date[0], 
-                             $release_date[1], 
-                             $expiration_date[0], 
-                             $expiration_date[1],
+                             $current_date, 
+                             $expiration_date,
                              $type,
                              $minimum_ethos);
             }
@@ -61,10 +54,8 @@
                 postCampaign($conn, 
                              $_SESSION['username'], 
                              $offer, 
-                             $release_date[0], 
-                             $release_date[1], 
-                             $expiration_date[0], 
-                             $expiration_date[1],
+                             $current_date,
+                             $expiration_date,
                              $type,
                              $minimum_ethos);
             }

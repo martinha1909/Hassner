@@ -141,9 +141,20 @@
         return $ret;
     }
 
-    function datePickerParser($time)
+    /**
+    * Parses date picker in create campaign page to db date format
+    *
+    * @param  	date	     	date from date picker, has format of YYYY-MM-DDTHH:MM
+    * @return 	ret	            date time object, represented in a string, has format of YYYY-MM-DD HH:MM:SS
+    */
+    function campaignDatePickerParser($date): string
     {
-        return explode("T", $time);
+        $ret = "Error in parsing from date picker";
+
+        $date = explode("T", $date);
+        $ret = $date[0]." ".$date[1].":00";
+
+        return $ret;
     }
 
     /**
@@ -162,9 +173,7 @@
     function isInTheFuture($exp_day, $release_day, $exp_time, $release_time)
     {
         $ret = TRUE;
-        // echo $exp_day[0]." ".$exp_day[1]." ".$exp_day[2];
-        // echo "<br>";
-        // echo $release_day[0]." ".$release_day[1]." ".$release_day[2];
+
         //if the year is in the past, we give an error
         if($exp_day[0] < $release_day[2])
         {
