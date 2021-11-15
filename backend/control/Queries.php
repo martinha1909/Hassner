@@ -657,21 +657,13 @@
                 $stmt->bindValue(2, $artist_username);
                 $stmt->execute(array($initial_pps, $artist_username));
             
-                $conn = connect();
-                $res = getMaxInjectionID($conn);
-                if($res->num_rows > 0)
-                {
-                    $max_id = $res->fetch_assoc();
-                    $injection_id = $max_id["max_id"] + 1;
-                }
-                $stmt = $connPDO->prepare("INSERT INTO inject_history (id, artist_username, amount, comment, date_injected)
-                                           VALUES(?, ?, ?, ?, ?)");
-                $stmt->bindValue(1, $injection_id);
-                $stmt->bindValue(2, $artist_username);
-                $stmt->bindValue(3, $share_distributing);
-                $stmt->bindValue(4, $comment);
-                $stmt->bindValue(5, $date);
-                $stmt->execute(array($injection_id, $artist_username, $share_distributing, $comment, $date));
+                $stmt = $connPDO->prepare("INSERT INTO inject_history (artist_username, amount, comment, date_injected)
+                                           VALUES(?, ?, ?, ?)");
+                $stmt->bindValue(1, $artist_username);
+                $stmt->bindValue(2, $share_distributing);
+                $stmt->bindValue(3, $comment);
+                $stmt->bindValue(4, $date);
+                $stmt->execute(array($artist_username, $share_distributing, $comment, $date));
                 
                 $connPDO->commit();
                 $status = StatusCodes::Success;
@@ -1143,17 +1135,10 @@
             $status = 0;
             $injection_id = 0;
 
-            $res = getMaxInjectionID($conn);
-            if($res->num_rows > 0)
-            {
-                $max_id = $res->fetch_assoc();
-                $injection_id = $max_id["max_id"] + 1;
-            }
-
-            $sql = "INSERT INTO inject_history (id, artist_username, amount, comment, date_injected)
-                    VALUES(?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO inject_history (artist_username, amount, comment, date_injected)
+                    VALUES(?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('isiss', $injection_id, $artist_username, $share_distributing, $comment, $date);
+            $stmt->bind_param('siss', $artist_username, $share_distributing, $comment, $date);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;
