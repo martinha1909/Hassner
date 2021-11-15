@@ -585,15 +585,6 @@
             return $status;
         }
 
-
-        function getMaxInjectionID($conn)
-        {
-            $sql = "SELECT MAX(id) AS max_id FROM inject_history";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
-
         function getMaxSellOrderID($conn)
         {
             $sql = "SELECT MAX(id) AS max_id FROM sell_order";
