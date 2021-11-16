@@ -19,20 +19,30 @@
         $_SESSION['id'] = $row['id'];
         $_SESSION['dependencies'] = "FRONTEND";
         if($row['account_type'] == AccountType::User){
+            $msg = "User ".$username." just logged in";
+            hx_info(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
+
             header("Location: ../../frontend/listener/Listener.php");
             die;
         }
         else if($row['account_type'] == AccountType::Artist){
+            $msg = "Artist ".$username." just logged in";
+            hx_info(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
             header("Location: ../../frontend/artist/Artist.php");
             die;
         }
         else if($row['account_type'] == AccountType::Admin){
+            $msg = "Admin ".$username." just logged in";
+            hx_info(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
             header("Location: ../../frontend/admin/Admin.php");
             die;
         }
     }
     else
     {
+        $msg = "Server error";
+        hx_error(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
+
         $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['status'] = StatusCodes::ErrGeneric;
         header("Location: ../../frontend/credentials/login.php");
