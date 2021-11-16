@@ -46,7 +46,7 @@
     }
     else
     {
-        $msg = "Server error";
+        $msg = "No credentials found for username: ".$username." and password: ".$password;
         hx_error(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
 
         $_SESSION['dependencies'] = "FRONTEND";
