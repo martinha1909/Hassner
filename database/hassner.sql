@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2021 at 11:42 PM
+-- Generation Time: Nov 16, 2021 at 01:27 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -86,7 +86,7 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `shares_repurchase`) VALUES
 ('21 Savage', 'artist', 'artist', 6, 0, 0, 0, 0, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('88Glam', 'artist', 'artist', 2, 0, 0, 0, 2020, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 10, 0, 0, 0, 0),
+('88Glam', 'artist', 'artist', 2, 0, 0, 0, 2050, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 10, 0, 0, 0, 0),
 ('daniel', 'user', 'user', 8, 0, 100000, 0, 0, 'iosrghn@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('Drake', 'artist', 'artist', 11, 0, 0, 0, 0, 'qwerty@gmail.com', 'Drake', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('kai', 'user', 'user', 4, 0, 100000, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
@@ -362,8 +362,7 @@ CREATE TABLE `buy_history` (
   `artist_username` varchar(50) NOT NULL,
   `no_of_share_bought` int(11) NOT NULL,
   `price_per_share_when_bought` float NOT NULL,
-  `date_purchased` varchar(10) NOT NULL,
-  `time_purchased` varchar(10) NOT NULL
+  `date_purchased` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -392,15 +391,21 @@ CREATE TABLE `campaign` (
   `id` int(11) NOT NULL,
   `artist_username` varchar(50) NOT NULL,
   `offering` varchar(20) NOT NULL,
-  `date_posted` varchar(20) NOT NULL,
-  `time_posted` varchar(10) NOT NULL,
-  `date_expires` varchar(10) NOT NULL,
-  `time_expires` varchar(10) NOT NULL,
+  `date_posted` datetime NOT NULL,
+  `date_expires` datetime NOT NULL,
   `type` varchar(10) NOT NULL,
   `minimum_ethos` float NOT NULL,
   `eligible_participants` int(11) NOT NULL,
   `winner` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `campaign`
+--
+
+INSERT INTO `campaign` (`id`, `artist_username`, `offering`, `date_posted`, `date_expires`, `type`, `minimum_ethos`, `eligible_participants`, `winner`) VALUES
+(1, '88Glam', 'backstage', '2021-11-15 16:45:07', '2021-11-25 16:44:00', 'benchmark', 1, 0, NULL),
+(3, '88Glam', 'merchandise', '2021-11-15 17:10:41', '0000-00-00 00:00:00', 'raffle', 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -504,7 +509,7 @@ ALTER TABLE `artist_stock_change`
 -- Indexes for table `buy_history`
 --
 ALTER TABLE `buy_history`
-  ADD PRIMARY KEY (`user_username`,`seller_username`,`date_purchased`,`time_purchased`),
+  ADD PRIMARY KEY (`user_username`,`seller_username`),
   ADD KEY `artist_buy_history_key` (`artist_username`),
   ADD KEY `seller_buy_history_key` (`seller_username`);
 
@@ -550,10 +555,16 @@ ALTER TABLE `account`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
+-- AUTO_INCREMENT for table `campaign`
+--
+ALTER TABLE `campaign`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `inject_history`
 --
 ALTER TABLE `inject_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
