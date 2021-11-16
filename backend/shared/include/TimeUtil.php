@@ -294,7 +294,7 @@
 
         if(!isInTheFuture($day_exp, $day_rn, $time_exp, $time_rn))
         {
-            $ret = "Expired";
+            $ret = "0000-00-00 00:00:00";
         }
         else
         {
@@ -327,7 +327,7 @@
                         {
                             if($minutes_remaining == 0)
                             {
-                                $ret = "Expired";
+                                $ret = "0000-00-00 00:00:00";
                             }
                             else
                             {

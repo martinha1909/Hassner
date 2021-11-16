@@ -414,7 +414,7 @@
                 $chance = -1;
                 $res_1 = searchNumberOfShareDistributed($conn, $row['artist_username']);
                 $artist_share_distributed = $res_1->fetch_assoc();
-                if($row['date_expires'] != "Expired")
+                if($row['date_expires'] != "0000-00-00 00:00:00")
                 {
                     if($total_shares_bought >= $row['minimum_ethos']) {
                         $progress_calc = 100;
@@ -427,7 +427,7 @@
                                                             $row['time_expires']);
                     //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
                     //so we don't come back to it on late fetches
-                    if($campaign_time_left == "Expired")
+                    if($campaign_time_left == "0000-00-00 00:00:00")
                     {
                         $roll_res = "N/A";
                         if($row['type'] == "raffle")
@@ -463,7 +463,7 @@
             $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
             $res = searchArtistCampaigns($conn, $all_artists[$i]);
             while($row = $res->fetch_assoc()) {
-                if($row['date_expires'] == "Expired")
+                if($row['date_expires'] == "0000-00-00 00:00:00")
                 {
                     $time_released = dateParser($row['date_posted'])." at ".timeParser($row['time_posted']);
 
