@@ -1,6 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
+    include '../constants/Timezone.php';
 
     $conn = connect();
 
@@ -8,7 +9,7 @@
 
     $additional_shares = $_POST['share_distributing'];
     $comment = $_POST['inject_comment'];
-    date_default_timezone_set($_SESSION['timezone']);
+    date_default_timezone_set(Timezone::MST);
     $current_date = date('Y-m-d H:i:s');
 
     if(empty($additional_shares))

@@ -3,6 +3,7 @@
     include '../control/Dependencies.php';
     include '../constants/StatusCodes.php';
     include '../constants/LoggingModes.php';
+    include '../constants/Timezone.php';
 
     $_SESSION['logging_mode'] = LogModes::SHARE_DIST;
 
@@ -13,7 +14,7 @@
 
     //For now the first time artists distribute their share will just have this comment to keep things consistent
     $comment = "IPO";
-    date_default_timezone_set($_SESSION['timezone']);
+    date_default_timezone_set(Timezone::MST);
     $current_date = date('Y-m-d H:i:s');
 
     if(empty($shares_distributing) || empty($siliqas_raising))
