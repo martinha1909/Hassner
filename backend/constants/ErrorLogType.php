@@ -2,9 +2,8 @@
 if(!defined('ERRORLOGTYPE_LOADED')){
     abstract class ErrorLogType
     {
-        const USER = "user";
-        const DATABASE = "database";
-        const ARTIST = "artist";
+        const SIGNUP = "signup";
+        const DB = "database";
     }
     define('ERRORLOGTYPE_LOADED', 1);
 }
