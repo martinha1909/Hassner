@@ -21,6 +21,9 @@
     // Email Verification
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
     {
+        $msg = $email." is not a supported email";
+        hx_error(ErrorLogType::USER, $msg, ErrorLogPath::BACKEND);
+
         $_SESSION['status'] = StatusCodes::ErrEmailFormat;
         $_SESSION['dependencies'] = "FRONTEND";
         header("Location: ../../frontend/credentials/signup.php");
