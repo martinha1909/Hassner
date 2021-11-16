@@ -1268,6 +1268,15 @@
             $stmt->execute();
         }
 
+        function db_debug($conn, $type, $msg, $date)
+        {
+            $sql = "INSERT INTO debug_log (log_type, message, date_logged)
+                    VALUES(?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('sss', $type, $msg, $date);
+            $stmt->execute();
+        }
+
         function followArtist($conn, $user_username, $artist_username)
         {
             $sql = "INSERT INTO artist_followers (artist_username, user_username)

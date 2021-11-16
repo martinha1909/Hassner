@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 09, 2021 at 12:29 AM
+-- Generation Time: Nov 17, 2021 at 12:36 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -85,15 +85,15 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `shares_repurchase`) VALUES
-('21 Savage', 'artist', 'artist', 6, 2386, 3181.33, 0, 150000, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 2, 0, 0, 4772, 0),
-('88Glam', 'artist', 'artist', 2, 4406, 8797.2, 0, 100000, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 4.7, 0, 0, 20708.2, 4),
+('21 Savage', 'artist', 'artist', 6, 0, 0, 0, 0, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
+('88Glam', 'artist', 'artist', 2, 0, 0, 0, 2050, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 10, 0, 0, 0, 0),
 ('daniel', 'user', 'user', 8, 0, 100000, 0, 0, 'iosrghn@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('Drake', 'artist', 'artist', 11, 859, 859, 0, 30000, 'qwerty@gmail.com', 'Drake', '', '', '', '', '', '', '', '', '', 2.2, 0, 0, 859, 0),
-('kai', 'user', 'user', 4, 356, 98968.8, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('martin', 'user', 'user', 1, 4043, 88199.7, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
-('NAV', 'artist', 'artist', 3, 0, 0, 0, 1000, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 1.5, 0, 0, 0, 0),
+('Drake', 'artist', 'artist', 11, 0, 0, 0, 0, 'qwerty@gmail.com', 'Drake', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
+('kai', 'user', 'user', 4, 0, 100000, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
+('martin', 'user', 'user', 1, 0, 100000, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
+('NAV', 'artist', 'artist', 3, 0, 0, 0, 20000, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 10, 0, 0, 0, 0),
 ('riley', 'user', 'user', 7, 0, 100000, 0, 0, 'efin@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('vitor', 'user', 'user', 5, 3, 99994, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
+('vitor', 'user', 'user', 5, 0, 100000, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -112,7 +112,7 @@ CREATE TABLE `artist_account_data` (
 
 INSERT INTO `artist_account_data` (`artist_username`, `ticker`) VALUES
 ('21 Savage', '21SV'),
-('88Glam', '88Gm'),
+('88Glam', '88GM'),
 ('Drake', '00DR'),
 ('NAV', '11NA');
 
@@ -147,18 +147,6 @@ CREATE TABLE `artist_shareholders` (
   `shares_owned` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `artist_shareholders`
---
-
-INSERT INTO `artist_shareholders` (`user_username`, `artist_username`, `shares_owned`) VALUES
-('88Glam', '88Glam', 4),
-('kai', '88Glam', 356),
-('kai', 'Drake', 859),
-('martin', '21 Savage', 2386),
-('martin', '88Glam', 4043),
-('vitor', '88Glam', 3);
-
 -- --------------------------------------------------------
 
 --
@@ -189,6 +177,36 @@ INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `date_r
 ('21 Savage', 1.33333, '2021-11-08 12:00:00'),
 ('21 Savage', 1.33333, '2021-11-08 12:15:00'),
 ('21 Savage', 1.33333, '2021-11-08 12:30:00'),
+('21 Savage', 2, '2021-11-10 11:45:00'),
+('21 Savage', 2, '2021-11-10 12:00:00'),
+('21 Savage', 2, '2021-11-10 12:15:00'),
+('21 Savage', 2, '2021-11-10 12:30:00'),
+('21 Savage', 2, '2021-11-10 12:45:00'),
+('21 Savage', 2, '2021-11-10 13:00:00'),
+('21 Savage', 2, '2021-11-10 13:15:00'),
+('21 Savage', 2, '2021-11-10 13:30:00'),
+('21 Savage', 2, '2021-11-10 13:45:00'),
+('21 Savage', 2, '2021-11-10 14:00:00'),
+('21 Savage', 2, '2021-11-10 14:15:00'),
+('21 Savage', 2, '2021-11-10 14:30:00'),
+('21 Savage', 2, '2021-11-10 14:45:00'),
+('21 Savage', 2, '2021-11-10 15:00:00'),
+('21 Savage', 2, '2021-11-10 15:15:00'),
+('21 Savage', 2, '2021-11-10 15:30:00'),
+('21 Savage', 2, '2021-11-10 15:45:00'),
+('21 Savage', 2, '2021-11-10 16:00:00'),
+('21 Savage', 2, '2021-11-10 16:15:00'),
+('21 Savage', 2, '2021-11-10 16:30:00'),
+('21 Savage', 2, '2021-11-10 16:45:00'),
+('21 Savage', 2, '2021-11-10 17:00:00'),
+('21 Savage', 2, '2021-11-10 17:15:00'),
+('21 Savage', 2, '2021-11-12 12:30:00'),
+('21 Savage', 2, '2021-11-12 12:45:00'),
+('21 Savage', 2, '2021-11-12 13:00:00'),
+('21 Savage', 2, '2021-11-12 13:15:00'),
+('21 Savage', 2, '2021-11-12 13:30:00'),
+('21 Savage', 2, '2021-11-12 13:45:00'),
+('21 Savage', 2, '2021-11-12 14:00:00'),
 ('88Glam', 2.5, '2021-10-26 19:30:00'),
 ('88Glam', 2.2, '2021-10-27 19:30:00'),
 ('88Glam', 3.2, '2021-10-28 19:30:00'),
@@ -215,6 +233,36 @@ INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `date_r
 ('88Glam', 3.6, '2021-11-08 12:00:00'),
 ('88Glam', 3.6, '2021-11-08 12:15:00'),
 ('88Glam', 3.6, '2021-11-08 12:30:00'),
+('88Glam', 4.7, '2021-11-10 11:45:00'),
+('88Glam', 4.7, '2021-11-10 12:00:00'),
+('88Glam', 4.7, '2021-11-10 12:15:00'),
+('88Glam', 4.7, '2021-11-10 12:30:00'),
+('88Glam', 4.7, '2021-11-10 12:45:00'),
+('88Glam', 4.7, '2021-11-10 13:00:00'),
+('88Glam', 4.7, '2021-11-10 13:15:00'),
+('88Glam', 4.7, '2021-11-10 13:30:00'),
+('88Glam', 4.7, '2021-11-10 13:45:00'),
+('88Glam', 4.7, '2021-11-10 14:00:00'),
+('88Glam', 4.7, '2021-11-10 14:15:00'),
+('88Glam', 4.7, '2021-11-10 14:30:00'),
+('88Glam', 4.7, '2021-11-10 14:45:00'),
+('88Glam', 4.7, '2021-11-10 15:00:00'),
+('88Glam', 4.7, '2021-11-10 15:15:00'),
+('88Glam', 4.7, '2021-11-10 15:30:00'),
+('88Glam', 4.7, '2021-11-10 15:45:00'),
+('88Glam', 4.7, '2021-11-10 16:00:00'),
+('88Glam', 4.7, '2021-11-10 16:15:00'),
+('88Glam', 4.7, '2021-11-10 16:30:00'),
+('88Glam', 4.7, '2021-11-10 16:45:00'),
+('88Glam', 4.7, '2021-11-10 17:00:00'),
+('88Glam', 4.7, '2021-11-10 17:15:00'),
+('88Glam', 3.3, '2021-11-12 12:30:00'),
+('88Glam', 3.3, '2021-11-12 12:45:00'),
+('88Glam', 3.3, '2021-11-12 13:00:00'),
+('88Glam', 3.3, '2021-11-12 13:15:00'),
+('88Glam', 3.3, '2021-11-12 13:30:00'),
+('88Glam', 3.3, '2021-11-12 13:45:00'),
+('88Glam', 3.3, '2021-11-12 14:00:00'),
 ('Drake', 1, '2021-11-06 19:30:00'),
 ('Drake', 1, '2021-11-06 19:45:00'),
 ('Drake', 1, '2021-11-06 20:00:00'),
@@ -228,6 +276,36 @@ INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `date_r
 ('Drake', 1, '2021-11-08 12:00:00'),
 ('Drake', 1, '2021-11-08 12:15:00'),
 ('Drake', 1, '2021-11-08 12:30:00'),
+('Drake', 2.2, '2021-11-10 11:45:00'),
+('Drake', 2.2, '2021-11-10 12:00:00'),
+('Drake', 2.2, '2021-11-10 12:15:00'),
+('Drake', 2.2, '2021-11-10 12:30:00'),
+('Drake', 2.2, '2021-11-10 12:45:00'),
+('Drake', 2.2, '2021-11-10 13:00:00'),
+('Drake', 2.2, '2021-11-10 13:15:00'),
+('Drake', 2.2, '2021-11-10 13:30:00'),
+('Drake', 2.2, '2021-11-10 13:45:00'),
+('Drake', 2.2, '2021-11-10 14:00:00'),
+('Drake', 2.2, '2021-11-10 14:15:00'),
+('Drake', 2.2, '2021-11-10 14:30:00'),
+('Drake', 2.2, '2021-11-10 14:45:00'),
+('Drake', 2.2, '2021-11-10 15:00:00'),
+('Drake', 2.2, '2021-11-10 15:15:00'),
+('Drake', 2.2, '2021-11-10 15:30:00'),
+('Drake', 2.2, '2021-11-10 15:45:00'),
+('Drake', 2.2, '2021-11-10 16:00:00'),
+('Drake', 2.2, '2021-11-10 16:15:00'),
+('Drake', 2.2, '2021-11-10 16:30:00'),
+('Drake', 2.2, '2021-11-10 16:45:00'),
+('Drake', 2.2, '2021-11-10 17:00:00'),
+('Drake', 2.2, '2021-11-10 17:15:00'),
+('Drake', 2.2, '2021-11-12 12:30:00'),
+('Drake', 2.2, '2021-11-12 12:45:00'),
+('Drake', 2.2, '2021-11-12 13:00:00'),
+('Drake', 2.2, '2021-11-12 13:15:00'),
+('Drake', 2.2, '2021-11-12 13:30:00'),
+('Drake', 2.2, '2021-11-12 13:45:00'),
+('Drake', 2.2, '2021-11-12 14:00:00'),
 ('NAV', 3, '2021-11-06 19:30:00'),
 ('NAV', 3, '2021-11-06 19:45:00'),
 ('NAV', 3, '2021-11-06 20:00:00'),
@@ -240,7 +318,37 @@ INSERT INTO `artist_stock_change` (`artist_username`, `price_per_share`, `date_r
 ('NAV', 3, '2021-11-08 11:45:00'),
 ('NAV', 3, '2021-11-08 12:00:00'),
 ('NAV', 3, '2021-11-08 12:15:00'),
-('NAV', 3, '2021-11-08 12:30:00');
+('NAV', 3, '2021-11-08 12:30:00'),
+('NAV', 1.5, '2021-11-10 11:45:00'),
+('NAV', 1.5, '2021-11-10 12:00:00'),
+('NAV', 1.5, '2021-11-10 12:15:00'),
+('NAV', 1.5, '2021-11-10 12:30:00'),
+('NAV', 1.5, '2021-11-10 12:45:00'),
+('NAV', 1.5, '2021-11-10 13:00:00'),
+('NAV', 1.5, '2021-11-10 13:15:00'),
+('NAV', 1.5, '2021-11-10 13:30:00'),
+('NAV', 1.5, '2021-11-10 13:45:00'),
+('NAV', 1.5, '2021-11-10 14:00:00'),
+('NAV', 1.5, '2021-11-10 14:15:00'),
+('NAV', 1.5, '2021-11-10 14:30:00'),
+('NAV', 1.5, '2021-11-10 14:45:00'),
+('NAV', 1.5, '2021-11-10 15:00:00'),
+('NAV', 1.5, '2021-11-10 15:15:00'),
+('NAV', 1.5, '2021-11-10 15:30:00'),
+('NAV', 1.5, '2021-11-10 15:45:00'),
+('NAV', 1.5, '2021-11-10 16:00:00'),
+('NAV', 1.5, '2021-11-10 16:15:00'),
+('NAV', 1.5, '2021-11-10 16:30:00'),
+('NAV', 1.5, '2021-11-10 16:45:00'),
+('NAV', 1.5, '2021-11-10 17:00:00'),
+('NAV', 1.5, '2021-11-10 17:15:00'),
+('NAV', 1.5, '2021-11-12 12:30:00'),
+('NAV', 1.5, '2021-11-12 12:45:00'),
+('NAV', 1.5, '2021-11-12 13:00:00'),
+('NAV', 1.5, '2021-11-12 13:15:00'),
+('NAV', 1.5, '2021-11-12 13:30:00'),
+('NAV', 1.5, '2021-11-12 13:45:00'),
+('NAV', 1.5, '2021-11-12 14:00:00');
 
 -- --------------------------------------------------------
 
@@ -254,61 +362,8 @@ CREATE TABLE `buy_history` (
   `artist_username` varchar(50) NOT NULL,
   `no_of_share_bought` int(11) NOT NULL,
   `price_per_share_when_bought` float NOT NULL,
-  `date_purchased` varchar(10) NOT NULL,
-  `time_purchased` varchar(10) NOT NULL
+  `date_purchased` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `buy_history`
---
-
-INSERT INTO `buy_history` (`user_username`, `seller_username`, `artist_username`, `no_of_share_bought`, `price_per_share_when_bought`, `date_purchased`, `time_purchased`) VALUES
-('88Glam', 'kai', '88Glam', 1, 5, '02-11-2021', '17:38:47'),
-('88Glam', 'martin', '88Glam', 2, 6, '02-11-2021', '18:02:25'),
-('88Glam', 'martin', '88Glam', 1, 6, '02-11-2021', '18:02:51'),
-('kai', '88Glam', '88Glam', 922, 2, '02-11-2021', '16:37:45'),
-('kai', '88Glam', '88Glam', 1, 4, '02-11-2021', '17:10:37'),
-('kai', 'Drake', 'Drake', 859, 1, '01-11-2021', '18:33:32'),
-('kai', 'martin', '88Glam', 1, 3, '02-11-2021', '17:05:05'),
-('kai', 'martin', '88Glam', 6, 2, '02-11-2021', '18:01:45'),
-('kai', 'martin', '88Glam', 1, 1, '04-11-2021', '21:13:33'),
-('kai', 'martin', '88Glam', 1, 5, '04-11-2021', '21:14:30'),
-('martin', '21 Savage', '21 Savage', 2386, 1.33333, '02-11-2021', '16:35:27'),
-('martin', '88Glam', '88Glam', 1, 2, '02-11-2021', '16:34:02'),
-('martin', '88Glam', '88Glam', 1, 2, '02-11-2021', '16:34:59'),
-('martin', '88Glam', '88Glam', 1560, 2, '02-11-2021', '16:35:57'),
-('martin', '88Glam', '88Glam', 1, 3, '02-11-2021', '17:00:30'),
-('martin', '88Glam', '88Glam', 1, 3, '02-11-2021', '17:04:08'),
-('martin', '88Glam', '88Glam', 1, 2, '02-11-2021', '17:55:24'),
-('martin', '88Glam', '88Glam', 1, 2, '02-11-2021', '17:57:33'),
-('martin', '88Glam', '88Glam', 1, 2, '02-11-2021', '17:58:17'),
-('martin', '88Glam', '88Glam', 1, 2, '02-11-2021', '17:58:34'),
-('martin', '88Glam', '88Glam', 1, 1, '03-11-2021', '15:55:30'),
-('martin', '88Glam', '88Glam', 1, 1, '03-11-2021', '15:56:06'),
-('martin', '88Glam', '88Glam', 1, 1, '03-11-2021', '16:30:48'),
-('martin', '88Glam', '88Glam', 1, 1, '03-11-2021', '16:36:32'),
-('martin', '88Glam', '88Glam', 1, 1, '03-11-2021', '16:37:13'),
-('martin', '88Glam', '88Glam', 1909, 2, '29-10-2021', '17:57:33'),
-('martin', 'kai', '88Glam', 1, 2, '02-11-2021', '16:38:13'),
-('martin', 'kai', '88Glam', 1, 3, '02-11-2021', '17:04:22'),
-('martin', 'kai', '88Glam', 1, 4, '02-11-2021', '17:11:22'),
-('martin', 'kai', '88Glam', 1, 2, '02-11-2021', '17:12:48'),
-('martin', 'kai', '88Glam', 1, 2, '02-11-2021', '17:14:06'),
-('martin', 'kai', '88Glam', 17, 2, '02-11-2021', '17:26:44'),
-('martin', 'kai', '88Glam', 500, 3, '02-11-2021', '17:28:02'),
-('martin', 'kai', '88Glam', 1, 3, '02-11-2021', '17:29:00'),
-('martin', 'kai', '88Glam', 1, 5, '02-11-2021', '17:31:25'),
-('martin', 'kai', '88Glam', 1, 5, '02-11-2021', '17:32:08'),
-('martin', 'kai', '88Glam', 1, 3.6, '02-11-2021', '19:47:05'),
-('martin', 'kai', '88Glam', 43, 3.6, '02-11-2021', '19:53:27'),
-('martin', 'kai', '88Glam', 1, 3, '02-11-2021', '19:55:53'),
-('martin', 'kai', '88Glam', 1, 4, '04-11-2021', '21:12:11'),
-('martin', 'kai', '88Glam', 1, 3.6, '04-11-2021', '21:13:08'),
-('martin', 'kai', '88Glam', 1, 6, '07-11-2021', '15:03:31'),
-('martin', 'kai', '88Glam', 1, 1, '07-11-2021', '15:03:56'),
-('vitor', '88Glam', '88Glam', 1, 1, '03-11-2021', '19:14:34'),
-('vitor', 'kai', '88Glam', 1, 1, '03-11-2021', '19:15:09'),
-('vitor', 'martin', '88Glam', 1, 1, '03-11-2021', '19:14:05');
 
 -- --------------------------------------------------------
 
@@ -326,14 +381,6 @@ CREATE TABLE `buy_order` (
   `time_posted` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `buy_order`
---
-
-INSERT INTO `buy_order` (`id`, `user_username`, `artist_username`, `quantity`, `siliqas_requested`, `date_posted`, `time_posted`) VALUES
-(1, 'martin', '88Glam', 3281, 3, '02-11-2021', '17:26:44'),
-(2, 'martin', '88Glam', 148, 5, '02-11-2021', '17:27:11');
-
 -- --------------------------------------------------------
 
 --
@@ -344,37 +391,87 @@ CREATE TABLE `campaign` (
   `id` int(11) NOT NULL,
   `artist_username` varchar(50) NOT NULL,
   `offering` varchar(20) NOT NULL,
-  `date_posted` varchar(20) NOT NULL,
-  `time_posted` varchar(10) NOT NULL,
-  `date_expires` varchar(10) NOT NULL,
-  `time_expires` varchar(10) NOT NULL,
+  `date_posted` datetime NOT NULL,
+  `date_expires` datetime NOT NULL,
   `type` varchar(10) NOT NULL,
   `minimum_ethos` float NOT NULL,
   `eligible_participants` int(11) NOT NULL,
   `winner` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `campaign`
+--
+
+INSERT INTO `campaign` (`id`, `artist_username`, `offering`, `date_posted`, `date_expires`, `type`, `minimum_ethos`, `eligible_participants`, `winner`) VALUES
+(1, '88Glam', 'backstage', '2021-11-15 16:45:07', '2021-11-25 16:44:00', 'benchmark', 1, 0, NULL),
+(3, '88Glam', 'merchandise', '2021-11-15 17:10:41', '0000-00-00 00:00:00', 'raffle', 1, 0, NULL);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dummy`
+-- Table structure for table `debug_log`
 --
 
-CREATE TABLE `dummy` (
-  `date` datetime NOT NULL
+CREATE TABLE `debug_log` (
+  `id` int(11) NOT NULL,
+  `log_type` varchar(50) NOT NULL,
+  `message` varchar(10000) NOT NULL,
+  `date_logged` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `dummy`
+-- Dumping data for table `debug_log`
 --
 
-INSERT INTO `dummy` (`date`) VALUES
-('0000-00-00 00:00:00'),
-('2021-11-05 21:22:24'),
-('2021-11-05 21:53:42'),
-('2021-11-05 21:53:45'),
-('2021-11-05 21:54:47'),
-('2021-11-06 15:43:17');
+INSERT INTO `debug_log` (`id`, `log_type`, `message`, `date_logged`) VALUES
+(1, 'signup', 'sign up data: username: nmidnf, password: nifeo, email: mfio@gmail.com, account type: artist, ticker: 22MM', '2021-11-16 16:33:15'),
+(2, 'signup', 'sign up data: username: dwd, password: dwdwd, email: martinvuha1909@gmail.com, account type: artist, ticker: 22JJ', '2021-11-16 16:34:07'),
+(3, 'signup', 'sign up data: username: ninfi, password: ndiownoi, email: nfvios@gmail.com, account type: user, ticker: ', '2021-11-16 16:35:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `error_log`
+--
+
+CREATE TABLE `error_log` (
+  `id` int(11) NOT NULL,
+  `log_type` varchar(50) NOT NULL,
+  `message` varchar(10000) NOT NULL,
+  `date_logged` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `error_log`
+--
+
+INSERT INTO `error_log` (`id`, `log_type`, `message`, `date_logged`) VALUES
+(1, 'login', 'Server error', '2021-11-16 16:25:52'),
+(2, 'login', 'No credentials found for username: nsoi and password: niofe', '2021-11-16 16:27:04'),
+(3, 'signup', 'martinvuha1909@gmail.com is already taken', '2021-11-16 16:34:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `info_log`
+--
+
+CREATE TABLE `info_log` (
+  `id` int(11) NOT NULL,
+  `log_type` varchar(50) NOT NULL,
+  `message` varchar(10000) NOT NULL,
+  `date_logged` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `info_log`
+--
+
+INSERT INTO `info_log` (`id`, `log_type`, `message`, `date_logged`) VALUES
+(1, 'login', 'User vitor just logged in', '2021-11-16 16:24:41'),
+(2, 'signup', 'nmidnf successfully signed up', '2021-11-16 16:33:15'),
+(3, 'signup', 'ninfi successfully signed up', '2021-11-16 16:35:49');
 
 -- --------------------------------------------------------
 
@@ -386,20 +483,18 @@ CREATE TABLE `inject_history` (
   `id` int(11) NOT NULL,
   `artist_username` varchar(50) NOT NULL,
   `amount` int(11) NOT NULL,
-  `date_injected` varchar(50) NOT NULL,
-  `time_injected` varchar(20) NOT NULL,
-  `comment` varchar(200) NOT NULL
+  `comment` varchar(200) NOT NULL,
+  `date_injected` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `inject_history`
 --
 
-INSERT INTO `inject_history` (`id`, `artist_username`, `amount`, `date_injected`, `time_injected`, `comment`) VALUES
-(1, '88Glam', 100000, '29-10-2021', '16:39:40', 'IPO'),
-(2, '21 Savage', 150000, '01-11-2021', '14:46:02', 'IPO'),
-(3, 'NAV', 1000, '01-11-2021', '14:46:14', 'IPO'),
-(4, 'Drake', 30000, '01-11-2021', '14:46:28', 'IPO');
+INSERT INTO `inject_history` (`id`, `artist_username`, `amount`, `comment`, `date_injected`) VALUES
+(1, '88Glam', 2000, 'IPO', '2021-11-12 16:54:18'),
+(2, 'NAV', 20000, 'IPO', '2021-11-12 17:04:14'),
+(3, '88Glam', 10, 'added 10 more shares', '2021-11-15 15:40:39');
 
 -- --------------------------------------------------------
 
@@ -416,15 +511,6 @@ CREATE TABLE `sell_order` (
   `date_posted` varchar(20) NOT NULL,
   `time_posted` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `sell_order`
---
-
-INSERT INTO `sell_order` (`id`, `user_username`, `artist_username`, `selling_price`, `no_of_share`, `date_posted`, `time_posted`) VALUES
-(1, 'martin', '88Glam', 6, 460, '02-11-2021', '18:01:27'),
-(2, 'kai', '88Glam', 3.6, 26, '02-11-2021', '18:02:00'),
-(3, 'kai', '88Glam', 1, 18, '02-11-2021', '19:54:28');
 
 --
 -- Indexes for dumped tables
@@ -467,7 +553,7 @@ ALTER TABLE `artist_stock_change`
 -- Indexes for table `buy_history`
 --
 ALTER TABLE `buy_history`
-  ADD PRIMARY KEY (`user_username`,`seller_username`,`date_purchased`,`time_purchased`),
+  ADD PRIMARY KEY (`user_username`,`seller_username`),
   ADD KEY `artist_buy_history_key` (`artist_username`),
   ADD KEY `seller_buy_history_key` (`seller_username`);
 
@@ -486,6 +572,24 @@ ALTER TABLE `campaign`
   ADD PRIMARY KEY (`id`),
   ADD KEY `artist_campaign_key` (`artist_username`),
   ADD KEY `winner_key` (`winner`);
+
+--
+-- Indexes for table `debug_log`
+--
+ALTER TABLE `debug_log`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `error_log`
+--
+ALTER TABLE `error_log`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `info_log`
+--
+ALTER TABLE `info_log`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `inject_history`
@@ -510,7 +614,37 @@ ALTER TABLE `sell_order`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `campaign`
+--
+ALTER TABLE `campaign`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `debug_log`
+--
+ALTER TABLE `debug_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `error_log`
+--
+ALTER TABLE `error_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `info_log`
+--
+ALTER TABLE `info_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `inject_history`
+--
+ALTER TABLE `inject_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

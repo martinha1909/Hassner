@@ -98,6 +98,9 @@
                     $msg = $username." successfully signed up";
                     hx_info(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
 
+                    $msg = "sign up data: username: ".$username.", password: ".$password.", email: ".$email.", account type: ".$account_type.", ticker: ".$ticker;
+                    hx_debug(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
+
                     $_SESSION['dependencies'] = "FRONTEND";
                     header("Location: ../../frontend/credentials/login.php");
                 }
