@@ -9,7 +9,8 @@
     $password = $_POST['password'];
 
     $result = login($conn,$username,$password);
-    if ($result->num_rows > 0) {
+    if ($result->num_rows > 0) 
+    {
     
         $row = mysqli_fetch_assoc($result);
 
@@ -18,22 +19,27 @@
         $_SESSION['password'] = $row['password'];
         $_SESSION['id'] = $row['id'];
         $_SESSION['dependencies'] = "FRONTEND";
-        if($row['account_type'] == AccountType::User){
+        if($row['account_type'] == AccountType::User)
+        {
             $msg = "User ".$username." just logged in";
             hx_info(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
 
             header("Location: ../../frontend/listener/Listener.php");
             die;
         }
-        else if($row['account_type'] == AccountType::Artist){
+        else if($row['account_type'] == AccountType::Artist)
+        {
             $msg = "Artist ".$username." just logged in";
             hx_info(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
+
             header("Location: ../../frontend/artist/Artist.php");
             die;
         }
-        else if($row['account_type'] == AccountType::Admin){
+        else if($row['account_type'] == AccountType::Admin)
+        {
             $msg = "Admin ".$username." just logged in";
             hx_info(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
+
             header("Location: ../../frontend/admin/Admin.php");
             die;
         }
