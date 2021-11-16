@@ -1,4 +1,31 @@
 <?php
+    function db_info($conn, $type, $msg, $date)
+    {
+        $sql = "INSERT INTO info_log (log_type, message, date_logged)
+                VALUES(?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('sss', $type, $msg, $date);
+        $stmt->execute();
+    }
+
+    function db_error($conn, $type, $msg, $date)
+    {
+        $sql = "INSERT INTO error_log (log_type, message, date_logged)
+                VALUES(?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('sss', $type, $msg, $date);
+        $stmt->execute();
+    }
+
+    function db_debug($conn, $type, $msg, $date)
+    {
+        $sql = "INSERT INTO debug_log (log_type, message, date_logged)
+                VALUES(?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('sss', $type, $msg, $date);
+        $stmt->execute();
+    }
+
     function hx_error($type, $msg, $path)
     {
         $conn = connect();
