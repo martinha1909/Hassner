@@ -1041,7 +1041,7 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         * @param  	artist_username username of artist to get the last 24-hour price change
         *
         * @return   ret             last 24 hours change, in percentage
-        */
+    */
     function getArtistDayChange($artist_username)
     {
         $ret = 0;
@@ -1073,6 +1073,38 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
             $ret = round((($current_pps['price_per_share'] - $prev_day_high)/$prev_day_high) * 100, 2);
         }
 
+        return $ret;
+    }
+
+    /**
+        * Gets current active campaign of a selected artist
+        *
+        * @param  	artist_username username of artist to get current active campaigns
+        *
+        * @return   ret             an array of current active campaigns
+    */
+    function artistCurrentCampaigns($artist_username)
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = searchArtistCampaigns($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            if($row['date_expires'] != "Expired" && $row['time_expires'] != "Expired")
+            {
+                $campaign = new Campaign();
+                $campaign->setOffering($row['offering']);
+                $campaign->setMinEthos($row['minimum_ethos']);
+                $campaign->setType($row['type']);
+                $campaign->setDatePosted($row['date_posted']);
+                $campaign->setTimePosted($row['time_posted']);
+
+                array_push($ret, $campaign);
+            }
+        }
+
+        closeCon($conn);
         return $ret;
     }
 ?>
