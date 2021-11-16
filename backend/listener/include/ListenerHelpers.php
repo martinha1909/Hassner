@@ -406,25 +406,32 @@
         $conn = connect();
         $all_artists = getAllInvestedArtists($user_username);
 
-        for($i = 0; $i < sizeof($all_artists); $i++) {
+        for($i = 0; $i < sizeof($all_artists); $i++) 
+        {
             $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
             $res = searchArtistCampaigns($conn, $all_artists[$i]);
-            while($row = $res->fetch_assoc()) {
+            while($row = $res->fetch_assoc()) 
+            {
                 //assume not applicable
                 $chance = -1;
                 $res_1 = searchNumberOfShareDistributed($conn, $row['artist_username']);
                 $artist_share_distributed = $res_1->fetch_assoc();
                 if($row['date_expires'] != "0000-00-00 00:00:00")
                 {
-                    if($total_shares_bought >= $row['minimum_ethos']) {
+                    if($total_shares_bought >= $row['minimum_ethos']) 
+                    {
                         $progress_calc = 100;
-                    } else {
+                    } 
+                    else 
+                    {
                         $progress_calc = ($total_shares_bought/$row['minimum_ethos']) * 100;
                     }
+                    $date_expires = explode(" ", $row['date_expires'])[0];
+                    $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
                     $campaign_time_left = calculateTimeLeft($current_date[0], 
                                                             $current_date[1], 
-                                                            $row['date_expires'], 
-                                                            $row['time_expires']);
+                                                            $date_expires, 
+                                                            $time_expires);
                     //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
                     //so we don't come back to it on late fetches
                     if($campaign_time_left == "0000-00-00 00:00:00")
@@ -465,7 +472,7 @@
             while($row = $res->fetch_assoc()) {
                 if($row['date_expires'] == "0000-00-00 00:00:00")
                 {
-                    $time_released = dateParser($row['date_posted'])." at ".timeParser($row['time_posted']);
+                    $time_released = dbDateTimeParser($row['date_posted']);
 
                     array_push($artists, $row['artist_username']);
                     array_push($offerings, $row['offering']);

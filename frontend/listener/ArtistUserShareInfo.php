@@ -410,13 +410,12 @@
                                 {
                                     $type = "♧";
                                 }
-                                $date_commenced = dateParser($current_campaigns[$i]->getDatePosted())." at ".timeParser($current_campaigns[$i]->getTimePosted());
                                 echo '
                                         <tr>
                                             <th scope="row">' . $current_campaigns[$i]->getOffering() . '</th>
                                             <td>' . $current_campaigns[$i]->getMinEthos() . '</td>
                                             <td>' . $type .'</td>
-                                            <td>'. $date_commenced .'</td>
+                                            <td>'. dbDateTimeParser($current_campaigns[$i]->getDatePosted()) .'</td>
                                         </tr>
                                 ';
                             }

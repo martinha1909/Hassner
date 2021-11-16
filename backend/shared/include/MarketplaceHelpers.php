@@ -1091,14 +1091,13 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         $res = searchArtistCampaigns($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
-            if($row['date_expires'] != "Expired" && $row['time_expires'] != "Expired")
+            if($row['date_expires'] != "0000-00-00 00:00:00")
             {
                 $campaign = new Campaign();
                 $campaign->setOffering($row['offering']);
                 $campaign->setMinEthos($row['minimum_ethos']);
                 $campaign->setType($row['type']);
                 $campaign->setDatePosted($row['date_posted']);
-                $campaign->setTimePosted($row['time_posted']);
 
                 array_push($ret, $campaign);
             }
