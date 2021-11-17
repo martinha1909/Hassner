@@ -515,7 +515,7 @@ function fiatInit()
     $account_info = getAccount($_SESSION['username']);
 
     $balance = getUserBalance($_SESSION['username']);
-    $msg = "MarketplaceHelpers.php: (fiatInit()) getUserBalance returned ".$balance." as a result";
+    $msg = "getUserBalance returned ".$balance." as a result";
     hx_debug(ErrorLogType::HELPER, $msg);
 
     echo '

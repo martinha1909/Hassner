@@ -44,7 +44,7 @@
     {
         $conn = connect();
         $result = searchAccount($conn, $username);
-        $msg = "Helper.php: (getAccount()) searchAccount returned ".$result->num_rows." rows";
+        $msg = "searchAccount returned ".$result->num_rows." rows";
         hx_debug(ErrorLogType::HELPER, $msg);
 
         $account = $result->fetch_assoc();
@@ -56,7 +56,7 @@
     {
         $conn = connect();
         $result = searchAccount($conn, $user_username);
-        $msg = "Helper.php: (getUserBalance()) searchAccount returned ".$result->num_rows." rows";
+        $msg = "searchAccount returned ".$result->num_rows." rows";
         hx_debug(ErrorLogType::HELPER, $msg);
 
         $balance = $result->fetch_assoc();     
