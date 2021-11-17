@@ -22,7 +22,7 @@
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
     {
         $msg = $email." is not a supported email";
-        hx_error(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
+        hx_error(ErrorLogType::SIGNUP, $msg);
 
         $_SESSION['status'] = StatusCodes::ErrEmailFormat;
         $_SESSION['dependencies'] = "FRONTEND";
@@ -32,7 +32,7 @@
         if(!ctype_alnum($username))
         {
             $msg = $username." contains a non-alphanumeric character";
-            hx_error(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
+            hx_error(ErrorLogType::SIGNUP, $msg);
 
             $_SESSION['status'] = StatusCodes::ErrUsernameFormat;
             $_SESSION['dependencies'] = "FRONTEND";
@@ -50,7 +50,7 @@
                 if($ticker_res->num_rows > 0)
                 {
                     $msg = $ticker." is already taken";
-                    hx_error(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
+                    hx_error(ErrorLogType::SIGNUP, $msg);
 
                     $_SESSION['status'] = StatusCodes::ErrTickerDuplicate;
                     $_SESSION['dependencies'] = "FRONTEND";
@@ -63,7 +63,7 @@
                         !ctype_alpha($ticker[3]))
                 {
                     $msg = $ticker." does not start with 2 digits and end with 2 letters";
-                    hx_error(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
+                    hx_error(ErrorLogType::SIGNUP, $msg);
 
                     $_SESSION['status'] = StatusCodes::ErrTickerFormat;
                     $_SESSION['dependencies'] = "FRONTEND";
@@ -74,7 +74,7 @@
             if($usr_res->num_rows > 0)
             {
                 $msg = $username." is already taken";
-                hx_error(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
+                hx_error(ErrorLogType::SIGNUP, $msg);
 
                 $_SESSION['status'] = StatusCodes::ErrUsername;
                 $_SESSION['dependencies'] = "FRONTEND";
@@ -83,7 +83,7 @@
             else if($email_res->num_rows > 0)
             {
                 $msg = $email." is already taken";
-                hx_error(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
+                hx_error(ErrorLogType::SIGNUP, $msg);
 
                 $_SESSION['status'] = StatusCodes::ErrEmailDuplicate;
                 $_SESSION['dependencies'] = "FRONTEND";
@@ -96,10 +96,10 @@
                 if($_SESSION['status'] == StatusCodes::Success)
                 {
                     $msg = $username." successfully signed up";
-                    hx_info(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
+                    hx_info(ErrorLogType::SIGNUP, $msg);
 
                     $msg = "sign up data: username: ".$username.", password: ".$password.", email: ".$email.", account type: ".$account_type.", ticker: ".$ticker;
-                    hx_debug(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
+                    hx_debug(ErrorLogType::SIGNUP, $msg);
 
                     $_SESSION['dependencies'] = "FRONTEND";
                     header("Location: ../../frontend/credentials/login.php");
@@ -107,7 +107,7 @@
                 else
                 {
                     $msg = "Server error";
-                    hx_error(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
+                    hx_error(ErrorLogType::SIGNUP, $msg);
 
                     $_SESSION['status'] = StatusCodes::ErrServer;
                     $_SESSION['dependencies'] = "FRONTEND";
@@ -119,7 +119,7 @@
     else
     {
         $msg = "Empty input";
-        hx_error(ErrorLogType::SIGNUP, $msg, ErrorLogPath::BACKEND);
+        hx_error(ErrorLogType::SIGNUP, $msg);
 
         $_SESSION['status'] = StatusCodes::ErrEmpty;
         $_SESSION['dependencies'] = "FRONTEND";

@@ -22,7 +22,7 @@
         if($row['account_type'] == AccountType::User)
         {
             $msg = "User ".$username." just logged in";
-            hx_info(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
+            hx_info(ErrorLogType::LOGIN, $msg);
 
             header("Location: ../../frontend/listener/Listener.php");
             die;
@@ -30,7 +30,7 @@
         else if($row['account_type'] == AccountType::Artist)
         {
             $msg = "Artist ".$username." just logged in";
-            hx_info(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
+            hx_info(ErrorLogType::LOGIN, $msg);
 
             header("Location: ../../frontend/artist/Artist.php");
             die;
@@ -38,7 +38,7 @@
         else if($row['account_type'] == AccountType::Admin)
         {
             $msg = "Admin ".$username." just logged in";
-            hx_info(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
+            hx_info(ErrorLogType::LOGIN, $msg);
 
             header("Location: ../../frontend/admin/Admin.php");
             die;
@@ -47,7 +47,7 @@
     else
     {
         $msg = "No credentials found for username: ".$username." and password: ".$password;
-        hx_error(ErrorLogType::LOGIN, $msg, ErrorLogPath::BACKEND);
+        hx_error(ErrorLogType::LOGIN, $msg);
 
         $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['status'] = StatusCodes::ErrGeneric;
