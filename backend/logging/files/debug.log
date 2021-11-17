@@ -5,3 +5,15 @@
 [November 17, 2021, 2:03 pm America/Edmonton -0700][helper] Helper.php: (getAccount()) searchAccount returned 1 rows
 [November 17, 2021, 2:03 pm America/Edmonton -0700][helper] Helper.php: (getAccount()) searchAccount returned 1 rows
 [November 17, 2021, 2:04 pm America/Edmonton -0700][helper] Helper.php: (getAccount()) searchAccount returned 1 rows
+[November 17, 2021, 2:06 pm America/Edmonton -0700][helper] Helper.php: (getAccount()) searchAccount returned 1 rows
+[November 17, 2021, 2:07 pm America/Edmonton -0700][helper] Helper.php: (getAccount()) searchAccount returned 1 rows
+[November 17, 2021, 2:14 pm America/Edmonton -0700][helper] Helper.php: (getAccount()) searchAccount returned 1 rows
+[November 17, 2021, 2:14 pm America/Edmonton -0700][helper] Helper.php: (getAccount()) searchAccount returned 1 rows
+[November 17, 2021, 2:14 pm America/Edmonton -0700][helper] Helper.php: (getAccount()) searchAccount returned 1 rows
+[November 17, 2021, 2:14 pm America/Edmonton -0700][helper] MarketplaceHelpers.php: (fiatInit()) getAccount returned Array as a result
+[November 17, 2021, 2:14 pm America/Edmonton -0700][helper] Helper.php: (getUserBalance()) searchAccount returned 1 rows
+[November 17, 2021, 2:14 pm America/Edmonton -0700][helper] MarketplaceHelpers.php: (fiatInit()) getUserBalance returned 100000 as a result
+[November 17, 2021, 2:15 pm America/Edmonton -0700][helper] Helper.php: (getAccount()) searchAccount returned 1 rows
+[November 17, 2021, 2:15 pm America/Edmonton -0700][helper] Helper.php: (getAccount()) searchAccount returned 1 rows
+[November 17, 2021, 2:15 pm America/Edmonton -0700][helper] Helper.php: (getUserBalance()) searchAccount returned 1 rows
+[November 17, 2021, 2:15 pm America/Edmonton -0700][helper] MarketplaceHelpers.php: (fiatInit()) getUserBalance returned 100000 as a result

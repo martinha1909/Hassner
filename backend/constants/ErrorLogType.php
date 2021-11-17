@@ -6,6 +6,7 @@ if(!defined('ERRORLOGTYPE_LOADED')){
         const LOGIN = "login";
         const DB = "database";
         const QUERY = "query";
+        const CURRENTCY = "currency";
         //for logging with helper option, helper file name and function name need to be specififed
         const HELPER = "helper";
     }

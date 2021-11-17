@@ -513,7 +513,10 @@ function USDToCurrencies($amount, $currency): float
 function fiatInit()
 {
     $account_info = getAccount($_SESSION['username']);
+
     $balance = getUserBalance($_SESSION['username']);
+    $msg = "MarketplaceHelpers.php: (fiatInit()) getUserBalance returned ".$balance." as a result";
+    hx_debug(ErrorLogType::HELPER, $msg);
 
     echo '
             <section id="login" class="py-5";>
@@ -522,29 +525,43 @@ function fiatInit()
                         <form action="../../backend/shared/CurrencyBackend.php" method="post">
         ';
 
-    if ($_SESSION['logging_mode'] == LogModes::DEPOSIT) {
-        if ($_SESSION['status'] == StatusCodes::ErrEmpty) {
+    if ($_SESSION['logging_mode'] == LogModes::DEPOSIT) 
+    {
+        if ($_SESSION['status'] == StatusCodes::ErrEmpty) 
+        {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
             getStatusMessage("Please fill out all fields and try again", "");
-        } else if($_SESSION['status'] == StatusCodes::ErrNum) {
+        } 
+        else if($_SESSION['status'] == StatusCodes::ErrNum) 
+        {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
             getStatusMessage("Amount has to be a number", "");
-        } else {
+        } 
+        else 
+        {
             getStatusMessage("Failed to buy, an error occured", "Succeeded");
         }
-    } else if ($_SESSION['logging_mode'] == LogModes::WITHDRAW) {
-        if ($_SESSION['status'] == StatusCodes::ErrEmpty) {
+    } 
+    else if ($_SESSION['logging_mode'] == LogModes::WITHDRAW) 
+    {
+        if ($_SESSION['status'] == StatusCodes::ErrEmpty) 
+        {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
             getStatusMessage("Please fill out all fields and try again", "");
-        } else if ($_SESSION['status'] == StatusCodes::ErrNotEnough) {
+        } 
+        else if ($_SESSION['status'] == StatusCodes::ErrNotEnough) 
+        {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
             getStatusMessage("Not enough CAD", "");
-        } else {
+        } 
+        else 
+        {
             getStatusMessage("An error occured", "Succeeded");
         }
     }
 
-    if ($_SESSION['currency'] == 0) {
+    if ($_SESSION['currency'] == 0) 
+    {
         echo '
                     <div style="float:none;margin:auto;" class="select-dark">
                         <select name="currency" id="dark" onchange="this.form.submit()">
@@ -556,7 +573,9 @@ function fiatInit()
                     </div>
             ';
         echo "Account balance: " . $balance . "<br>";
-    } else {
+    } 
+    else 
+    {
         echo '
                     <div style="float:none;margin:auto;" class="select-dark">
                         <select name="currency" id="dark" onchange="this.form.submit()">
@@ -572,12 +591,16 @@ function fiatInit()
                     </form>
                     <form action = "../../backend/shared/FiatOptionsSwitcher.php" method = "post">
             ';
-        if ($_SESSION['currency'] == 0) {
+        if ($_SESSION['currency'] == 0) 
+        {
             echo '
                         <h5 style="padding-top:150px;"> Please choose a currency</h5>
                 ';
-        } else {
-            if ($_SESSION['fiat_options'] == BalanceOption::NONE) {
+        } 
+        else 
+        {
+            if ($_SESSION['fiat_options'] == BalanceOption::NONE) 
+            {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
                                 <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
@@ -585,7 +608,9 @@ function fiatInit()
                             </div>
                         </form>
                     ';
-            } else if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) {
+            } 
+            else if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) 
+            {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
                                 <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
@@ -593,7 +618,9 @@ function fiatInit()
                             </div>
                         </form>
                     ';
-            } else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) {
+            } 
+            else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) 
+            {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
                                 <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
@@ -604,7 +631,8 @@ function fiatInit()
             }
         }
     }
-    if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) {
+    if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) 
+    {
         echo '
                     <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
                         <div class="form-group">
@@ -621,7 +649,9 @@ function fiatInit()
             </div>
         </div>
     </section>';
-    } else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) {
+    } 
+    else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) 
+    {
         echo '
                     <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
                         <div class="form-group">
