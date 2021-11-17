@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2021 at 12:36 AM
+-- Generation Time: Nov 17, 2021 at 03:57 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -471,7 +471,8 @@ CREATE TABLE `info_log` (
 INSERT INTO `info_log` (`id`, `log_type`, `message`, `date_logged`) VALUES
 (1, 'login', 'User vitor just logged in', '2021-11-16 16:24:41'),
 (2, 'signup', 'nmidnf successfully signed up', '2021-11-16 16:33:15'),
-(3, 'signup', 'ninfi successfully signed up', '2021-11-16 16:35:49');
+(3, 'signup', 'ninfi successfully signed up', '2021-11-16 16:35:49'),
+(4, 'login', 'User martin just logged in', '2021-11-16 16:38:26');
 
 -- --------------------------------------------------------
 
@@ -638,7 +639,7 @@ ALTER TABLE `error_log`
 -- AUTO_INCREMENT for table `info_log`
 --
 ALTER TABLE `info_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `inject_history`
