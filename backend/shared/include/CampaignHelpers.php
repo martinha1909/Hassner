@@ -28,12 +28,14 @@
         while($row = $res->fetch_assoc())
         {
             //Avoid fetching campaigns that are already expired in the past
-            if($row['date_expires'] != "Expired")
+            if($row['date_expires'] != "0000-00-00 00:00:00")
             {
+                $date_expires = explode(" ", $row['date_expires'])[0];
+                $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
                 $campaign_time_left = calculateTimeLeft($current_date[0], 
                                                         $current_date[1], 
-                                                        $row['date_expires'], 
-                                                        $row['time_expires']);
+                                                        $date_expires, 
+                                                        $time_expires);
                 
                 //Result of raffle roll
                 //Assuming not applicable, only applicable for type raffle
@@ -43,7 +45,7 @@
 
                 //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
                 //so we don't come back to it on late fetches
-                if($campaign_time_left == "Expired")
+                if($campaign_time_left == "0000-00-00 00:00:00")
                 {
                     if($row['type'] == "raffle")
                     {
@@ -70,7 +72,7 @@
                     {
                         updateCampaignEligibleParticipants($conn, $row['id'], $eligible_participant);
                     }
-                    $time_released = dateParser($row['date_posted'])." at ".timeParser($row['time_posted']);
+                    $time_released = dbDateTimeParser($row['date_expires']);
 
                     array_push($offerings, $row['offering']);
                     array_push($time_left, $campaign_time_left);
@@ -90,9 +92,9 @@
         $res = searchArtistCampaigns($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
-            if($row['date_expires'] == "Expired")
+            if($row['date_expires'] == "0000-00-00 00:00:00")
             {
-                $time_released = dateParser($row['date_posted'])." at ".timeParser($row['time_posted']);
+                $time_released = dbDateTimeParser($row['date_posted']);
 
                 array_push($offerings, $row['offering']);
                 array_push($eligible_participants, $row['eligible_participants']);
@@ -142,18 +144,20 @@
         while($row = $res->fetch_assoc())
         {
             //Avoid fetching campaigns that are already expired in the past
-            if($row['date_expires'] != "Expired")
+            if($row['date_expires'] != "0000-00-00 00:00:00")
             {
+                $date_expires = explode(" ", $row['date_expires'])[0];
+                $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
                 //Assume error
                 $roll_res = "roll error";
                 $campaign_time_left = calculateTimeLeft($current_date[0], 
                                                         $current_date[1], 
-                                                        $row['date_expires'], 
-                                                        $row['time_expires']);
+                                                        $date_expires, 
+                                                        $time_expires);
 
                 //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
                 //so we don't come back to it on late fetches
-                if($campaign_time_left == "Expired")
+                if($campaign_time_left == "0000-00-00 00:00:00")
                 {
                     if($row['type'] == "raffle")
                     {

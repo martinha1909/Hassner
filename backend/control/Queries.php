@@ -368,7 +368,7 @@
 
         function searchArtistCampaigns($conn, $artist_username)
         {
-            $sql = "SELECT id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE artist_username = ?";
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -390,7 +390,7 @@
 
         function searchCampaignsByType($conn, $campaign_type)
         {
-            $sql = "SELECT id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE type = ?";
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE type = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $campaign_type);
             $stmt->execute();
@@ -601,14 +601,6 @@
             return $result;
         }
 
-        function getMaxCampaignID($conn)
-        {
-            $sql = "SELECT MAX(id) AS max_id FROM campaign";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
-
         function updateCampaignEligibleParticipants($conn, $campaign_id, $eligible_participant)
         {
             $sql = "UPDATE campaign SET eligible_participants = '$eligible_participant' WHERE id='$campaign_id'";
@@ -624,9 +616,6 @@
         function updateCampaignExpirationDate($conn, $campaign_id, $exp_date)
         {
             $sql = "UPDATE campaign SET date_expires = '$exp_date' WHERE id='$campaign_id'";
-            $conn->query($sql);
-
-            $sql = "UPDATE campaign SET time_expires = '$exp_date' WHERE id='$campaign_id'";
             $conn->query($sql);
         }
 
@@ -1210,24 +1199,16 @@
             return $status;
         }
 
-        function postCampaign($conn, $artist_username, $offering, $release_date, $release_time, $expiration_date, $expiration_time, $type, $minimum_ethos)
+        function postCampaign($conn, $artist_username, $offering, $release_date, $expiration_date, $type, $minimum_ethos)
         {
-            $campaign_id = 0;
             $status = 0;
             $eligible_participant = 0;
             $winner = NULL;
 
-            $res = getMaxCampaignID($conn);
-            if($res->num_rows != 0)
-            {
-                $max_id = $res->fetch_assoc();
-                $campaign_id = $max_id['max_id'] + 1;
-            }
-
-            $sql = "INSERT INTO campaign (id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner)
-                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO campaign (artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner)
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('isssssssdis', $campaign_id, $artist_username, $offering, $release_date, $release_time, $expiration_date, $expiration_time, $type, $minimum_ethos, $eligible_participant, $winner);
+            $stmt->bind_param('sssssdis', $artist_username, $offering, $release_date, $expiration_date, $type, $minimum_ethos, $eligible_participant, $winner);
             if($stmt->execute() == TRUE)
             {
                 $status = "SUCCESS";
