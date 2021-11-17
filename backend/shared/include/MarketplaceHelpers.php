@@ -639,20 +639,19 @@ function fiatInit()
     }
 }
 
-function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, &$date_injected, &$time_injected)
+function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, &$date_injected)
 {
     $conn = connect();
 
     $res = getInjectionHistory($conn, $artist_username);
 
-    while ($row = $res->fetch_assoc()) {
-        $date = dateParser($row['date_injected']);
-        $time = timeParser($row['time_injected']);
+    while ($row = $res->fetch_assoc()) 
+    {
+        $date_from_db = reformatDateTime($row['date_injected']);
 
         array_push($comments, $row['comment']);
         array_push($amount_injected, $row['amount']);
-        array_push($date_injected, $date);
-        array_push($time_injected, $time);
+        array_push($date_injected, $date_from_db);
     }
 }
 
@@ -668,7 +667,6 @@ function injectionHistoryInit($artist_username)
         $comments,
         $amount_injected,
         $date_injected,
-        $time_injected
     );
     echo '
             <table class="table">
@@ -687,7 +685,7 @@ function injectionHistoryInit($artist_username)
                     <tr>
                         <th scope="row">' . $amount_injected[$i] . '</th>
                         <td>' . $comments[$i] . '</td>
-                        <td>' . $date_injected[$i] . ' at '.$time_injected[$i].'</td>
+                        <td>' . dbDateTimeParser($date_injected[$i]).'</td>
                     </tr>
             ';
     }

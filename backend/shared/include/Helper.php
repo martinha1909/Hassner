@@ -6,6 +6,7 @@
     include '../../backend/constants/BalanceOption.php';
     include '../../backend/constants/EthosOption.php';
     include '../../backend/constants/GraphOption.php';
+    include '../../backend/constants/Timezone.php';
 
     function hassnerInit()
     {
@@ -26,7 +27,7 @@
         $_SESSION['trade_history_to'] = 0;
         $_SESSION['trade_history_type'] = 0;
         $_SESSION['ethos_dashboard_options'] = EthosOption::NONE;
-        $_SESSION['current_date'] = getCurrentDate('America/Edmonton');
+        $_SESSION['current_date'] = getCurrentDate(Timezone::MST);
     }
 
     function getStatusMessage($err_msg, $suc_msg)

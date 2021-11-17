@@ -1,38 +1,53 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
+    include '../constants/Timezone.php';
 
     $conn = connect();
 
+    $_SESSION['logging_mode'] = LogModes::SHARE_DIST;
+
     $additional_shares = $_POST['share_distributing'];
     $comment = $_POST['inject_comment'];
-    $current_date = getCurrentDate("America/Edmonton");
-    $date_parser = dayAndTimeSplitter($current_date);
+    date_default_timezone_set(Timezone::MST);
+    $current_date = date('Y-m-d H:i:s');
 
-    if(empty($comment))
+    if(empty($additional_shares))
     {
-        //empty check and makes sure that it is properly instanitiated 
-        $comment = "";
+        $_SESSION['status'] = StatusCodes::ErrEmpty;
+        returnToMainPage();
     }
+    else if(!is_numeric($additional_shares))
+    {
+        $_SESSION['status'] = StatusCodes::ErrNum;
+        returnToMainPage();
+    }
+    else
+    {
+        if(empty($comment))
+        {
+            //empty check and makes sure that it is properly instanitiated 
+            $comment = "";
+        }
 
-    $res = searchNumberOfShareDistributed($conn, $_SESSION['username']);
-    $share_distributed = $res->fetch_assoc();
+        $res = searchNumberOfShareDistributed($conn, $_SESSION['username']);
+        $share_distributed = $res->fetch_assoc();
 
-    $new_shares_distributed = $share_distributed['Share_Distributed'] + $additional_shares;
+        $new_shares_distributed = $share_distributed['Share_Distributed'] + $additional_shares;
 
-    $res_2 = searchArtistCurrentPricePerShare($conn, $_SESSION['username']);
-    $current_pps = $res_2->fetch_assoc();
+        $res_2 = searchArtistCurrentPricePerShare($conn, $_SESSION['username']);
+        $current_pps = $res_2->fetch_assoc();
 
-    updateShareDistributed($conn, 
-                           $_SESSION['username'], 
-                           $new_shares_distributed, 
-                           $additional_shares, 
-                           $comment, 
-                           $date_parser[0], 
-                           $date_parser[1]);
+        updateShareDistributed($conn, 
+                            $_SESSION['username'], 
+                            $new_shares_distributed, 
+                            $additional_shares, 
+                            $comment, 
+                            $current_date);
 
-    $_SESSION['share_distribute'] = 0;
-    $_SESSION['dependencies'] = "FRONTEND";
-    
-    returnToMainPage();
+        $_SESSION['share_distribute'] = 0;
+        $_SESSION['dependencies'] = "FRONTEND";
+        
+        returnToMainPage();
+    }
 ?>

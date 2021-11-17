@@ -17,10 +17,32 @@
         return explode(" ", $date);
     }
 
-    //return array will have:
-    //First index: day (DD)
-    //Second index: month(MM)
-    //Third index: year(YYYY)
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	date_time_object	date time object received from the db datetime class
+    *                               has format of YYYY-MM-DD HH:MM:SS
+    *
+    * @return 	ret	                a string of human readable date and time
+    */
+    function dbDateTimeParser($date_time_object)
+    {
+        $ret = "Error in parsing db date time";
+
+        $splitter = explode(" ", $date_time_object);
+
+        $ret = dateParser($splitter[0])." at ".timeParser($splitter[1]);
+
+        return $ret;
+    }
+
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	date	        date to parse to humanreadable format. Input has format of DD-MM-YYYY
+    *
+    * @return 	ret	            a string of human readable date
+    */
     function dateParser($date)
     {
         $date_parser = explode("-", $date);
@@ -31,10 +53,13 @@
         return $ret;
     }
 
-    //return array will have:
-    //first index: hour
-    //Second index: minute
-    //Third index: second
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	time	        time to parse to humanreadable format. Input has format of HH:MM:SS
+    *
+    * @return 	ret	            a string of human readable time
+    */
     function timeParser($time)
     {
         $time_parser = explode(":", $time);
@@ -401,6 +426,23 @@
         // reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
         $date = new DateTime($date);
         $ret = $date->format('d-m-Y');
+
+        return $ret;
+    }
+
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	date_time	date time object received from the db datetime class
+    *                       has format of YYYY-MM-DD HH:MM:SS
+    *
+    * @return 	ret	        a string of reformatted date time, has format DD-MM-YYYY HH:MM:SS
+    */
+    function reformatDateTime($date_time)
+    {
+        $ret = "Error in parsing date time from db";
+        $date_time_formatted = new DateTime($date_time);
+        $ret = $date_time_formatted->format('d-m-Y H:i:s');
 
         return $ret;
     }
