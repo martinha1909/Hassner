@@ -1,6 +1,7 @@
 <?php
     function hx_error($type, $msg)
     {
+        date_default_timezone_set(Timezone::MST);
         $error_trace = debug_backtrace();
         //We only care about the last stack trace
         $error_file = pathinfo($error_trace[0]['file'])['basename'];
@@ -18,7 +19,6 @@
         }
 
         $conn = connect();
-        date_default_timezone_set(Timezone::MST);
 
         $log_msg = '['.$type.']-['.$error_file.'@'.$error_line.']'.$msg."\r\n";
         if($path != 0)
@@ -40,6 +40,7 @@
 
     function hx_info($type, $msg)
     {
+        date_default_timezone_set(Timezone::MST);
         $error_trace = debug_backtrace();
         //We only care about the last stack trace
         $error_file = pathinfo($error_trace[0]['file'])['basename'];
@@ -56,7 +57,6 @@
             $path = ErrorLogPath::BACKEND;
         }
         $conn = connect();
-        date_default_timezone_set(Timezone::MST);
 
         $log_msg = '['.$type.']-['.$error_file.'@'.$error_line.']'.$msg."\r\n";
         if($path != 0)
@@ -78,6 +78,7 @@
 
     function hx_debug($type, $msg)
     {
+        date_default_timezone_set(Timezone::MST);
         $error_trace = debug_backtrace();
         //We only care about the last stack trace
         $error_file = pathinfo($error_trace[0]['file'])['basename'];
@@ -94,7 +95,6 @@
             $path = ErrorLogPath::BACKEND;
         }
         $conn = connect();
-        date_default_timezone_set(Timezone::MST);
 
         $log_msg = '['.$type.']-['.$error_file.'@'.$error_line.']'.$msg."\r\n";
         if($path != 0)
