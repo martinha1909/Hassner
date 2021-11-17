@@ -3,6 +3,7 @@
     include '../control/Dependencies.php';
     include '../shared/include/CampaignHelpers.php';
     include '../constants/LoggingModes.php';
+    include '../constants/Timezone.php';
 
     $_SESSION['logging_mode'] = LogModes::CAMPAIGN;
 
@@ -14,7 +15,7 @@
     $expiration_date = $_POST['campaign_duration'];
     $type = $_POST['raffle_or_benchmark'];
     $minimum_ethos = $_POST['minimum_ethos'];
-    date_default_timezone_set($_SESSION['timezone']);
+    date_default_timezone_set(Timezone::MST);
     $current_date = date('Y-m-d H:i:s');
 
     if(empty($offer) || empty($expiration_date) || empty($type) || empty($minimum_ethos))
