@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2021 at 04:19 AM
+-- Generation Time: Nov 17, 2021 at 10:50 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -417,17 +417,10 @@ CREATE TABLE `debug_log` (
   `id` int(11) NOT NULL,
   `log_type` varchar(50) NOT NULL,
   `message` varchar(10000) NOT NULL,
+  `log_file` varchar(20) NOT NULL,
+  `log_line` int(11) NOT NULL,
   `date_logged` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `debug_log`
---
-
-INSERT INTO `debug_log` (`id`, `log_type`, `message`, `date_logged`) VALUES
-(1, 'signup', 'sign up data: username: nmidnf, password: nifeo, email: mfio@gmail.com, account type: artist, ticker: 22MM', '2021-11-16 16:33:15'),
-(2, 'signup', 'sign up data: username: dwd, password: dwdwd, email: martinvuha1909@gmail.com, account type: artist, ticker: 22JJ', '2021-11-16 16:34:07'),
-(3, 'signup', 'sign up data: username: ninfi, password: ndiownoi, email: nfvios@gmail.com, account type: user, ticker: ', '2021-11-16 16:35:49');
 
 -- --------------------------------------------------------
 
@@ -439,6 +432,8 @@ CREATE TABLE `error_log` (
   `id` int(11) NOT NULL,
   `log_type` varchar(50) NOT NULL,
   `message` varchar(10000) NOT NULL,
+  `log_file` varchar(20) NOT NULL,
+  `log_line` int(11) NOT NULL,
   `date_logged` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -446,10 +441,8 @@ CREATE TABLE `error_log` (
 -- Dumping data for table `error_log`
 --
 
-INSERT INTO `error_log` (`id`, `log_type`, `message`, `date_logged`) VALUES
-(1, 'login', 'Server error', '2021-11-16 16:25:52'),
-(2, 'login', 'No credentials found for username: nsoi and password: niofe', '2021-11-16 16:27:04'),
-(3, 'signup', 'martinvuha1909@gmail.com is already taken', '2021-11-16 16:34:07');
+INSERT INTO `error_log` (`id`, `log_type`, `message`, `log_file`, `log_line`, `date_logged`) VALUES
+(8, 'signup', ' is not a supported email', 'SignUpBackEnd.php', 25, '2021-11-17 22:47:25');
 
 -- --------------------------------------------------------
 
@@ -461,6 +454,8 @@ CREATE TABLE `info_log` (
   `id` int(11) NOT NULL,
   `log_type` varchar(50) NOT NULL,
   `message` varchar(10000) NOT NULL,
+  `log_file` varchar(20) NOT NULL,
+  `log_line` int(11) NOT NULL,
   `date_logged` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -468,12 +463,8 @@ CREATE TABLE `info_log` (
 -- Dumping data for table `info_log`
 --
 
-INSERT INTO `info_log` (`id`, `log_type`, `message`, `date_logged`) VALUES
-(1, 'login', 'User vitor just logged in', '2021-11-16 16:24:41'),
-(2, 'signup', 'nmidnf successfully signed up', '2021-11-16 16:33:15'),
-(3, 'signup', 'ninfi successfully signed up', '2021-11-16 16:35:49'),
-(4, 'login', 'User martin just logged in', '2021-11-16 16:38:26'),
-(5, 'login', 'User martin just logged in', '2021-11-16 20:06:56');
+INSERT INTO `info_log` (`id`, `log_type`, `message`, `log_file`, `log_line`, `date_logged`) VALUES
+(14, 'login', 'User martin just logged in', 'LoginBackend.php', 25, '2021-11-17 22:49:15');
 
 -- --------------------------------------------------------
 
@@ -616,7 +607,7 @@ ALTER TABLE `sell_order`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `campaign`
@@ -628,19 +619,19 @@ ALTER TABLE `campaign`
 -- AUTO_INCREMENT for table `debug_log`
 --
 ALTER TABLE `debug_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `error_log`
 --
 ALTER TABLE `error_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `info_log`
 --
 ALTER TABLE `info_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `inject_history`
