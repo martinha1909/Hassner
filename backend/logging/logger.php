@@ -1,6 +1,7 @@
 <?php
     function hx_error($type, $msg)
     {
+        $date_logged = date('Y-m-d H:i:s');
         $path = 0;
         $log_file = 0;
         if($_SESSION['dependencies'] == "FRONTEND")
@@ -26,7 +27,7 @@
             $sql = "INSERT INTO error_log (log_type, message, date_logged)
                     VALUES(?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sss', $type, $msg, date('Y-m-d H:i:s'));
+            $stmt->bind_param('sss', $type, $msg, $date_logged);
             $stmt->execute();
 
             error_log('['.date("F j, Y, g:i a e O").']'.$log_msg, 3,  $log_file);
@@ -35,6 +36,7 @@
 
     function hx_info($type, $msg)
     {
+        $date_logged = date('Y-m-d H:i:s');
         $path = 0;
         $log_file = 0;
         if($_SESSION['dependencies'] == "FRONTEND")
@@ -59,7 +61,7 @@
             $sql = "INSERT INTO info_log (log_type, message, date_logged)
                     VALUES(?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sss', $type, $msg, date('Y-m-d H:i:s'));
+            $stmt->bind_param('sss', $type, $msg, $date_logged);
             $stmt->execute();
 
             error_log('['.date("F j, Y, g:i a e O").']'.$log_msg, 3,  $log_file);
@@ -68,6 +70,7 @@
 
     function hx_debug($type, $msg)
     {
+        $date_logged = date('Y-m-d H:i:s');
         $path = 0;
         $log_file = 0;
         if($_SESSION['dependencies'] == "FRONTEND")
@@ -92,7 +95,7 @@
             $sql = "INSERT INTO debug_log (log_type, message, date_logged)
                     VALUES(?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sss', $type, $msg, date('Y-m-d H:i:s'));
+            $stmt->bind_param('sss', $type, $msg, $date_logged);
             $stmt->execute();
 
             error_log('['.date("F j, Y, g:i a e O").']'.$log_msg, 3,  $log_file);
