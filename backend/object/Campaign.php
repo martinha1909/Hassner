@@ -5,9 +5,7 @@
         private $artist_username;
         private $offering;
         private $date_posted;
-        private $time_posted;
         private $date_expires;
-        private $time_expires;
         private $type;
         private $min_ethos;
         private $eligible_participants;
@@ -19,9 +17,7 @@
             $this->artist_username = "";
             $this->offering = "";
             $this->date_posted = "";
-            $this->time_posted = "";
             $this->date_expires = "";
-            $this->time_expires = "";
             $this->type = "";
             $this->min_ethos = 0;
             $this->eligible_participants = 0;
@@ -93,22 +89,6 @@
         }
 
         /**
-         * Get the value of time_posted
-         */ 
-        public function getTimePosted()
-        {
-            return $this->time_posted;
-        }
-
-        /**
-         * Set the value of time_posted
-        */ 
-        public function setTimePosted($time_posted)
-        {
-            $this->time_posted = $time_posted;
-        }
-
-        /**
          * Get the value of date_expires
         */ 
         public function getDateExpires()
@@ -122,22 +102,6 @@
         public function setDateExpires($date_expires)
         {
             $this->date_expires = $date_expires;
-        }
-
-        /**
-         * Get the value of time_expires
-        */ 
-        public function getTimeExpires()
-        {
-            return $this->time_expires;
-        }
-
-        /**
-         * Set the value of time_expires
-        */ 
-        public function setTimeExpires($time_expires)
-        {
-            $this->time_expires = $time_expires;
         }
 
         /**
