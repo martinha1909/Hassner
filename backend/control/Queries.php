@@ -20,7 +20,10 @@
             $sql = "SELECT * FROM account WHERE username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $username);
-            $stmt->execute();
+            if($stmt->execute() == FALSE)
+            {
+                hx_error(ErrorLogType::QUERY, "searchAccount failed to query");
+            }
             $result = $stmt->get_result();
             return $result;
         }

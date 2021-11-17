@@ -5,6 +5,9 @@ if(!defined('ERRORLOGTYPE_LOADED')){
         const SIGNUP = "signup";
         const LOGIN = "login";
         const DB = "database";
+        const QUERY = "query";
+        //for logging with helper option, helper file name and function name need to be specififed
+        const HELPER = "helper";
     }
     define('ERRORLOGTYPE_LOADED', 1);
 }
