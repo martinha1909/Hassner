@@ -14,11 +14,18 @@
         if(empty($_SESSION['fiat']))
         {
             $_SESSION['status'] = StatusCodes::ErrEmpty;
+
+            $msg = "Empty deposit amount cannot be processed for user ".$_SESSION['username'];
+            hx_error(ErrorLogType::CURRENCY, $msg);
+
+            $_SESSION['dependencies'] = "FRONTEND";
             returnToMainPage();
         }
         else if(!is_numeric($_SESSION['fiat']))
         {
             $_SESSION['status'] = StatusCodes::ErrNum;
+
+            $_SESSION['dependencies'] = "FRONTEND";
             returnToMainPage();
         }
         else
