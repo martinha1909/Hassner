@@ -552,7 +552,7 @@ function fiatInit()
         else if ($_SESSION['status'] == StatusCodes::ErrNotEnough) 
         {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
-            getStatusMessage("Not enough CAD", "");
+            getStatusMessage("Not enough USD", "");
         } 
         else 
         {

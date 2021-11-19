@@ -697,13 +697,31 @@
         function saveUserPaymentInfo($conn, $username, $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number)
         {
             $sql = "UPDATE account SET Full_name = '$full_name', email='$email', billing_address='$address', City = '$city', State='$state', ZIP = '$zip', Card_number='$card_number' WHERE username='$username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $msg = "user ".$_SESSION['username']." successfully stored payment info in db";
+                hx_info(ErrorLogType::CURRENCY, $msg);
+            }
+            else
+            {
+                $msg = "db failed to save payment info";
+                hx_error(ErrorLogType::DB, $msg);
+            }
         }
 
         function saveUserAccountInfo($conn, $username, $transit_no, $inst_no, $account_no, $swift)
         {
             $sql = "UPDATE account SET Transit_no = '$transit_no', Inst_no = '$inst_no', Account_no = '$account_no', Swift = '$swift' WHERE username='$username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $msg = "user ".$_SESSION['username']." successfully stored banking info in db";
+                hx_info(ErrorLogType::CURRENCY, $msg);
+            }
+            else
+            {
+                $msg = "db failed to save banking info";
+                hx_error(ErrorLogType::DB, $msg);
+            }
         }
 
         function updateUserBalance($conn, $username, $balance)
@@ -731,6 +749,8 @@
             } 
             else 
             {
+                $msg = "Failed to deposit ".$usd." for user ".$username;
+                hx_error(ErrorLogType::DB, $msg);
                 $status = StatusCodes::ErrGeneric;
             }  
             return $status;
@@ -747,6 +767,8 @@
             } 
             else 
             {
+                $msg = "Failed to withdraw ".$coins." for user ".$username;
+                hx_error(ErrorLogType::DB, $msg);
                 $status = StatusCodes::ErrGeneric;
             }
 
