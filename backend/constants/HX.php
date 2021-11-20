@@ -1,6 +1,6 @@
 <?php
-if(!defined('ERRORLOGTYPE_LOADED')){
-    abstract class ErrorLogType
+if(!defined('HX_LOADED')){
+    abstract class HX
     {
         const SIGNUP = "signup";
         const LOGIN = "login";
@@ -9,6 +9,6 @@ if(!defined('ERRORLOGTYPE_LOADED')){
         const CURRENCY = "currency";
         const HELPER = "helper";
     }
-    define('ERRORLOGTYPE_LOADED', 1);
+    define('HX_LOADED', 1);
 }
 ?>
