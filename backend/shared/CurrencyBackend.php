@@ -4,7 +4,7 @@
 
     $_SESSION['currency'] = $_POST['currency'];
     $msg = $_SESSION['currency']." has been selected";
-    hx_debug(ErrorLogType::HELPER, $msg);
+    hx_debug(HX::HELPER, $msg);
     
     $_SESSION['usd'] = 0;
 

@@ -35,14 +35,14 @@
             Expiration month: ".$expmonth."\n
             Expiration year: ".$expyear."\n
             CVV: ".$cvv."\n"; 
-    hx_debug(ErrorLogType::CURRENCY, $msg);
+    hx_debug(HX::CURRENCY, $msg);
 
     # Basic CC verification. This would be done by a payment processor in the future
     if((strlen($card_number) < 14) || (strlen($card_number) > 16))
     {
         $_SESSION['status'] = StatusCodes::ErrCard;
         $msg = "Not a valid card for user ".$_SESSION['username'];
-        hx_error(ErrorLogType::CURRENCY, $msg);
+        hx_error(HX::CURRENCY, $msg);
     }
     else if($save_info == "Yes")
     {
@@ -63,7 +63,7 @@
             if($_SESSION['status'] == StatusCodes::Success)
             {
                 $msg = "user ".$_SESSION['username']." just deposited ".$_SESSION['usd']." USD";
-                hx_info(ErrorLogType::CURRENCY, $msg);
+                hx_info(HX::CURRENCY, $msg);
             }
             $_SESSION['usd'] = 0;
             $_SESSION['saved'] = 0; 
@@ -75,7 +75,7 @@
         {
             $_SESSION['status'] = StatusCodes::ErrEmpty;
             $msg = "One of the payment fields is empty for user ".$_SESSION['username'];
-            hx_error(ErrorLogType::CURRENCY, $msg);
+            hx_error(HX::CURRENCY, $msg);
         }
     }
     else
@@ -87,7 +87,7 @@
             if($_SESSION['status'] == StatusCodes::Success)
             {
                 $msg = "user ".$_SESSION['username']." just deposited ".$_SESSION['usd']." USD";
-                hx_info(ErrorLogType::CURRENCY, $msg);
+                hx_info(HX::CURRENCY, $msg);
             }
             $_SESSION['usd'] = 0;
             $_SESSION['fiat'] = 0;
@@ -99,7 +99,7 @@
         {
             $_SESSION['status'] = StatusCodes::ErrCard;
             $msg = "One of the payment fields is empty for user ".$_SESSION['username'];
-            hx_error(ErrorLogType::CURRENCY, $msg);
+            hx_error(HX::CURRENCY, $msg);
         }
     }
 

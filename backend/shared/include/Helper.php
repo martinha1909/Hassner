@@ -45,7 +45,7 @@
         $conn = connect();
         $result = searchAccount($conn, $username);
         $msg = "searchAccount returned ".$result->num_rows." rows";
-        hx_debug(ErrorLogType::HELPER, $msg);
+        hx_debug(HX::HELPER, $msg);
 
         $account = $result->fetch_assoc();
          
@@ -57,7 +57,7 @@
         $conn = connect();
         $result = searchAccount($conn, $user_username);
         $msg = "searchAccount returned ".$result->num_rows." rows";
-        hx_debug(ErrorLogType::HELPER, $msg);
+        hx_debug(HX::HELPER, $msg);
 
         $balance = $result->fetch_assoc();     
 

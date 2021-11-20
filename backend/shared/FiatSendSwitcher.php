@@ -24,7 +24,7 @@
         {
             $msg = $_SESSION['username']." entered ".$_SESSION['fiat']." EUR for deposit";  
         }
-        hx_debug(ErrorLogType::CURRENCY, $msg);
+        hx_debug(HX::CURRENCY, $msg);
 
         $_SESSION['logging_mode'] = LogModes::DEPOSIT;
         if(empty($_SESSION['fiat']))
@@ -32,7 +32,7 @@
             $_SESSION['status'] = StatusCodes::ErrEmpty;
 
             $msg = "Empty deposit amount cannot be processed for user ".$_SESSION['username'];  
-            hx_error(ErrorLogType::CURRENCY, $msg);
+            hx_error(HX::CURRENCY, $msg);
 
             $_SESSION['dependencies'] = "FRONTEND";
             returnToMainPage();
@@ -42,7 +42,7 @@
             $_SESSION['status'] = StatusCodes::ErrNum;
 
             $msg = "Non numeric amount cannot be processed for user ".$_SESSION['username'];  
-            hx_error(ErrorLogType::CURRENCY, $msg);
+            hx_error(HX::CURRENCY, $msg);
 
             $_SESSION['dependencies'] = "FRONTEND";
             returnToMainPage();
@@ -52,7 +52,7 @@
             $_SESSION['usd'] = currenciesToUSD($_SESSION['fiat'], $_SESSION['currency']);
 
             $msg = "currenciesToUSD returned ".$_SESSION['usd']." USD for user ".$_SESSION['username'];  
-            hx_debug(ErrorLogType::CURRENCY, $msg);
+            hx_debug(HX::CURRENCY, $msg);
 
             $_SESSION['dependencies'] = "FRONTEND";
     
@@ -64,7 +64,7 @@
         //Amount of money that user input in
         $_SESSION['usd'] = $_POST['currency'];
         $msg = $_SESSION['username']." entered ".$_SESSION['usd']." USD for withdrawal";  
-        hx_debug(ErrorLogType::CURRENCY, $msg);
+        hx_debug(HX::CURRENCY, $msg);
 
         $_SESSION['logging_mode'] = LogModes::WITHDRAW;
         if(empty($_SESSION['usd']))
@@ -72,7 +72,7 @@
             $_SESSION['status'] = StatusCodes::ErrEmpty;
 
             $msg = "Empty withdrawal amount cannot be processed for user ".$_SESSION['username'];  
-            hx_error(ErrorLogType::CURRENCY, $msg);
+            hx_error(HX::CURRENCY, $msg);
 
             returnToMainPage();
         }
@@ -81,7 +81,7 @@
             $_SESSION['status'] = StatusCodes::ErrNum;
 
             $msg = "Non-numeric amount cannot be processed for user ".$_SESSION['username'];  
-            hx_error(ErrorLogType::CURRENCY, $msg);
+            hx_error(HX::CURRENCY, $msg);
 
             returnToMainPage();
         }
@@ -94,7 +94,7 @@
             {
                 $_SESSION['status'] = StatusCodes::ErrNotEnough;
                 $msg = "Not enough to withdraw for user ".$_SESSION['username']."(".$balance['balance']."<".$_SESSION['usd'].")";  
-                hx_error(ErrorLogType::CURRENCY, $msg);
+                hx_error(HX::CURRENCY, $msg);
 
                 returnToMainPage();
             }
@@ -114,7 +114,7 @@
                 {
                     $msg = "USDToCurrencies returned ".$_SESSION['fiat']." EUR for user ".$_SESSION['username'];  
                 }
-                hx_debug(ErrorLogType::CURRENCY, $msg);
+                hx_debug(HX::CURRENCY, $msg);
 
                 $_SESSION['dependencies'] = "FRONTEND";
 

@@ -22,7 +22,7 @@
             $stmt->bind_param('s', $username);
             if($stmt->execute() == FALSE)
             {
-                hx_error(ErrorLogType::QUERY, "searchAccount failed to query");
+                hx_error(HX::QUERY, "searchAccount failed to query");
             }
             $result = $stmt->get_result();
             return $result;
@@ -700,12 +700,12 @@
             if($conn->query($sql) == TRUE)
             {
                 $msg = "user ".$_SESSION['username']." successfully stored payment info in db";
-                hx_info(ErrorLogType::CURRENCY, $msg);
+                hx_info(HX::CURRENCY, $msg);
             }
             else
             {
                 $msg = "db failed to save payment info";
-                hx_error(ErrorLogType::DB, $msg);
+                hx_error(HX::DB, $msg);
             }
         }
 
@@ -715,12 +715,12 @@
             if($conn->query($sql) == TRUE)
             {
                 $msg = "user ".$_SESSION['username']." successfully stored banking info in db";
-                hx_info(ErrorLogType::CURRENCY, $msg);
+                hx_info(HX::CURRENCY, $msg);
             }
             else
             {
                 $msg = "db failed to save banking info";
-                hx_error(ErrorLogType::DB, $msg);
+                hx_error(HX::DB, $msg);
             }
         }
 
@@ -750,7 +750,7 @@
             else 
             {
                 $msg = "Failed to deposit ".$usd." for user ".$username;
-                hx_error(ErrorLogType::DB, $msg);
+                hx_error(HX::DB, $msg);
                 $status = StatusCodes::ErrGeneric;
             }  
             return $status;
@@ -768,7 +768,7 @@
             else 
             {
                 $msg = "Failed to withdraw ".$coins." for user ".$username;
-                hx_error(ErrorLogType::DB, $msg);
+                hx_error(HX::DB, $msg);
                 $status = StatusCodes::ErrGeneric;
             }
 

@@ -516,7 +516,7 @@ function fiatInit()
 
     $balance = getUserBalance($_SESSION['username']);
     $msg = "getUserBalance returned ".$balance." as a result";
-    hx_debug(ErrorLogType::HELPER, $msg);
+    hx_debug(HX::HELPER, $msg);
 
     echo '
             <section id="login" class="py-5";>

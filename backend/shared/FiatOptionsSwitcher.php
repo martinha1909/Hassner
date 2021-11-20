@@ -5,7 +5,7 @@
 
     $option = trim($_POST['options']);
     $msg = $option." has been selected";
-    hx_debug(ErrorLogType::CURRENCY, $msg);
+    hx_debug(HX::CURRENCY, $msg);
 
 
     $_SESSION['fiat_options'] = ($option == BalanceOption::WITHDRAW) ? BalanceOption::WITHDRAW_CAPS : BalanceOption::DEPOSIT_CAPS;

@@ -17,7 +17,7 @@
             Institution No.: ".$inst_no."\n
             Account No.: ".$account_no."\n
             Swift code: ".$swift."\n"; 
-    hx_debug(ErrorLogType::CURRENCY, $msg);
+    hx_debug(HX::CURRENCY, $msg);
     if($save_info == "Yes")
     {
         if(!empty($transit_no) && !empty($inst_no) && !empty($account_no) && !empty($swift))
@@ -28,7 +28,7 @@
             if($_SESSION['status'] == StatusCodes::Success)
             {
                 $msg = "user ".$_SESSION['username']." just withdrew ".$_SESSION['usd']." USD";
-                hx_info(ErrorLogType::CURRENCY, $msg);
+                hx_info(HX::CURRENCY, $msg);
             }
             $_SESSION['btn_show'] = 0;
             $_SESSION['usd'] = 0;
@@ -40,7 +40,7 @@
         {
             $_SESSION['status'] = StatusCodes::ErrEmpty; 
             $msg = "One of the banking information fields is empty for user ".$_SESSION['username'];
-            hx_error(ErrorLogType::CURRENCY, $msg);
+            hx_error(HX::CURRENCY, $msg);
         }
     }
     else
@@ -52,7 +52,7 @@
             if($_SESSION['status'] == StatusCodes::Success)
             {
                 $msg = "user ".$_SESSION['username']." just withdrew ".$_SESSION['usd']." USD";
-                hx_info(ErrorLogType::CURRENCY, $msg);
+                hx_info(HX::CURRENCY, $msg);
             }
             $_SESSION['usd'] = 0;
             $_SESSION['usd'] = 0;
@@ -63,7 +63,7 @@
         {
             $_SESSION['status'] = StatusCodes::ErrEmpty;
             $msg = "One of the banking information fields is empty for user ".$_SESSION['username'];
-            hx_error(ErrorLogType::CURRENCY, $msg);
+            hx_error(HX::CURRENCY, $msg);
         }
     }
     $_SESSION['dependencies'] = "FRONTEND";
