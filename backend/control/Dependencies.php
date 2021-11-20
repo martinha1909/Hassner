@@ -18,7 +18,7 @@
         include '../../backend/shared/include/Helper.php';
         include '../../backend/shared/include/TimeUtil.php';
         include '../../backend/constants/ErrorLogPath.php';
-        include '../../backend/constants/ErrorLogType.php';
+        include '../../backend/constants/HX.php';
         include '../../backend/constants/Timezone.php';
     }
     else if($_SESSION['dependencies'] == "BACKEND")
@@ -29,7 +29,7 @@
         include '../shared/include/Helper.php';
         include '../shared/include/TimeUtil.php';
         include '../constants/ErrorLogPath.php';
-        include '../constants/ErrorLogType.php';
+        include '../constants/HX.php';
         include '../constants/Timezone.php';
     }
 ?>

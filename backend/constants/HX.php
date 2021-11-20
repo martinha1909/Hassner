@@ -1,11 +1,11 @@
 <?php
-if(!defined('ERRORLOGTYPE_LOADED')){
-    abstract class ErrorLogType
+if(!defined('HX_LOADED')){
+    abstract class HX
     {
         const SIGNUP = "signup";
         const LOGIN = "login";
         const DB = "database";
     }
-    define('ERRORLOGTYPE_LOADED', 1);
+    define('HX_LOADED', 1);
 }
 ?>
