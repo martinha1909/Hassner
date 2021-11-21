@@ -23,10 +23,26 @@
     $expyear = $_POST['expyear'];
     $cvv = $_POST['cvv'];
 
+    $msg = "Checkout verification data: \n
+            Full name: ".$full_name."\n
+            Email: ".$email."\n
+            Address: ".$address."\n
+            City: ".$city."\n
+            State: ".$state."\n
+            ZIP: ".$zip."\n
+            Card name: ".$card_name."\n
+            Card number: ".$card_number."\n
+            Expiration month: ".$expmonth."\n
+            Expiration year: ".$expyear."\n
+            CVV: ".$cvv."\n"; 
+    hx_debug(HX::CURRENCY, $msg);
+
     # Basic CC verification. This would be done by a payment processor in the future
     if((strlen($card_number) < 14) || (strlen($card_number) > 16))
     {
         $_SESSION['status'] = StatusCodes::ErrCard;
+        $msg = "Not a valid card for user ".$_SESSION['username'];
+        hx_error(HX::CURRENCY, $msg);
     }
     else if($save_info == "Yes")
     {
@@ -44,6 +60,11 @@
                                 $card_name, 
                                 $card_number);
             $_SESSION['status'] = deposit($conn, $_SESSION['username'], $_SESSION['usd']);
+            if($_SESSION['status'] == StatusCodes::Success)
+            {
+                $msg = "user ".$_SESSION['username']." just deposited ".$_SESSION['usd']." USD";
+                hx_info(HX::CURRENCY, $msg);
+            }
             $_SESSION['usd'] = 0;
             $_SESSION['saved'] = 0; 
             $_SESSION['fiat'] = 0;
@@ -53,6 +74,8 @@
         else
         {
             $_SESSION['status'] = StatusCodes::ErrEmpty;
+            $msg = "One of the payment fields is empty for user ".$_SESSION['username'];
+            hx_error(HX::CURRENCY, $msg);
         }
     }
     else
@@ -61,6 +84,11 @@
         {
             $_SESSION['usd'] = round($_SESSION['usd'], 2);
             $_SESSION['status'] = deposit($conn, $_SESSION['username'], $_SESSION['usd']);
+            if($_SESSION['status'] == StatusCodes::Success)
+            {
+                $msg = "user ".$_SESSION['username']." just deposited ".$_SESSION['usd']." USD";
+                hx_info(HX::CURRENCY, $msg);
+            }
             $_SESSION['usd'] = 0;
             $_SESSION['fiat'] = 0;
             $_SESSION['saved'] = 0;
@@ -70,6 +98,8 @@
         else
         {
             $_SESSION['status'] = StatusCodes::ErrCard;
+            $msg = "One of the payment fields is empty for user ".$_SESSION['username'];
+            hx_error(HX::CURRENCY, $msg);
         }
     }
 

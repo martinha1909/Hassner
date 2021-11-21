@@ -20,7 +20,11 @@
             $sql = "SELECT * FROM account WHERE username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $username);
-            $stmt->execute();
+            if($stmt->execute() == FALSE)
+            {
+                $msg = "Error occured: ".implode(":", $stmt->errorInfo());
+                hx_error(HX::QUERY, "searchAccount failed to query");
+            }
             $result = $stmt->get_result();
             return $result;
         }
@@ -694,13 +698,31 @@
         function saveUserPaymentInfo($conn, $username, $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number)
         {
             $sql = "UPDATE account SET Full_name = '$full_name', email='$email', billing_address='$address', City = '$city', State='$state', ZIP = '$zip', Card_number='$card_number' WHERE username='$username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $msg = "user ".$_SESSION['username']." successfully stored payment info in db";
+                hx_info(HX::CURRENCY, $msg);
+            }
+            else
+            {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
+            }
         }
 
         function saveUserAccountInfo($conn, $username, $transit_no, $inst_no, $account_no, $swift)
         {
             $sql = "UPDATE account SET Transit_no = '$transit_no', Inst_no = '$inst_no', Account_no = '$account_no', Swift = '$swift' WHERE username='$username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $msg = "user ".$_SESSION['username']." successfully stored banking info in db";
+                hx_info(HX::CURRENCY, $msg);
+            }
+            else
+            {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
+            }
         }
 
         function updateUserBalance($conn, $username, $balance)
@@ -728,6 +750,8 @@
             } 
             else 
             {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
                 $status = StatusCodes::ErrGeneric;
             }  
             return $status;
@@ -744,6 +768,8 @@
             } 
             else 
             {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
                 $status = StatusCodes::ErrGeneric;
             }
 

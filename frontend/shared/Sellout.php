@@ -25,13 +25,16 @@ $_SESSION['expyear'] = 0;
     <div class="container-xxl">
       <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan d-flex">
         <?php
-        if ($_SESSION['account_type'] == "user") {
+        if ($_SESSION['account_type'] == "user") 
+        {
           echo '
                               <a class="navbar-brand" href="../listener/listener.php">
                                 HASSNER
                               </a>
                         ';
-        } else if ($_SESSION['account_type'] == "artist") {
+        } 
+        else if ($_SESSION['account_type'] == "artist") 
+        {
           echo '
                               <a class="navbar-brand" href="../artist/Artist.php">
                                 HASSNER
