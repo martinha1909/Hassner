@@ -9,16 +9,16 @@ $( function() {
         min = ui.values[0];
         max = ui.values[1];
         if(min == 0 && max == 500){
-          $("#buy_tip").text("Without limits the next available share(s) will be purchased");
+          $("#buy_tip").text("Without limits the next available share(s) will be purchased at market price");
         }
         else if (min > 0 && max == 500){
-          $("#buy_tip").text("The buy order will be executed while the price is below " + min);
+          $("#buy_tip").text("The buy order will be executed while the price <= " + min);
         }
         else if (min > 0 && max < 500){
           $("#buy_tip").text("The buy order will be executed while the price is between " + min + " and " + max);
         }
         else if (min == 0 && max < 500){
-          $("#buy_tip").text("The buy order will be executed while the price is above " + max);
+          $("#buy_tip").text("The buy order will be executed while the price >= " + max);
         }
         $("#buy_cost").val("$" + min*$("#buy_num").slider("value") + " - $" + max*$("#buy_num").slider("value"));
       }
@@ -38,16 +38,16 @@ $( function() {
         min = ui.values[0];
         max = ui.values[1];
         if(min == 0 && max == 500){
-          $("#sell_tip").text("Without limits the next available share(s) will be purchased");
+          $("#sell_tip").text("Without limits the next available share(s) will be purchased at market price");
         }
         else if (min > 0 && max == 500){
-          $("#sell_tip").text("The sell order will be executed while the price is below " + min);
+          $("#sell_tip").text("The sell order will be executed while the price <= " + min);
         }
         else if (min > 0 && max < 500){
           $("#sell_tip").text("The sell order will be executed while the price is between " + min + " and " + max);
         }
         else if (min == 0 && max < 500){
-          $("#sell_tip").text("The sell order will be executed while the price is above " + max);
+          $("#sell_tip").text("The sell order will be executed while the price >= " + max);
         }
         $("#sell_cost").val("$" + min*$("#sell_num").slider("value") + " - $" + max*$("#sell_num").slider("value"));
       }
