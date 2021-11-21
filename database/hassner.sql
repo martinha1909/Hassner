@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2021 at 01:27 AM
+-- Generation Time: Nov 17, 2021 at 10:50 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -410,24 +410,61 @@ INSERT INTO `campaign` (`id`, `artist_username`, `offering`, `date_posted`, `dat
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dummy`
+-- Table structure for table `debug_log`
 --
 
-CREATE TABLE `dummy` (
-  `date` datetime NOT NULL
+CREATE TABLE `debug_log` (
+  `id` int(11) NOT NULL,
+  `log_type` varchar(50) NOT NULL,
+  `message` varchar(10000) NOT NULL,
+  `log_file` varchar(20) NOT NULL,
+  `log_line` int(11) NOT NULL,
+  `date_logged` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `error_log`
+--
+
+CREATE TABLE `error_log` (
+  `id` int(11) NOT NULL,
+  `log_type` varchar(50) NOT NULL,
+  `message` varchar(10000) NOT NULL,
+  `log_file` varchar(20) NOT NULL,
+  `log_line` int(11) NOT NULL,
+  `date_logged` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `dummy`
+-- Dumping data for table `error_log`
 --
 
-INSERT INTO `dummy` (`date`) VALUES
-('0000-00-00 00:00:00'),
-('2021-11-05 21:22:24'),
-('2021-11-05 21:53:42'),
-('2021-11-05 21:53:45'),
-('2021-11-05 21:54:47'),
-('2021-11-06 15:43:17');
+INSERT INTO `error_log` (`id`, `log_type`, `message`, `log_file`, `log_line`, `date_logged`) VALUES
+(8, 'signup', ' is not a supported email', 'SignUpBackEnd.php', 25, '2021-11-17 22:47:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `info_log`
+--
+
+CREATE TABLE `info_log` (
+  `id` int(11) NOT NULL,
+  `log_type` varchar(50) NOT NULL,
+  `message` varchar(10000) NOT NULL,
+  `log_file` varchar(20) NOT NULL,
+  `log_line` int(11) NOT NULL,
+  `date_logged` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `info_log`
+--
+
+INSERT INTO `info_log` (`id`, `log_type`, `message`, `log_file`, `log_line`, `date_logged`) VALUES
+(14, 'login', 'User martin just logged in', 'LoginBackend.php', 25, '2021-11-17 22:49:15');
 
 -- --------------------------------------------------------
 
@@ -530,6 +567,24 @@ ALTER TABLE `campaign`
   ADD KEY `winner_key` (`winner`);
 
 --
+-- Indexes for table `debug_log`
+--
+ALTER TABLE `debug_log`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `error_log`
+--
+ALTER TABLE `error_log`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `info_log`
+--
+ALTER TABLE `info_log`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `inject_history`
 --
 ALTER TABLE `inject_history`
@@ -552,13 +607,31 @@ ALTER TABLE `sell_order`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `campaign`
 --
 ALTER TABLE `campaign`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `debug_log`
+--
+ALTER TABLE `debug_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `error_log`
+--
+ALTER TABLE `error_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `info_log`
+--
+ALTER TABLE `info_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `inject_history`

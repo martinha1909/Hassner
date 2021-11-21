@@ -6,7 +6,6 @@
     include '../../backend/constants/BalanceOption.php';
     include '../../backend/constants/EthosOption.php';
     include '../../backend/constants/GraphOption.php';
-    include '../../backend/constants/Timezone.php';
 
     function hassnerInit()
     {
