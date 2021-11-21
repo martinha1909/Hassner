@@ -46,7 +46,7 @@
     }
     else
     {
-        $msg = "No credentials found for username: ".$username." and password: ".$password;
+        $msg = "Credentials not found";
         hx_error(HX::LOGIN, $msg);
 
         $_SESSION['dependencies'] = "FRONTEND";
