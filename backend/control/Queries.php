@@ -22,6 +22,7 @@
             $stmt->bind_param('s', $username);
             if($stmt->execute() == FALSE)
             {
+                $msg = "Error occured: ".implode(":", $stmt->errorInfo());
                 hx_error(HX::QUERY, "searchAccount failed to query");
             }
             $result = $stmt->get_result();
@@ -704,7 +705,7 @@
             }
             else
             {
-                $msg = "db failed to save payment info";
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
                 hx_error(HX::DB, $msg);
             }
         }
@@ -719,7 +720,7 @@
             }
             else
             {
-                $msg = "db failed to save banking info";
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
                 hx_error(HX::DB, $msg);
             }
         }
@@ -767,7 +768,7 @@
             } 
             else 
             {
-                $msg = "Failed to withdraw ".$coins." for user ".$username;
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
                 hx_error(HX::DB, $msg);
                 $status = StatusCodes::ErrGeneric;
             }
