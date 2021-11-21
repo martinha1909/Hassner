@@ -750,7 +750,7 @@
             } 
             else 
             {
-                $msg = "Failed to deposit ".$usd." for user ".$username;
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
                 hx_error(HX::DB, $msg);
                 $status = StatusCodes::ErrGeneric;
             }  
