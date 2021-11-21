@@ -208,8 +208,8 @@
                                     <input type="text" class="slider_text" id="buy_cost" style="border:0; color:#f6931f; font-weight:bold;">
                                 </div>
 
-                                <div class="slider_slider" id="buy_limit"></div>
                                 <div class="slider_slider" id="buy_num"></div>
+                                <div class="slider_slider" id="buy_limit"></div>
                                 <div class="order_btn_container">
                                   <button id="buy_order">Buy</button>
                                 </div>
@@ -229,8 +229,8 @@
                                 <label for="sell_cost">$:</label>
                                 <input type="text" class="slider_text" id="sell_cost" style="border:0; color:#f6931f; font-weight:bold;">
                             </div>
-                                <div class="slider_slider" id="sell_limit"></div>
                                 <div class="slider_slider" id="sell_num"></div>
+                                <div class="slider_slider" id="sell_limit"></div>
                                 <div class="order_btn_container">
                                   <button id="sell_order">Sell</button>
                                 </div>
