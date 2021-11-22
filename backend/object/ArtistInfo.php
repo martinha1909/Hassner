@@ -173,15 +173,7 @@
         {
             $ret = new ArtistInfo();
 
-            $ret->setUsername($artist->getUsername());
-            $ret->setMarketTag($artist->getMarketTag());
-            $ret->setSharesBought($artist->getSharesBought());
-            $ret->setShareDistributed($artist->getShareDistributed());
-            $ret->setPPS($artist->getPPS());
-            $ret->setMonthlyShareholder($artist->getMonthlyShareholder());
-            $ret->setMarketCap($artist->getMarketCap());
-            $ret->setShareRepurchase($artist->getShareRepurchase());
-            $ret->setDayChange($artist->getDayChange());
+            $ret = clone $artist;
 
             return $ret;
         }

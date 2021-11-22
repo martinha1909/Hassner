@@ -17,10 +17,32 @@
         return explode(" ", $date);
     }
 
-    //return array will have:
-    //First index: day (DD)
-    //Second index: month(MM)
-    //Third index: year(YYYY)
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	date_time_object	date time object received from the db datetime class
+    *                               has format of YYYY-MM-DD HH:MM:SS
+    *
+    * @return 	ret	                a string of human readable date and time
+    */
+    function dbDateTimeParser($date_time_object)
+    {
+        $ret = "Error in parsing db date time";
+
+        $splitter = explode(" ", $date_time_object);
+
+        $ret = dateParser($splitter[0])." at ".timeParser($splitter[1]);
+
+        return $ret;
+    }
+
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	date	        date to parse to humanreadable format. Input has format of DD-MM-YYYY
+    *
+    * @return 	ret	            a string of human readable date
+    */
     function dateParser($date)
     {
         $date_parser = explode("-", $date);
@@ -31,10 +53,13 @@
         return $ret;
     }
 
-    //return array will have:
-    //first index: hour
-    //Second index: minute
-    //Third index: second
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	time	        time to parse to humanreadable format. Input has format of HH:MM:SS
+    *
+    * @return 	ret	            a string of human readable time
+    */
     function timeParser($time)
     {
         $time_parser = explode(":", $time);
@@ -116,9 +141,20 @@
         return $ret;
     }
 
-    function datePickerParser($time)
+    /**
+    * Parses date picker in create campaign page to db date format
+    *
+    * @param  	date	     	date from date picker, has format of YYYY-MM-DDTHH:MM
+    * @return 	ret	            date time object, represented in a string, has format of YYYY-MM-DD HH:MM:SS
+    */
+    function campaignDatePickerParser($date): string
     {
-        return explode("T", $time);
+        $ret = "Error in parsing from date picker";
+
+        $date = explode("T", $date);
+        $ret = $date[0]." ".$date[1].":00";
+
+        return $ret;
     }
 
     /**
@@ -137,9 +173,7 @@
     function isInTheFuture($exp_day, $release_day, $exp_time, $release_time)
     {
         $ret = TRUE;
-        // echo $exp_day[0]." ".$exp_day[1]." ".$exp_day[2];
-        // echo "<br>";
-        // echo $release_day[0]." ".$release_day[1]." ".$release_day[2];
+
         //if the year is in the past, we give an error
         if($exp_day[0] < $release_day[2])
         {
@@ -260,7 +294,7 @@
 
         if(!isInTheFuture($day_exp, $day_rn, $time_exp, $time_rn))
         {
-            $ret = "Expired";
+            $ret = "0000-00-00 00:00:00";
         }
         else
         {
@@ -293,7 +327,7 @@
                         {
                             if($minutes_remaining == 0)
                             {
-                                $ret = "Expired";
+                                $ret = "0000-00-00 00:00:00";
                             }
                             else
                             {
@@ -401,6 +435,23 @@
         // reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
         $date = new DateTime($date);
         $ret = $date->format('d-m-Y');
+
+        return $ret;
+    }
+
+    /**
+    * Determines if an expiration date is in the future or not
+    *
+    * @param  	date_time	date time object received from the db datetime class
+    *                       has format of YYYY-MM-DD HH:MM:SS
+    *
+    * @return 	ret	        a string of reformatted date time, has format DD-MM-YYYY HH:MM:SS
+    */
+    function reformatDateTime($date_time)
+    {
+        $ret = "Error in parsing date time from db";
+        $date_time_formatted = new DateTime($date_time);
+        $ret = $date_time_formatted->format('d-m-Y H:i:s');
 
         return $ret;
     }

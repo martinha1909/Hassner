@@ -5,11 +5,13 @@
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/ShareInteraction.php';
     include '../../backend/constants/GraphOption.php';
+    include '../../backend/constants/CampaignType.php';
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
     include '../../backend/object/TickerInfo.php';
     include '../../backend/object/SellOrder.php';
+    include '../../backend/object/Campaign.php';
 
     //only do actions if an artist is found
     if($_SESSION['artist_found'])
@@ -134,7 +136,7 @@
                     <!-- Displaying stock graph -->
                     <div class="chart-container mx-auto">
                         <?php
-                            $change = 0;
+                            $change = getArtistDayChange($_SESSION['selected_artist']);
                             $market_cap = calculateMarketCap($_SESSION['selected_artist']);
                             $volume = getArtistShareVolume($_SESSION['selected_artist']);
                             $open = getArtistPricePerShare($_SESSION['selected_artist']);
@@ -198,14 +200,18 @@
                             <h3 class="shares_header">Buy Shares</h3>
                             <div class="slider_container">
                                 <div class="textbox_container">
-                                    <label for="buy_min">Buy min:</label>
-                                    <input type="text" class="slider_text" id="buy_min" style="border:0; color:#f6931f; font-weight:bold;">
+                                    <div class="stocktip">
+                                        <p id="buy_tip">Without limits the next available share(s) will be purchased</p>
+                                    </div>
+                                    <label for="buy_num_shares"># Shares:</label>
+                                    <input type="text" class="slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
 
-                                    <label for="buy_max">Buy max:</label>
-                                    <input type="text" class="slider_text" id="buy_max" style="border:0; color:#f6931f; font-weight:bold;">
+                                    <label for="buy_cost">Cost:</label>
+                                    <input type="text" class="slider_text" id="buy_cost" style="border:0; color:#f6931f; font-weight:bold;">
                                 </div>
 
-                                <div class="slider_slider" id="buy_slider"></div>
+                                <div class="slider_slider" id="buy_num"></div>
+                                <div class="slider_slider" id="buy_limit"></div>
                                 <div class="order_btn_container">
                                   <button id="buy_order">Buy</button>
                                 </div>
@@ -216,13 +222,17 @@
                           <h3 class="shares_header">Sell Shares</h3>
                             <div class="slider_container">
                             <div class="textbox_container">
-                                <label for="sell_min">Sell min:</label>
-                                <input type="text" class="slider_text" id="sell_min" style="border:0; color:#f6931f; font-weight:bold;">
+                                <div class="stocktip">
+                                    <p id="sell_tip">Without limits your shares will be sold to the next available buyer</p>
+                                </div>
+                                <label for="sell_num_shares"># Shares:</label>
+                                <input type="text" class="slider_text" id="sell_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
 
-                                <label for="sell_max">Sell max:</label>
-                                <input type="text" class="slider_text" id="sell_max" style="border:0; color:#f6931f; font-weight:bold;">
+                                <label for="sell_cost">$:</label>
+                                <input type="text" class="slider_text" id="sell_cost" style="border:0; color:#f6931f; font-weight:bold;">
                             </div>
-                                <div class="slider_slider" id="sell_slider"></div>
+                                <div class="slider_slider" id="sell_num"></div>
+                                <div class="slider_slider" id="sell_limit"></div>
                                 <div class="order_btn_container">
                                   <button id="sell_order">Sell</button>
                                 </div>
@@ -382,6 +392,48 @@
                             echo '<h3 class="h3-blue py-5">Ethos Injection History</h3>';
 
                             injectionHistoryInit($_SESSION['selected_artist']);
+
+                            $current_campaigns = artistCurrentCampaigns($_SESSION['selected_artist']);
+
+                            echo '
+                                <h3 class="h3-blue py-5">Current Campaigns</h3>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Offering</th>
+                                            <th scope="col">Minimum Shares</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Date Commenced</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                            ';
+
+                            for($i = 0; $i < sizeof($current_campaigns); $i++)
+                            {
+                                $type = "Error in parsing type";
+                                if($current_campaigns[$i]->getType() == CampaignType::RAFFLE)
+                                {
+                                    $type = "♢";
+                                }
+                                else if($current_campaigns[$i]->getType() == CampaignType::BENCHMARK)
+                                {
+                                    $type = "♧";
+                                }
+                                echo '
+                                        <tr>
+                                            <th scope="row">' . $current_campaigns[$i]->getOffering() . '</th>
+                                            <td>' . $current_campaigns[$i]->getMinEthos() . '</td>
+                                            <td>' . $type .'</td>
+                                            <td>'. dbDateTimeParser($current_campaigns[$i]->getDatePosted()) .'</td>
+                                        </tr>
+                                ';
+                            }
+
+                            echo '
+                                    </tbody>
+                                </table>
+                            ';
                     }
                     else
                     {

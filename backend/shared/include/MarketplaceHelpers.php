@@ -324,7 +324,24 @@ function askedPriceInit($artist_username, $account_type)
                                     <td>' . $artist_usernames[$i] . '</th>
                                     <td>' . $selling_prices[$i] . '</td>
                                     <td>' . $share_amounts[$i] . '</td>
-                                    <td>' . $roi[$i] . '%</td>
+            ';
+            if($roi[$i] > 0)
+            {
+                echo'
+                                    <td class="suc-msg">+' . $roi[$i] . '%</td>';
+            }
+            if($roi[$i] < 0)
+            {
+                echo'
+                                    <td class="error-msg">' . $roi[$i] . '%</td>';
+            }
+            if($roi[$i] == 0)
+            {
+                echo'
+                                    <td>' . $roi[$i] . '%</td>';
+            }
+            
+            echo '
                                     <td>' . $profits[$i] . '</td>
                                     <td>' . $date_posted[$i] . '</td>
                                     <td><input type="submit" id="abc" class="cursor-context" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
@@ -496,7 +513,10 @@ function USDToCurrencies($amount, $currency): float
 function fiatInit()
 {
     $account_info = getAccount($_SESSION['username']);
+
     $balance = getUserBalance($_SESSION['username']);
+    $msg = "getUserBalance returned ".$balance." as a result";
+    hx_debug(HX::HELPER, $msg);
 
     echo '
             <section id="login" class="py-5";>
@@ -505,29 +525,43 @@ function fiatInit()
                         <form action="../../backend/shared/CurrencyBackend.php" method="post">
         ';
 
-    if ($_SESSION['logging_mode'] == LogModes::DEPOSIT) {
-        if ($_SESSION['status'] == StatusCodes::ErrEmpty) {
+    if ($_SESSION['logging_mode'] == LogModes::DEPOSIT) 
+    {
+        if ($_SESSION['status'] == StatusCodes::ErrEmpty) 
+        {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
             getStatusMessage("Please fill out all fields and try again", "");
-        } else if($_SESSION['status'] == StatusCodes::ErrNum) {
+        } 
+        else if($_SESSION['status'] == StatusCodes::ErrNum) 
+        {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
             getStatusMessage("Amount has to be a number", "");
-        } else {
+        } 
+        else 
+        {
             getStatusMessage("Failed to buy, an error occured", "Succeeded");
         }
-    } else if ($_SESSION['logging_mode'] == LogModes::WITHDRAW) {
-        if ($_SESSION['status'] == StatusCodes::ErrEmpty) {
+    } 
+    else if ($_SESSION['logging_mode'] == LogModes::WITHDRAW) 
+    {
+        if ($_SESSION['status'] == StatusCodes::ErrEmpty) 
+        {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
             getStatusMessage("Please fill out all fields and try again", "");
-        } else if ($_SESSION['status'] == StatusCodes::ErrNotEnough) {
+        } 
+        else if ($_SESSION['status'] == StatusCodes::ErrNotEnough) 
+        {
             $_SESSION['status'] = StatusCodes::ErrGeneric;
-            getStatusMessage("Not enough CAD", "");
-        } else {
+            getStatusMessage("Not enough USD", "");
+        } 
+        else 
+        {
             getStatusMessage("An error occured", "Succeeded");
         }
     }
 
-    if ($_SESSION['currency'] == 0) {
+    if ($_SESSION['currency'] == 0) 
+    {
         echo '
                     <div style="float:none;margin:auto;" class="select-dark">
                         <select name="currency" id="dark" onchange="this.form.submit()">
@@ -539,7 +573,9 @@ function fiatInit()
                     </div>
             ';
         echo "Account balance: " . $balance . "<br>";
-    } else {
+    } 
+    else 
+    {
         echo '
                     <div style="float:none;margin:auto;" class="select-dark">
                         <select name="currency" id="dark" onchange="this.form.submit()">
@@ -555,12 +591,16 @@ function fiatInit()
                     </form>
                     <form action = "../../backend/shared/FiatOptionsSwitcher.php" method = "post">
             ';
-        if ($_SESSION['currency'] == 0) {
+        if ($_SESSION['currency'] == 0) 
+        {
             echo '
                         <h5 style="padding-top:150px;"> Please choose a currency</h5>
                 ';
-        } else {
-            if ($_SESSION['fiat_options'] == BalanceOption::NONE) {
+        } 
+        else 
+        {
+            if ($_SESSION['fiat_options'] == BalanceOption::NONE) 
+            {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
                                 <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
@@ -568,7 +608,9 @@ function fiatInit()
                             </div>
                         </form>
                     ';
-            } else if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) {
+            } 
+            else if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) 
+            {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
                                 <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
@@ -576,7 +618,9 @@ function fiatInit()
                             </div>
                         </form>
                     ';
-            } else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) {
+            } 
+            else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) 
+            {
                 echo '
                             <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
                                 <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
@@ -587,7 +631,8 @@ function fiatInit()
             }
         }
     }
-    if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) {
+    if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) 
+    {
         echo '
                     <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
                         <div class="form-group">
@@ -604,7 +649,9 @@ function fiatInit()
             </div>
         </div>
     </section>';
-    } else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) {
+    } 
+    else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) 
+    {
         echo '
                     <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
                         <div class="form-group">
@@ -622,20 +669,19 @@ function fiatInit()
     }
 }
 
-function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, &$date_injected, &$time_injected)
+function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, &$date_injected)
 {
     $conn = connect();
 
     $res = getInjectionHistory($conn, $artist_username);
 
-    while ($row = $res->fetch_assoc()) {
-        $date = dateParser($row['date_injected']);
-        $time = timeParser($row['time_injected']);
+    while ($row = $res->fetch_assoc()) 
+    {
+        $date_from_db = reformatDateTime($row['date_injected']);
 
         array_push($comments, $row['comment']);
         array_push($amount_injected, $row['amount']);
-        array_push($date_injected, $date);
-        array_push($time_injected, $time);
+        array_push($date_injected, $date_from_db);
     }
 }
 
@@ -651,7 +697,6 @@ function injectionHistoryInit($artist_username)
         $comments,
         $amount_injected,
         $date_injected,
-        $time_injected
     );
     echo '
             <table class="table">
@@ -670,7 +715,7 @@ function injectionHistoryInit($artist_username)
                     <tr>
                         <th scope="row">' . $amount_injected[$i] . '</th>
                         <td>' . $comments[$i] . '</td>
-                        <td>' . $date_injected[$i] . ' at '.$time_injected[$i].'</td>
+                        <td>' . dbDateTimeParser($date_injected[$i]).'</td>
                     </tr>
             ';
     }
@@ -927,12 +972,12 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
             $artist_pps = $res_pps->fetch_assoc();
             $ticker_info->setPPS($artist_pps['price_per_share']);
 
-            //Will implement a last 24 change calculation later
-            $change = 1;
+            $change = getArtistDayChange($row['username']);
             $ticker_info->setChange($change);
 
             array_push($ret, $ticker_info);
         }
+        TickerInfo::sort($ret, 0, (sizeof($ret) - 1), "DESCENDING", "CHANGE");
 
         return $ret;
     }
@@ -1017,6 +1062,78 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
             }
         }
 
+        return $ret;
+    }
+
+    /**
+        * Calculates artist last 24 hours stock change
+        *
+        * @param  	artist_username username of artist to get the last 24-hour price change
+        *
+        * @return   ret             last 24 hours change, in percentage
+    */
+    function getArtistDayChange($artist_username)
+    {
+        $ret = 0;
+        $conn = connect();
+        $all_pps_in_a_day = array();
+        $db_current_date_time = date('Y-m-d H:i:s');
+        $db_current_date_time = date("Y-m-d H:i:s", strtotime("-3 days"));
+        $days_ago = date("Y-m-d H:i:s", strtotime("-4 day"));
+
+        $res = searchArtistCurrentPricePerShare($conn, $artist_username);
+        $current_pps = $res->fetch_assoc();
+
+        $res = getJSONDataWithinInterval($conn, $artist_username, $days_ago, $db_current_date_time);
+        while($row = $res->fetch_assoc())
+        {
+            array_push($all_pps_in_a_day, $row['price_per_share']);
+        }
+
+        $prev_day_high = round(getMaxPPSByDay($all_pps_in_a_day), 2);
+        //if the return value from getMaxPPSByDay is 0, it means that there was no trade going on in the previous day
+        //In this case we can just return 0
+        if($prev_day_high == 0)
+        {
+            $ret = 0;
+        }
+        else
+        {
+            //Day change is compared between yesterday's high vs current price per share
+            $ret = round((($current_pps['price_per_share'] - $prev_day_high)/$prev_day_high) * 100, 2);
+        }
+
+        return $ret;
+    }
+
+    /**
+        * Gets current active campaign of a selected artist
+        *
+        * @param  	artist_username username of artist to get current active campaigns
+        *
+        * @return   ret             an array of current active campaigns
+    */
+    function artistCurrentCampaigns($artist_username)
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = searchArtistCampaigns($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            if($row['date_expires'] != "0000-00-00 00:00:00")
+            {
+                $campaign = new Campaign();
+                $campaign->setOffering($row['offering']);
+                $campaign->setMinEthos($row['minimum_ethos']);
+                $campaign->setType($row['type']);
+                $campaign->setDatePosted($row['date_posted']);
+
+                array_push($ret, $campaign);
+            }
+        }
+
+        closeCon($conn);
         return $ret;
     }
 ?>

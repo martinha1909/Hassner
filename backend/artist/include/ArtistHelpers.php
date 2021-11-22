@@ -232,7 +232,7 @@
             if($tickers[$i]->getChange() < 0)
             {
                 echo '
-                                <mark class="markup-red">-'.$tickers[$i]->getChange().'%</mark>
+                                <mark class="markup-red">'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
             else if($tickers[$i]->getChange() > 0)
@@ -247,7 +247,6 @@
                                 <mark>'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
-
             echo " | ";
         }
         echo '
