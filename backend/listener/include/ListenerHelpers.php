@@ -719,7 +719,7 @@
         {
             echo '
                 <p>
-                <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$followed_artists[$i]->getUsername().'"> ('.$followed_artists[$i]->getMarketTag().')
+                <input name = "artist_name" type = "submit" class="cursor-context" aria-pressed="true" value ="'.$followed_artists[$i]->getUsername().'"> ('.$followed_artists[$i]->getMarketTag().')
                 </p>
             ';
         }

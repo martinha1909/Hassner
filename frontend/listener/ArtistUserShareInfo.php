@@ -89,7 +89,7 @@
     <section id="login">
         <div class="container-fluid">
             <div class="row py-6 align-items-start">
-                <div class="mx-auto my-auto text-center col">
+                <div class="mx-auto my-auto text-center col-8">
                     <div class="py-4 text-center">
                         <?php
                         if($_SESSION['artist_found'])
@@ -103,6 +103,7 @@
                                 }
                             }
                         ?>
+                        <div>
                         <h2 class="h2-blue"><?php echo $_SESSION['selected_artist']; ?></h2>
                         <h4 class="h4-blue">(<?php echo strtoupper($artist_market_tag); ?>)</h4>
                         <?php
@@ -111,7 +112,7 @@
                                 echo '
                                     <p>
                                         <form action="../../backend/listener/FollowArtistBackend.php" method="post">
-                                            <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Follow">
+                                            <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" class="cursor-context" aria-pressed="true" value ="Follow">
                                         </form>
                                     </p>
                                 ';
@@ -121,18 +122,19 @@
                                 echo '
                                     <p>
                                         <form action="../../backend/listener/UnFollowArtistBackend.php" method="post">
-                                            <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="Unfollow">
+                                            <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" class="cursor-context" aria-pressed="true" value ="Unfollow">
                                         </form>
                                     </p>
                                 ';
                             }
                         ?>
+                        </div>
                             </form>
                         </p>
                     </div>
 
                     <!-- Displaying stock graph -->
-                    <div class="chart-container">
+                    <div class="chart-container mx-auto">
                         <?php
                             $change = getArtistDayChange($_SESSION['selected_artist']);
                             $market_cap = calculateMarketCap($_SESSION['selected_artist']);
@@ -175,7 +177,7 @@
                             //displaying stock graph
                             echo '
                                 <canvas id="stock_graph"></canvas>
-                                <div class="text-left">
+                                <div class="text-center">
                                     <h6>Mkt Cap: '.$market_cap.'</h6>
                                     <h6>Volume: '.$volume.'</h6>
                                     <h6>Open: '.$open.'</h6>
@@ -189,7 +191,7 @@
                     <!-- displaying current share information between current user and selected artist -->
                         <?php }?>
                 </div>
-                <div class="mx-auto my-auto text-center col-5 buy_sell_container">
+                <div class="mx-auto my-auto text-center col-4 buy_sell_container">
                     <?php
                     if($_SESSION['artist_found'])
                     {
