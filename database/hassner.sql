@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2021 at 10:50 PM
+-- Generation Time: Nov 22, 2021 at 10:23 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -90,7 +90,7 @@ INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `
 ('daniel', 'user', 'user', 8, 0, 100000, 0, 0, 'iosrghn@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('Drake', 'artist', 'artist', 11, 0, 0, 0, 0, 'qwerty@gmail.com', 'Drake', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('kai', 'user', 'user', 4, 0, 100000, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('martin', 'user', 'user', 1, 0, 100000, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
+('martin', 'user', 'user', 1, 0, 99900, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
 ('NAV', 'artist', 'artist', 3, 0, 0, 0, 20000, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 10, 0, 0, 0, 0),
 ('riley', 'user', 'user', 7, 0, 100000, 0, 0, 'efin@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('vitor', 'user', 'user', 5, 0, 100000, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
@@ -437,13 +437,6 @@ CREATE TABLE `error_log` (
   `date_logged` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `error_log`
---
-
-INSERT INTO `error_log` (`id`, `log_type`, `message`, `log_file`, `log_line`, `date_logged`) VALUES
-(8, 'signup', ' is not a supported email', 'SignUpBackEnd.php', 25, '2021-11-17 22:47:25');
-
 -- --------------------------------------------------------
 
 --
@@ -458,13 +451,6 @@ CREATE TABLE `info_log` (
   `log_line` int(11) NOT NULL,
   `date_logged` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `info_log`
---
-
-INSERT INTO `info_log` (`id`, `log_type`, `message`, `log_file`, `log_line`, `date_logged`) VALUES
-(14, 'login', 'User martin just logged in', 'LoginBackend.php', 25, '2021-11-17 22:49:15');
 
 -- --------------------------------------------------------
 
@@ -619,19 +605,19 @@ ALTER TABLE `campaign`
 -- AUTO_INCREMENT for table `debug_log`
 --
 ALTER TABLE `debug_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `error_log`
 --
 ALTER TABLE `error_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `info_log`
 --
 ALTER TABLE `info_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `inject_history`
