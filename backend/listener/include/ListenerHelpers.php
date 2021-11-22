@@ -18,13 +18,14 @@
         {
             $res_pps = searchArtistCurrentPricePerShare($conn, $row['artist_username']);
             $current_pps = $res_pps->fetch_assoc();
+            $change = getArtistDayChange($row['artist_username']);
 
             array_push($all_artists, $row['artist_username']);
             array_push($all_shares_bought, $row['shares_owned']);
             array_push($all_price_per_share, $current_pps['price_per_share']);
             //This is to calculate the change of artist's stock in the last 24 hours, 
             //will have a separate PR for this
-            array_push($all_rates, 0);
+            array_push($all_rates, $change);
         }
     }
 
@@ -405,28 +406,35 @@
         $conn = connect();
         $all_artists = getAllInvestedArtists($user_username);
 
-        for($i = 0; $i < sizeof($all_artists); $i++) {
+        for($i = 0; $i < sizeof($all_artists); $i++) 
+        {
             $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
             $res = searchArtistCampaigns($conn, $all_artists[$i]);
-            while($row = $res->fetch_assoc()) {
+            while($row = $res->fetch_assoc()) 
+            {
                 //assume not applicable
                 $chance = -1;
                 $res_1 = searchNumberOfShareDistributed($conn, $row['artist_username']);
                 $artist_share_distributed = $res_1->fetch_assoc();
-                if($row['date_expires'] != "Expired")
+                if($row['date_expires'] != "0000-00-00 00:00:00")
                 {
-                    if($total_shares_bought >= $row['minimum_ethos']) {
+                    if($total_shares_bought >= $row['minimum_ethos']) 
+                    {
                         $progress_calc = 100;
-                    } else {
+                    } 
+                    else 
+                    {
                         $progress_calc = ($total_shares_bought/$row['minimum_ethos']) * 100;
                     }
+                    $date_expires = explode(" ", $row['date_expires'])[0];
+                    $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
                     $campaign_time_left = calculateTimeLeft($current_date[0], 
                                                             $current_date[1], 
-                                                            $row['date_expires'], 
-                                                            $row['time_expires']);
+                                                            $date_expires, 
+                                                            $time_expires);
                     //If by the time of fetching and found a campaign has expired, mark the campaign in the db as expired
                     //so we don't come back to it on late fetches
-                    if($campaign_time_left == "Expired")
+                    if($campaign_time_left == "0000-00-00 00:00:00")
                     {
                         $roll_res = "N/A";
                         if($row['type'] == "raffle")
@@ -462,9 +470,9 @@
             $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
             $res = searchArtistCampaigns($conn, $all_artists[$i]);
             while($row = $res->fetch_assoc()) {
-                if($row['date_expires'] == "Expired")
+                if($row['date_expires'] == "0000-00-00 00:00:00")
                 {
-                    $time_released = dateParser($row['date_posted'])." at ".timeParser($row['time_posted']);
+                    $time_released = dbDateTimeParser($row['date_posted']);
 
                     array_push($artists, $row['artist_username']);
                     array_push($offerings, $row['offering']);
@@ -577,7 +585,7 @@
             $ticker = $res_ticker->fetch_assoc();
 
             //Changes in last 24 hours
-            $change = 0;
+            $change = getArtistDayChange($row['username']);
 
             $artist = new ArtistInfo();
 
@@ -612,7 +620,7 @@
             if($tickers[$i]->getChange() < 0)
             {
                 echo '
-                                <mark class="markup-red">-'.$tickers[$i]->getChange().'%</mark>
+                                <mark class="markup-red">'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
             else if($tickers[$i]->getChange() > 0)

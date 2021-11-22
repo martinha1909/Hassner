@@ -20,7 +20,11 @@
             $sql = "SELECT * FROM account WHERE username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $username);
-            $stmt->execute();
+            if($stmt->execute() == FALSE)
+            {
+                $msg = "Error occured: ".implode(":", $stmt->errorInfo());
+                hx_error(HX::QUERY, "searchAccount failed to query");
+            }
             $result = $stmt->get_result();
             return $result;
         }
@@ -368,7 +372,7 @@
 
         function searchArtistCampaigns($conn, $artist_username)
         {
-            $sql = "SELECT id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE artist_username = ?";
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -390,7 +394,7 @@
 
         function searchCampaignsByType($conn, $campaign_type)
         {
-            $sql = "SELECT id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE type = ?";
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE type = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $campaign_type);
             $stmt->execute();
@@ -423,7 +427,7 @@
 
         function getInjectionHistory($conn, $artist_username)
         {
-            $sql = "SELECT amount, date_injected, time_injected, comment FROM inject_history WHERE artist_username = ?";
+            $sql = "SELECT amount, comment, date_injected FROM inject_history WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -585,15 +589,6 @@
             return $status;
         }
 
-
-        function getMaxInjectionID($conn)
-        {
-            $sql = "SELECT MAX(id) AS max_id FROM inject_history";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
-
         function getMaxSellOrderID($conn)
         {
             $sql = "SELECT MAX(id) AS max_id FROM sell_order";
@@ -605,14 +600,6 @@
         function getMaxBuyOrderID($conn)
         {
             $sql = "SELECT MAX(id) AS max_id FROM buy_order";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
-
-        function getMaxCampaignID($conn)
-        {
-            $sql = "SELECT MAX(id) AS max_id FROM campaign";
             $result = mysqli_query($conn,$sql);
             
             return $result;
@@ -634,39 +621,41 @@
         {
             $sql = "UPDATE campaign SET date_expires = '$exp_date' WHERE id='$campaign_id'";
             $conn->query($sql);
-
-            $sql = "UPDATE campaign SET time_expires = '$exp_date' WHERE id='$campaign_id'";
-            $conn->query($sql);
         }
 
-        function artistShareDistributionInit($conn, $artist_username, $share_distributing, $initial_pps, $comment, $date, $time)
+        function artistShareDistributionInit($connPDO, $artist_username, $share_distributing, $initial_pps, $comment, $date)
         {
             $status = 0;
+            $injection_id = 0;
 
-            $sql = "UPDATE account SET Share_Distributed = '$share_distributing' WHERE username='$artist_username'";
-            if($conn->query($sql))
-            {
+            try {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("UPDATE account SET Share_Distributed = ? WHERE username = ?");
+                $stmt->bindValue(1, $share_distributing);
+                $stmt->bindValue(2, $artist_username);
+                $stmt->execute(array($share_distributing, $artist_username));
+
+                $stmt = $connPDO->prepare("UPDATE account SET price_per_share = ? WHERE username = ?");
+                $stmt->bindValue(1, $initial_pps);
+                $stmt->bindValue(2, $artist_username);
+                $stmt->execute(array($initial_pps, $artist_username));
+            
+                $stmt = $connPDO->prepare("INSERT INTO inject_history (artist_username, amount, comment, date_injected)
+                                           VALUES(?, ?, ?, ?)");
+                $stmt->bindValue(1, $artist_username);
+                $stmt->bindValue(2, $share_distributing);
+                $stmt->bindValue(3, $comment);
+                $stmt->bindValue(4, $date);
+                $stmt->execute(array($artist_username, $share_distributing, $comment, $date));
+                
+                $connPDO->commit();
                 $status = StatusCodes::Success;
-            }
-            else
-            {
-                return StatusCodes::ErrGeneric;
-            }
+            } catch (PDOException $e) {
+                $connPDO->rollBack();
+                echo "Failed: " . $e->getMessage();
 
-            $sql = "UPDATE account SET price_per_share = '$initial_pps' WHERE username='$artist_username'";
-            if($conn->query($sql))
-            {
-                $status = StatusCodes::Success;
-            }
-            else
-            {
-                return StatusCodes::ErrGeneric;
-            }
-
-            $status = addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date, $time);
-            if($status == "ERROR")
-            {
-                return "ERROR";
+                $status = StatusCodes::ErrGeneric;
             }
 
             return $status;
@@ -698,24 +687,42 @@
             $conn->query($sql);
         }
 
-        function updateShareDistributed($conn, $artist_username, $new_share_distributed, $added_shares, $comment, $date, $time)
+        function updateShareDistributed($conn, $artist_username, $new_share_distributed, $added_shares, $comment, $date)
         {
             $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username='$artist_username'";
             $conn->query($sql);
 
-            addToInjectionHistory($conn, $artist_username, $added_shares, $comment, $date, $time);
+            addToInjectionHistory($conn, $artist_username, $added_shares, $comment, $date);
         }
 
         function saveUserPaymentInfo($conn, $username, $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number)
         {
             $sql = "UPDATE account SET Full_name = '$full_name', email='$email', billing_address='$address', City = '$city', State='$state', ZIP = '$zip', Card_number='$card_number' WHERE username='$username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $msg = "user ".$_SESSION['username']." successfully stored payment info in db";
+                hx_info(HX::CURRENCY, $msg);
+            }
+            else
+            {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
+            }
         }
 
         function saveUserAccountInfo($conn, $username, $transit_no, $inst_no, $account_no, $swift)
         {
             $sql = "UPDATE account SET Transit_no = '$transit_no', Inst_no = '$inst_no', Account_no = '$account_no', Swift = '$swift' WHERE username='$username'";
-            $conn->query($sql);
+            if($conn->query($sql) == TRUE)
+            {
+                $msg = "user ".$_SESSION['username']." successfully stored banking info in db";
+                hx_info(HX::CURRENCY, $msg);
+            }
+            else
+            {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
+            }
         }
 
         function updateUserBalance($conn, $username, $balance)
@@ -743,6 +750,8 @@
             } 
             else 
             {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
                 $status = StatusCodes::ErrGeneric;
             }  
             return $status;
@@ -759,6 +768,8 @@
             } 
             else 
             {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
                 $status = StatusCodes::ErrGeneric;
             }
 
@@ -1125,22 +1136,15 @@
             return $status;
         }
 
-        function addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date, $time)
+        function addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date)
         {
             $status = 0;
             $injection_id = 0;
 
-            $res = getMaxInjectionID($conn);
-            if($res->num_rows > 0)
-            {
-                $max_id = $res->fetch_assoc();
-                $injection_id = $max_id["max_id"] + 1;
-            }
-
-            $sql = "INSERT INTO inject_history (id, artist_username, amount, date_injected, time_injected, comment)
-                    VALUES(?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO inject_history (artist_username, amount, comment, date_injected)
+                    VALUES(?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('isisss', $injection_id, $artist_username, $share_distributing, $date, $time, $comment);
+            $stmt->bind_param('siss', $artist_username, $share_distributing, $comment, $date);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;
@@ -1221,24 +1225,16 @@
             return $status;
         }
 
-        function postCampaign($conn, $artist_username, $offering, $release_date, $release_time, $expiration_date, $expiration_time, $type, $minimum_ethos)
+        function postCampaign($conn, $artist_username, $offering, $release_date, $expiration_date, $type, $minimum_ethos)
         {
-            $campaign_id = 0;
             $status = 0;
             $eligible_participant = 0;
             $winner = NULL;
 
-            $res = getMaxCampaignID($conn);
-            if($res->num_rows != 0)
-            {
-                $max_id = $res->fetch_assoc();
-                $campaign_id = $max_id['max_id'] + 1;
-            }
-
-            $sql = "INSERT INTO campaign (id, artist_username, offering, date_posted, time_posted, date_expires, time_expires, type, minimum_ethos, eligible_participants, winner)
-                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO campaign (artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner)
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('isssssssdis', $campaign_id, $artist_username, $offering, $release_date, $release_time, $expiration_date, $expiration_time, $type, $minimum_ethos, $eligible_participant, $winner);
+            $stmt->bind_param('sssssdis', $artist_username, $offering, $release_date, $expiration_date, $type, $minimum_ethos, $eligible_participant, $winner);
             if($stmt->execute() == TRUE)
             {
                 $status = "SUCCESS";
