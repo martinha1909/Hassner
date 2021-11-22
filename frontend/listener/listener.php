@@ -179,7 +179,7 @@
                     ?>
                 </ul>
                 <div class="container my-auto mx-auto col-6">
-                    <ul class="list-group">
+                    <ul class="list-group my-4">
                         <?php
                         //displaying My Portfolio
                         if ($_SESSION['display'] == MenuOption::None || $_SESSION['display'] == MenuOption::Portfolio) {
