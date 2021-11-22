@@ -15,7 +15,7 @@ $( function() {
           $("#buy_tip").text("The buy order will be executed as soon as the price is <= " + min);
         }
         else if (min > 0 && max < 500){
-          $("#buy_tip").text("The buy order will be executed as soon as the price is between " + min + " and " + max);
+          $("#buy_tip").text("The buy order will be executed as soon as the price is >= " + min + " <= " + max);
         }
         else if (min == 0 && max < 500){
           $("#buy_tip").text("The buy order will be executed as soon as the price is >= " + max);
