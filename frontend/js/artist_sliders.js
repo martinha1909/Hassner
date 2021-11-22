@@ -12,13 +12,13 @@ $( function() {
           $("#buy_tip").text("Without limits the next available share(s) will be purchased at market price");
         }
         else if (min > 0 && max == 500){
-          $("#buy_tip").text("The buy order will be executed while the price <= " + min);
+          $("#buy_tip").text("The buy order will be executed as soon as the price is <= " + min);
         }
         else if (min > 0 && max < 500){
-          $("#buy_tip").text("The buy order will be executed while the price is between " + min + " and " + max);
+          $("#buy_tip").text("The buy order will be executed as soon as the price is between " + min + " and " + max);
         }
         else if (min == 0 && max < 500){
-          $("#buy_tip").text("The buy order will be executed while the price >= " + max);
+          $("#buy_tip").text("The buy order will be executed as soon as the price is >= " + max);
         }
         $("#buy_cost").val("$" + min*$("#buy_num").slider("value") + " - $" + max*$("#buy_num").slider("value"));
       }
@@ -41,13 +41,13 @@ $( function() {
           $("#sell_tip").text("Without limits the next available share(s) will be purchased at market price");
         }
         else if (min > 0 && max == 500){
-          $("#sell_tip").text("The sell order will be executed while the price <= " + min);
+          $("#sell_tip").text("The sell order will be executed as soon as the price is <= " + min);
         }
         else if (min > 0 && max < 500){
-          $("#sell_tip").text("The sell order will be executed while the price is between " + min + " and " + max);
+          $("#sell_tip").text("The sell order will be executed as soon as the price is >= " + min + " <= " + max);
         }
         else if (min == 0 && max < 500){
-          $("#sell_tip").text("The sell order will be executed while the price >= " + max);
+          $("#sell_tip").text("The sell order will be executed as soon as the price is >= " + max);
         }
         $("#sell_cost").val("$" + min*$("#sell_num").slider("value") + " - $" + max*$("#sell_num").slider("value"));
       }
