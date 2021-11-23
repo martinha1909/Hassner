@@ -362,10 +362,10 @@ function canCreateSellOrder($user_username, $artist_username)
     $total_share_bought = 0;
     $conn = connect();
 
-    $res = searchSpecificInvestment($conn, $user_username, $artist_username);
+    $res = searchSharesInArtistShareHolders($conn, $user_username, $artist_username);
 
     while ($row = $res->fetch_assoc()) {
-        $total_share_bought += $row['no_of_share_bought'];
+        $total_share_bought += $row['shares_owned'];
     }
 
     $share_being_sold = getAmountSharesSelling($user_username, $artist_username);

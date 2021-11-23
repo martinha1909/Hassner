@@ -216,29 +216,32 @@
                                   <button id="buy_order">Buy</button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="accordion" id="sell_accordion">
-                          <h3 class="shares_header">Sell Shares</h3>
-                            <div class="slider_container">
-                            <div class="textbox_container">
-                                <div class="stocktip">
-                                    <p id="sell_tip">Without limits your shares will be sold to the next available buyer</p>
+                        </div>';
+                        if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
+                        {
+                            echo '
+                                    <div class="spacer"></div>
+                                    <div class="accordion" id="sell_accordion">
+                                        <h3 class="shares_header">Sell Shares</h3>
+                                        <div class="slider_container">
+                                            <div class="textbox_container">
+                                                <div class="stocktip">
+                                                    <p id="sell_tip">Without limits your shares will be sold to the next available buyer</p>
+                                                </div>
+                                                <label for="sell_num_shares"># Shares:</label>
+                                                <input type="text" class="slider_text" id="sell_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
+                                                <label for="sell_cost">$:</label>
+                                                <input type="text" class="slider_text" id="sell_cost" style="border:0; color:#f6931f; font-weight:bold;">
+                                            </div>
+                                        <div class="slider_slider" id="sell_num"></div>
+                                        <div class="slider_slider" id="sell_limit"></div>
+                                        <div class="order_btn_container">
+                                            <button id="sell_order">Sell</button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <label for="sell_num_shares"># Shares:</label>
-                                <input type="text" class="slider_text" id="sell_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
-
-                                <label for="sell_cost">$:</label>
-                                <input type="text" class="slider_text" id="sell_cost" style="border:0; color:#f6931f; font-weight:bold;">
-                            </div>
-                                <div class="slider_slider" id="sell_num"></div>
-                                <div class="slider_slider" id="sell_limit"></div>
-                                <div class="order_btn_container">
-                                  <button id="sell_order">Sell</button>
-                                </div>
-                            </div>
-                        </div>
-                        ';
+                            ';
+                        }
                         
                     }
                     ?>
