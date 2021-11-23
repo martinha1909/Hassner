@@ -175,7 +175,17 @@ $( function() {
     });
 
     $("#buy_order").click(function(){
-      // AJAX
+    var url_event = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/BuyAndSellEvent.php";
+      $.ajax({
+        url : url_event,
+        method : "POST",
+        success : function(data){
+          console.log(data);
+        },
+        error : function(data){
+
+        }
+      });
     })
 
     $("#sell_order").click(function(){
