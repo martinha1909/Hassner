@@ -2,8 +2,10 @@ $( function() {
   var max_limit = 0;
   var min_limit = 0;
   var max_num_of_shares = 0;
+  var sellable_shares = 0;
   var url_max_limit = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/StockPrice.php";
   var url_max_num_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/MaxNumOfShares.php";
+  var url_sellable_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/SellableShares.php";
   $.ajax({
     url : url_max_limit,
     method : "GET",
@@ -29,7 +31,7 @@ $( function() {
 
     }
   });
-  console.log(max_limit);
+  // console.log(max_limit);
     // Buy slider init
     $( "#buy_limit" ).slider({
       range: true,
@@ -41,41 +43,41 @@ $( function() {
         max = ui.values[1];
         if(min == min_limit && max == max_limit){
           $("#buy_tip").text("Without limits the next available share(s) will be purchased at market price");
+          $("#buy_cost").val("$" + $("#buy_num").slider("value")*$("#pps").text());
         }
         else if (min > min_limit && max == max_limit){
           $("#buy_tip").text("The buy order will be executed as soon as the price is <= " + min);
+          $("#buy_cost").val("$" + $("#buy_num").slider("value")*min);
         }
         else if (min > min_limit && max < max_limit){
-          $("#buy_tip").text("The buy order will be executed as soon as the price is >= " + min + " and <= " + max);
+          $("#buy_tip").text("The buy order will be executed as soon as the price is <= " + min + " or >= " + max);
         }
         else if (min == min_limit && max < max_limit){
           $("#buy_tip").text("The buy order will be executed as soon as the price is >= " + max);
+          $("#buy_cost").val("$" + $("#buy_num").slider("value")*max);
         }
-        $("#buy_cost").val("$" + ui.value*$("#pps").text());
       }
     });
-
-
 
     // Sell slider init
     $( "#sell_limit" ).slider({
       range: true,
-      min: 0,
+      min: min_limit,
       max: max_limit,
-      values: [ 0, max_limit ],
+      values: [ min_limit, max_limit ],
       slide: function( event, ui ) {
         min = ui.values[0];
         max = ui.values[1];
-        if(min == 0 && max == max_limit){
+        if(min == min_limit && max == max_limit){
           $("#sell_tip").text("Without limits the next available share(s) will be purchased at market price");
         }
-        else if (min > 0 && max == max_limit){
+        else if (min > min_limit && max == max_limit){
           $("#sell_tip").text("The sell order will be executed as soon as the price is <= " + min);
         }
-        else if (min > 0 && max < max_limit){
-          $("#sell_tip").text("The sell order will be executed as soon as the price is >= " + min + " <= " + max);
+        else if (min > min_limit && max < max_limit){
+          $("#sell_tip").text("The sell order will be executed as soon as the price is <= " + min + " or >= " + max);
         }
-        else if (min == 0 && max < max_limit){
+        else if (min == min_limit && max < max_limit){
           $("#sell_tip").text("The sell order will be executed as soon as the price is >= " + max);
         }
         $("#sell_cost").val("$" + ui.value*$("#pps").text());
@@ -90,7 +92,7 @@ $( function() {
       method : "GET",
       async: false,
       success : function(data){
-        console.log(data);
+        // console.log(data);
         max_num_of_shares = data;
       },
       error : function(data){
@@ -104,16 +106,44 @@ $( function() {
       max: max_num_of_shares,
       value: 1,
       slide: function( event, ui ) {
-        $("#buy_num_shares").val(ui.value);
-        $("#buy_cost").val("$" + ui.value*$("#pps").text());
+        var min_limit_top = $("#buy_limit").slider("values", 0);
+        var max_limit_top = $("#buy_limit").slider("values", 1);
+        console.log(min_limit_top);
+        if((min_limit_top == min_limit && max_limit_top == max_limit) || (min_limit_top > min_limit && max_limit_top < max_limit))
+        {
+          $("#buy_num_shares").val(ui.value);
+          $("#buy_cost").val("$" + ui.value*$("#pps").text());
+        }
+        else if(min_limit_top > min_limit && max_limit_top == max_limit)
+        {
+          $("#buy_num_shares").val(ui.value);
+          $("#buy_cost").val("$" + ui.value*min_limit_top);
+        }
+        else if(min_limit_top == min_limit && max_limit_top < max_limit)
+        {
+          $("#buy_num_shares").val(ui.value);
+          $("#buy_cost").val("$" + ui.value*max_limit_top);
+        }
       }
     })
 
+    $.ajax({
+      url : url_sellable_shares,
+      method : "GET",
+      async: false,
+      success : function(data){
+        // console.log(data);
+        sellable_shares = data;
+      },
+      error : function(data){
+
+      }
+    });
      // # Shares to sell slider
      $("#sell_num").slider({
       range: "min",
       min: 1,
-      max: 500,
+      max: sellable_shares,
       value: 1,
       slide: function( event, ui ) {
         $("#sell_num_shares").val(ui.value);
@@ -142,6 +172,7 @@ $( function() {
     $("#sell_order").click(function(){
       // AJAX
     })
+    $( "#sell_num_shares" ).val($("#sell_num").slider("value"));
     $( "#buy_num_shares" ).val($("#buy_num").slider("value"));
     $("#buy_cost").val("$" + $("#buy_num").slider("value")*$("#pps").text());
     $("#sell_cost").val("$" + $("#sell_num").slider("value")*$("#pps").text());
