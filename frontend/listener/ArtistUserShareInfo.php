@@ -143,7 +143,7 @@
                             $high = getHighestOrLowestPPS($_SESSION['selected_artist'], "MAX");
                             $low = getHighestOrLowestPPS($_SESSION['selected_artist'], "MIN");
                             echo '
-                                    <h2>'.$_SESSION['current_pps']['price_per_share'].'</h2>
+                                    <h2 id="pps">'.$_SESSION['current_pps']['price_per_share'].'</h2>
                                 ';
                             if($change == 0)
                             {

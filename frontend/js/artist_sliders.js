@@ -1,29 +1,43 @@
-$( function() {  
+$( function() {
+  var max_limit = 0;
+  var url = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/MaxLimit.php";
+  $.ajax({
+    url : url,
+    method : "GET",
+    async: false,
+    success : function(data){
+      // console.log(data);
+      max_limit = data;
+    },
+    error : function(data){
+
+    }
+  });
+  console.log(max_limit);
     // Buy slider init
     $( "#buy_limit" ).slider({
       range: true,
       min: 0,
-      max: 500,
-      values: [ 0, 500 ], // TODO: ajax Query db, get min and max limit
+      max: max_limit,
+      values: [ 0, max_limit ], // TODO: ajax Query db, get min and max limit
       slide: function( event, ui ) {
         min = ui.values[0];
         max = ui.values[1];
-        if(min == 0 && max == 500){
+        if(min == 0 && max == max_limit){
           $("#buy_tip").text("Without limits the next available share(s) will be purchased at market price");
         }
-        else if (min > 0 && max == 500){
+        else if (min > 0 && max == max_limit){
           $("#buy_tip").text("The buy order will be executed as soon as the price is <= " + min);
         }
-        else if (min > 0 && max < 500){
-          $("#buy_tip").text("The buy order will be executed as soon as the price is >= " + min + " <= " + max);
+        else if (min > 0 && max < max_limit){
+          $("#buy_tip").text("The buy order will be executed as soon as the price is between " + min + " and " + max);
         }
-        else if (min == 0 && max < 500){
+        else if (min == 0 && max < max_limit){
           $("#buy_tip").text("The buy order will be executed as soon as the price is >= " + max);
         }
         $("#buy_cost").val("$" + min*$("#buy_num").slider("value") + " - $" + max*$("#buy_num").slider("value"));
       }
     });
-    $( "#buy_num_shares" ).val($("#buy_limit").slider("values", 0));
     $( "#buy_cost" ).val($("#buy_limit").slider("values", 1));
 
 
@@ -58,12 +72,12 @@ $( function() {
     // # Shares to buy slider
     $("#buy_num").slider({
       range: "min",
-      min: 0,
+      min: 1,
       max: 500,
-      value: 0,
+      value: 1,
       slide: function( event, ui ) {
         $("#buy_num_shares").val(ui.value);
-        $("#buy_cost").val("$" + ui.value*$("#buy_limit").slider("values", 0) + " - $" + ui.value*$("#buy_limit").slider("values", 1));
+        $("#buy_cost").val("$" + ui.value*$("#pps").text());
       }
     })
 
@@ -99,4 +113,5 @@ $( function() {
     $("#sell_order").click(function(){
       // AJAX
     })
+    $( "#buy_num_shares" ).val($("#buy_num").slider("value"));
   } );
