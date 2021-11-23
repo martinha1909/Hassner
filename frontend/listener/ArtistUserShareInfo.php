@@ -196,29 +196,30 @@
                     if($_SESSION['artist_found'])
                     {
                         echo '
-                        <div class="accordion" id="buy_accordion">
-                            <h3 class="shares_header">Buy Shares</h3>
-                            <div class="slider_container">
-                                <div class="textbox_container">
-                                    <div class="stocktip">
-                                        <p id="buy_tip">Without limits the next available share(s) will be purchased</p>
+                            <div class="accordion" id="buy_accordion">
+                                <h3 class="shares_header">Buy Shares</h3>
+                                <div class="slider_container">
+                                    <div class="textbox_container">
+                                        <div class="stocktip">
+                                            <p id="buy_tip">Without limits the next available share(s) will be purchased</p>
+                                        </div>
+                                        <label for="buy_num_shares"># Shares:</label>
+                                        <input type="text" class="slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
+
+                                        <label for="buy_cost">Cost:</label>
+                                        <input type="text" class="slider_text" id="buy_cost" style="border:0; color:#f6931f; font-weight:bold;">
                                     </div>
-                                    <label for="buy_num_shares"># Shares:</label>
-                                    <input type="text" class="slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
 
-                                    <label for="buy_cost">Cost:</label>
-                                    <input type="text" class="slider_text" id="buy_cost" style="border:0; color:#f6931f; font-weight:bold;">
-                                </div>
-
-                                <div class="slider_slider" id="buy_num"></div>
-                                <div class="slider_slider" id="buy_limit"></div>
-                                <div class="order_btn_container">
-                                  <button id="buy_order">Buy</button>
+                                    <div class="slider_slider" id="buy_num"></div>
+                                    <div class="slider_slider" id="buy_limit"></div>
+                                    <div class="order_btn_container">
+                                    <button id="buy_order">Buy</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>';
-                        if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
-                        {
+                        ';
+                        // if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
+                        // {
                             echo '
                                     <div class="spacer"></div>
                                     <div class="accordion" id="sell_accordion">
@@ -241,8 +242,7 @@
                                     </div>
                                 </div>
                             ';
-                        }
-                        
+                        // }
                     }
                     ?>
                 </div>
