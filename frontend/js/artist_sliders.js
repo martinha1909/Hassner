@@ -175,12 +175,22 @@ $( function() {
     });
 
     $("#buy_order").click(function(){
+    var min_limit_top = $("#buy_limit").slider("values", 0);
+    var max_limit_top = $("#buy_limit").slider("values", 1);
     var url_event = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/BuyAndSellEvent.php";
       $.ajax({
         url : url_event,
         method : "POST",
+        data:{
+          num_of_shares: $("#buy_num_shares").val(),
+          chosen_min: min_limit_top,
+          chosen_max: max_limit_top,
+          min_lim: min_limit,
+          max_lim: max_limit,
+          market_price: $("#pps").text()
+        },
         success : function(data){
-          console.log(data);
+
         },
         error : function(data){
 
