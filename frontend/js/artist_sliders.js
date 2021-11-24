@@ -182,6 +182,7 @@ $( function() {
         url : url_event,
         method : "POST",
         data:{
+          user_event: "BUY",
           num_of_shares: $("#buy_num_shares").val(),
           chosen_min: min_limit_top,
           chosen_max: max_limit_top,
