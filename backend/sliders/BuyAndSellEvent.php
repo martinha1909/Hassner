@@ -12,12 +12,16 @@
     $max_lim = $_POST['max_lim'];
     $market_price = $_POST['market_price'];
 
+    echo $chosen_min." ".$chosen_max;
+
     if($user_event == ShareInteraction::BUY)
     {
 
     }
     else if($user_event == ShareInteraction::SELL)
     {
-        
+
     }
+
+    print json_encode($chosen_min);
 ?>

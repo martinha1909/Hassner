@@ -191,7 +191,7 @@ $( function() {
           market_price: $("#pps").text()
         },
         success : function(data){
-
+          console.log(data);
         },
         error : function(data){
 
