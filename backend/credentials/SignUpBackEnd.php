@@ -64,7 +64,6 @@
                         !ctype_alpha($ticker[2]) ||
                         !ctype_alpha($ticker[3]))
                 {
-                    // $ticker_error = TRUE;
                     $msg = $ticker." does not start with 2 digits and end with 2 letters";
                     hx_error(HX::SIGNUP, $msg);
 
