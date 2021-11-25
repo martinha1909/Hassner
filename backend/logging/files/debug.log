@@ -1,0 +1,5 @@
+[November 24, 2021, 5:20 pm America/Edmonton -0700][helper]-[Helper.php@48]searchAccount returned 1 rows
+[November 24, 2021, 5:20 pm America/Edmonton -0700][signup]-[SignUpBackEnd.php@102]sign up data: username: qweer, password: 1234, email: moinri@gmail.com, account type: artist, ticker: 88GM
+[November 24, 2021, 6:10 pm America/Edmonton -0700][signup]-[SignUpBackEnd.php@102]sign up data: username: qwert, password: ninfe, email: fiomo@gmail.com, account type: artist, ticker: 88GM
+[November 24, 2021, 6:12 pm America/Edmonton -0700][signup]-[SignUpBackEnd.php@103]sign up data: username: ninfe, password: neonf, email: diomo@gmail.com, account type: artist, ticker: 88GM
+[November 24, 2021, 6:13 pm America/Edmonton -0700][signup]-[SignUpBackEnd.php@103]sign up data: username: ninfe, password: neonf, email: diomo@gmail.com, account type: artist, ticker: 88GM
