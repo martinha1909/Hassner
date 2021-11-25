@@ -41,7 +41,6 @@
         }
         else
         {
-            // $ticker_error = FALSE;
             $usr_res = searchAccount($conn, $username);
             $email_res = searchEmail($conn, $email);
 
@@ -51,7 +50,6 @@
                 // Validate ticker
                 if($ticker_res->num_rows > 0)
                 {
-                    // $ticker_error = TRUE;
                     $msg = $ticker." is already taken";
                     hx_error(HX::SIGNUP, $msg);
 
@@ -76,6 +74,7 @@
                     die;
                 }
             }
+
             if($usr_res->num_rows > 0)
             {
                 $msg = $username." is already taken";
@@ -129,8 +128,4 @@
         $_SESSION['dependencies'] = "FRONTEND";
         header("Location: ../../frontend/credentials/signup.php");
     }
-
-      
-
-
 ?>
