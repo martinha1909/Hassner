@@ -21,6 +21,7 @@
 
         $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
         $artist_market_tag = getArtistMarketTag($_SESSION['selected_artist']);
+        $balance = getUserBalance($_SESSION['username']);
     }
 ?>
 
@@ -195,29 +196,36 @@
                     <?php
                     if($_SESSION['artist_found'])
                     {
-                        echo '
-                            <div class="accordion" id="buy_accordion">
-                                <h3 class="shares_header">Buy Shares</h3>
-                                <div class="slider_container">
-                                    <div class="textbox_container">
-                                        <div class="stocktip">
-                                            <p id="buy_tip">Without limits the next available share(s) will be purchased</p>
+                        if($balance > 0 && $balance > $_SESSION['current_pps']['price_per_share'])
+                        {
+                            echo '
+                                <div class="accordion" id="buy_accordion">
+                                    <h3 class="shares_header">Buy Shares</h3>
+                                    <div class="slider_container">
+                                        <div class="textbox_container">
+                                            <div class="stocktip">
+                                                <p id="buy_tip">Without limits the next available share(s) will be purchased</p>
+                                            </div>
+                                            <label for="buy_num_shares"># Shares:</label>
+                                            <input type="text" class="slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
+
+                                            <label for="buy_cost">Cost:</label>
+                                            <input type="text" class="slider_text" id="buy_cost" style="border:0; color:#f6931f; font-weight:bold;">
                                         </div>
-                                        <label for="buy_num_shares"># Shares:</label>
-                                        <input type="text" class="slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
 
-                                        <label for="buy_cost">Cost:</label>
-                                        <input type="text" class="slider_text" id="buy_cost" style="border:0; color:#f6931f; font-weight:bold;">
-                                    </div>
-
-                                    <div class="slider_slider" id="buy_num"></div>
-                                    <div class="slider_slider" id="buy_limit"></div>
-                                    <div class="order_btn_container">
-                                    <button id="buy_order">Buy</button>
+                                        <div class="slider_slider" id="buy_num"></div>
+                                        <div class="slider_slider" id="buy_limit"></div>
+                                        <div class="order_btn_container">
+                                        <button id="buy_order">Buy</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ';
+                            ';
+                        }
+                        else
+                        {
+                            echo '<h6 class="error-msg">Not enough balance</h6>';
+                        }
                         // if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
                         // {
                             echo '

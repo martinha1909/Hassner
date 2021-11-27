@@ -87,9 +87,16 @@ $( function() {
 
     $.ajax({
       url : url_max_num_shares,
-      method : "GET",
+      method : "POST",
+      data : {
+        min_lim: min_limit,
+        max_lim: max_limit, 
+        chosen_min: $("#buy_limit").slider("values", 0),
+        chosen_max: $("#buy_limit").slider("values", 1)
+      },
       async: false,
-      success : function(data){
+      success : function(data) {
+        console.log(data);
         max_num_of_shares = data;
       },
       error : function(data){
