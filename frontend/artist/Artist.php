@@ -54,7 +54,7 @@
         <div class="container-xxl">
             <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
                 <a class="navbar-brand heading-black" href="#">
-                    HASSNER
+                    ❖ HX
                 </a>
 
                 <!-- This line here is to prevent a bug where the account balance would move to the left -->

@@ -23,7 +23,7 @@ select#dark {
   box-shadow: none;
   border: 10px !important;
   color: white;
-  background: #11171a;
+  background: #1c1c1cff;
   background-image: none;
 }
 
@@ -35,7 +35,7 @@ select#dark:hover {
   outline: 0;
   box-shadow: none;
   border: 10px !important;
-  color: #11171a;
+  color: #1c1c1cff;
   background: white;
   background-image: none;
 }
@@ -67,7 +67,7 @@ select::-ms-expand {
   width: 20em;
   height: 3em;
   line-height: 3;
-  background: #11171a;
+  background: #1c1c1cff;
   overflow: hidden;
   border: 1px solid white;
   /* border-radius: 0.25em; */
@@ -81,7 +81,7 @@ select::-ms-expand {
   right: 0;
   padding: 0 1em;
   color: #e2cda9ff;
-  background: #11171a;
+  background: #1c1c1cff;
   cursor: pointer;
   pointer-events: none;
   -webkit-transition: 0.25s all ease;
@@ -91,8 +91,7 @@ select::-ms-expand {
 
 .select-dark:hover::after {
   color: #e2cda9ff;
-  background-color: #11171a;
-  /* border-color: #11171a; */
+  background-color: #1c1c1cff;
 }
 select#dark {
   font-weight: bold;
@@ -118,7 +117,7 @@ select#dark {
 /* Transition */
 .select:hover::after {
   color: #f39c12;
-  background-color: #11171a;
+  background-color: #1c1c1cff;
 }
 
 .bg-tan {
@@ -174,7 +173,7 @@ select#dark {
 
 .h2-dark {
   font-size: 2.5rem;
-  color: #11171a;
+  color: #1c1c1cff;
 }
 
 .h3-tan {
@@ -209,7 +208,7 @@ select#dark {
 
 .h5-dark {
   font-size: 1.25rem;
-  color: #11171a;
+  color: #1c1c1cff;
 }
 
 .h6-tan {
@@ -244,7 +243,7 @@ select#dark {
 .th-tan {
   border-color: #e2cda9ff;
   background-color: #e2cda9ff;
-  color: #11171a;
+  color: #1c1c1cff;
 }
 
 .li-bottom {
@@ -263,10 +262,10 @@ select#dark {
 /* User Balance Classes */
 
 .user-balance {
-  color: #11171a;
+  color: #1c1c1cff;
   font-weight: bold;
   background-color: white;
-  border-left: 4px solid #11171a;
+  border-left: 4px solid #1c1c1cff;
   border-right: 4px solid white;
 }
 
@@ -292,7 +291,7 @@ select#dark {
   width: 100%;
   line-height: 10px;
   background-color: rgb(255, 255, 255);
-  color: #11171a;
+  color: #1c1c1cff;
   white-space: nowrap;
   overflow: hidden;
   box-sizing: border-box;

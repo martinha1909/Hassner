@@ -30,7 +30,7 @@ hassnerInit();
       <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
 
         <a class="navbar-brand" href="index.php" onclick='window.location.reload();'>
-          HASSNER
+           ❖ HX
         </a>
 
         <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
