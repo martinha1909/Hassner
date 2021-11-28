@@ -2,6 +2,7 @@
 if(!defined('STATUSCODES_LOADED')){
     abstract class StatusCodes
     {
+        const NONE = 0;
         const Success = "SUCCESS";
         const ErrGeneric = "ERROR"; // Use this as little as possible, new errors should have new entries
         const ErrEmpty = "EMPTY_ERROR";
@@ -18,6 +19,7 @@ if(!defined('STATUSCODES_LOADED')){
         const ErrTickerFormat = "TICKER_FORMAT_ERR";
         const CampaignEmpty = "CAMPAIGN_EMPTY_ERR";
         const CampaignTimeErr = "CAMPAIGN_TIME_ERR";
+        const PRICE_OUTDATED = "Price Outdated";
     }
     define('STATUSCODES_LOADED', 1);
 }

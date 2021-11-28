@@ -199,6 +199,10 @@ $( function() {
         },
         success : function(data){
           console.log(data);
+          if(data === "Price Outdated")
+          {
+            //Error handling for prices don't match here
+          }
         },
         error : function(data){
 

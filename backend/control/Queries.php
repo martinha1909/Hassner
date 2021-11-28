@@ -438,7 +438,7 @@
 
         function searchSellOrderByArtist($conn, $artist_username)
         {
-            $sql = "SELECT * FROM sell_order WHERE artist_username = ?";
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, date_posted FROM sell_order WHERE artist_username = ? ORDER BY date_posted DESC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -592,14 +592,6 @@
         function getMaxSellOrderID($conn)
         {
             $sql = "SELECT MAX(id) AS max_id FROM sell_order";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
-
-        function getMaxBuyOrderID($conn)
-        {
-            $sql = "SELECT MAX(id) AS max_id FROM buy_order";
             $result = mysqli_query($conn,$sql);
             
             return $result;
@@ -871,7 +863,7 @@
             return $status;
         }
 
-        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $time_purchased, $indicator)
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $indicator)
         {
             $status = 0;
 
@@ -911,16 +903,15 @@
                 $stmt->bindValue(1, $artist);
                 $stmt->execute(array($artist));
 
-                $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
-                                        VALUES(?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased)
+                                        VALUES(?, ?, ?, ?, ?, ?)");
                 $stmt->bindValue(1, $buyer);
                 $stmt->bindValue(2, $seller);
                 $stmt->bindValue(3, $artist);
                 $stmt->bindValue(4, $amount);
                 $stmt->bindValue(5, $initial_pps);
                 $stmt->bindValue(6, $date_purchased);
-                $stmt->bindValue(7, $time_purchased);
-                $stmt->execute(array($buyer, $seller, $artist, $amount, $initial_pps, $date_purchased, $time_purchased));
+                $stmt->execute(array($buyer, $seller, $artist, $amount, $initial_pps, $date_purchased));
 
                 $search_conn = connect();
                 $res_buyer = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);
@@ -1199,21 +1190,13 @@
             return $status;
         }
 
-        function postBuyOrder($conn, $user_username, $artist_username, $quantity, $request_price, $date_posted, $time_posted)
+        function postBuyOrder($conn, $user_username, $artist_username, $quantity, $request_price, $date_posted)
         {
-            $buy_order_id = 0;
-
-            $res = getMaxBuyOrderID($conn);
-            if($res->num_rows != 0)
-            {
-                $max_id = $res->fetch_assoc();
-                $buy_order_id = $max_id['max_id'] + 1;
-            }
             $status = 0;
-            $sql = "INSERT INTO buy_order (id, user_username, artist_username, quantity, siliqas_requested, date_posted, time_posted)
-                    VALUES(?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO buy_order (user_username, artist_username, quantity, siliqas_requested, date_posted)
+                    VALUES(?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('issidss', $buy_order_id, $user_username, $artist_username, $quantity, $request_price, $date_posted, $time_posted);
+            $stmt->bind_param('ssids', $user_username, $artist_username, $quantity, $request_price, $date_posted);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;

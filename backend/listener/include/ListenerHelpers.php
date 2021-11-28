@@ -258,6 +258,7 @@
     function autoPurchase($conn, $user_username, $artist_username, $request_quantity, $request_price)
     {
         $static_quantity_var = $request_quantity;
+        $current_date = date('Y-m-d H:i:s');
 
         $res = searchSellOrderByArtist($conn, $artist_username);
         while($row = $res->fetch_assoc())
@@ -277,9 +278,6 @@
                 {
                     if($request_quantity >= $row['no_of_share'])
                     {
-                        $current_date_time = getCurrentDate("America/Edmonton");
-                        $date_parser = dayAndTimeSplitter($current_date_time);
-
                         $result = searchAccount($conn, $row['user_username']);
                         $seller_account_info = $result->fetch_assoc();
 
@@ -315,8 +313,7 @@
                                                 $row['no_of_share'],
                                                 $row['selling_price'],
                                                 $row['id'],
-                                                $date_parser[0],
-                                                $date_parser[1],
+                                                $current_date,
                                                 "AUTO_PURCHASE");
 
                         //The return value should be the amount of share requested subtracted by the amount that 
@@ -325,9 +322,6 @@
                     }
                     else if($request_quantity < $row['no_of_share'])
                     {
-                        $current_date_time = getCurrentDate("America/Edmonton");
-                        $date_parser = dayAndTimeSplitter($current_date_time);
-
                         $result = searchAccount($conn, $row['user_username']);
                         $seller_account_info = $result->fetch_assoc();
 
@@ -363,8 +357,7 @@
                                                 $request_quantity,
                                                 $row['selling_price'],
                                                 $row['id'],
-                                                $date_parser[0],
-                                                $date_parser[1],
+                                                $current_date,
                                                 "AUTO_PURCHASE");
 
                         //The return value should be the amount of share requested subtracted by the amount that 
