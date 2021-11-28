@@ -31,7 +31,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Hassner - Artist</title>
+    <title>Main</title>
     <meta name="description" content="Rateify is a music service that allows users to rate songs" />
 
     <!--Inter UI font-->
