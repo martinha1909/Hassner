@@ -203,6 +203,10 @@ $( function() {
           {
             //Error handling for prices don't match here
           }
+          else if(data === "SUCCESS")
+          {
+            window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/listener.php";
+          }
         },
         error : function(data){
 

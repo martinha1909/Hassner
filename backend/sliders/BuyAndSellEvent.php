@@ -2,11 +2,13 @@
     header('Content-Type: application/json');
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
+    include '../shared/include/MarketplaceHelpers.php';
     include '../constants/ShareInteraction.php';
     include '../constants/StatusCodes.php';
 
-    $json_response = StatusCodes::NONE;
+    date_default_timezone_set(Timezone::MST);
 
+    $json_response = StatusCodes::NONE;
     $purchase_price = 0;
     $current_date = date('Y-m-d H:i:s');
     $user_event = $_POST['user_event'];
@@ -57,6 +59,7 @@
                 refreshBuyOrderTable();
                 $_SESSION['display'] = "PORTFOLIO";
                 $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
@@ -83,5 +86,5 @@
         }
     }
 
-    print json_encode($json_array);
+    print json_encode($json_response);
 ?>

@@ -124,8 +124,8 @@
             else
             {
                 $relative_time_posted = toRelativeTime($current_date, 
-                                                       $row['date_posted'], 
-                                                       $row['time_posted']);
+                                                       explode(" ", $row['date_posted'])[0], 
+                                                       explode(" ", $row['date_posted'])[1]);
 
                 array_push($artist_usernames, $row['artist_username']);
                 array_push($quantities_requested, $row['quantity']);

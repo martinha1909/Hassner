@@ -6,9 +6,11 @@
     include '../../backend/constants/BalanceOption.php';
     include '../../backend/constants/EthosOption.php';
     include '../../backend/constants/GraphOption.php';
+    include '../../backend/constants/Timezone.php';
 
     function hassnerInit()
     {
+        date_default_timezone_set(Timezone::MST);
         $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['display'] = MenuOption::None;
         $_SESSION['sort_type'] = 0;
