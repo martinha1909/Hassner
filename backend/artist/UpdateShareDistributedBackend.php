@@ -1,6 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
+    include '../shared/include/MarketplaceHelpers.php';
 
     $conn = connect();
 
@@ -43,6 +44,10 @@
                             $additional_shares, 
                             $comment, 
                             $current_date);
+        
+        $current_pps = getArtistPricePerShare($_SESSION['username']);
+        //When artist distributes more share, we add it as a sell order as well
+        postSellOrder($conn, $_SESSION['username'], $_SESSION['username'], $additional_shares, $current_pps, $current_date);
 
         $_SESSION['share_distribute'] = 0;
         $_SESSION['dependencies'] = "FRONTEND";

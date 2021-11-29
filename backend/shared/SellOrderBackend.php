@@ -8,8 +8,8 @@
 
     $conn = connect();
 
-    $current_date = getCurrentDate("America/Edmonton");
-    $date_parser = dayAndTimeSplitter($current_date);
+    date_default_timezone_set(Timezone::MST);
+    $current_date = date('Y-m-d H:i:s');
 
     if(empty($_POST['asked_price']))
     {
@@ -56,8 +56,7 @@
                                                     $_SESSION['selected_artist'], 
                                                     $new_quantity, 
                                                     $asked_price, 
-                                                    $date_parser[0], 
-                                                    $date_parser[1]);
+                                                    $current_date);
             }
 
             //If the user has already been selling the same share, simply just adjust the quantity to the new requested quantity
@@ -77,8 +76,7 @@
                                                                             $_SESSION['selected_artist'], 
                                                                             $asked_price, 
                                                                             $new_quantity, 
-                                                                            $date_parser[0], 
-                                                                            $date_parser[1]);
+                                                                            $current_date);
                         break;
                     }
                 }

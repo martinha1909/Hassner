@@ -589,14 +589,6 @@
             return $status;
         }
 
-        function getMaxSellOrderID($conn)
-        {
-            $sql = "SELECT MAX(id) AS max_id FROM sell_order";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
-
         function updateCampaignEligibleParticipants($conn, $campaign_id, $eligible_participant)
         {
             $sql = "UPDATE campaign SET eligible_participants = '$eligible_participant' WHERE id='$campaign_id'";
@@ -1069,7 +1061,7 @@
             $conn->query($sql);
         }
 
-        function adjustExistedAskedPriceQuantity($conn, $user_username, $artist_username, $asked_price, $new_quantity, $new_date, $new_time)
+        function adjustExistedAskedPriceQuantity($conn, $user_username, $artist_username, $asked_price, $new_quantity, $new_date)
         {
             $status = 0;
             $sql = "UPDATE sell_order SET no_of_share = '$new_quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
@@ -1083,16 +1075,6 @@
             }
 
             $sql = "UPDATE sell_order SET date_posted = '$new_date' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
-            if($conn->query($sql) == TRUE)
-            {
-                $status = StatusCodes::Success;
-            }
-            else
-            {
-                $status = StatusCodes::ErrGeneric;
-            }
-
-            $sql = "UPDATE sell_order SET time_posted = '$new_time' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
             if($conn->query($sql) == TRUE)
             {
                 $status = StatusCodes::Success;
@@ -1164,21 +1146,14 @@
             return $status;
         }
 
-        function postSellOrder($conn, $user_username, $artist_username, $quantity, $asked_price, $date_posted, $time_posted)
+        function postSellOrder($conn, $user_username, $artist_username, $quantity, $asked_price, $date_posted)
         {
             $status = 0;
-            $sell_order_id = 0;
 
-            $res = getMaxSellOrderID($conn);
-            if($res->num_rows != 0)
-            {
-                $max_id = $res->fetch_assoc();
-                $sell_order_id = $max_id['max_id'] + 1;
-            }
-            $sql = "INSERT INTO sell_order (id, user_username, artist_username, selling_price, no_of_share, date_posted, time_posted)
-                    VALUES(?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO sell_order (user_username, artist_username, selling_price, no_of_share, date_posted)
+                    VALUES(?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('issddss', $sell_order_id, $user_username, $artist_username, $asked_price, $quantity, $date_posted, $time_posted);
+            $stmt->bind_param('ssdds', $user_username, $artist_username, $asked_price, $quantity, $date_posted);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;

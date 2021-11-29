@@ -185,15 +185,6 @@
         }        
     }
 
-    function getArtistPricePerShare($artist_username)
-    {
-        $conn = connect();
-        $result = searchAccount($conn, $artist_username);
-        $price_per_share = $result->fetch_assoc();
-         
-        return $price_per_share['price_per_share'];
-    }
-
     function getArtistCurrentRate($artist_username)
     {
         $conn = connect();

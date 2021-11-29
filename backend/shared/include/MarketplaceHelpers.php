@@ -19,6 +19,15 @@ else if ($_SESSION['dependencies'] == "BACKEND")
     }
 }
 
+function getArtistPricePerShare($artist_username)
+{
+    $conn = connect();
+    $result = searchAccount($conn, $artist_username);
+    $price_per_share = $result->fetch_assoc();
+        
+    return $price_per_share['price_per_share'];
+}
+
 //fetching the market price, if current user has not invested in the selected artist, simply just populate default values
 //default values should be displayed on the table like this:
 //  Owned Shares: 0
