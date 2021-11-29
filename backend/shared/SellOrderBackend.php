@@ -49,7 +49,7 @@
             {
                 $_SESSION['logging_mode'] = LogModes::NON_EXIST;
 
-                $new_quantity = autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
+                $new_quantity = autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity, ShareInteraction::SELL);
 
                 $_SESSION['status'] = postSellOrder($conn, 
                                                     $_SESSION['username'], 
@@ -70,7 +70,7 @@
                     if($row['selling_price'] == $asked_price)
                     {
                         $quantity += $row['no_of_share'];
-                        $new_quantity = autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity);
+                        $new_quantity = autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity, ShareInteraction::SELL);
                         $_SESSION['status'] = adjustExistedAskedPriceQuantity($conn, 
                                                                             $_SESSION['username'], 
                                                                             $_SESSION['selected_artist'], 
@@ -104,7 +104,7 @@
             if($existed == 0)
             {
                 $_SESSION['logging_mode'] = LogModes::NON_EXIST;
-                $new_quantity = autoSell($_SESSION['username'], $_SESSION['username'], $asked_price, $quantity);
+                $new_quantity = autoSell($_SESSION['username'], $_SESSION['username'], $asked_price, $quantity, ShareInteraction::SELL);
                 $_SESSION['status'] = postSellOrder($conn, 
                                                     $_SESSION['username'], 
                                                     $_SESSION['username'], 
@@ -125,7 +125,7 @@
                     if($row['selling_price'] == $asked_price)
                     {
                         $quantity += $row['no_of_share'];
-                        $new_quantity = autoSell($_SESSION['username'], $_SESSION['username'], $asked_price, $quantity);
+                        $new_quantity = autoSell($_SESSION['username'], $_SESSION['username'], $asked_price, $quantity, ShareInteraction::SELL);
                         $_SESSION['status'] = adjustExistedAskedPriceQuantity($conn, 
                                                                             $_SESSION['username'], 
                                                                             $_SESSION['username'], 

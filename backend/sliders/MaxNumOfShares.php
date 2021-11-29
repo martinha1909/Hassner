@@ -3,7 +3,7 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
     include '../constants/StatusCodes.php';
-    include '../listener/include/ListenerHelpers.php';
+    include '../shared/include/MarketplaceHelpers.php';
 
     $min_lim = $_POST['min_lim'];
     $max_lim = $_POST['max_lim'];

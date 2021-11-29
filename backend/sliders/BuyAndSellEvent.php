@@ -38,11 +38,13 @@
             if($chosen_min == $min_lim && $chosen_max == $max_lim)
             {
                 $purchase_price = $latest_market_price;
+                $new_quantity = $quantity;
                 $new_quantity = autoPurchase($conn, 
                                              $_SESSION['username'], 
                                              $_SESSION['selected_artist'], 
                                              $quantity, 
-                                             $purchase_price);
+                                             $purchase_price,
+                                             ShareInteraction::BUY);
 
                 refreshSellOrderTable();
 

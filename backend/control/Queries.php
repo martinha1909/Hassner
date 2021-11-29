@@ -855,7 +855,7 @@
             return $status;
         }
 
-        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $indicator)
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $indicator, $buy_mode)
         {
             $status = 0;
 
@@ -875,7 +875,7 @@
                     $stmt->bindValue(1, $seller);
                     $stmt->execute(array($seller));
                 }
-                else if($_SESSION['account_type'] == AccountType::Artist)
+                else if($_SESSION['account_type'] == AccountType::Artist && $buy_mode != ShareInteraction::BUY_BACK_SHARE)
                 {
                     $stmt = $conn->prepare("UPDATE account SET shares_repurchase = shares_repurchase - ? WHERE username = ?");
                     $stmt->bindValue(1, $amount);
