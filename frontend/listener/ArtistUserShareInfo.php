@@ -377,9 +377,9 @@
         id="artist_user_share_info_script" 
         artist_tag='<?= $artist_market_tag; ?>'
     ></script>
-    <script type="text/javascript" src="../js/Chart.min.js"></script>
-    <script type="text/javascript" src="../js/linegraph.js"></script>
-    <script type="text/javascript" src="../js/artist_sliders.js"></script>
+    <script type="text/javascript" src="../js/graph/Chart.min.js"></script>
+    <script type="text/javascript" src="../js/graph/linegraph.js"></script>
+    <script type="text/javascript" src="../js/listener/artist_sliders.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
