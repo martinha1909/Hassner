@@ -562,9 +562,8 @@
                                 $prices = array();
                                 $quantities = array();
                                 $date_purchase = array();
-                                $time_purchase = array();
             
-                                buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $time_purchase, $_SESSION['username']);
+                                buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $_SESSION['username']);
             
                                 for ($i = 0; $i < sizeof($sellers); $i++) {
                                     echo '

@@ -265,97 +265,6 @@
                     <?php
                         if($_SESSION['artist_found'])
                         {
-                            if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "MARKET") {
-                                echo '
-                                        <div class="py-4 center-text">
-                                            <h3 class="h3-blue py-5">Market Price</h3>
-                                        </div>
-                                    ';
-
-                                //If the amount of artist shares has not sold out or the artist has distributed some shares, makes Buy option available 
-                                if ($_SESSION['available_shares'] > 0) {
-                                    //replaces the Buy button with a slide bar ranging from 0 to the quantity that is equivalent to the maximum available share for purchase
-                                    if ($_SESSION['buy_market_price'] == 0) {
-                                        echo '
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Seller username</th>
-                                                        <th scope="col">Price per share(q̶)</th>
-                                                        <th scope="col">Quantity</th>
-                                                        <th scope="col">+</th>
-                                                        <th scope="col"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">' . $_SESSION['selected_artist'] . '</th>
-                                                            <td>' . $_SESSION['current_pps']['price_per_share'] . '</td>
-                                                            <td>' . $_SESSION['available_shares'] . '</td>
-                                        ';
-                                        if (hasEnoughSiliqas($_SESSION['current_pps']['price_per_share'], $_SESSION['user_balance'])) {
-                                            echo '
-                                                            <form action="../../backend/listener/ToggleBuyMarketPriceBackend.php" method="post">
-                                                                <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"></td>
-                                                            </form>
-                                            ';
-                                        } else {
-                                            $_SESSION['status'] = "ERROR";
-                                            echo '
-                                                                <td>
-                                            ';
-                                            getStatusMessage("Not enough siliqas", "");
-                                            echo '
-                                                                </td>
-                                            ';
-                                        }
-                                        echo '
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        ';
-                                    } else {
-                                        $_SESSION['seller_toggle'] = $_SESSION['selected_artist'];
-                                        $_SESSION['purchase_price'] = $_SESSION['current_pps']['price_per_share'];
-                                        echo '
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Seller username</th>
-                                                        <th scope="col">Price per share(q̶)</th>
-                                                        <th scope="col">Quantity</th>
-                                                        <th scope="col">+</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">' . $_SESSION['selected_artist'] . '</th>
-                                                            <td>' . $_SESSION['current_pps']['price_per_share'] . '</td>
-                                                            <td>' . $_SESSION['available_shares'] . '</td>
-                                                            <td>
-                                                                <form action="../../backend/shared/BuySharesBackend.php" method="post">
-                                                                    <input name = "purchase_quantity" type="range" min="1" max=' . $_SESSION['available_shares'] . ' value="1" class="slider" id="myRange">
-                                                                    <p>Quantity: <span id="demo"></span></p>
-                                                                    <input name="buy_user_selling_price" type="submit" id="abc" class="menu-text" role="button" aria-pressed="true" value="->">
-                                                                </form>
-                                                                <form action="../../backend/listener/ToggleBuyMarketPriceBackend.php" method="post">
-                                                                    <td><input name="buy_user_selling_price" type="submit" id="abc" class="menu-text" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
-                                                                </form>
-                                                            </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        ';
-                                    }
-                                } else {
-                                    echo '
-                                        <div class="py-4 text-center">
-                                            <h4>No shares are currently available from ' . $_SESSION['selected_artist'] . '</h4>
-                                        </div>
-                                    ';
-                                }
-                            }
-
                             echo '
                                 <div class="col-6">
                                     <h3 class="h3-blue py-5">Buy History</h3>
@@ -366,7 +275,6 @@
                                                 <th scope="col">Price</th>
                                                 <th scope="col">Quantity</th>
                                                 <th scope="col">Date Purchased</th>
-                                                <th scope="col">Time Purchased</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -377,9 +285,8 @@
                             $prices = array();
                             $quantities = array();
                             $date_purchase = array();
-                            $time_purchase = array();
 
-                            buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $time_purchase, $_SESSION['username']);
+                            buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $_SESSION['username']);
 
                             for ($i = 0; $i < sizeof($sellers); $i++) {
                                 echo '
@@ -388,7 +295,6 @@
                                                 <td>' . $prices[$i] . '</td>
                                                 <td>' . $quantities[$i] . '</td>
                                                 <td>' . $date_purchase[$i] . '</td>
-                                                <td>' . $time_purchase[$i] . '</td>
                                             </tr>
                                 ';
                             }

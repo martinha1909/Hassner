@@ -1014,7 +1014,7 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity, $bu
         return $ret;
     }
 
-    function buyHistoryInit(&$sellers, &$prices, &$quantities, &$date_purchase, &$time_purchase, $username)
+    function buyHistoryInit(&$sellers, &$prices, &$quantities, &$date_purchase, $username)
     {
         $conn = connect();
 
@@ -1022,21 +1022,10 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity, $bu
 
         while($row = $res->fetch_assoc())
         {
-            if($_SESSION['account_type'] == AccountType::Artist)
-            {
-                $date = toYYYYMMDD($row['date_purchased']);
-            }
-            else if($_SESSION['account_type'] == AccountType::User)
-            {
-                $date = dateParser($row['date_purchased']);
-            }
-            $time = timeParser($row['time_purchased']);
-
             array_push($prices, $row['price_per_share_when_bought']);
             array_push($sellers, $row['seller_username']);
             array_push($quantities, $row['no_of_share_bought']);
-            array_push($date_purchase, $date);
-            array_push($time_purchase, $time);
+            array_push($date_purchase, dbDateTimeParser($row['date_purchased']));
         }
     }
 
