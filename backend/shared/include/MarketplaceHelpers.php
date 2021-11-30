@@ -1035,6 +1035,8 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity, $bu
 
         while($row = $query_result->fetch_assoc())
         {
+            $db_date_time = $row['date_purchased'];
+            $row['date_purchased'] = toDDMMYYYY(explode(" ", $row['date_purchased'])[0]);
             //only display the dates that are in the range that the user chose
             if(isInRange($row['date_purchased'], $_SESSION['trade_history_from'], $_SESSION['trade_history_to']))
             {

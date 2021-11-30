@@ -501,10 +501,10 @@
     }
 
     /**
-    * Converts a date to DD/MM/YYYY format
+    * Converts a date to DD-MM-YYYY format
     *
-    * @param  	date	    date to be converted, has format of YYYY/MM/DD
-    * @return 	ret	        a string of date formatted to DD/MM/YYYY
+    * @param  	date	    date to be converted, has format of YYYY-MM-DD
+    * @return 	ret	        a string of date formatted to DD-MM-YYYY
     */
     function toDDMMYYYY($date): string
     {
