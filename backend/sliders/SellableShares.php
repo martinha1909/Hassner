@@ -29,5 +29,5 @@
         $sellable_shares = $total_shares_owned - $total_shares_selling;
     }
 
-    print json_encode(500);
+    print json_encode($sellable_shares);
 ?>

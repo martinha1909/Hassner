@@ -32,63 +32,7 @@
         $result = searchSellOrderByArtistAndUser($conn, $_SESSION['username'], $_SESSION['selected_artist']);
         $existed = 0;
 
-        if($_SESSION['account_type'] == AccountType::User)
-        {
-            //queries to see if the user has already been selling this share of the same artist or not
-            while($row = $result->fetch_assoc())
-            {   
-                if((strcmp($row['user_username'], $_SESSION['username']) == 0) && (strcmp($row['artist_username'], $_SESSION['selected_artist']) == 0) && ($row['selling_price'] == $asked_price))
-                {
-                    $existed = 1;
-                    break;
-                }
-            }
-
-            //If the user has not been selling the same share, post a new order to sell
-            if($existed == 0)
-            {
-                $_SESSION['logging_mode'] = LogModes::NON_EXIST;
-
-                $new_quantity = autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity, ShareInteraction::SELL);
-
-                $_SESSION['status'] = postSellOrder($conn, 
-                                                    $_SESSION['username'], 
-                                                    $_SESSION['selected_artist'], 
-                                                    $new_quantity, 
-                                                    $asked_price, 
-                                                    $current_date);
-            }
-
-            //If the user has already been selling the same share, simply just adjust the quantity to the new requested quantity
-            else
-            {
-                $_SESSION['logging_mode'] = LogModes::EXIST;
-
-                $res = searchSellOrderByUser($conn, $_SESSION['username']);
-                while($row = $res->fetch_assoc())
-                {
-                    if($row['selling_price'] == $asked_price)
-                    {
-                        $quantity += $row['no_of_share'];
-                        $new_quantity = autoSell($_SESSION['username'], $_SESSION['selected_artist'], $asked_price, $quantity, ShareInteraction::SELL);
-                        $_SESSION['status'] = adjustExistedAskedPriceQuantity($conn, 
-                                                                            $_SESSION['username'], 
-                                                                            $_SESSION['selected_artist'], 
-                                                                            $asked_price, 
-                                                                            $new_quantity, 
-                                                                            $current_date);
-                        break;
-                    }
-                }
-            }
-
-            refreshSellOrderTable();
-            refreshBuyOrderTable();
-
-            $_SESSION['display'] = "PORTFOLIO";
-        }
-
-        else if($_SESSION['account_type'] == AccountType::Artist)
+        if($_SESSION['account_type'] == AccountType::Artist)
         {
             //queries to see if artist has already posted an order to sell their own shares or not
             while($row = $result->fetch_assoc())
