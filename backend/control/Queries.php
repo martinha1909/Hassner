@@ -438,7 +438,7 @@
 
         function searchSellOrderByArtist($conn, $artist_username)
         {
-            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, date_posted FROM sell_order WHERE artist_username = ? ORDER BY date_posted DESC";
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, date_posted FROM sell_order WHERE artist_username = ? ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -931,11 +931,14 @@
     
                 //Decrease the number of shares the seller is currently holding of the artist
                 $current_share_amount_seller = $res_seller->fetch_assoc();
-                $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount;
-                $stmt = $conn->prepare("UPDATE artist_shareholders SET shares_owned = '$new_share_amount_seller' WHERE user_username = ? AND artist_username = ?");
-                $stmt->bindValue(1, $seller);
-                $stmt->bindValue(2, $artist);
-                $stmt->execute(array($seller, $artist));
+                if($seller != $artist)
+                {
+                    $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount;
+                    $stmt = $conn->prepare("UPDATE artist_shareholders SET shares_owned = '$new_share_amount_seller' WHERE user_username = ? AND artist_username = ?");
+                    $stmt->bindValue(1, $seller);
+                    $stmt->bindValue(2, $artist);
+                    $stmt->execute(array($seller, $artist));
+                }
                 
                 if($indicator == "AUTO_PURCHASE")
                 {

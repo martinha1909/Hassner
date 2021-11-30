@@ -790,7 +790,7 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
                     $buyer_account_info = $res_1->fetch_assoc();
 
                     //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
-                    $seller_new_balance = $seller_account_info['balance'] + ($row['no_of_share'] * $row['selling_price']); 
+                    $seller_new_balance = $seller_account_info['balance'] + ($row['no_of_share'] * $row['selling_price']);
 
                     //subtracts siliqas from the user
                     $buyer_new_balance = $buyer_account_info['balance'] - ($row['no_of_share'] * $row['selling_price']);

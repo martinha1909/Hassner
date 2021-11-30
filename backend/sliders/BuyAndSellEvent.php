@@ -53,7 +53,7 @@
                     postBuyOrder($conn, 
                                  $_SESSION['username'],
                                  $_SESSION['selected_artist'], 
-                                 $quantity, 
+                                 $new_quantity, 
                                  $purchase_price, 
                                  $current_date);
                 }
