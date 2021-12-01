@@ -226,8 +226,8 @@
                         {
                             echo '<h6 class="error-msg">Not enough balance</h6>';
                         }
-                        // if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
-                        // {
+                        if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
+                        {
                             echo '
                                     <div class="spacer"></div>
                                     <div class="accordion" id="sell_accordion">
@@ -250,7 +250,7 @@
                                     </div>
                                 </div>
                             ';
-                        // }
+                        }
                     }
                     ?>
                 </div>
