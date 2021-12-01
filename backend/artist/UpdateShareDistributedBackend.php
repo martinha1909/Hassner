@@ -51,6 +51,7 @@
                                  $_SESSION['username'], 
                                  $current_pps, 
                                  $additional_shares,
+                                 $current_date,
                                  ShareInteraction::BUY_BACK_SHARE);
 
         refreshSellOrderTable();

@@ -5,6 +5,7 @@
     include '../shared/include/MarketplaceHelpers.php';
     include '../constants/ShareInteraction.php';
     include '../constants/StatusCodes.php';
+    include '../constants/MenuOption.php';
 
     date_default_timezone_set(Timezone::MST);
 
@@ -56,7 +57,7 @@
                 }
 
                 refreshBuyOrderTable();
-                $_SESSION['display'] = "PORTFOLIO";
+                $_SESSION['display'] = MenuOption::Portfolio;
                 $_SESSION['dependencies'] = "FRONTEND";
                 $json_response = StatusCodes::Success;
             }
@@ -87,13 +88,13 @@
             if($chosen_min == $min_lim && $chosen_max == $max_lim)
             {
                 $selling_price = $latest_market_price;
-                $new_quantity = $quantity;
-                // $new_quantity = autoSell($conn, 
-                //                              $_SESSION['username'], 
-                //                              $_SESSION['selected_artist'], 
-                //                              $quantity, 
-                //                              $selling_price,
-                //                              ShareInteraction::SELL);
+                // $new_quantity = $quantity;
+                $new_quantity = autoSell($_SESSION['username'], 
+                                         $_SESSION['selected_artist'], 
+                                         $selling_price, 
+                                         $quantity,
+                                         $current_date,
+                                         ShareInteraction::SELL);
 
                 refreshSellOrderTable();
 
@@ -108,7 +109,7 @@
                 }
 
                 refreshBuyOrderTable();
-                $_SESSION['display'] = "PORTFOLIO";
+                $_SESSION['display'] = MenuOption::Portfolio;
                 $_SESSION['dependencies'] = "FRONTEND";
                 $json_response = StatusCodes::Success;
             }

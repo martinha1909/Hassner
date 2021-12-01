@@ -883,7 +883,7 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
     return $request_quantity;
 }
 
-function autoSell($user_username, $artist_username, $asked_price, $quantity, $buy_mode)
+function autoSell($user_username, $artist_username, $asked_price, $quantity, $current_date, $buy_mode)
 {
     $conn = connect();
 
@@ -937,8 +937,7 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity, $bu
                                         $row['quantity'],
                                         $row['siliqas_requested'],
                                         $row['id'],
-                                        $date_parser[0],
-                                        $date_parser[1],
+                                        $current_date,
                                         "AUTO_SELL",
                                         $buy_mode);
 
@@ -985,8 +984,7 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity, $bu
                                         $quantity,
                                         $row['siliqas_requested'],
                                         $row['id'],
-                                        $date_parser[0],
-                                        $date_parser[1],
+                                        $current_date,
                                         "AUTO_SELL",
                                         $buy_mode);
 
@@ -998,7 +996,6 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity, $bu
             }
         }
     }
-
     return $quantity;
 }
     function calculateTotalNumberOfSharesBought($user_username, $artist_username)

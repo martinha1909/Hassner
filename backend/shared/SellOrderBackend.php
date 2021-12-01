@@ -30,7 +30,7 @@
 
         if($_SESSION['account_type'] == AccountType::Artist)
         {
-            $new_quantity = autoSell($_SESSION['username'], $_SESSION['username'], $asked_price, $quantity, ShareInteraction::SELL);
+            $new_quantity = autoSell($_SESSION['username'], $_SESSION['username'], $asked_price, $quantity, $current_date, ShareInteraction::SELL);
             $_SESSION['status'] = postSellOrder($conn, 
                                                 $_SESSION['username'], 
                                                 $_SESSION['username'], 
