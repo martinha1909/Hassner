@@ -88,7 +88,6 @@
             if($chosen_min == $min_lim && $chosen_max == $max_lim)
             {
                 $selling_price = $latest_market_price;
-                // $new_quantity = $quantity;
                 $new_quantity = autoSell($_SESSION['username'], 
                                          $_SESSION['selected_artist'], 
                                          $selling_price, 
