@@ -28,6 +28,7 @@
     }
     else
     {
+        $conn = connect();
         $initial_pps = $siliqas_raising/$shares_distributing;
 
         artistShareDistributionInit($connPDO, 
@@ -36,6 +37,9 @@
                                     $initial_pps, 
                                     $comment, 
                                     $current_date);
+
+        //IPO is considered a sell order as well
+        postSellOrder($conn, $_SESSION['username'], $_SESSION['username'], $shares_distributing, $initial_pps, $current_date);
 
         $_SESSION['dependencies'] = "FRONTEND";
 

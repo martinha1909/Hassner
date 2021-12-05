@@ -187,7 +187,7 @@
 
         function searchArtistBuyBackShares($conn, $artist_username)
         {
-            $sql = "SELECT price_per_share_when_bought, date_purchased, time_purchased, no_of_share_bought FROM buy_history WHERE user_username = ? AND artist_username = ?";
+            $sql = "SELECT no_of_share_bought, price_per_share_when_bought, date_purchased FROM buy_history WHERE user_username = ? AND artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ss', $artist_username, $artist_username);
             $stmt->execute();
@@ -198,7 +198,7 @@
 
         function searchSharesBoughtFromArtist($conn, $artist_username)
         {
-            $sql = "SELECT price_per_share_when_bought, date_purchased, time_purchased, no_of_share_bought FROM buy_history WHERE artist_username = ?";
+            $sql = "SELECT no_of_share_bought, price_per_share_when_bought, date_purchased FROM buy_history WHERE artist_username = ? ORDER BY date_purchased DESC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -438,7 +438,7 @@
 
         function searchSellOrderByArtist($conn, $artist_username)
         {
-            $sql = "SELECT * FROM sell_order WHERE artist_username = ?";
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, date_posted FROM sell_order WHERE artist_username = ? ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -587,22 +587,6 @@
             }
 
             return $status;
-        }
-
-        function getMaxSellOrderID($conn)
-        {
-            $sql = "SELECT MAX(id) AS max_id FROM sell_order";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
-
-        function getMaxBuyOrderID($conn)
-        {
-            $sql = "SELECT MAX(id) AS max_id FROM buy_order";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
         }
 
         function updateCampaignEligibleParticipants($conn, $campaign_id, $eligible_participant)
@@ -871,7 +855,7 @@
             return $status;
         }
 
-        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $time_purchased, $indicator)
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $indicator, $buy_mode)
         {
             $status = 0;
 
@@ -891,7 +875,7 @@
                     $stmt->bindValue(1, $seller);
                     $stmt->execute(array($seller));
                 }
-                else if($_SESSION['account_type'] == AccountType::Artist)
+                else if($_SESSION['account_type'] == AccountType::Artist && $buy_mode != ShareInteraction::BUY_BACK_SHARE)
                 {
                     $stmt = $conn->prepare("UPDATE account SET shares_repurchase = shares_repurchase - ? WHERE username = ?");
                     $stmt->bindValue(1, $amount);
@@ -911,16 +895,15 @@
                 $stmt->bindValue(1, $artist);
                 $stmt->execute(array($artist));
 
-                $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
-                                        VALUES(?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased)
+                                        VALUES(?, ?, ?, ?, ?, ?)");
                 $stmt->bindValue(1, $buyer);
                 $stmt->bindValue(2, $seller);
                 $stmt->bindValue(3, $artist);
                 $stmt->bindValue(4, $amount);
                 $stmt->bindValue(5, $initial_pps);
                 $stmt->bindValue(6, $date_purchased);
-                $stmt->bindValue(7, $time_purchased);
-                $stmt->execute(array($buyer, $seller, $artist, $amount, $initial_pps, $date_purchased, $time_purchased));
+                $stmt->execute(array($buyer, $seller, $artist, $amount, $initial_pps, $date_purchased));
 
                 $search_conn = connect();
                 $res_buyer = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);
@@ -948,11 +931,14 @@
     
                 //Decrease the number of shares the seller is currently holding of the artist
                 $current_share_amount_seller = $res_seller->fetch_assoc();
-                $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount;
-                $stmt = $conn->prepare("UPDATE artist_shareholders SET shares_owned = '$new_share_amount_seller' WHERE user_username = ? AND artist_username = ?");
-                $stmt->bindValue(1, $seller);
-                $stmt->bindValue(2, $artist);
-                $stmt->execute(array($seller, $artist));
+                if($seller != $artist)
+                {
+                    $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount;
+                    $stmt = $conn->prepare("UPDATE artist_shareholders SET shares_owned = '$new_share_amount_seller' WHERE user_username = ? AND artist_username = ?");
+                    $stmt->bindValue(1, $seller);
+                    $stmt->bindValue(2, $artist);
+                    $stmt->execute(array($seller, $artist));
+                }
                 
                 if($indicator == "AUTO_PURCHASE")
                 {
@@ -1078,7 +1064,7 @@
             $conn->query($sql);
         }
 
-        function adjustExistedAskedPriceQuantity($conn, $user_username, $artist_username, $asked_price, $new_quantity, $new_date, $new_time)
+        function adjustExistedAskedPriceQuantity($conn, $user_username, $artist_username, $asked_price, $new_quantity, $new_date)
         {
             $status = 0;
             $sql = "UPDATE sell_order SET no_of_share = '$new_quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
@@ -1092,16 +1078,6 @@
             }
 
             $sql = "UPDATE sell_order SET date_posted = '$new_date' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
-            if($conn->query($sql) == TRUE)
-            {
-                $status = StatusCodes::Success;
-            }
-            else
-            {
-                $status = StatusCodes::ErrGeneric;
-            }
-
-            $sql = "UPDATE sell_order SET time_posted = '$new_time' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
             if($conn->query($sql) == TRUE)
             {
                 $status = StatusCodes::Success;
@@ -1173,21 +1149,14 @@
             return $status;
         }
 
-        function postSellOrder($conn, $user_username, $artist_username, $quantity, $asked_price, $date_posted, $time_posted)
+        function postSellOrder($conn, $user_username, $artist_username, $quantity, $asked_price, $date_posted)
         {
             $status = 0;
-            $sell_order_id = 0;
 
-            $res = getMaxSellOrderID($conn);
-            if($res->num_rows != 0)
-            {
-                $max_id = $res->fetch_assoc();
-                $sell_order_id = $max_id['max_id'] + 1;
-            }
-            $sql = "INSERT INTO sell_order (id, user_username, artist_username, selling_price, no_of_share, date_posted, time_posted)
-                    VALUES(?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO sell_order (user_username, artist_username, selling_price, no_of_share, date_posted)
+                    VALUES(?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('issddss', $sell_order_id, $user_username, $artist_username, $asked_price, $quantity, $date_posted, $time_posted);
+            $stmt->bind_param('ssdds', $user_username, $artist_username, $asked_price, $quantity, $date_posted);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;
@@ -1199,21 +1168,13 @@
             return $status;
         }
 
-        function postBuyOrder($conn, $user_username, $artist_username, $quantity, $request_price, $date_posted, $time_posted)
+        function postBuyOrder($conn, $user_username, $artist_username, $quantity, $request_price, $date_posted)
         {
-            $buy_order_id = 0;
-
-            $res = getMaxBuyOrderID($conn);
-            if($res->num_rows != 0)
-            {
-                $max_id = $res->fetch_assoc();
-                $buy_order_id = $max_id['max_id'] + 1;
-            }
             $status = 0;
-            $sql = "INSERT INTO buy_order (id, user_username, artist_username, quantity, siliqas_requested, date_posted, time_posted)
-                    VALUES(?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO buy_order (user_username, artist_username, quantity, siliqas_requested, date_posted)
+                    VALUES(?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('issidss', $buy_order_id, $user_username, $artist_username, $quantity, $request_price, $date_posted, $time_posted);
+            $stmt->bind_param('ssids', $user_username, $artist_username, $quantity, $request_price, $date_posted);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;
