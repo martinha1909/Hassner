@@ -1,6 +1,8 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
+    include '../shared/include/MarketplaceHelpers.php';
+    include '../constants/ShareInteraction.php';
 
     $conn = connect();
 
@@ -43,6 +45,23 @@
                             $additional_shares, 
                             $comment, 
                             $current_date);
+        
+        $current_pps = getArtistPricePerShare($_SESSION['username']);
+        $new_quantity = autoSell($_SESSION['username'], 
+                                 $_SESSION['username'], 
+                                 $current_pps, 
+                                 $additional_shares,
+                                 $current_date,
+                                 ShareInteraction::BUY_BACK_SHARE);
+
+        refreshSellOrderTable();
+        refreshBuyOrderTable();
+
+        if($new_quantity > 0)
+        {
+            //When artist distributes more share, we add it as a sell order as well
+            postSellOrder($conn, $_SESSION['username'], $_SESSION['username'], $new_quantity, $current_pps, $current_date);
+        }
 
         $_SESSION['share_distribute'] = 0;
         $_SESSION['dependencies'] = "FRONTEND";
