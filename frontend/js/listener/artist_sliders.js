@@ -22,9 +22,9 @@ $( function() {
     method : "GET",
     async: false,
     success : function(data){
-      max_limit = data*1.5;
+      max_limit = parseFloat((data*2).toFixed(1));
       //We allow users to set the min limit to be half the current stock price
-      min_limit = data/2;
+      min_limit = parseFloat((data/2).toFixed(1));
     },
     error : function(data){
 
@@ -37,6 +37,7 @@ $( function() {
       min: min_limit,
       max: max_limit,
       values: [ min_limit, max_limit ],
+      step:0.5,
       slide: function( event, ui ) {
         min = ui.values[0];
         max = ui.values[1];
