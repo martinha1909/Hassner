@@ -92,7 +92,7 @@
                                          $selling_price, 
                                          $quantity,
                                          $current_date,
-                                         ShareInteraction::SELL);
+                                         false);
 
                 refreshSellOrderTable();
 
