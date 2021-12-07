@@ -27,7 +27,7 @@ else if ($_SESSION['dependencies'] == "BACKEND")
 *
 * @return 	ret	               current stock price of the artist
 */
-function getArtistPricePerShare($artist_username)
+function getArtistPricePerShare($artist_username): float
 {
     $ret = 0;
     $conn = connect();
@@ -406,29 +406,6 @@ function canCreateSellOrder($user_username, $artist_username)
     }
 
     return false;
-}
-
-/**
-* Determines if a user can create a buy order or not.  
-*
-* @param  	user_username      user that is trying to create a buy order
-*
-* @param  	artist_username    targetted artist that the buy order is requesting shares from
-*
-* @return 	ret	               true if the user can create a buy order, false otherwise
-*/
-function canCreateBuyOrder($user_username, $artist_username, $shares_requesting)
-{
-    $conn = connect();
-
-    $res = searchNumberOfShareDistributed($conn, $artist_username);
-    $total_share_dist = $res->fetch_assoc();
-
-    if ($shares_requesting >= $total_share_dist['Share_Distributed']) {
-        return false;
-    }
-
-    return true;
 }
 
 function getAmountSharesSelling($user_username, $artist_username)

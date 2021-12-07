@@ -435,6 +435,60 @@
         }
     }
 
+    function getShareInvestedInArtist($user_username, $artist_username)
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchSharesInArtistShareHolders($conn, $user_username, $artist_username);
+        if($res->num_rows > 0)
+        {
+            $shares_owned = $res->fetch_assoc();
+            $ret = $shares_owned['shares_owned'];
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
+
+    /**
+    * Determines if a user can create a buy order or not.  
+    *
+    * @param  	user_username      user that is trying to create a buy order
+    *
+    * @param  	artist_username    targetted artist that the buy order is requesting shares from
+    *
+    * @return 	ret	               true if the user can create a buy order, false otherwise
+    */
+    function canCreateBuyOrder($user_username, $artist_username)
+    {
+        $conn = connect();
+        $ret = false;
+
+        $artist_share_distributed = totalShareDistributed($artist_username);
+        //Trivial case, if artist hasn't gone IPO then users can't create buy orders
+        if($artist_share_distributed > 0)
+        {
+            $num_of_shares_invested = getShareInvestedInArtist($user_username, $artist_username);
+            //Trivial case, if artist has gone IPO and user hasn't invested, then they can create a buy order
+            if($num_of_shares_invested == 0)
+            {
+                $ret = true;
+            }
+            else
+            {
+                //If the user hasn't bought all shares of the artist, he can create the buy order
+                if($artist_share_distributed > $num_of_shares_invested)
+                {
+                    $ret = true;
+                }
+            }
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
+
     function getAllArtist()
     {
         $ret = array();

@@ -68,6 +68,22 @@
 
         return $ret;
     }
+
+    function getArtistShareDistributed($artist_username): int
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchNumberOfShareDistributed($conn, $artist_username);
+        if($res->num_rows > 0)
+        {
+            $share_distributed = $res->fetch_assoc();
+            $ret = $share_distributed['Share_Distributed'];
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
     
     /**
     * Retrieves account balance of a specified user
@@ -76,7 +92,7 @@
     *
     * @return 	ret	                account balance of the given user
     */
-    function getUserBalance($user_username)
+    function getUserBalance($user_username): float
     {
         $ret = 0;
         $conn = connect();
@@ -141,7 +157,7 @@
     *
     * @return 	ret	               amount of available shares the given artist
     */
-    function calculateArtistAvailableShares($artist_name)
+    function calculateArtistAvailableShares($artist_name): int
     {
         $ret = 0;
 
