@@ -820,7 +820,7 @@ function refreshBuyOrderTable()
 * @return 	quantity	       the remaining quantity of the buy order after automatically executed, 
 *                              remains the same if no matching sell orders found, 0 if the quantity is less than the quantity in matching sell orders
 */
-function autoPurchase($conn, $user_username, $artist_username, $request_quantity, $request_price, $buy_mode)
+function autoPurchase($conn, $user_username, $artist_username, $request_quantity, $request_price)
 {
     $static_quantity_var = $request_quantity;
     $current_date = date('Y-m-d H:i:s');
@@ -828,6 +828,8 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
     $res = searchSellOrderByArtist($conn, $artist_username);
     while($row = $res->fetch_assoc())
     {
+        //Assuming p2p trading
+        $buy_mode = ShareInteraction::BUY;
         if($request_quantity <= 0)
         {
             break;
@@ -840,6 +842,11 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
         }
         else
         {
+            if($row['is_from_injection'])
+            {
+                $buy_mode = ShareInteraction::BUY_FROM_INJECTION;
+            }
+
             if($request_price == $row['selling_price'])
             {
                 if($request_quantity >= $row['no_of_share'])
@@ -863,11 +870,16 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
                     //In the case of buying in asked price, the new market price will become the last purchased price
                     $new_pps = $row['selling_price'];
 
+                    $buyer_account_type = getAccountType($_SESSION['username']);
+                    $seller_account_type = getAccountType($row['user_username']);
+
                     $connPDO = connectPDO();
 
                     purchaseAskedPriceShare($connPDO, 
                                             $_SESSION['username'], 
                                             $row['user_username'], 
+                                            $buyer_account_type,
+                                            $seller_account_type,
                                             $_SESSION['selected_artist'],
                                             $buyer_new_balance, 
                                             $seller_new_balance, 
@@ -908,11 +920,16 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
                     //In the case of buying in asked price, the new market price will become the last purchased price
                     $new_pps = $row['selling_price'];
 
+                    $buyer_account_type = getAccountType($_SESSION['username']);
+                    $seller_account_type = getAccountType($row['user_username']);
+
                     $connPDO = connectPDO();
 
                     purchaseAskedPriceShare($connPDO, 
                                             $_SESSION['username'], 
                                             $row['user_username'], 
+                                            $buyer_account_type,
+                                            $seller_account_type,
                                             $_SESSION['selected_artist'],
                                             $buyer_new_balance, 
                                             $seller_new_balance, 

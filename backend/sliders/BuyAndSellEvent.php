@@ -41,8 +41,7 @@
                                              $_SESSION['username'], 
                                              $_SESSION['selected_artist'], 
                                              $quantity, 
-                                             $purchase_price,
-                                             ShareInteraction::BUY);
+                                             $purchase_price);
 
                 refreshSellOrderTable();
 
@@ -103,7 +102,8 @@
                                   $_SESSION['username'],
                                   $_SESSION['selected_artist'], 
                                   $new_quantity, 
-                                  $selling_price, 
+                                  $selling_price,
+                                  false, 
                                   $current_date);
                 }
 

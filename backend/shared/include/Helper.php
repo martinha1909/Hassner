@@ -53,6 +53,21 @@
          
         return $account;
     }
+
+    function getAccountType($username)
+    {
+        $ret = "unable to determine account type";
+        $conn = connect();
+
+        $result = getAccountTypeFromUsername($conn, $username);
+        if($result->num_rows > 0)
+        {
+            $account_info = $result->fetch_assoc();
+            $ret = $account_info['account_type'];
+        }
+
+        return $ret;
+    }
     
     /**
     * Retrieves account balance of a specified user
