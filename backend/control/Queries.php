@@ -310,11 +310,21 @@
 
         function searchSellOrderByID($conn, $id)
         {
+            $resullt = 0;
+
             $sql = "SELECT * FROM sell_order WHERE id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('i', $id);
             $stmt->execute();
-            $result = $stmt->get_result();
+            if($stmt->execute() == TRUE)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
+            }
 
             return $result;
         }
