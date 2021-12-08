@@ -1102,7 +1102,14 @@
         function updateBuyOrderQuantity($conn, $buy_order_id, $new_quantity)
         {
             $sql = "UPDATE buy_order SET quantity = '$new_quantity' WHERE id = '$buy_order_id'";
-            $conn->query($sql);
+            if($conn->query($sql) == true)
+            {
+                hx_info(HX::BUY_ORDER, "Updated quantity to ".$new_quantity." for buy order id ".$buy_order_id);
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
         }
 
         function updateArtistShareholder($conn, $shareholder_username, $artist_username, $new_share_amount)

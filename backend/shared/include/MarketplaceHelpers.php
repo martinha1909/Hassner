@@ -815,7 +815,6 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
         //Skip your own sell order
         if($row['user_username'] == $user_username)
         {
-            echo $row['user_username']." ".$user_username;
             continue;
         }
         else
@@ -967,6 +966,8 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
         $conn = connect();
 
         $res = searchBuyOrdersByArtist($conn, $artist_username);
+        hx_debug(HX::QUERY, "searchBuyOrdersByArtist returned ".$res->num_rows." entries");
+
         while ($row = $res->fetch_assoc()) 
         {
             $buy_mode = ShareInteraction::BUY;
@@ -980,10 +981,14 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
 
             if ($row['siliqas_requested'] == $asked_price) 
             {
+                hx_debug(HX::SELL_SHARES, "Matching buy order id: ".$row['id']." for price $".$asked_price);
+
                 if($is_from_injection)
                 {
                     $buy_mode = ShareInteraction::BUY_FROM_INJECTION;
                 }
+
+                hx_debug(HX::SELL_SHARES, "proceeding with buy_mode: ".$buy_mode);
 
                 //If the sell order is selling more shares than the posted buy order
                 if ($quantity >= $row['quantity']) {
@@ -1013,6 +1018,27 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
 
                     $connPDO = connectPDO();
 
+                    hx_debug(HX::SELL_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
+                        "buyer" => $row['user_username'], 
+                        "seller" => $user_username, 
+                        "buyer_account_type" => $buyer_account_type, 
+                        "seller_account_type" => $seller_account_type, 
+                        "artist" => $artist_username, 
+                        "buyer_new_balance" => $buyer_new_balance, 
+                        "seller_new_balance" => $seller_new_balance, 
+                        "initial_pps" => $_SESSION['current_pps']['price_per_share'], 
+                        "new_pps" => $new_pps, 
+                        "buyer_new_share_amount" => $buyer_new_share_amount, 
+                        "seller_new_share_amount" => $seller_new_share_amount, 
+                        "shares_owned" => $_SESSION['shares_owned'], 
+                        "amount" => $row['quantity'], 
+                        "price" => $row['siliqas_requested'], 
+                        "order_id" => $row['id'], 
+                        "date_purchased" => $current_date, 
+                        "indicator" => "AUTO_SELL", 
+                        "buy_mode"  => $buy_mode
+                    )));
+
                     purchaseAskedPriceShare($connPDO,
                                             $row['user_username'],
                                             $user_username,
@@ -1033,11 +1059,13 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
                                             "AUTO_SELL",
                                             $buy_mode);
 
+                    hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $asked_price)." was transfered between buyer ".$row['user_username']." and seller ".$user_username);
                     updateBuyOrderQuantity($conn, $row['id'], 0);
 
                     //The return value should be the amount of share requested subtracted by the amount that 
                     //is automatically bought
                     $quantity = $quantity - $row['quantity'];
+                    hx_debug(HX::SELL_SHARES, "quantity has been reduced to ".$quantity." after auto selling to buy order ".$row['id']);
                 } else if ($quantity < $row['quantity']) {
                     $current_date_time = getCurrentDate("America/Edmonton");
                     $date_parser = dayAndTimeSplitter($current_date_time);
@@ -1065,6 +1093,27 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
 
                     $connPDO = connectPDO();
 
+                    hx_debug(HX::SELL_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
+                        "buyer" => $row['user_username'], 
+                        "seller" => $user_username, 
+                        "buyer_account_type" => $buyer_account_type, 
+                        "seller_account_type" => $seller_account_type, 
+                        "artist" => $artist_username, 
+                        "buyer_new_balance" => $buyer_new_balance, 
+                        "seller_new_balance" => $seller_new_balance, 
+                        "initial_pps" => $_SESSION['current_pps']['price_per_share'], 
+                        "new_pps" => $new_pps, 
+                        "buyer_new_share_amount" => $buyer_new_share_amount, 
+                        "seller_new_share_amount" => $seller_new_share_amount, 
+                        "shares_owned" => $_SESSION['shares_owned'], 
+                        "amount" => $quantity, 
+                        "price" => $row['siliqas_requested'], 
+                        "order_id" => $row['id'], 
+                        "date_purchased" => $current_date, 
+                        "indicator" => "AUTO_SELL", 
+                        "buy_mode"  => $buy_mode
+                    )));
+
                     purchaseAskedPriceShare($connPDO,
                                             $row['user_username'],
                                             $user_username,
@@ -1086,10 +1135,12 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
                                             $buy_mode);
 
                     $new_buy_order_quantity = $row['quantity'] - $quantity;
+                    hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $asked_price)." was transfered between buyer ".$row['user_username']." and seller ".$user_username);
                     updateBuyOrderQuantity($conn, $row['id'], $new_buy_order_quantity);
                     //The return value should be the amount of share requested subtracted by the amount that 
                     //is automatically bought
                     $quantity = $quantity - $row['quantity'];
+                    hx_debug(HX::SELL_SHARES, "quantity has been reduced to ".$quantity." after auto selling to buy order ".$row['id']);
                 }
             }
         }

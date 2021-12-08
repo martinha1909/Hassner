@@ -35,6 +35,23 @@
             $new_pps = $sell_orders[$i]->getSellingPrice();
             $amount_bought = $sell_orders[$i]->getNoOfShare();
 
+            $msg = "buyBackShares param: ".json_encode(array(
+                "index" => $i,
+                "buyer" => $_SESSION['username'],
+                "seller" => $sell_orders[$i]->getUser(),
+                "buyer_new_balance:" => $artist_new_balance,
+                "seller_new_balance: " => $seller_new_balance,
+                "seller_new_share_amount" => $seller_new_share_amount,
+                "buyer_new_share_amount" => $artist_new_share_amount,
+                "initial_pps" => $initial_pps,
+                "new_pps" => $new_pps,
+                "amount_bought" => $amount_bought,
+                "sell_order_id" => $sell_order_id,
+                "selling_price" => $sell_orders[$i]->getSellingPrice(),
+                "date_purchased" => $date_purchased
+            ));
+            hx_debug(HX::BUY_SHARES, $msg);
+
             $_SESSION['status'] = buyBackShares($connPDO,
                                                 $_SESSION['username'],
                                                 $sell_orders[$i]->getUser(),

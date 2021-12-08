@@ -10,6 +10,7 @@ if(!defined('HX_LOADED')){
         const BUY_SHARES = "buy_shares";
         const SELL_SHARES = "sell_shares";
         const SHARES_INJECT = "shares_inject";
+        const BUY_ORDER = "buy_order";
         const HELPER = "helper";
     }
     define('HX_LOADED', 1);
