@@ -814,10 +814,6 @@
             try {
                 $conn->beginTransaction();
 
-                // $stmt = $conn->prepare("UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = ?");
-                // $stmt->bindValue(1, $buyer);
-                // $stmt->execute(array($buyer));
-
                 //p2p trading
                 if($buyer_account_type == AccountType::User && $seller_account_type == AccountType::User)
                 {
@@ -875,23 +871,6 @@
                         $stmt->execute(array($new_pps, $row['id']));
                     }
                 }
-
-                //If the user is the seller, we want to decrease the total number of shares owned by the user
-                //But if the user is an artist, we want to reduce the amount of shares that was bought back,
-                //the total number of shares bought of that artist is still the same
-                // if($_SESSION['account_type'] == AccountType::User)
-                // {
-                //     $stmt = $conn->prepare("UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = ?");
-                //     $stmt->bindValue(1, $seller);
-                //     $stmt->execute(array($seller));
-                // }
-                // else if($_SESSION['account_type'] == AccountType::Artist && $buy_mode != ShareInteraction::BUY_BACK_SHARE)
-                // {
-                    // $stmt = $conn->prepare("UPDATE account SET shares_repurchase = shares_repurchase - ? WHERE username = ?");
-                    // $stmt->bindValue(1, $amount);
-                    // $stmt->bindValue(2, $seller);
-                    // $stmt->execute(array($amount, $seller));
-                // }
 
                 $stmt = $conn->prepare("UPDATE account SET balance = '$buyer_new_balance' WHERE username = ?");
                 $stmt->bindValue(1, $buyer);
