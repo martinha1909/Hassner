@@ -435,6 +435,15 @@
         }
     }
 
+    /**
+    * Gets the amount of shares a user has invested in an artist  
+    *
+    * @param  	user_username      targetted user to receive amount of shares from
+    *
+    * @param  	artist_username    targetted artist that the user has invested in
+    *
+    * @return 	ret	               number of shares that the user has invested in the artist
+    */
     function getShareInvestedInArtist($user_username, $artist_username)
     {
         $ret = 0;

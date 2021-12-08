@@ -54,6 +54,13 @@
         return $account;
     }
 
+    /**
+    * Retrieves an account type based on a given username  
+    *
+    * @param  	username      username of any user type
+    *
+    * @return 	ret	          a string represented the account type of the user
+    */
     function getAccountType($username)
     {
         $ret = "unable to determine account type";
@@ -69,6 +76,13 @@
         return $ret;
     }
 
+    /**
+    * Retrieves the total number of share distributed of an artist
+    *
+    * @param  	artist_username      username of an artist
+    *
+    * @return 	ret	                 the number of share distributed of an artist
+    */
     function getArtistShareDistributed($artist_username): int
     {
         $ret = 0;
