@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2021 at 09:19 PM
+-- Generation Time: Dec 08, 2021 at 02:08 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -86,14 +86,14 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `shares_repurchase`) VALUES
 ('21 Savage', 'artist', 'artist', 6, 0, 0, 0, 0, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('88Glam', 'artist', 'artist', 2, 1000, 10570, 0, 3268, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 10, 0, 0, 10570, 21),
+('88Glam', 'artist', 'artist', 2, 19995, 99995, 0, 20000, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 6, 0, 0, 100000, 5),
 ('daniel', 'user', 'user', 8, 0, 100000, 0, 0, 'iosrghn@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('Drake', 'artist', 'artist', 11, 0, 0, 0, 0, 'qwerty@gmail.com', 'Drake', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('kai', 'user', 'user', 4, 304, 96960, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('martin', 'user', 'user', 1, 753, 2470, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
-('NAV', 'artist', 'artist', 3, 0, 0, 0, 20000, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 10, 0, 0, 0, 0),
+('kai', 'user', 'user', 4, 10, 99950, 0, 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
+('martin', 'user', 'user', 1, 10, 99940, 0, 0, 'martinvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', 0, 0, 0, 0, 0),
+('NAV', 'artist', 'artist', 3, 0, 0, 0, 0, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
 ('riley', 'user', 'user', 7, 0, 100000, 0, 0, 'efin@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0),
-('vitor', 'user', 'user', 5, 0, 100000, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
+('vitor', 'user', 'user', 5, 19975, 9900120, 0, 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -152,8 +152,10 @@ CREATE TABLE `artist_shareholders` (
 --
 
 INSERT INTO `artist_shareholders` (`user_username`, `artist_username`, `shares_owned`) VALUES
-('kai', '88Glam', 304),
-('martin', '88Glam', 753);
+('88Glam', '88Glam', 15),
+('kai', '88Glam', 10),
+('martin', '88Glam', 10),
+('vitor', '88Glam', 19975);
 
 -- --------------------------------------------------------
 
@@ -379,41 +381,15 @@ CREATE TABLE `buy_history` (
 --
 
 INSERT INTO `buy_history` (`id`, `user_username`, `seller_username`, `artist_username`, `no_of_share_bought`, `price_per_share_when_bought`, `date_purchased`) VALUES
-(5, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:11:57'),
-(6, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:12:25'),
-(7, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:14:27'),
-(8, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:16:36'),
-(9, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:18:08'),
-(10, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:18:14'),
-(11, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:18:31'),
-(12, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:18:58'),
-(13, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:19:12'),
-(14, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:19:16'),
-(15, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:19:32'),
-(16, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:20:01'),
-(17, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:23:23'),
-(18, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:25:18'),
-(19, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:25:51'),
-(20, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:26:09'),
-(21, 'martin', '88Glam', '88Glam', 6, 10, '2021-11-29 18:27:16'),
-(22, 'martin', '88Glam', '88Glam', 1, 10, '2021-11-29 18:27:16'),
-(23, 'martin', '88Glam', '88Glam', 9, 10, '2021-11-29 18:27:37'),
-(24, 'kai', 'martin', '88Glam', 1, 10, '2021-11-30 19:04:31'),
-(25, 'kai', 'martin', '88Glam', 1, 10, '2021-11-30 19:04:31'),
-(26, 'kai', 'martin', '88Glam', 22, 10, '2021-11-30 19:04:31'),
-(29, 'martin', '88Glam', '88Glam', 47, 10, '2021-11-30 19:36:07'),
-(30, 'martin', '88Glam', '88Glam', 10, 10, '2021-11-30 19:36:07'),
-(31, 'kai', '88Glam', '88Glam', 91, 10, '2021-11-30 19:36:07'),
-(32, 'martin', '88Glam', '88Glam', 300, 10, '2021-11-30 19:40:00'),
-(33, 'martin', '88Glam', '88Glam', 300, 10, '2021-11-30 19:40:03'),
-(34, 'martin', '88Glam', '88Glam', 252, 10, '2021-11-30 19:40:04'),
-(35, 'kai', 'martin', '88Glam', 551, 10, '2021-11-30 19:41:37'),
-(36, 'martin', 'kai', '88Glam', 48, 10, '2021-11-30 19:42:44'),
-(37, 'martin', 'kai', '88Glam', 200, 10, '2021-11-30 19:42:44'),
-(38, 'martin', 'kai', '88Glam', 100, 10, '2021-11-30 19:43:04'),
-(39, 'martin', 'kai', '88Glam', 14, 10, '2021-11-30 19:43:04'),
-(40, 'kai', 'martin', '88Glam', 1, 10, '2021-11-30 20:34:07'),
-(41, 'kai', 'martin', '88Glam', 1, 10, '2021-11-30 20:34:23');
+(52, 'martin', '88Glam', '88Glam', 5, 5, '2021-12-07 17:28:46'),
+(53, 'vitor', '88Glam', '88Glam', 19995, 5, '2021-12-07 17:29:25'),
+(54, 'kai', 'martin', '88Glam', 5, 5, '2021-12-07 17:30:09'),
+(55, 'kai', 'vitor', '88Glam', 5, 5, '2021-12-07 17:32:38'),
+(56, '88Glam', 'vitor', '88Glam', 10, 5, '2021-12-08 01:50:32'),
+(57, '88Glam', 'vitor', '88Glam', 1, 5, '2021-12-08 01:52:15'),
+(58, '88Glam', 'vitor', '88Glam', 1, 5, '2021-12-08 01:53:22'),
+(59, '88Glam', 'vitor', '88Glam', 3, 5, '2021-12-08 01:54:27'),
+(60, 'martin', '88Glam', '88Glam', 10, 5, '2021-12-07 18:04:46');
 
 -- --------------------------------------------------------
 
@@ -429,17 +405,6 @@ CREATE TABLE `buy_order` (
   `siliqas_requested` float NOT NULL,
   `date_posted` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `buy_order`
---
-
-INSERT INTO `buy_order` (`id`, `user_username`, `artist_username`, `quantity`, `siliqas_requested`, `date_posted`) VALUES
-(15, 'martin', '88Glam', 286, 10, '2021-11-30 19:40:04'),
-(16, 'martin', '88Glam', 300, 10, '2021-11-30 19:40:04'),
-(17, 'martin', '88Glam', 300, 10, '2021-11-30 19:40:04'),
-(18, 'martin', '88Glam', 300, 10, '2021-11-30 19:40:04'),
-(19, 'kai', '88Glam', 255, 10, '2021-11-30 19:41:37');
 
 -- --------------------------------------------------------
 
@@ -458,14 +423,6 @@ CREATE TABLE `campaign` (
   `eligible_participants` int(11) NOT NULL,
   `winner` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `campaign`
---
-
-INSERT INTO `campaign` (`id`, `artist_username`, `offering`, `date_posted`, `date_expires`, `type`, `minimum_ethos`, `eligible_participants`, `winner`) VALUES
-(1, '88Glam', 'backstage', '2021-11-15 16:45:07', '2021-11-25 16:44:00', 'benchmark', 1, 0, NULL),
-(3, '88Glam', 'merchandise', '2021-11-15 17:10:41', '0000-00-00 00:00:00', 'raffle', 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -531,28 +488,7 @@ CREATE TABLE `inject_history` (
 --
 
 INSERT INTO `inject_history` (`id`, `artist_username`, `amount`, `comment`, `date_injected`) VALUES
-(1, '88Glam', 2000, 'IPO', '2021-11-12 16:54:18'),
-(2, 'NAV', 20000, 'IPO', '2021-11-12 17:04:14'),
-(3, '88Glam', 10, 'added 10 more shares', '2021-11-15 15:40:39'),
-(9, '88Glam', 22, 'This is a test', '2021-11-28 18:08:53'),
-(10, '88Glam', 21, 'This is a test', '2021-11-28 18:15:27'),
-(11, '88Glam', 21, 'This is a test', '2021-11-28 18:16:29'),
-(12, '88Glam', 21, 'This is a test', '2021-11-28 18:16:59'),
-(13, '88Glam', 21, 'This is a test', '2021-11-28 18:17:37'),
-(14, '88Glam', 21, 'This is a test', '2021-11-28 18:18:14'),
-(15, '88Glam', 21, 'This is a test', '2021-11-28 18:18:42'),
-(16, '88Glam', 21, 'This is a test', '2021-11-28 18:20:47'),
-(17, '88Glam', 1, 'added 1', '2021-11-28 18:23:47'),
-(18, '88Glam', 10, 'added 10 more share', '2021-11-28 18:24:47'),
-(19, '88Glam', 1, 'This is a test', '2021-11-28 18:34:20'),
-(20, '88Glam', 1, 'added 1 more share', '2021-11-28 18:35:25'),
-(21, '88Glam', 1, 'added 1 more share', '2021-11-28 18:36:11'),
-(22, '88Glam', 1, 'added 1 more share', '2021-11-28 18:36:33'),
-(23, '88Glam', 1, 'added 1 more share', '2021-11-28 18:42:03'),
-(24, '88Glam', 1, 'added 1', '2021-11-28 18:44:23'),
-(25, '88Glam', 1, 'added 1', '2021-11-28 18:53:36'),
-(26, '88Glam', 21, 'This is a test', '2021-11-28 19:01:28'),
-(27, '88Glam', 1000, 'Injected 1000 shares', '2021-11-30 19:36:07');
+(36, '88Glam', 20000, 'IPO', '2021-12-07 17:28:29');
 
 -- --------------------------------------------------------
 
@@ -566,8 +502,16 @@ CREATE TABLE `sell_order` (
   `artist_username` varchar(50) NOT NULL,
   `selling_price` float NOT NULL,
   `no_of_share` int(11) NOT NULL,
+  `is_from_injection` tinyint(1) NOT NULL,
   `date_posted` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sell_order`
+--
+
+INSERT INTO `sell_order` (`id`, `user_username`, `artist_username`, `selling_price`, `no_of_share`, `is_from_injection`, `date_posted`) VALUES
+(38, '88Glam', '88Glam', 6, 5, 0, '2021-12-07 17:58:22');
 
 --
 -- Indexes for dumped tables
@@ -675,13 +619,13 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT for table `buy_history`
 --
 ALTER TABLE `buy_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `buy_order`
 --
 ALTER TABLE `buy_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `campaign`
@@ -693,7 +637,7 @@ ALTER TABLE `campaign`
 -- AUTO_INCREMENT for table `debug_log`
 --
 ALTER TABLE `debug_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `error_log`
@@ -705,19 +649,19 @@ ALTER TABLE `error_log`
 -- AUTO_INCREMENT for table `info_log`
 --
 ALTER TABLE `info_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `inject_history`
 --
 ALTER TABLE `inject_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `sell_order`
 --
 ALTER TABLE `sell_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- Constraints for dumped tables
