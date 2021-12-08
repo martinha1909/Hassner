@@ -39,7 +39,7 @@
                                     $current_date);
 
         //IPO is considered a sell order as well
-        postSellOrder($conn, $_SESSION['username'], $_SESSION['username'], $shares_distributing, $initial_pps, true, $current_date);
+        postSellOrder($conn, $_SESSION['username'], $_SESSION['username'], $shares_distributing, $initial_pps, $current_date, true);
 
         $_SESSION['dependencies'] = "FRONTEND";
 

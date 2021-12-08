@@ -10,7 +10,7 @@
     $connPDO = connectPDO();
     $conn = connect();
     $sell_orders = $_SESSION['repurchase_sell_orders'];
-    $date_purchased = dayAndTimeSplitter((getCurrentDate("America/Edmonton")));
+    $date_purchased = date('Y-m-d H:i:s');;
 
     if(sizeof($sell_orders) > 0)
     {
@@ -47,8 +47,7 @@
                                                 $amount_bought,
                                                 $sell_order_id,
                                                 $sell_orders[$i]->getSellingPrice(),
-                                                $date_purchased[0],
-                                                $date_purchased[1]);
+                                                $date_purchased);
 
             refreshSellOrderTable();
             refreshBuyOrderTable();

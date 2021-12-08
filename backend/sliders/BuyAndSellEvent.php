@@ -103,8 +103,8 @@
                                   $_SESSION['selected_artist'], 
                                   $new_quantity, 
                                   $selling_price,
-                                  false, 
-                                  $current_date);
+                                  $current_date,
+                                  false);
                 }
 
                 refreshBuyOrderTable();

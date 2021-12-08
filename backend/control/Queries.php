@@ -853,6 +853,12 @@
                         $stmt->bindValue(1, $amount);
                         $stmt->bindValue(2, $seller);
                         $stmt->execute(array($amount, $seller));
+
+                        //Increase the total number of shares bought of that artist accross all users since the artist no longer holds shares of himself
+                        $stmt = $conn->prepare("UPDATE account SET Shares = Shares + ? WHERE username = ?");
+                        $stmt->bindValue(1, $amount);
+                        $stmt->bindValue(2, $seller);
+                        $stmt->execute(array($amount, $seller));
                     }
                 }
 
@@ -971,7 +977,7 @@
             return $status;
         }
 
-        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $buyer_new_share_amount, $initial_pps, $new_pps, $amount_bought, $sell_order_id, $selling_price, $date_purchased, $time_purchased)
+        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $buyer_new_share_amount, $initial_pps, $new_pps, $amount_bought, $sell_order_id, $selling_price, $date_purchased)
         {
             $status = 0;
 
@@ -989,6 +995,10 @@
                 $stmt = $conn->prepare("UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = ?");
                 $stmt->bindValue(1, $seller_username);
                 $stmt->execute(array($seller_username));
+
+                $stmt = $conn->prepare("UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = ?");
+                $stmt->bindValue(1, $artist_username);
+                $stmt->execute(array($artist_username));
                 
                 $stmt = $conn->prepare("UPDATE account SET price_per_share = '$new_pps' WHERE username = ?");
                 $stmt->bindValue(1, $artist_username);
@@ -999,16 +1009,15 @@
                 $stmt->bindValue(2, $artist_username);
                 $stmt->execute(array($amount_bought, $artist_username));
 
-                $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
-                                        VALUES(?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased)
+                                        VALUES(?, ?, ?, ?, ?, ?)");
                 $stmt->bindValue(1, $artist_username);
                 $stmt->bindValue(2, $seller_username);
                 $stmt->bindValue(3, $artist_username);
                 $stmt->bindValue(4, $amount_bought);
                 $stmt->bindValue(5, $initial_pps);
                 $stmt->bindValue(6, $date_purchased);
-                $stmt->bindValue(7, $time_purchased);
-                $stmt->execute(array($artist_username, $seller_username, $artist_username, $amount_bought, $initial_pps, $date_purchased, $time_purchased));
+                $stmt->execute(array($artist_username, $seller_username, $artist_username, $amount_bought, $initial_pps, $date_purchased));
 
                 $search_conn = connect();
                 $res_buyer = searchSharesInArtistShareHolders($search_conn, $artist_username, $artist_username);

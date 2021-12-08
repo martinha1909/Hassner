@@ -35,9 +35,9 @@
                                                 $_SESSION['username'], 
                                                 $_SESSION['username'], 
                                                 $new_quantity, 
-                                                $asked_price, 
-                                                false,
-                                                $current_date);
+                                                $asked_price,
+                                                $current_date,
+                                                false);
 
             refreshSellOrderTable();
             refreshBuyOrderTable();

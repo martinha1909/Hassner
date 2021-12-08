@@ -14,8 +14,7 @@
     {
         $asked_price = key($_POST['asked_price']);
     }
-    $current_date_time = getCurrentDate("America/Edmonton");
-    $date_parser = dayAndTimeSplitter($current_date_time);
+    $current_date = date('Y-m-d H:i:s');
 
     //not enough siliqas
     if($_SESSION['user_balance'] < ($amount_bought * $_SESSION['purchase_price']))
@@ -78,8 +77,7 @@
                                                     $amount_bought,
                                                     $_SESSION['seller_toggle'],
                                                     $sell_order_info['selling_price'],
-                                                    $date_parser[0],
-                                                    $date_parser[1]);
+                                                    $current_date);
 
                 refreshSellOrderTable();
                 refreshBuyOrderTable();
