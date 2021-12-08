@@ -8,6 +8,8 @@ if(!defined('HX_LOADED')){
         const QUERY = "query";
         const CURRENCY = "currency";
         const BUY_SHARES = "buy_shares";
+        const SELL_SHARES = "sell_shares";
+        const SHARES_INJECT = "shares_inject";
         const HELPER = "helper";
     }
     define('HX_LOADED', 1);

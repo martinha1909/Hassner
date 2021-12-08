@@ -671,9 +671,13 @@
                 
                 $connPDO->commit();
                 $status = StatusCodes::Success;
+
+                $msg = "Artist ".$artist_username." went IPO by distributing ".$share_distributing. "shares!";
+                hx_info(HX::SHARES_INJECT, $msg);
             } catch (PDOException $e) {
                 $connPDO->rollBack();
-                echo "Failed: " . $e->getMessage();
+                $msg = "db error occured with message: " . $e->getMessage();
+                hx_error(HX::DB, $msg);
 
                 $status = StatusCodes::ErrGeneric;
             }
@@ -1047,9 +1051,13 @@
 
                 $conn->commit();
                 $status = StatusCodes::Success;
+
+                $msg = "Artist ".$artist_username." just bought back ".$amount_bought." shares from user ".$seller_username;
+                hx_info(HX::BUY_SHARES, $msg);
             } catch (PDOException $e) {
                 $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
+                $msg = "db error occured, reverting operation with error message: ".$e->getMessage();
+                hx_error(HX::DB, $msg);
 
                 $status = StatusCodes::ErrGeneric;
             }
@@ -1162,10 +1170,14 @@
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;
+                $msg = "a sell order to sell shares for artist ".$artist_username." is posted";
+                hx_info(HX::SELL_SHARES, $msg);
             }
             else
             {
                 $status = StatusCodes::ErrGeneric;
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
             }
             return $status;
         }
