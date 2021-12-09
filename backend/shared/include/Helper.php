@@ -71,9 +71,11 @@
         $conn = connect();
 
         $result = getAccountTypeFromUsername($conn, $username);
+        hx_debug(HX::QUERY, "getAccountTypeFromUsername returned ".$result->num_rows." entries");
         if($result->num_rows > 0)
         {
             $account_info = $result->fetch_assoc();
+            hx_debug(HX::QUERY, "account_info data: ".json_encode($account_info));
             $ret = $account_info['account_type'];
         }
 
@@ -93,9 +95,11 @@
         $conn = connect();
 
         $res = searchNumberOfShareDistributed($conn, $artist_username);
+        hx_debug(HX::QUERY, "searchNumberOfShareDistributed returned ".$res->num_rows." entries");
         if($res->num_rows > 0)
         {
             $share_distributed = $res->fetch_assoc();
+            hx_debug(HX::QUERY, "share_distributed data: ".json_encode($share_distributed));
             $ret = $share_distributed['Share_Distributed'];
         }
 
@@ -120,6 +124,7 @@
         hx_debug(HX::HELPER, $msg);
 
         $balance = $result->fetch_assoc();     
+        hx_debug(HX::QUERY, "balance data: ".json_encode($balance));
 
         $ret = $balance['balance'];   
 

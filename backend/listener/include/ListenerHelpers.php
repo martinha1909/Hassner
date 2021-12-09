@@ -103,8 +103,10 @@
     {
         $conn = connect();
         $res = searchNumberOfShareDistributed($conn, $artist_username);
+        hx_debug(HX::QUERY, "searchNumberOfShareDistributed returned ".$res->num_rows." entries");
 
         $ret = $res->fetch_assoc();
+        hx_debug(HX::QUERY, "ret data: ".json_encode($ret));
 
         return $ret['Share_Distributed'];
     }
@@ -450,9 +452,11 @@
         $conn = connect();
 
         $res = searchSharesInArtistShareHolders($conn, $user_username, $artist_username);
+        hx_debug(HX::QUERY, "searchSharesInArtistShareHolders returned ".$res->num_rows." entries");
         if($res->num_rows > 0)
         {
             $shares_owned = $res->fetch_assoc();
+            hx_debug(HX::QUERY, "shares_owned data: ".json_encode($shares_owned));
             $ret = $shares_owned['shares_owned'];
         }
 
@@ -475,10 +479,13 @@
         $ret = false;
 
         $artist_share_distributed = totalShareDistributed($artist_username);
+        hx_debug(HX::HELPER, "artist_share_distributed is ".$artist_share_distributed);
+
         //Trivial case, if artist hasn't gone IPO then users can't create buy orders
         if($artist_share_distributed > 0)
         {
             $num_of_shares_invested = getShareInvestedInArtist($user_username, $artist_username);
+            hx_debug(HX::HELPER, "num_of_shares_invested is ".$num_of_shares_invested);
             //Trivial case, if artist has gone IPO and user hasn't invested, then they can create a buy order
             if($num_of_shares_invested == 0)
             {

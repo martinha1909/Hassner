@@ -463,22 +463,38 @@
 
         function searchSellOrderByArtist($conn, $artist_username)
         {
+            $result = 0;
+
             $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, is_from_injection, date_posted FROM sell_order WHERE artist_username = ? ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
-            $stmt->execute();
-            $result = $stmt->get_result();
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
 
             return $result;
         }
 
         function searchSellOrdersIDFromInjection($conn, $artist_username)
         {
+            $result = 0;
+
             $sql = "SELECT id FROM sell_order WHERE artist_username = ? AND is_from_injection = 1 ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
-            $stmt->execute();
-            $result = $stmt->get_result();
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
 
             return $result;
         }
@@ -714,9 +730,22 @@
         function updateShareDistributed($conn, $artist_username, $new_share_distributed, $added_shares, $comment, $date)
         {
             $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username='$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql) == true)
+            {
+                hx_info(HX::SHARES_INJECT, "artist ".$artist_username." just injected ".$added_shares." with comment: ".$comment);
+                hx_debug(HX::SHARES_INJECT, "addToInjectionHistory params: ".json_encode(array(
+                    "artist_username" => $artist_username, 
+                    "share_distributing" => $added_shares, 
+                    "comment" => $comment, 
+                    "date" => $date
+                )));
+                addToInjectionHistory($conn, $artist_username, $added_shares, $comment, $date);
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
 
-            addToInjectionHistory($conn, $artist_username, $added_shares, $comment, $date);
         }
 
         function saveUserPaymentInfo($conn, $username, $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number)
@@ -960,9 +989,10 @@
 
                 $conn->commit();
                 $status = StatusCodes::Success;
+                hx_info(HX::BUY_SHARES, "buyer ".$buyer." purchased ".$amount." shares from ".$seller." for $".$price);
             } catch (PDOException $e) {
                 $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
+                hx_error(HX::DB, "Failed: " . $e->getMessage());
 
                 $status = StatusCodes::ErrGeneric;
             }
@@ -1145,6 +1175,7 @@
             else
             {
                 $status = StatusCodes::ErrGeneric;
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
             }
             return $status;
         }

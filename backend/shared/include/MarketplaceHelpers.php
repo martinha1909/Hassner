@@ -33,7 +33,9 @@ function getArtistPricePerShare($artist_username): float
     $conn = connect();
 
     $result = searchAccount($conn, $artist_username);
+    hx_debug(HX::QUERY, "searchAccount returned ".$result->num_rows." entries");
     $price_per_share = $result->fetch_assoc();
+    hx_debug(HX::QUERY, "price_per_share data: ".json_encode($price_per_share));
         
     $ret = $price_per_share['price_per_share'];
 
@@ -105,12 +107,15 @@ function fetchMarketPrice($artist_username)
 //gets all the users that has lowest price listed with the passed artist_username param
 function fetchAskedPrice($artist_username)
 {
+    $debug_index = 0;
     $ret = array();
     $conn = connect();
     $result = searchSellOrderByArtist($conn, $artist_username);
+    hx_debug(HX::QUERY, "searchSellOrderByArtist returned ".$result->num_rows." entries");
     //loading up data so all the arrays have corresponding indices that map to the database
     while ($row = $result->fetch_assoc()) 
     {
+        hx_debug(HX::QUERY, "index ".$debug_index." row data ".json_encode(($row)));
         if ($row['no_of_share'] > 0 && (strcmp($row['user_username'], $_SESSION['username']) != 0)) 
         {
             $sell_order = new SellOrder($row['id'], 
@@ -122,6 +127,7 @@ function fetchAskedPrice($artist_username)
 
             array_push($ret, $sell_order);
         }
+        $debug_index++;
     }
     SellOrder::sort($ret, 0, (sizeof($ret) - 1), "ASCENDING", "PRICE");
 
@@ -804,6 +810,8 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
     $current_date = date('Y-m-d H:i:s');
 
     $res = searchSellOrderByArtist($conn, $artist_username);
+    hx_debug(HX::QUERY, "searchSellOrderByArtist returned ".$res->num_rows." entries");
+
     while($row = $res->fetch_assoc())
     {
         //Assuming p2p trading
@@ -826,6 +834,7 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
 
             if($request_price == $row['selling_price'])
             {
+                hx_debug(HX::SELL_SHARES, "Matching buy order id: ".$row['id']." for price $".$request_price);
                 if($request_quantity >= $row['no_of_share'])
                 {
                     $result = searchAccount($conn, $row['user_username']);
@@ -852,6 +861,27 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
 
                     $connPDO = connectPDO();
 
+                    hx_debug(HX::SELL_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
+                        "buyer" => $_SESSION['username'], 
+                        "seller" => $row['user_username'], 
+                        "buyer_account_type" => $buyer_account_type, 
+                        "seller_account_type" => $seller_account_type, 
+                        "artist" => $_SESSION['selected_artist'], 
+                        "buyer_new_balance" => $buyer_new_balance, 
+                        "seller_new_balance" => $seller_new_balance, 
+                        "initial_pps" => $_SESSION['current_pps']['price_per_share'], 
+                        "new_pps" => $new_pps, 
+                        "buyer_new_share_amount" => $buyer_new_share_amount, 
+                        "seller_new_share_amount" => $seller_new_share_amount, 
+                        "shares_owned" => $_SESSION['shares_owned'], 
+                        "amount" => $row['no_of_share'], 
+                        "price" => $row['selling_price'], 
+                        "order_id" => $row['id'], 
+                        "date_purchased" => $current_date, 
+                        "indicator" => "AUTO_PURCHASE", 
+                        "buy_mode"  => $buy_mode
+                    )));
+
                     purchaseAskedPriceShare($connPDO, 
                                             $_SESSION['username'], 
                                             $row['user_username'], 
@@ -872,9 +902,13 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
                                             "AUTO_PURCHASE",
                                             $buy_mode);
 
+                    hx_info(HX::SELL_SHARES, "Auto purchasing sell order id ".$row['id'].", amount $".($row['no_of_share'] * $request_price)." was transfered between buyer ".$_SESSION['username']." and seller ".$row['user_username']);
+                    
+
                     //The return value should be the amount of share requested subtracted by the amount that 
                     //is automatically bought
                     $request_quantity = $request_quantity - $row['no_of_share'];
+                    hx_debug(HX::SELL_SHARES, "quantity has been reduced to ".$request_quantity." after auto selling to buy order ".$row['id']);
                 }
                 else if($request_quantity < $row['no_of_share'])
                 {
@@ -902,6 +936,27 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
 
                     $connPDO = connectPDO();
 
+                    hx_debug(HX::SELL_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
+                        "buyer" => $_SESSION['username'], 
+                        "seller" => $row['user_username'], 
+                        "buyer_account_type" => $buyer_account_type, 
+                        "seller_account_type" => $seller_account_type, 
+                        "artist" => $_SESSION['selected_artist'], 
+                        "buyer_new_balance" => $buyer_new_balance, 
+                        "seller_new_balance" => $seller_new_balance, 
+                        "initial_pps" => $_SESSION['current_pps']['price_per_share'], 
+                        "new_pps" => $new_pps, 
+                        "buyer_new_share_amount" => $buyer_new_share_amount, 
+                        "seller_new_share_amount" => $seller_new_share_amount, 
+                        "shares_owned" => $_SESSION['shares_owned'], 
+                        "amount" => $request_quantity, 
+                        "price" => $row['selling_price'], 
+                        "order_id" => $row['id'], 
+                        "date_purchased" => $current_date, 
+                        "indicator" => "AUTO_PURCHASE", 
+                        "buy_mode"  => $buy_mode
+                    )));
+
                     purchaseAskedPriceShare($connPDO, 
                                             $_SESSION['username'], 
                                             $row['user_username'], 
@@ -922,9 +977,11 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
                                             "AUTO_PURCHASE",
                                             $buy_mode);
 
+                    hx_info(HX::SELL_SHARES, "Auto purchasing sell order id ".$row['id'].", amount $".($row['no_of_share'] * $request_price)." was transfered between buyer ".$_SESSION['username']." and seller ".$row['user_username']);
                     //The return value should be the amount of share requested subtracted by the amount that 
                     //is automatically bought
                     $request_quantity = $request_quantity - $row['no_of_share'];
+                    hx_debug(HX::SELL_SHARES, "quantity has been reduced to ".$request_quantity." after auto selling to buy order ".$row['id']);
                 }
             }
             //Skip the sell orders that do not meet the requested price
@@ -1059,7 +1116,7 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
                                             "AUTO_SELL",
                                             $buy_mode);
 
-                    hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $asked_price)." was transfered between buyer ".$row['user_username']." and seller ".$user_username);
+                    hx_info(HX::BUY_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $asked_price)." was transfered between buyer ".$row['user_username']." and seller ".$user_username);
                     updateBuyOrderQuantity($conn, $row['id'], 0);
 
                     //The return value should be the amount of share requested subtracted by the amount that 
