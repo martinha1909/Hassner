@@ -6,9 +6,11 @@
     include '../../backend/constants/BalanceOption.php';
     include '../../backend/constants/EthosOption.php';
     include '../../backend/constants/GraphOption.php';
+    include '../../backend/constants/Timezone.php';
 
     function hassnerInit()
     {
+        date_default_timezone_set(Timezone::MST);
         $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['display'] = MenuOption::None;
         $_SESSION['sort_type'] = 0;
@@ -52,16 +54,27 @@
         return $account;
     }
     
+    /**
+    * Retrieves account balance of a specified user
+    *
+    * @param  	user_username	    username to retrieve account balance from
+    *
+    * @return 	ret	                account balance of the given user
+    */
     function getUserBalance($user_username)
     {
+        $ret = 0;
         $conn = connect();
+
         $result = searchAccount($conn, $user_username);
         $msg = "searchAccount returned ".$result->num_rows." rows";
         hx_debug(HX::HELPER, $msg);
 
         $balance = $result->fetch_assoc();     
 
-        return $balance['balance'];   
+        $ret = $balance['balance'];   
+
+        return $ret;
     }
 
     function convertToSiliqas($amount, $conversion_rate, $currency_type)
@@ -105,6 +118,14 @@
         return false;
     }
 
+    /**
+    * Retrieves the number of available shares for purchase of a given artist
+    *
+    * @param  	artist_name	       artist username to retrieve amount of available shares from
+    *
+    *
+    * @return 	ret	               amount of available shares the given artist
+    */
     function calculateArtistAvailableShares($artist_name)
     {
         $ret = 0;

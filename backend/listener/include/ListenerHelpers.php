@@ -124,8 +124,8 @@
             else
             {
                 $relative_time_posted = toRelativeTime($current_date, 
-                                                       $row['date_posted'], 
-                                                       $row['time_posted']);
+                                                       explode(" ", $row['date_posted'])[0], 
+                                                       explode(" ", $row['date_posted'])[1]);
 
                 array_push($artist_usernames, $row['artist_username']);
                 array_push($quantities_requested, $row['quantity']);
@@ -183,15 +183,6 @@
             $all_shares[($j+1)] = $key;
             $users[($j+1)] = $key2;
         }        
-    }
-
-    function getArtistPricePerShare($artist_username)
-    {
-        $conn = connect();
-        $result = searchAccount($conn, $artist_username);
-        $price_per_share = $result->fetch_assoc();
-         
-        return $price_per_share['price_per_share'];
     }
 
     function getArtistCurrentRate($artist_username)
@@ -253,134 +244,6 @@
                  </tr>';
             $id++;
         }        
-    }
-
-    function autoPurchase($conn, $user_username, $artist_username, $request_quantity, $request_price)
-    {
-        $static_quantity_var = $request_quantity;
-
-        $res = searchSellOrderByArtist($conn, $artist_username);
-        while($row = $res->fetch_assoc())
-        {
-            if($request_quantity <= 0)
-            {
-                break;
-            }
-            //Skip your own sell order
-            if($row['user_username'] == $user_username)
-            {
-                continue;
-            }
-            else
-            {
-                if($request_price == $row['selling_price'])
-                {
-                    if($request_quantity >= $row['no_of_share'])
-                    {
-                        $current_date_time = getCurrentDate("America/Edmonton");
-                        $date_parser = dayAndTimeSplitter($current_date_time);
-
-                        $result = searchAccount($conn, $row['user_username']);
-                        $seller_account_info = $result->fetch_assoc();
-
-                        $res_1 = searchAccount($conn, $user_username);
-                        $buyer_account_info = $res_1->fetch_assoc();
-
-                        //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
-                        $seller_new_balance = $seller_account_info['balance'] + ($row['no_of_share'] * $row['selling_price']); 
-
-                        //subtracts siliqas from the user
-                        $buyer_new_balance = $buyer_account_info['balance'] - ($row['no_of_share'] * $row['selling_price']);
-
-                        $seller_new_share_amount = $seller_account_info['Shares'] - $row['no_of_share'];
-    
-                        $buyer_new_share_amount = $buyer_account_info['Shares'] + $row['no_of_share'];
-
-                        //In the case of buying in asked price, the new market price will become the last purchased price
-                        $new_pps = $row['selling_price'];
-
-                        $connPDO = connectPDO();
-
-                        purchaseAskedPriceShare($connPDO, 
-                                                $_SESSION['username'], 
-                                                $row['user_username'], 
-                                                $_SESSION['selected_artist'],
-                                                $buyer_new_balance, 
-                                                $seller_new_balance, 
-                                                $_SESSION['current_pps']['price_per_share'], 
-                                                $new_pps, 
-                                                $buyer_new_share_amount, 
-                                                $seller_new_share_amount,
-                                                $_SESSION['shares_owned'], 
-                                                $row['no_of_share'],
-                                                $row['selling_price'],
-                                                $row['id'],
-                                                $date_parser[0],
-                                                $date_parser[1],
-                                                "AUTO_PURCHASE");
-
-                        //The return value should be the amount of share requested subtracted by the amount that 
-                        //is automatically bought
-                        $request_quantity = $request_quantity - $row['no_of_share'];
-                    }
-                    else if($request_quantity < $row['no_of_share'])
-                    {
-                        $current_date_time = getCurrentDate("America/Edmonton");
-                        $date_parser = dayAndTimeSplitter($current_date_time);
-
-                        $result = searchAccount($conn, $row['user_username']);
-                        $seller_account_info = $result->fetch_assoc();
-
-                        $res_1 = searchAccount($conn, $user_username);
-                        $buyer_account_info = $res_1->fetch_assoc();
-
-                        //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
-                        $seller_new_balance = $seller_account_info['balance'] + ($request_quantity * $row['selling_price']); 
-
-                        //subtracts siliqas from the user
-                        $buyer_new_balance = $buyer_account_info['balance'] - ($request_quantity * $row['selling_price']);
-
-                        $seller_new_share_amount = $seller_account_info['Shares'] - $request_quantity;
-    
-                        $buyer_new_share_amount = $buyer_account_info['Shares'] + $request_quantity;
-
-                        //In the case of buying in asked price, the new market price will become the last purchased price
-                        $new_pps = $row['selling_price'];
-
-                        $connPDO = connectPDO();
-
-                        purchaseAskedPriceShare($connPDO, 
-                                                $_SESSION['username'], 
-                                                $row['user_username'], 
-                                                $_SESSION['selected_artist'],
-                                                $buyer_new_balance, 
-                                                $seller_new_balance, 
-                                                $_SESSION['current_pps']['price_per_share'], 
-                                                $new_pps, 
-                                                $buyer_new_share_amount, 
-                                                $seller_new_share_amount,
-                                                $_SESSION['shares_owned'], 
-                                                $request_quantity,
-                                                $row['selling_price'],
-                                                $row['id'],
-                                                $date_parser[0],
-                                                $date_parser[1],
-                                                "AUTO_PURCHASE");
-
-                        //The return value should be the amount of share requested subtracted by the amount that 
-                        //is automatically bought
-                        $request_quantity = $request_quantity - $row['no_of_share'];
-                    }
-                }
-                //Skip the sell orders that do not meet the requested price
-                else
-                {
-                    continue;
-                }
-            }
-        }
-
-        return $request_quantity;
     }
 
     function getAllInvestedArtists($user_username)
