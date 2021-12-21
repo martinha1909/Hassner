@@ -13,12 +13,12 @@
     if($result->num_rows > 0)
     {
         $_SESSION['dependencies'] = "FRONTEND";
-        // header("Location: ../../frontend/listener/PersonalPage.php");
+        header("Location: ../../frontend/listener/PersonalPage.php");
     }
     else
     {
         $_SESSION['status'] = StatusCodes::ErrGeneric;
         $_SESSION['dependencies'] = "FRONTEND";
-        // header("Location: ../../frontend/listener/listener.php");
+        header("Location: ../../frontend/listener/listener.php");
     }
 ?>
