@@ -3,6 +3,7 @@ $( function() {
   var min_limit = 0;
   var max_num_of_shares = 0;
   var sellable_shares = 0;
+  var step_value = 0.5;
   var url_max_limit = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/StockPrice.php";
   var url_max_num_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/MaxNumOfShares.php";
   var url_sellable_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/SellableShares.php";
@@ -25,6 +26,10 @@ $( function() {
       max_limit = parseFloat((data*2).toFixed(1));
       //We allow users to set the min limit to be half the current stock price
       min_limit = parseFloat((data/2).toFixed(1));
+      if(max_limit < 1 || min_limit < 1)
+      {
+        step_value = 0.05;
+      }
     },
     error : function(data){
 
@@ -37,11 +42,12 @@ $( function() {
       min: min_limit,
       max: max_limit,
       values: [ min_limit, max_limit ],
-      step:0.5,
+      step: step_value,
       slide: function( event, ui ) {
         min = ui.values[0];
         max = ui.values[1];
         if(min == min_limit && max == max_limit){
+          console.log(max);
           $("#buy_tip").text("Without limits the next available share(s) will be purchased at market price");
           $("#buy_cost").val("$" + $("#buy_num").slider("value")*$("#pps").text());
         }
@@ -65,6 +71,7 @@ $( function() {
       min: min_limit,
       max: max_limit,
       values: [ min_limit, max_limit ],
+      step: step_value,
       slide: function( event, ui ) {
         min = ui.values[0];
         max = ui.values[1];

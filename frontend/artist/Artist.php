@@ -472,7 +472,7 @@
                                             <div class="wrapper-searchbar">
                                                 <div class="container-searchbar mx-auto">
                                                     <label>
-                                                        <form action="../../backend/shared/SellOrderBackend.php" method="post">
+                                                        <form action="../../backend/artist/SellOrderBackend.php" method="post">
                                                             <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
                                                             <p>Quantity: <span id="demo"></span></p>
                                                             <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter price per share">

@@ -30,14 +30,33 @@
 
         if($_SESSION['account_type'] == AccountType::Artist)
         {
-            $new_quantity = autoSell($_SESSION['username'], $_SESSION['username'], $asked_price, $quantity, $current_date, ShareInteraction::SELL);
+            $msg = "autoSell param: ".json_encode(array(
+                "user_username" => $_SESSION['username'],
+                "artist_username" => $_SESSION['username'],
+                "asked_price" => $asked_price,
+                "quantity:" => $quantity,
+                "current_date: " => $current_date,
+                "is_from_injection" => false
+            ));
+            hx_debug(HX::SELL_SHARES, $msg);
+            $new_quantity = autoSell($_SESSION['username'], $_SESSION['username'], $asked_price, $quantity, $current_date, false);
+
+            $msg = "postSellOrder param: ".json_encode(array(
+                "user_username" => $_SESSION['username'],
+                "artist_username" => $_SESSION['username'],
+                "quantity" => $new_quantity,
+                "asked_price:" => $asked_price,
+                "date_posted: " => $current_date,
+                "is_from_injection" => false
+            ));
+            hx_debug(HX::SELL_SHARES, $msg);
             $_SESSION['status'] = postSellOrder($conn, 
                                                 $_SESSION['username'], 
                                                 $_SESSION['username'], 
                                                 $new_quantity, 
-                                                $asked_price, 
-                                                $date_parser[0], 
-                                                $date_parser[1]);
+                                                $asked_price,
+                                                $current_date,
+                                                false);
 
             refreshSellOrderTable();
             refreshBuyOrderTable();

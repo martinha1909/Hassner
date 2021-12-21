@@ -13,7 +13,10 @@
     $json_data = 1;
     $user_balance = getUserBalance($_SESSION['username']);
     $artist_pps = getArtistPricePerShare($_SESSION['selected_artist']);
-    $num_of_available_shares = calculateArtistAvailableShares($_SESSION['selected_artist']);
+    $artist_share_distributed = getArtistShareDistributed($_SESSION['selected_artist']);
+    $num_of_shares_invested = getShareInvestedInArtist($_SESSION['username'], $_SESSION['selected_artist']);
+    //User should be able to create for a buy order up to the max number of share distributed - total shares bought by him
+    $num_of_available_shares = $artist_share_distributed - $num_of_shares_invested;
 
     if($chosen_min == $min_lim && $chosen_max == $max_lim)
     {

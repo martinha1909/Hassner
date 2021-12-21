@@ -11,6 +11,10 @@
     function hassnerInit()
     {
         date_default_timezone_set(Timezone::MST);
+        //Set these to true to trigger logging, default to false as this makes log files very noisy
+        $_SESSION['debug'] = false;
+        $_SESSION['error'] = false;
+        $_SESSION['info'] = false;
         $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['display'] = MenuOption::None;
         $_SESSION['sort_type'] = 0;
@@ -53,6 +57,55 @@
          
         return $account;
     }
+
+    /**
+    * Retrieves an account type based on a given username  
+    *
+    * @param  	username      username of any user type
+    *
+    * @return 	ret	          a string represented the account type of the user
+    */
+    function getAccountType($username)
+    {
+        $ret = "unable to determine account type";
+        $conn = connect();
+
+        $result = getAccountTypeFromUsername($conn, $username);
+        hx_debug(HX::QUERY, "getAccountTypeFromUsername returned ".$result->num_rows." entries");
+        if($result->num_rows > 0)
+        {
+            $account_info = $result->fetch_assoc();
+            hx_debug(HX::QUERY, "account_info data: ".json_encode($account_info));
+            $ret = $account_info['account_type'];
+        }
+
+        return $ret;
+    }
+
+    /**
+    * Retrieves the total number of share distributed of an artist
+    *
+    * @param  	artist_username      username of an artist
+    *
+    * @return 	ret	                 the number of share distributed of an artist
+    */
+    function getArtistShareDistributed($artist_username): int
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchNumberOfShareDistributed($conn, $artist_username);
+        hx_debug(HX::QUERY, "searchNumberOfShareDistributed returned ".$res->num_rows." entries");
+        if($res->num_rows > 0)
+        {
+            $share_distributed = $res->fetch_assoc();
+            hx_debug(HX::QUERY, "share_distributed data: ".json_encode($share_distributed));
+            $ret = $share_distributed['Share_Distributed'];
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
     
     /**
     * Retrieves account balance of a specified user
@@ -61,7 +114,7 @@
     *
     * @return 	ret	                account balance of the given user
     */
-    function getUserBalance($user_username)
+    function getUserBalance($user_username): float
     {
         $ret = 0;
         $conn = connect();
@@ -71,6 +124,7 @@
         hx_debug(HX::HELPER, $msg);
 
         $balance = $result->fetch_assoc();     
+        hx_debug(HX::QUERY, "balance data: ".json_encode($balance));
 
         $ret = $balance['balance'];   
 
@@ -126,7 +180,7 @@
     *
     * @return 	ret	               amount of available shares the given artist
     */
-    function calculateArtistAvailableShares($artist_name)
+    function calculateArtistAvailableShares($artist_name): int
     {
         $ret = 0;
 

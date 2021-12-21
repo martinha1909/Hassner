@@ -9,9 +9,8 @@
             private $selling_price;
             private $no_of_share;
             private $date_posted;
-            private $time_posted;
 
-            function __construct($id, $user_username, $artist_username, $selling_price, $no_of_share, $date_posted, $time_posted)
+            function __construct($id, $user_username, $artist_username, $selling_price, $no_of_share, $date_posted)
             {
                 $this->id = $id;
                 $this->user_username = $user_username;
@@ -19,7 +18,6 @@
                 $this->selling_price = $selling_price;
                 $this->no_of_share = $no_of_share;
                 $this->date_posted = $date_posted;
-                $this->time_posted = $time_posted;
             }
 
             function getID()
@@ -52,11 +50,6 @@
                 return $this->date_posted;
             }
 
-            function getTimePosted()
-            {
-                return $this->time_posted;
-            }
-
             function setID($id)
             {
                 $this->id = $id;
@@ -87,11 +80,6 @@
                 $this->date_posted = $date_posted;
             }
 
-            function setTimePosted($time_posted)
-            {
-                $this->time_posted = $time_posted;
-            }
-
             public static function copy(SellOrder $sell_order): SellOrder
             {
                 return (new SellOrder($sell_order->getID(),
@@ -99,8 +87,7 @@
                                       $sell_order->getArtist(),
                                       $sell_order->getSellingPrice(),
                                       $sell_order->getNoOfShare(),
-                                      $sell_order->getDatePosted(),
-                                      $sell_order->getTimePosted()));
+                                      $sell_order->getDatePosted()));
             }
 
             /**
