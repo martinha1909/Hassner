@@ -31,7 +31,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Hassner - Artist</title>
+    <title>Main</title>
     <meta name="description" content="Rateify is a music service that allows users to rate songs" />
 
     <!--Inter UI font-->
@@ -54,7 +54,7 @@
         <div class="container-xxl">
             <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
                 <a class="navbar-brand heading-black" href="#">
-                    HASSNER
+                    ❖ HX
                 </a>
 
                 <!-- This line here is to prevent a bug where the account balance would move to the left -->

@@ -25,7 +25,7 @@ include '../../backend/constants/LoggingModes.php';
     <div class="container-xxl">
       <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
         <a class="navbar-brand heading-black" href="Artist.php" onclick='window.location.reload();'>
-          HASSNER
+            ❖ HX
         </a>
       </nav>
     </div>
