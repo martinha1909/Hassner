@@ -1,28 +1,9 @@
 <?php
     function printParticipatingCampaignTable($username)
     {
-        $artists = array();
-        $offerings = array();
-        $progress = array();
-        $time_left = array();
-        $minimum_ethos = array();
-        $owned_ethos = array();
-        $types = array();
-        $chances = array();
+        $participating_campaigns = fetchInvestedArtistCampaigns($username);
 
-        fetchInvestedArtistCampaigns(
-            $username,
-            $artists,
-            $offerings,
-            $progress,
-            $time_left,
-            $minimum_ethos,
-            $owned_ethos,
-            $types,
-            $chances
-        );
-
-        if (sizeof($offerings) > 0) 
+        if (sizeof($participating_campaigns) > 0) 
         {
             echo '
                 <table class="table">
@@ -42,20 +23,20 @@
                     <tbody>
             ';
 
-            for ($i = 0; $i < sizeof($artists); $i++) {
+            for ($i = 0; $i < sizeof($participating_campaigns); $i++) {
                 echo '
                             <tr>
-                                <th>' . $artists[$i] . '</th>
-                                <td>' . $offerings[$i] . '</td>
-                                <td>' . round($progress[$i], 2) . '%</td>
-                                <td>' . $time_left[$i] . '</td>
-                                <td>' . $minimum_ethos[$i] . '</td>
-                                <td>' . $owned_ethos[$i] . '</td>
+                                <th>' . $participating_campaigns[$i]->getArtistUsername() . '</th>
+                                <td>' . $participating_campaigns[$i]->getOffering() . '</td>
+                                <td>' . round($participating_campaigns[$i]->getProgress(), 2) . '%</td>
+                                <td>' . $participating_campaigns[$i]->getTimeLeft() . '</td>
+                                <td>' . $participating_campaigns[$i]->getMinEthos() . '</td>
+                                <td>' . $participating_campaigns[$i]->getUserOwnedEthos() . '</td>
                 ';
-                if ($chances[$i] != -1) {
+                if ($participating_campaigns[$i]->getWinningChance() != -1) {
                     echo '
                                     <form action="../../backend/listener/IncreaseChanceBackend.php" method="post">
-                                        <td>' . round($chances[$i], 2) . '%<input name = "artist_name[' . $artists[$i] . ']" type = "submit" id="abc" class="no-background" role="button" aria-pressed="true" value = " +"></td>
+                                        <td>' . round($participating_campaigns[$i]->getWinningChance(), 2) . '%<input name = "artist_name[' . $participating_campaigns[$i]->getArtistUsername() . ']" type = "submit" id="abc" class="no-background" role="button" aria-pressed="true" value = " +"></td>
                                     </form>
                     ';
                 } else {
@@ -65,7 +46,7 @@
                 }
 
                 echo '
-                                <td>' . $types[$i] . '</td>
+                                <td>' . $participating_campaigns[$i]->getType() . '</td>
                             </tr>
                 ';
             }
@@ -78,23 +59,9 @@
 
     function printPastParticipatedCampaignTable($username)
     {
-        $artists = array();
-        $offerings = array();
-        $minimum_ethos = array();
-        $winners = array();
-        $time_releases = array();
-        $types = array();
-        fetchParticipatedCampaigns(
-            $username,
-            $artists,
-            $offerings,
-            $minimum_ethos,
-            $winners,
-            $time_releases,
-            $types
-        );
+        $participated_campaigns = fetchParticipatedCampaigns($username);
 
-        if (sizeof($offerings) > 0) 
+        if (sizeof($participated_campaigns) > 0) 
         {
             echo '
                     <table class="table">
@@ -111,18 +78,18 @@
                         <tbody>
             ';
 
-            for ($i = 0; $i < sizeof($artists); $i++) 
+            for ($i = 0; $i < sizeof($participated_campaigns); $i++) 
             {
-                if ($winners[$i] == $username) 
+                if ($participated_campaigns[$i]->getWinner() == $username) 
                 {
                     echo '
                                 <tr>
-                                    <th class="campaign_winner">' . $artists[$i] . '</th>
-                                    <td class="campaign_winner">' . $offerings[$i] . '</td>
-                                    <td class="campaign_winner">' . $minimum_ethos[$i] . '</td>
-                                    <td class="campaign_winner">' . $winners[$i] . '</td>
-                                    <td class="campaign_winner">' . $types[$i] . '</td>
-                                    <td class="campaign_winner">' . $time_releases[$i] . '</td>
+                                    <th class="campaign_winner">' . $participated_campaigns[$i]->getArtistUsername() . '</th>
+                                    <td class="campaign_winner">' . $participated_campaigns[$i]->getOffering() . '</td>
+                                    <td class="campaign_winner">' . $participated_campaigns[$i]->getMinEthos() . '</td>
+                                    <td class="campaign_winner">' . $participated_campaigns[$i]->getWinner() . '</td>
+                                    <td class="campaign_winner">' . $participated_campaigns[$i]->getType() . '</td>
+                                    <td class="campaign_winner">' . $participated_campaigns[$i]->getDatePosted() . '</td>
                                 </tr>
                     ';
                 } 
@@ -130,12 +97,12 @@
                 {
                     echo '
                                 <tr>
-                                    <th>' . $artists[$i] . '</th>
-                                    <td>' . $offerings[$i] . '</td>
-                                    <td>' . $minimum_ethos[$i] . '</td>
-                                    <td>' . $winners[$i] . '</td>
-                                    <td>' . $types[$i] . '</td>
-                                    <td>' . $time_releases[$i] . '</td>
+                                    <th>' . $participated_campaigns[$i]->getArtistUsername() . '</th>
+                                    <td>' . $participated_campaigns[$i]->getOffering() . '</td>
+                                    <td>' . $participated_campaigns[$i]->getMinEthos() . '</td>
+                                    <td>' . $participated_campaigns[$i]->getWinner() . '</td>
+                                    <td>' . $participated_campaigns[$i]->getType() . '</td>
+                                    <td>' . $participated_campaigns[$i]->getDatePosted() . '</td>
                                 </tr>
                     ';
                 }
@@ -144,7 +111,7 @@
                             </tbody>
                         </table>
             ';
-        } 
+        }
         else 
         {
             echo '<h5>No campaigns participated</h5>';
@@ -153,6 +120,58 @@
 
     function printNearParticipationCampaignTable($username)
     {
-        
+        // $near_parti_campaigns = fetchNearParticipationCampaign($username);
+
+        // if (sizeof($participated_campaigns) > 0) 
+        // {
+        //     echo '
+        //             <table class="table">
+        //                 <thead>
+        //                     <tr>
+        //                         <th scope="col">Artist</th>
+        //                         <th scope="col">Offering</th>
+        //                         <th scope="col">Minimum Ethos</th>
+        //                         <th scope="col">Winner</th>
+        //                         <th scope="col">Type</th>
+        //                         <th scope="col">Date Released</th>
+        //                     </tr>
+        //                 </thead>
+        //                 <tbody>
+        //     ';
+
+        //     for ($i = 0; $i < sizeof($participated_campaigns); $i++) 
+        //     {
+        //         if ($participated_campaigns[$i]->getWinner() == $username) 
+        //         {
+        //             echo '
+        //                         <tr>
+        //                             <th class="campaign_winner">' . $participated_campaigns[$i]->getArtistUsername() . '</th>
+        //                             <td class="campaign_winner">' . $participated_campaigns[$i]->getOffering() . '</td>
+        //                             <td class="campaign_winner">' . $participated_campaigns[$i]->getMinEthos() . '</td>
+        //                             <td class="campaign_winner">' . $participated_campaigns[$i]->getWinner() . '</td>
+        //                             <td class="campaign_winner">' . $participated_campaigns[$i]->getType() . '</td>
+        //                             <td class="campaign_winner">' . $participated_campaigns[$i]->getDatePosted() . '</td>
+        //                         </tr>
+        //             ';
+        //         } 
+        //         else 
+        //         {
+        //             echo '
+        //                         <tr>
+        //                             <th>' . $participated_campaigns[$i]->getArtistUsername() . '</th>
+        //                             <td>' . $participated_campaigns[$i]->getOffering() . '</td>
+        //                             <td>' . $participated_campaigns[$i]->getMinEthos() . '</td>
+        //                             <td>' . $participated_campaigns[$i]->getWinner() . '</td>
+        //                             <td>' . $participated_campaigns[$i]->getType() . '</td>
+        //                             <td>' . $participated_campaigns[$i]->getDatePosted() . '</td>
+        //                         </tr>
+        //             ';
+        //         }
+        //     }
+        //     echo '
+        //                     </tbody>
+        //                 </table>
+        //     ';
+        // }
     }
 ?>

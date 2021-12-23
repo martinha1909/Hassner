@@ -252,4 +252,38 @@
 
         return $ret;
     }
+
+    function calculateCampaignWinningChance($user_username, $artist_username, $campaign_id, $min_ethos, $users_total_shares_bought)
+    {
+        $ret = 0;
+        $conn = connect();
+        $res = searchCampaignEligibleParticipants($conn, $campaign_id);
+        if($res->num_rows == 1)
+        {
+            //If the user is the only one participates in the campaign, the chance of him winning is 100%
+            $ret = 100;
+        }
+        else
+        {
+            $shareholder_values = array();
+            $res = searchArtistTotalSharesBought($conn, $artist_username);
+            while($row = $res->fetch_assoc())
+            {
+                if($row['shares_owned'] >= $min_ethos && $row['user_username'] != $user_username)
+                {
+                    array_push($shareholder_values, $row['shares_owned']);
+                }
+            }
+            
+            $sum = 0;
+            for($i = 0; $i < sizeof($shareholder_values); $i++)
+            {
+                $sum += $shareholder_values[$i];
+            }
+
+            $ret = $users_total_shares_bought/$sum * 100;
+        }
+
+        return round($ret, 2);
+    }
 ?>

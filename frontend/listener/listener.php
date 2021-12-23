@@ -7,6 +7,7 @@
     include '../../backend/constants/BalanceOption.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
+    include '../../backend/object/Campaign.php';
     include '../../backend/object/Node.php';
     include '../../backend/object/ArtistInfo.php';
     include '../../backend/object/TickerInfo.php';
