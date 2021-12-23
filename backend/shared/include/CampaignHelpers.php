@@ -257,8 +257,14 @@
     {
         $ret = 0;
         $conn = connect();
-        $res = searchCampaignEligibleParticipants($conn, $campaign_id);
-        if($res->num_rows == 1)
+        $res_eligible = searchCampaignEligibleParticipants($conn, $campaign_id);
+        $row_eligible = $res_eligible->fetch_assoc();
+        if($row_eligible['eligible_participants'] == 0)
+        {
+            //shouldn't reach here, but does this check to be safe anyway
+            $ret = 0;
+        }
+        else if($row_eligible['eligible_participants'] == 1)
         {
             //If the user is the only one participates in the campaign, the chance of him winning is 100%
             $ret = 100;
@@ -275,7 +281,7 @@
                 }
             }
             
-            $sum = 0;
+            $sum = $users_total_shares_bought;
             for($i = 0; $i < sizeof($shareholder_values); $i++)
             {
                 $sum += $shareholder_values[$i];

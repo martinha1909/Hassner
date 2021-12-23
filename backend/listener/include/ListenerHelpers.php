@@ -274,11 +274,11 @@
 
         for($i = 0; $i < sizeof($all_artists); $i++) 
         {
-            $participating_campaign = new Campaign();
             $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
             $res = searchArtistCampaigns($conn, $all_artists[$i]);
             while($row = $res->fetch_assoc()) 
             {
+                $participating_campaign = new Campaign();
                 //assume not applicable
                 $chance = -1;
                 $res_1 = searchNumberOfShareDistributed($conn, $row['artist_username']);

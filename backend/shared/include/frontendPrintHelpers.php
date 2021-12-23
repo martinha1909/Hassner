@@ -36,7 +36,7 @@
                 if ($participating_campaigns[$i]->getWinningChance() != -1) {
                     echo '
                                     <form action="../../backend/listener/IncreaseChanceBackend.php" method="post">
-                                        <td>' . round($participating_campaigns[$i]->getWinningChance(), 2) . '%<input name = "artist_name[' . $participating_campaigns[$i]->getArtistUsername() . ']" type = "submit" id="abc" class="no-background" role="button" aria-pressed="true" value = " +"></td>
+                                        <td>' . $participating_campaigns[$i]->getWinningChance() . '%<input name = "artist_name[' . $participating_campaigns[$i]->getArtistUsername() . ']" type = "submit" id="abc" class="no-background" role="button" aria-pressed="true" value = " +"></td>
                                     </form>
                     ';
                 } else {
