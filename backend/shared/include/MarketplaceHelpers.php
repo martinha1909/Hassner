@@ -19,13 +19,38 @@ else if ($_SESSION['dependencies'] == "BACKEND")
     }
 }
 
-//fetching the market price, if current user has not invested in the selected artist, simply just populate default values
-//default values should be displayed on the table like this:
-//  Owned Shares: 0
-//  Artist: selected artist
-//  Current price per share (q̶): grabs current price per share from database
-//  Selling profit per share (q̶): N/A(0%)
-//  Available Shares: grabs current shares available for purchase in the database in case the user wants to purchase their first share
+/**
+* Gets the current price per share of an artist stock
+*
+* @param  	artist_username	   artist username to retrieve stock price from
+*
+*
+* @return 	ret	               current stock price of the artist
+*/
+function getArtistPricePerShare($artist_username): float
+{
+    $ret = 0;
+    $conn = connect();
+
+    $result = searchAccount($conn, $artist_username);
+    hx_debug(HX::QUERY, "searchAccount returned ".$result->num_rows." entries");
+    $price_per_share = $result->fetch_assoc();
+    hx_debug(HX::QUERY, "price_per_share data: ".json_encode($price_per_share));
+        
+    $ret = $price_per_share['price_per_share'];
+
+    return $ret;
+}
+
+/**
+* Fetches the market price, if current user has not invested in the selected artist, simply just populate default values
+* Default values:
+* Owned Shares: 0
+* Artist: selected artist
+* Current price per share (q̶): grabs current price per share from database
+* Selling profit per share (q̶): N/A(0%)
+* Available Shares: grabs current shares available for purchase in the database in case the user wants to purchase their first share
+*/
 function fetchMarketPrice($artist_username)
 {
     $_SESSION['shares_owned'] = 0;
@@ -82,22 +107,27 @@ function fetchMarketPrice($artist_username)
 //gets all the users that has lowest price listed with the passed artist_username param
 function fetchAskedPrice($artist_username)
 {
+    $debug_index = 0;
     $ret = array();
     $conn = connect();
     $result = searchSellOrderByArtist($conn, $artist_username);
+    hx_debug(HX::QUERY, "searchSellOrderByArtist returned ".$result->num_rows." entries");
     //loading up data so all the arrays have corresponding indices that map to the database
-    while ($row = $result->fetch_assoc()) {
-        if ($row['no_of_share'] > 0 && (strcmp($row['user_username'], $_SESSION['username']) != 0)) {
+    while ($row = $result->fetch_assoc()) 
+    {
+        hx_debug(HX::QUERY, "index ".$debug_index." row data ".json_encode(($row)));
+        if ($row['no_of_share'] > 0 && (strcmp($row['user_username'], $_SESSION['username']) != 0)) 
+        {
             $sell_order = new SellOrder($row['id'], 
                                         $row['user_username'], 
                                         $row['artist_username'], 
                                         $row['selling_price'], 
                                         $row['no_of_share'], 
-                                        $row['date_posted'], 
-                                        $row['time_posted']);
+                                        $row['date_posted']);
 
             array_push($ret, $sell_order);
         }
+        $debug_index++;
     }
     SellOrder::sort($ret, 0, (sizeof($ret) - 1), "ASCENDING", "PRICE");
 
@@ -202,20 +232,20 @@ function askedPriceInit($artist_username, $account_type)
                     $_SESSION['purchase_price'] = $sell_orders[$i]->getSellingPrice();
                     $_SESSION['seller_toggle'] = $sell_orders[$i]->getID();
                     echo '
-                                <form action="../../backend/shared/BuySharesBackend.php" method="post">
-                                    <input name = "purchase_quantity" type="range" min="1" max=' . $sell_orders[$i]->getNoOfShare() . ' value="1" class="slider" id="myRange">
-                                    <p>Quantity: <span id="demo"></span></p>
-                                    <input name="asked_price[' . $sell_orders[$i]->getSellingPrice() . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
-                                </form>
-                                <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                                    <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
-                                </form>
+                                    <form action="../../backend/artist/BuySharesBackend.php" method="post">
+                                        <input name = "purchase_quantity" type="range" min="1" max=' . $sell_orders[$i]->getNoOfShare() . ' value="1" class="slider" id="myRange">
+                                        <p>Quantity: <span id="demo"></span></p>
+                                        <input name="asked_price[' . $sell_orders[$i]->getSellingPrice() . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
+                                    </form>
+                                    <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
+                                        <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
+                                    </form>
                         ';
                 } else {
                     echo '
-                                <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-                                <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
-                                </form>
+                                    <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
+                                    <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
+                                    </form>
                                 </td>
                             </tr>
                         ';
@@ -259,8 +289,8 @@ function askedPriceInit($artist_username, $account_type)
                 $profit = $row['selling_price'] - $pps['price_per_share'];
 
                 $relative_time_posted = toRelativeTime($current_date, 
-                                                       $row['date_posted'], 
-                                                       $row['time_posted']);
+                                                       explode(" ", $row['date_posted'])[0], 
+                                                       explode(" ", $row['date_posted'])[1]);
 
                 array_push($artist_usernames, $row['artist_username']);
                 array_push($roi, round($_roi, 2));
@@ -357,15 +387,24 @@ function askedPriceInit($artist_username, $account_type)
     }
 }
 
+/**
+* Determines if a user can create a sell order or not
+*
+* @param  	user_username      user that is trying to create a sell order
+*
+* @param  	artist_username    targetted artist that the sell order is selling
+*
+* @return 	ret	               true if the user can create a sell order, false otherwise
+*/
 function canCreateSellOrder($user_username, $artist_username)
 {
     $total_share_bought = 0;
     $conn = connect();
 
-    $res = searchSpecificInvestment($conn, $user_username, $artist_username);
+    $res = searchSharesInArtistShareHolders($conn, $user_username, $artist_username);
 
     while ($row = $res->fetch_assoc()) {
-        $total_share_bought += $row['no_of_share_bought'];
+        $total_share_bought += $row['shares_owned'];
     }
 
     $share_being_sold = getAmountSharesSelling($user_username, $artist_username);
@@ -374,20 +413,6 @@ function canCreateSellOrder($user_username, $artist_username)
     }
 
     return false;
-}
-
-function canCreateBuyOrder($user_username, $artist_username, $shares_requesting)
-{
-    $conn = connect();
-
-    $res = searchNumberOfShareDistributed($conn, $artist_username);
-    $total_share_dist = $res->fetch_assoc();
-
-    if ($shares_requesting >= $total_share_dist['Share_Distributed']) {
-        return false;
-    }
-
-    return true;
 }
 
 function getAmountSharesSelling($user_username, $artist_username)
@@ -726,6 +751,9 @@ function injectionHistoryInit($artist_username)
         ';
 }
 
+/**
+* Removes all sell orders that have quantity of 0
+*/
 function refreshSellOrderTable()
 {
     $conn = connect();
@@ -738,6 +766,9 @@ function refreshSellOrderTable()
     }
 }
 
+/**
+* Removes all buy orders that have quantity of 0
+*/
 function refreshBuyOrderTable()
 {
     $conn = connect();
@@ -750,120 +781,428 @@ function refreshBuyOrderTable()
     }
 }
 
-function autoSell($user_username, $artist_username, $asked_price, $quantity)
+/**
+* Automatically purchases the intended buy order (before posting), if there is any matching sell orders (requested price = sell price).
+* If a buy order has a higher amount of shares requesting than the matching sell order, the sell order will get deleted and the buyer 
+* will perform a transaction equivalent to the amount in that sell order. The remaining amount of the buy order will get posted
+* If a buy order has a lower amount of shares selling than the matching sell order, the purchasing quantity of the sell order will be reduced
+* and the seller will automatically sells all the quantity that is specified in the buy order, Hence the buy order won't be posted
+*
+* @param  	conn	           a connection to the db
+*
+* @param  	user_username	   username of the buyer who is posting the buy order
+*
+* @param  	artist_username	   artist username whose shares are being requested from
+*
+* @param  	request_quantity   amount of shares the buyer is requesting
+*
+* @param  	request_price      requesting price specified by the buyer, this is used to find matching sell orders
+*
+* @param  	buy_mode	       share interaction mode
+*
+*
+* @return 	quantity	       the remaining quantity of the buy order after automatically executed, 
+*                              remains the same if no matching sell orders found, 0 if the quantity is less than the quantity in matching sell orders
+*/
+function autoPurchase($conn, $user_username, $artist_username, $request_quantity, $request_price)
 {
-    $conn = connect();
+    $static_quantity_var = $request_quantity;
+    $current_date = date('Y-m-d H:i:s');
 
-    $res = searchBuyOrdersByArtist($conn, $artist_username);
-    while ($row = $res->fetch_assoc()) {
-        if ($quantity <= 0) {
+    $res = searchSellOrderByArtist($conn, $artist_username);
+    hx_debug(HX::QUERY, "searchSellOrderByArtist returned ".$res->num_rows." entries");
+
+    while($row = $res->fetch_assoc())
+    {
+        //Assuming p2p trading
+        $buy_mode = ShareInteraction::BUY;
+        if($request_quantity <= 0)
+        {
             break;
         }
-
-        if ($row['user_username'] == $user_username) {
+        //Skip your own sell order
+        if($row['user_username'] == $user_username)
+        {
             continue;
         }
+        else
+        {
+            if($row['is_from_injection'])
+            {
+                $buy_mode = ShareInteraction::BUY_FROM_INJECTION;
+            }
 
-        if ($row['siliqas_requested'] == $asked_price) {
-            //If the sell order is selling more shares than the posted buy order
-            if ($quantity >= $row['quantity']) {
-                $current_date_time = getCurrentDate("America/Edmonton");
-                $date_parser = dayAndTimeSplitter($current_date_time);
+            if($request_price == $row['selling_price'])
+            {
+                hx_debug(HX::SELL_SHARES, "Matching buy order id: ".$row['id']." for price $".$request_price);
+                if($request_quantity >= $row['no_of_share'])
+                {
+                    $result = searchAccount($conn, $row['user_username']);
+                    $seller_account_info = $result->fetch_assoc();
 
-                $result = searchAccount($conn, $user_username);
-                $account_info = $result->fetch_assoc();
+                    $res_1 = searchAccount($conn, $user_username);
+                    $buyer_account_info = $res_1->fetch_assoc();
 
-                //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
-                $seller_new_balance = $account_info['balance'] + ($row['quantity'] * $asked_price);
+                    //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
+                    $seller_new_balance = $seller_account_info['balance'] + ($row['no_of_share'] * $row['selling_price']);
 
-                $seller_new_share_amount = $account_info['Shares'] - $row['quantity'];
+                    //subtracts siliqas from the user
+                    $buyer_new_balance = $buyer_account_info['balance'] - ($row['no_of_share'] * $row['selling_price']);
 
-                $res_1 = searchAccount($conn, $row['user_username']);
-                $buyer_account_info = $res_1->fetch_assoc();
-                $buyer_new_share_amount = $buyer_account_info['Shares'] + $row['quantity'];
+                    $seller_new_share_amount = $seller_account_info['Shares'] - $row['no_of_share'];
 
-                //subtracts siliqas from the user
-                $buyer_new_balance = $buyer_account_info['balance'] - (($row['quantity'] * $asked_price));
+                    $buyer_new_share_amount = $buyer_account_info['Shares'] + $row['no_of_share'];
 
-                //In the case of buying in asked price, the new market price will become the last purchased price
-                $new_pps = $asked_price;
+                    //In the case of buying in asked price, the new market price will become the last purchased price
+                    $new_pps = $row['selling_price'];
 
-                $connPDO = connectPDO();
+                    $buyer_account_type = getAccountType($_SESSION['username']);
+                    $seller_account_type = getAccountType($row['user_username']);
 
-                purchaseAskedPriceShare($connPDO,
-                                        $row['user_username'],
-                                        $user_username,
-                                        $artist_username,
-                                        $buyer_new_balance,
-                                        $seller_new_balance,
-                                        $_SESSION['current_pps']['price_per_share'],
-                                        $new_pps,
-                                        $buyer_new_share_amount,
-                                        $seller_new_share_amount,
-                                        $_SESSION['shares_owned'],
-                                        $row['quantity'],
-                                        $row['siliqas_requested'],
-                                        $row['id'],
-                                        $date_parser[0],
-                                        $date_parser[1],
-                                        "AUTO_SELL");
+                    $connPDO = connectPDO();
 
-                updateBuyOrderQuantity($conn, $row['id'], 0);
+                    hx_debug(HX::SELL_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
+                        "buyer" => $_SESSION['username'], 
+                        "seller" => $row['user_username'], 
+                        "buyer_account_type" => $buyer_account_type, 
+                        "seller_account_type" => $seller_account_type, 
+                        "artist" => $_SESSION['selected_artist'], 
+                        "buyer_new_balance" => $buyer_new_balance, 
+                        "seller_new_balance" => $seller_new_balance, 
+                        "initial_pps" => $_SESSION['current_pps']['price_per_share'], 
+                        "new_pps" => $new_pps, 
+                        "buyer_new_share_amount" => $buyer_new_share_amount, 
+                        "seller_new_share_amount" => $seller_new_share_amount, 
+                        "shares_owned" => $_SESSION['shares_owned'], 
+                        "amount" => $row['no_of_share'], 
+                        "price" => $row['selling_price'], 
+                        "order_id" => $row['id'], 
+                        "date_purchased" => $current_date, 
+                        "indicator" => "AUTO_PURCHASE", 
+                        "buy_mode"  => $buy_mode
+                    )));
 
-                //The return value should be the amount of share requested subtracted by the amount that 
-                //is automatically bought
-                $quantity = $quantity - $row['quantity'];
-            } else if ($quantity < $row['quantity']) {
-                $current_date_time = getCurrentDate("America/Edmonton");
-                $date_parser = dayAndTimeSplitter($current_date_time);
+                    purchaseAskedPriceShare($connPDO, 
+                                            $_SESSION['username'], 
+                                            $row['user_username'], 
+                                            $buyer_account_type,
+                                            $seller_account_type,
+                                            $_SESSION['selected_artist'],
+                                            $buyer_new_balance, 
+                                            $seller_new_balance, 
+                                            $_SESSION['current_pps']['price_per_share'], 
+                                            $new_pps, 
+                                            $buyer_new_share_amount, 
+                                            $seller_new_share_amount,
+                                            $_SESSION['shares_owned'], 
+                                            $row['no_of_share'],
+                                            $row['selling_price'],
+                                            $row['id'],
+                                            $current_date,
+                                            "AUTO_PURCHASE",
+                                            $buy_mode);
 
-                $result = searchAccount($conn, $user_username);
-                $account_info = $result->fetch_assoc();
+                    hx_info(HX::SELL_SHARES, "Auto purchasing sell order id ".$row['id'].", amount $".($row['no_of_share'] * $request_price)." was transfered between buyer ".$_SESSION['username']." and seller ".$row['user_username']);
+                    
 
-                //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
-                $seller_new_balance = $account_info['balance'] + ($quantity * $asked_price);
+                    //The return value should be the amount of share requested subtracted by the amount that 
+                    //is automatically bought
+                    $request_quantity = $request_quantity - $row['no_of_share'];
+                    hx_debug(HX::SELL_SHARES, "quantity has been reduced to ".$request_quantity." after auto selling to buy order ".$row['id']);
+                }
+                else if($request_quantity < $row['no_of_share'])
+                {
+                    $result = searchAccount($conn, $row['user_username']);
+                    $seller_account_info = $result->fetch_assoc();
 
-                $seller_new_share_amount = $account_info['Shares'] - $quantity;
+                    $res_1 = searchAccount($conn, $user_username);
+                    $buyer_account_info = $res_1->fetch_assoc();
 
-                $res_1 = searchAccount($conn, $row['user_username']);
-                $buyer_account_info = $res_1->fetch_assoc();
-                $buyer_new_share_amount = $buyer_account_info['Shares'] + $quantity;
+                    //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
+                    $seller_new_balance = $seller_account_info['balance'] + ($request_quantity * $row['selling_price']); 
 
-                //subtracts siliqas from the user
-                $buyer_new_balance = $buyer_account_info['balance'] - (($quantity * $asked_price));
+                    //subtracts siliqas from the user
+                    $buyer_new_balance = $buyer_account_info['balance'] - ($request_quantity * $row['selling_price']);
 
-                //In the case of buying in asked price, the new market price will become the last purchased price
-                $new_pps = $asked_price;
+                    $seller_new_share_amount = $seller_account_info['Shares'] - $request_quantity;
 
-                $connPDO = connectPDO();
+                    $buyer_new_share_amount = $buyer_account_info['Shares'] + $request_quantity;
 
-                purchaseAskedPriceShare($connPDO,
-                                        $row['user_username'],
-                                        $user_username,
-                                        $artist_username,
-                                        $buyer_new_balance,
-                                        $seller_new_balance,
-                                        $_SESSION['current_pps']['price_per_share'],
-                                        $new_pps,
-                                        $buyer_new_share_amount,
-                                        $seller_new_share_amount,
-                                        $_SESSION['shares_owned'],
-                                        $quantity,
-                                        $row['siliqas_requested'],
-                                        $row['id'],
-                                        $date_parser[0],
-                                        $date_parser[1],
-                                        "AUTO_SELL");
+                    //In the case of buying in asked price, the new market price will become the last purchased price
+                    $new_pps = $row['selling_price'];
 
-                //The return value should be the amount of share requested subtracted by the amount that 
-                //is automatically bought
-                $quantity = $quantity - $row['quantity'];
+                    $buyer_account_type = getAccountType($_SESSION['username']);
+                    $seller_account_type = getAccountType($row['user_username']);
+
+                    $connPDO = connectPDO();
+
+                    hx_debug(HX::SELL_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
+                        "buyer" => $_SESSION['username'], 
+                        "seller" => $row['user_username'], 
+                        "buyer_account_type" => $buyer_account_type, 
+                        "seller_account_type" => $seller_account_type, 
+                        "artist" => $_SESSION['selected_artist'], 
+                        "buyer_new_balance" => $buyer_new_balance, 
+                        "seller_new_balance" => $seller_new_balance, 
+                        "initial_pps" => $_SESSION['current_pps']['price_per_share'], 
+                        "new_pps" => $new_pps, 
+                        "buyer_new_share_amount" => $buyer_new_share_amount, 
+                        "seller_new_share_amount" => $seller_new_share_amount, 
+                        "shares_owned" => $_SESSION['shares_owned'], 
+                        "amount" => $request_quantity, 
+                        "price" => $row['selling_price'], 
+                        "order_id" => $row['id'], 
+                        "date_purchased" => $current_date, 
+                        "indicator" => "AUTO_PURCHASE", 
+                        "buy_mode"  => $buy_mode
+                    )));
+
+                    purchaseAskedPriceShare($connPDO, 
+                                            $_SESSION['username'], 
+                                            $row['user_username'], 
+                                            $buyer_account_type,
+                                            $seller_account_type,
+                                            $_SESSION['selected_artist'],
+                                            $buyer_new_balance, 
+                                            $seller_new_balance, 
+                                            $_SESSION['current_pps']['price_per_share'], 
+                                            $new_pps, 
+                                            $buyer_new_share_amount, 
+                                            $seller_new_share_amount,
+                                            $_SESSION['shares_owned'], 
+                                            $request_quantity,
+                                            $row['selling_price'],
+                                            $row['id'],
+                                            $current_date,
+                                            "AUTO_PURCHASE",
+                                            $buy_mode);
+
+                    hx_info(HX::SELL_SHARES, "Auto purchasing sell order id ".$row['id'].", amount $".($row['no_of_share'] * $request_price)." was transfered between buyer ".$_SESSION['username']." and seller ".$row['user_username']);
+                    //The return value should be the amount of share requested subtracted by the amount that 
+                    //is automatically bought
+                    $request_quantity = $request_quantity - $row['no_of_share'];
+                    hx_debug(HX::SELL_SHARES, "quantity has been reduced to ".$request_quantity." after auto selling to buy order ".$row['id']);
+                }
+            }
+            //Skip the sell orders that do not meet the requested price
+            else
+            {
+                continue;
             }
         }
     }
 
-    return $quantity;
+    return $request_quantity;
 }
+
+    /**
+    * Automatically sells the intended sell order (before posting), if there is any matching buy orders (sell price = requested price).
+    * If a sell order has a higher amount of shares selling than the matching buy order, the buy order will get deleted and the seller 
+    * will perform a transaction equivalent to the amount in that buy order. The remaining amount of the sell order will get posted
+    * If a sell order has a lower amount of shares selling than the matching buy order, the purchasing quantity of the buy order will be reduced
+    * and the buyer will automatically purchases all the quantity in the sell order, Hence the sell order won't be posted
+    *
+    * @param  	user_username	   username of the seller who is posting the sell order
+    *
+    * @param  	artist_username	   artist username whose shares are being sold
+    *
+    * @param  	asked_price	       selling price specified by the seller, this is used to find matching buy orders
+    *
+    * @param  	quantity	       amount of shares the seller is selling
+    *
+    * @param  	current_date	   date and time at the time the sell order is being created
+    *
+    * @param  	buy_mode	       share interaction mode
+    *
+    *
+    * @return 	quantity	       the remaining quantity of the sell order after automatically executed, 
+    *                              remains the same if no matching buy orders found, 0 if the quantity is less than the quantity in matching buy orders
+    */
+    function autoSell($user_username, $artist_username, $asked_price, $quantity, $current_date, $is_from_injection)
+    {
+        $conn = connect();
+
+        $res = searchBuyOrdersByArtist($conn, $artist_username);
+        hx_debug(HX::QUERY, "searchBuyOrdersByArtist returned ".$res->num_rows." entries");
+
+        while ($row = $res->fetch_assoc()) 
+        {
+            $buy_mode = ShareInteraction::BUY;
+            if ($quantity <= 0) {
+                break;
+            }
+
+            if ($row['user_username'] == $user_username) {
+                continue;
+            }
+
+            if ($row['siliqas_requested'] == $asked_price) 
+            {
+                hx_debug(HX::SELL_SHARES, "Matching buy order id: ".$row['id']." for price $".$asked_price);
+
+                if($is_from_injection)
+                {
+                    $buy_mode = ShareInteraction::BUY_FROM_INJECTION;
+                }
+
+                hx_debug(HX::SELL_SHARES, "proceeding with buy_mode: ".$buy_mode);
+
+                //If the sell order is selling more shares than the posted buy order
+                if ($quantity >= $row['quantity']) {
+                    $current_date_time = getCurrentDate("America/Edmonton");
+                    $date_parser = dayAndTimeSplitter($current_date_time);
+
+                    $result = searchAccount($conn, $user_username);
+                    $account_info = $result->fetch_assoc();
+
+                    //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
+                    $seller_new_balance = $account_info['balance'] + ($row['quantity'] * $asked_price);
+
+                    $seller_new_share_amount = $account_info['Shares'] - $row['quantity'];
+
+                    $res_1 = searchAccount($conn, $row['user_username']);
+                    $buyer_account_info = $res_1->fetch_assoc();
+                    $buyer_new_share_amount = $buyer_account_info['Shares'] + $row['quantity'];
+
+                    //subtracts siliqas from the user
+                    $buyer_new_balance = $buyer_account_info['balance'] - (($row['quantity'] * $asked_price));
+
+                    //In the case of buying in asked price, the new market price will become the last purchased price
+                    $new_pps = $asked_price;
+
+                    $buyer_account_type = getAccountType($row['user_username']);
+                    $seller_account_type = getAccountType($user_username);
+
+                    $connPDO = connectPDO();
+
+                    hx_debug(HX::SELL_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
+                        "buyer" => $row['user_username'], 
+                        "seller" => $user_username, 
+                        "buyer_account_type" => $buyer_account_type, 
+                        "seller_account_type" => $seller_account_type, 
+                        "artist" => $artist_username, 
+                        "buyer_new_balance" => $buyer_new_balance, 
+                        "seller_new_balance" => $seller_new_balance, 
+                        "initial_pps" => $_SESSION['current_pps']['price_per_share'], 
+                        "new_pps" => $new_pps, 
+                        "buyer_new_share_amount" => $buyer_new_share_amount, 
+                        "seller_new_share_amount" => $seller_new_share_amount, 
+                        "shares_owned" => $_SESSION['shares_owned'], 
+                        "amount" => $row['quantity'], 
+                        "price" => $row['siliqas_requested'], 
+                        "order_id" => $row['id'], 
+                        "date_purchased" => $current_date, 
+                        "indicator" => "AUTO_SELL", 
+                        "buy_mode"  => $buy_mode
+                    )));
+
+                    purchaseAskedPriceShare($connPDO,
+                                            $row['user_username'],
+                                            $user_username,
+                                            $buyer_account_type,
+                                            $seller_account_type,
+                                            $artist_username,
+                                            $buyer_new_balance,
+                                            $seller_new_balance,
+                                            $_SESSION['current_pps']['price_per_share'],
+                                            $new_pps,
+                                            $buyer_new_share_amount,
+                                            $seller_new_share_amount,
+                                            $_SESSION['shares_owned'],
+                                            $row['quantity'],
+                                            $row['siliqas_requested'],
+                                            $row['id'],
+                                            $current_date,
+                                            "AUTO_SELL",
+                                            $buy_mode);
+
+                    hx_info(HX::BUY_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $asked_price)." was transfered between buyer ".$row['user_username']." and seller ".$user_username);
+                    updateBuyOrderQuantity($conn, $row['id'], 0);
+
+                    //The return value should be the amount of share requested subtracted by the amount that 
+                    //is automatically bought
+                    $quantity = $quantity - $row['quantity'];
+                    hx_debug(HX::SELL_SHARES, "quantity has been reduced to ".$quantity." after auto selling to buy order ".$row['id']);
+                } else if ($quantity < $row['quantity']) {
+                    $current_date_time = getCurrentDate("America/Edmonton");
+                    $date_parser = dayAndTimeSplitter($current_date_time);
+
+                    $result = searchAccount($conn, $user_username);
+                    $account_info = $result->fetch_assoc();
+
+                    //if the user buys from the bid price, the siliqas will go to the other user since they are the seller
+                    $seller_new_balance = $account_info['balance'] + ($quantity * $asked_price);
+
+                    $seller_new_share_amount = $account_info['Shares'] - $quantity;
+
+                    $res_1 = searchAccount($conn, $row['user_username']);
+                    $buyer_account_info = $res_1->fetch_assoc();
+                    $buyer_new_share_amount = $buyer_account_info['Shares'] + $quantity;
+
+                    //subtracts siliqas from the user
+                    $buyer_new_balance = $buyer_account_info['balance'] - (($quantity * $asked_price));
+
+                    //In the case of buying in asked price, the new market price will become the last purchased price
+                    $new_pps = $asked_price;
+
+                    $buyer_account_type = getAccountType($row['user_username']);
+                    $seller_account_type = getAccountType($user_username);
+
+                    $connPDO = connectPDO();
+
+                    hx_debug(HX::SELL_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
+                        "buyer" => $row['user_username'], 
+                        "seller" => $user_username, 
+                        "buyer_account_type" => $buyer_account_type, 
+                        "seller_account_type" => $seller_account_type, 
+                        "artist" => $artist_username, 
+                        "buyer_new_balance" => $buyer_new_balance, 
+                        "seller_new_balance" => $seller_new_balance, 
+                        "initial_pps" => $_SESSION['current_pps']['price_per_share'], 
+                        "new_pps" => $new_pps, 
+                        "buyer_new_share_amount" => $buyer_new_share_amount, 
+                        "seller_new_share_amount" => $seller_new_share_amount, 
+                        "shares_owned" => $_SESSION['shares_owned'], 
+                        "amount" => $quantity, 
+                        "price" => $row['siliqas_requested'], 
+                        "order_id" => $row['id'], 
+                        "date_purchased" => $current_date, 
+                        "indicator" => "AUTO_SELL", 
+                        "buy_mode"  => $buy_mode
+                    )));
+
+                    purchaseAskedPriceShare($connPDO,
+                                            $row['user_username'],
+                                            $user_username,
+                                            $buyer_account_type,
+                                            $seller_account_type,
+                                            $artist_username,
+                                            $buyer_new_balance,
+                                            $seller_new_balance,
+                                            $_SESSION['current_pps']['price_per_share'],
+                                            $new_pps,
+                                            $buyer_new_share_amount,
+                                            $seller_new_share_amount,
+                                            $_SESSION['shares_owned'],
+                                            $quantity,
+                                            $row['siliqas_requested'],
+                                            $row['id'],
+                                            $current_date,
+                                            "AUTO_SELL",
+                                            $buy_mode);
+
+                    $new_buy_order_quantity = $row['quantity'] - $quantity;
+                    hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $asked_price)." was transfered between buyer ".$row['user_username']." and seller ".$user_username);
+                    updateBuyOrderQuantity($conn, $row['id'], $new_buy_order_quantity);
+                    //The return value should be the amount of share requested subtracted by the amount that 
+                    //is automatically bought
+                    $quantity = $quantity - $row['quantity'];
+                    hx_debug(HX::SELL_SHARES, "quantity has been reduced to ".$quantity." after auto selling to buy order ".$row['id']);
+                }
+            }
+        }
+        return $quantity;
+    }
     function calculateTotalNumberOfSharesBought($user_username, $artist_username)
     {
         $ret = 0;
@@ -877,7 +1216,21 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
         return $ret;
     }
 
-    function buyHistoryInit(&$sellers, &$prices, &$quantities, &$date_purchase, &$time_purchase, $username)
+    /**
+    * Initializes buy history with indices from each array corresponds to the same information presented in a row
+    *
+    * @param[out]  	sellers           array contains all sellers that the user has purchased from 
+    *
+    * @param[out]  	prices            array containing all prices that were bought
+    * 
+    * @param[out]  	quantities        array containing all quantities that were bought
+    *
+    * @param[out]  	date_purchase     array containing all date that shares were bought
+    *
+    * @param[in]  	username          user that buy history is gathering data for
+    *
+    */
+    function buyHistoryInit(&$sellers, &$prices, &$quantities, &$date_purchase, $username)
     {
         $conn = connect();
 
@@ -885,30 +1238,29 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity)
 
         while($row = $res->fetch_assoc())
         {
-            if($_SESSION['account_type'] == AccountType::Artist)
-            {
-                $date = toYYYYMMDD($row['date_purchased']);
-            }
-            else if($_SESSION['account_type'] == AccountType::User)
-            {
-                $date = dateParser($row['date_purchased']);
-            }
-            $time = timeParser($row['time_purchased']);
-
             array_push($prices, $row['price_per_share_when_bought']);
             array_push($sellers, $row['seller_username']);
             array_push($quantities, $row['no_of_share_bought']);
-            array_push($date_purchase, $date);
-            array_push($time_purchase, $time);
+            array_push($date_purchase, dbDateTimeParser($row['date_purchased']));
         }
     }
 
+    /**
+    * Initializes trade history given a range from 2 global variables
+    *
+    * @param  	conn                connection to db
+    *
+    * @param  	query_result        result from db, contains all trading information of a specific user
+    *
+    */
     function populateTradeHistory($conn, $query_result): TradeHistoryList
     {
         $trade_history_list = new TradeHistoryList();
 
         while($row = $query_result->fetch_assoc())
         {
+            $db_date_time = $row['date_purchased'];
+            $row['date_purchased'] = toDDMMYYYY(explode(" ", $row['date_purchased'])[0]);
             //only display the dates that are in the range that the user chose
             if(isInRange($row['date_purchased'], $_SESSION['trade_history_from'], $_SESSION['trade_history_to']))
             {

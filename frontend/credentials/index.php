@@ -44,10 +44,10 @@ hassnerInit();
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav ml-auto">
                         <menu class="nav-item">
-                            <a class="nav-link-index page-scroll" href="#login">Log In</a>
+                            <a class="nav-link-index page-scroll" href="login.php">Log In</a>
                         </menu>
                         <menu class="nav-item">
-                            <a class="nav-link-index page-scroll" href="#signup">Sign Up</a>
+                            <a class="nav-link-index page-scroll" href="signup.php">Sign Up</a>
                         </menu>
                     </ul>
                 </div>

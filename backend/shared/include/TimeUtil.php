@@ -18,7 +18,7 @@
     }
 
     /**
-    * Determines if an expiration date is in the future or not
+    * Parses a datetime object received from the database to human readable format
     *
     * @param  	date_time_object	date time object received from the db datetime class
     *                               has format of YYYY-MM-DD HH:MM:SS
@@ -361,6 +361,17 @@
         return $ret;
     }
 
+    /**
+    * Converts static time to relative time
+    *
+    * @param  	current_date    Today's date, format doesn't matter
+    *
+    * @param  	date_posted     day to compare with today's date, format doesn't matter
+    * 
+    * @param  	time_posted     time to compare with today's date, format doesn't matter
+    *
+    * @return 	ret	            a string of relative time
+    */
     function toRelativeTime($current_date, $date_posted, $time_posted)
     {
         //Assuming error check
@@ -501,10 +512,10 @@
     }
 
     /**
-    * Converts a date to DD/MM/YYYY format
+    * Converts a date to DD-MM-YYYY format
     *
-    * @param  	date	    date to be converted, has format of YYYY/MM/DD
-    * @return 	ret	        a string of date formatted to DD/MM/YYYY
+    * @param  	date	    date to be converted, has format of YYYY-MM-DD
+    * @return 	ret	        a string of date formatted to DD-MM-YYYY
     */
     function toDDMMYYYY($date): string
     {

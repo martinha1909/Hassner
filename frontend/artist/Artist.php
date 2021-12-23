@@ -472,7 +472,7 @@
                                             <div class="wrapper-searchbar">
                                                 <div class="container-searchbar mx-auto">
                                                     <label>
-                                                        <form action="../../backend/shared/SellOrderBackend.php" method="post">
+                                                        <form action="../../backend/artist/SellOrderBackend.php" method="post">
                                                             <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
                                                             <p>Quantity: <span id="demo"></span></p>
                                                             <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter price per share">
@@ -562,9 +562,8 @@
                                 $prices = array();
                                 $quantities = array();
                                 $date_purchase = array();
-                                $time_purchase = array();
             
-                                buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $time_purchase, $_SESSION['username']);
+                                buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $_SESSION['username']);
             
                                 for ($i = 0; $i < sizeof($sellers); $i++) {
                                     echo '
@@ -670,8 +669,8 @@
         id="artist_user_share_info_script" 
         artist_tag='<?= $artist_market_tag; ?>'
     ></script>
-    <script type="text/javascript" src="../js/Chart.min.js"></script>
-    <script type="text/javascript" src="../js/linegraph.js"></script>
+    <script type="text/javascript" src="../js/graph/Chart.min.js"></script>
+    <script type="text/javascript" src="../js/graph/linegraph.js"></script>
 </body>
 
 </html>

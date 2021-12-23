@@ -28,7 +28,8 @@
         $_SESSION['dependencies'] = "FRONTEND";
         header("Location: ../../frontend/credentials/signup.php");
     }
-    else if(!empty($username) && !empty($password) && !empty($email)){
+    else if(!empty($username) && !empty($password) && !empty($email))
+    {
         if(!ctype_alnum($username))
         {
             $msg = $username." contains a non-alphanumeric character";
@@ -55,6 +56,7 @@
                     $_SESSION['status'] = StatusCodes::ErrTickerDuplicate;
                     $_SESSION['dependencies'] = "FRONTEND";
                     header("Location: ../../frontend/credentials/signup.php");
+                    die;
                 }
                 else if(strlen($ticker) != 4 ||
                         !is_numeric($ticker[0]) || 
@@ -68,6 +70,7 @@
                     $_SESSION['status'] = StatusCodes::ErrTickerFormat;
                     $_SESSION['dependencies'] = "FRONTEND";
                     header("Location: ../../frontend/credentials/signup.php");
+                    die;
                 }
             }
 
@@ -91,7 +94,6 @@
             }
             else
             {
-                
                 $_SESSION['status'] = signup($connPDO, $username, $password, $account_type, $email, $ticker);
                 if($_SESSION['status'] == StatusCodes::Success)
                 {
@@ -125,8 +127,4 @@
         $_SESSION['dependencies'] = "FRONTEND";
         header("Location: ../../frontend/credentials/signup.php");
     }
-
-      
-
-
 ?>

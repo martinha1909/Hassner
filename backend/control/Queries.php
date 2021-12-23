@@ -29,6 +29,21 @@
             return $result;
         }
 
+        function getAccountTypeFromUsername($conn, $username)
+        {
+            $sql = "SELECT account_type FROM account WHERE username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $username);
+            if($stmt->execute() == FALSE)
+            {
+                $msg = "Error occured: ".implode(":", $stmt->errorInfo());
+                hx_error(HX::QUERY, "searchAccount failed to query");
+            }
+            $result = $stmt->get_result();
+            return $result;
+        }
+
+
         function searchArtist($conn, $artist_username)
         {
             $sql = "SELECT username FROM account WHERE username = ? AND account_type = 'artist'";
@@ -187,7 +202,7 @@
 
         function searchArtistBuyBackShares($conn, $artist_username)
         {
-            $sql = "SELECT price_per_share_when_bought, date_purchased, time_purchased, no_of_share_bought FROM buy_history WHERE user_username = ? AND artist_username = ?";
+            $sql = "SELECT no_of_share_bought, price_per_share_when_bought, date_purchased FROM buy_history WHERE user_username = ? AND artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ss', $artist_username, $artist_username);
             $stmt->execute();
@@ -198,7 +213,7 @@
 
         function searchSharesBoughtFromArtist($conn, $artist_username)
         {
-            $sql = "SELECT price_per_share_when_bought, date_purchased, time_purchased, no_of_share_bought FROM buy_history WHERE artist_username = ?";
+            $sql = "SELECT no_of_share_bought, price_per_share_when_bought, date_purchased FROM buy_history WHERE artist_username = ? ORDER BY date_purchased DESC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -295,11 +310,21 @@
 
         function searchSellOrderByID($conn, $id)
         {
+            $resullt = 0;
+
             $sql = "SELECT * FROM sell_order WHERE id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('i', $id);
             $stmt->execute();
-            $result = $stmt->get_result();
+            if($stmt->execute() == TRUE)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
+            }
 
             return $result;
         }
@@ -438,11 +463,38 @@
 
         function searchSellOrderByArtist($conn, $artist_username)
         {
-            $sql = "SELECT * FROM sell_order WHERE artist_username = ?";
+            $result = 0;
+
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, is_from_injection, date_posted FROM sell_order WHERE artist_username = ? ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
-            $stmt->execute();
-            $result = $stmt->get_result();
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
+        function searchSellOrdersIDFromInjection($conn, $artist_username)
+        {
+            $result = 0;
+
+            $sql = "SELECT id FROM sell_order WHERE artist_username = ? AND is_from_injection = 1 ORDER BY date_posted ASC";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
 
             return $result;
         }
@@ -589,22 +641,6 @@
             return $status;
         }
 
-        function getMaxSellOrderID($conn)
-        {
-            $sql = "SELECT MAX(id) AS max_id FROM sell_order";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
-
-        function getMaxBuyOrderID($conn)
-        {
-            $sql = "SELECT MAX(id) AS max_id FROM buy_order";
-            $result = mysqli_query($conn,$sql);
-            
-            return $result;
-        }
-
         function updateCampaignEligibleParticipants($conn, $campaign_id, $eligible_participant)
         {
             $sql = "UPDATE campaign SET eligible_participants = '$eligible_participant' WHERE id='$campaign_id'";
@@ -651,9 +687,13 @@
                 
                 $connPDO->commit();
                 $status = StatusCodes::Success;
+
+                $msg = "Artist ".$artist_username." went IPO by distributing ".$share_distributing. "shares!";
+                hx_info(HX::SHARES_INJECT, $msg);
             } catch (PDOException $e) {
                 $connPDO->rollBack();
-                echo "Failed: " . $e->getMessage();
+                $msg = "db error occured with message: " . $e->getMessage();
+                hx_error(HX::DB, $msg);
 
                 $status = StatusCodes::ErrGeneric;
             }
@@ -690,9 +730,22 @@
         function updateShareDistributed($conn, $artist_username, $new_share_distributed, $added_shares, $comment, $date)
         {
             $sql = "UPDATE account SET Share_Distributed = '$new_share_distributed' WHERE username='$artist_username'";
-            $conn->query($sql);
+            if($conn->query($sql) == true)
+            {
+                hx_info(HX::SHARES_INJECT, "artist ".$artist_username." just injected ".$added_shares." with comment: ".$comment);
+                hx_debug(HX::SHARES_INJECT, "addToInjectionHistory params: ".json_encode(array(
+                    "artist_username" => $artist_username, 
+                    "share_distributing" => $added_shares, 
+                    "comment" => $comment, 
+                    "date" => $date
+                )));
+                addToInjectionHistory($conn, $artist_username, $added_shares, $comment, $date);
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
 
-            addToInjectionHistory($conn, $artist_username, $added_shares, $comment, $date);
         }
 
         function saveUserPaymentInfo($conn, $username, $full_name, $email, $address, $city, $state, $zip, $card_name, $card_number)
@@ -797,106 +850,69 @@
             header("Location: ../../frontend/listener/listener.php");
         }
 
-        function purchaseMarketPriceShare($conn, $buyer, $artist, $buyer_new_balance, $artist_new_balance, $inital_pps, $new_pps, $buyer_new_share_amount, $shares_owned, $amount, $date_purchased, $time_purchased)
-        {
-            $status = 0;
-            try {
-                $conn->beginTransaction();
-
-                $stmt = $conn->prepare("UPDATE account SET Shares = Shares + ? WHERE username = ?");
-                $stmt->bindValue(1, $amount);
-                $stmt->bindValue(2, $buyer);
-                $stmt->execute(array($amount, $buyer));
-
-                $stmt = $conn->prepare("UPDATE account SET Shares = Shares + ? WHERE username = ?");
-                $stmt->bindValue(1, $amount);
-                $stmt->bindValue(2, $artist);
-                $stmt->execute(array($amount, $artist));
-
-                $stmt = $conn->prepare("UPDATE account SET balance = '$buyer_new_balance' WHERE username = ?");
-                $stmt->bindValue(1, $buyer);
-                $stmt->execute(array($buyer));
-
-                $stmt = $conn->prepare("UPDATE account SET balance = '$artist_new_balance' WHERE username = ?");
-                $stmt->bindValue(1, $artist);
-                $stmt->execute(array($artist));
-
-                $stmt = $conn->prepare("UPDATE account SET price_per_share = '$new_pps' WHERE username = ?");
-                $stmt->bindValue(1, $artist);
-                $stmt->execute(array($artist));
-
-                $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
-                                        VALUES(?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bindValue(1, $buyer);
-                $stmt->bindValue(2, $artist);
-                $stmt->bindValue(3, $artist);
-                $stmt->bindValue(4, $buyer_new_share_amount);
-                $stmt->bindValue(5, $inital_pps);
-                $stmt->bindValue(6, $date_purchased);
-                $stmt->bindValue(7, $time_purchased);
-                $stmt->execute(array($buyer, $artist, $artist, $buyer_new_share_amount, $inital_pps, $date_purchased, $time_purchased));
-
-                $search_conn = connect();
-                $res = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);
-                //if the buyer has not invested in the artist, add a row
-                if($res->num_rows == 0)
-                {
-                    $stmt = $conn->prepare("INSERT INTO artist_shareholders (user_username, artist_username, shares_owned)
-                                            VALUES(?, ?, ?)");
-                    $stmt->bindValue(1, $buyer);
-                    $stmt->bindValue(2, $artist);
-                    $stmt->bindValue(3, $amount);
-                    $stmt->execute(array($buyer, $artist, $amount));
-                }
-                //otherwise just update the new shares owned of the user towards the artist
-                else
-                {
-                    $current_share_amount = $res->fetch_assoc();
-                    $new_share_amount = $current_share_amount['shares_owned'] + $amount;
-                    $stmt = $conn->prepare("UPDATE artist_shareholders SET shares_owned = '$new_share_amount' WHERE user_username = ? AND artist_username = ?");
-                    $stmt->bindValue(1, $buyer);
-                    $stmt->bindValue(2, $artist);
-                    $stmt->execute(array($buyer, $artist));
-                }
-
-                $conn->commit();
-                $status = StatusCodes::Success;
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
-
-                $status = StatusCodes::ErrGeneric;
-            }
-
-            return $status;
-        }
-
-        function purchaseAskedPriceShare($conn, $buyer, $seller, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $time_purchased, $indicator)
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $buyer_account_type, $seller_account_type, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $indicator, $buy_mode)
         {
             $status = 0;
 
             try {
                 $conn->beginTransaction();
 
-                $stmt = $conn->prepare("UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = ?");
-                $stmt->bindValue(1, $buyer);
-                $stmt->execute(array($buyer));
-
-                //If the user is the seller, we want to decrease the total number of shares owned by the user
-                //But if the user is an artist, we want to reduce the amount of shares that was bought back,
-                //the total number of shares bought of that artist is still the same
-                if($_SESSION['account_type'] == AccountType::User)
+                //p2p trading
+                if($buyer_account_type == AccountType::User && $seller_account_type == AccountType::User)
                 {
+                    $stmt = $conn->prepare("UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = ?");
+                    $stmt->bindValue(1, $buyer);
+                    $stmt->execute(array($buyer));
+
                     $stmt = $conn->prepare("UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = ?");
                     $stmt->bindValue(1, $seller);
                     $stmt->execute(array($seller));
                 }
-                else if($_SESSION['account_type'] == AccountType::Artist)
+                //Buys from artist, there are 2 different scenarios:
+                //from share injection
+                //from the sell order created by the artist after buying back his shares
+                else if($buyer_account_type == AccountType::User && $seller_account_type == AccountType::Artist)
                 {
-                    $stmt = $conn->prepare("UPDATE account SET shares_repurchase = shares_repurchase - ? WHERE username = ?");
-                    $stmt->bindValue(1, $amount);
-                    $stmt->bindValue(2, $seller);
-                    $stmt->execute(array($amount, $seller));
+                    $stmt = $conn->prepare("UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = ?");
+                    $stmt->bindValue(1, $buyer);
+                    $stmt->execute(array($buyer));
+
+                    if($buy_mode == ShareInteraction::BUY_FROM_INJECTION)
+                    {
+                        //Increase the total number of shares bought of that artist accross all users
+                        $stmt = $conn->prepare("UPDATE account SET Shares = Shares + ? WHERE username = ?");
+                        $stmt->bindValue(1, $amount);
+                        $stmt->bindValue(2, $seller);
+                        $stmt->execute(array($amount, $seller));
+                    }
+                    else if($buy_mode == ShareInteraction::BUY)
+                    {
+                        //reduce the shares_repurchase of the artist after the sell order from their share repurchase has been sold
+                        $stmt = $conn->prepare("UPDATE account SET shares_repurchase = shares_repurchase - ? WHERE username = ?");
+                        $stmt->bindValue(1, $amount);
+                        $stmt->bindValue(2, $seller);
+                        $stmt->execute(array($amount, $seller));
+
+                        //Increase the total number of shares bought of that artist accross all users since the artist no longer holds shares of himself
+                        $stmt = $conn->prepare("UPDATE account SET Shares = Shares + ? WHERE username = ?");
+                        $stmt->bindValue(1, $amount);
+                        $stmt->bindValue(2, $seller);
+                        $stmt->execute(array($amount, $seller));
+                    }
+                }
+
+                //We want to update the selling price of sell orders that are from injection to the current purchasing price
+                if($buy_mode != ShareInteraction::BUY_FROM_INJECTION)
+                {
+                    $search_conn = connect();
+                    $res_from_injection = searchSellOrdersIDFromInjection($search_conn, $artist);
+                    while($row = $res_from_injection->fetch_assoc())
+                    {
+                        $stmt = $conn->prepare("UPDATE sell_order SET selling_price = ? WHERE id = ?");
+                        $stmt->bindValue(1, $new_pps);
+                        $stmt->bindValue(2, $row['id']);
+                        $stmt->execute(array($new_pps, $row['id']));
+                    }
                 }
 
                 $stmt = $conn->prepare("UPDATE account SET balance = '$buyer_new_balance' WHERE username = ?");
@@ -911,16 +927,15 @@
                 $stmt->bindValue(1, $artist);
                 $stmt->execute(array($artist));
 
-                $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
-                                        VALUES(?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased)
+                                        VALUES(?, ?, ?, ?, ?, ?)");
                 $stmt->bindValue(1, $buyer);
                 $stmt->bindValue(2, $seller);
                 $stmt->bindValue(3, $artist);
                 $stmt->bindValue(4, $amount);
                 $stmt->bindValue(5, $initial_pps);
                 $stmt->bindValue(6, $date_purchased);
-                $stmt->bindValue(7, $time_purchased);
-                $stmt->execute(array($buyer, $seller, $artist, $amount, $initial_pps, $date_purchased, $time_purchased));
+                $stmt->execute(array($buyer, $seller, $artist, $amount, $initial_pps, $date_purchased));
 
                 $search_conn = connect();
                 $res_buyer = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);
@@ -948,11 +963,14 @@
     
                 //Decrease the number of shares the seller is currently holding of the artist
                 $current_share_amount_seller = $res_seller->fetch_assoc();
-                $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount;
-                $stmt = $conn->prepare("UPDATE artist_shareholders SET shares_owned = '$new_share_amount_seller' WHERE user_username = ? AND artist_username = ?");
-                $stmt->bindValue(1, $seller);
-                $stmt->bindValue(2, $artist);
-                $stmt->execute(array($seller, $artist));
+                if($seller != $artist)
+                {
+                    $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount;
+                    $stmt = $conn->prepare("UPDATE artist_shareholders SET shares_owned = '$new_share_amount_seller' WHERE user_username = ? AND artist_username = ?");
+                    $stmt->bindValue(1, $seller);
+                    $stmt->bindValue(2, $artist);
+                    $stmt->execute(array($seller, $artist));
+                }
                 
                 if($indicator == "AUTO_PURCHASE")
                 {
@@ -971,9 +989,10 @@
 
                 $conn->commit();
                 $status = StatusCodes::Success;
+                hx_info(HX::BUY_SHARES, "buyer ".$buyer." purchased ".$amount." shares from ".$seller." for $".$price);
             } catch (PDOException $e) {
                 $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
+                hx_error(HX::DB, "Failed: " . $e->getMessage());
 
                 $status = StatusCodes::ErrGeneric;
             }
@@ -981,7 +1000,7 @@
             return $status;
         }
 
-        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $buyer_new_share_amount, $initial_pps, $new_pps, $amount_bought, $sell_order_id, $selling_price, $date_purchased, $time_purchased)
+        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $buyer_new_share_amount, $initial_pps, $new_pps, $amount_bought, $sell_order_id, $selling_price, $date_purchased)
         {
             $status = 0;
 
@@ -999,6 +1018,10 @@
                 $stmt = $conn->prepare("UPDATE account SET Shares = '$seller_new_share_amount' WHERE username = ?");
                 $stmt->bindValue(1, $seller_username);
                 $stmt->execute(array($seller_username));
+
+                $stmt = $conn->prepare("UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = ?");
+                $stmt->bindValue(1, $artist_username);
+                $stmt->execute(array($artist_username));
                 
                 $stmt = $conn->prepare("UPDATE account SET price_per_share = '$new_pps' WHERE username = ?");
                 $stmt->bindValue(1, $artist_username);
@@ -1009,16 +1032,15 @@
                 $stmt->bindValue(2, $artist_username);
                 $stmt->execute(array($amount_bought, $artist_username));
 
-                $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased, time_purchased)
-                                        VALUES(?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased)
+                                        VALUES(?, ?, ?, ?, ?, ?)");
                 $stmt->bindValue(1, $artist_username);
                 $stmt->bindValue(2, $seller_username);
                 $stmt->bindValue(3, $artist_username);
                 $stmt->bindValue(4, $amount_bought);
                 $stmt->bindValue(5, $initial_pps);
                 $stmt->bindValue(6, $date_purchased);
-                $stmt->bindValue(7, $time_purchased);
-                $stmt->execute(array($artist_username, $seller_username, $artist_username, $amount_bought, $initial_pps, $date_purchased, $time_purchased));
+                $stmt->execute(array($artist_username, $seller_username, $artist_username, $amount_bought, $initial_pps, $date_purchased));
 
                 $search_conn = connect();
                 $res_buyer = searchSharesInArtistShareHolders($search_conn, $artist_username, $artist_username);
@@ -1059,9 +1081,13 @@
 
                 $conn->commit();
                 $status = StatusCodes::Success;
+
+                $msg = "Artist ".$artist_username." just bought back ".$amount_bought." shares from user ".$seller_username;
+                hx_info(HX::BUY_SHARES, $msg);
             } catch (PDOException $e) {
                 $conn->rollBack();
-                echo "Failed: " . $e->getMessage();
+                $msg = "db error occured, reverting operation with error message: ".$e->getMessage();
+                hx_error(HX::DB, $msg);
 
                 $status = StatusCodes::ErrGeneric;
             }
@@ -1078,7 +1104,7 @@
             $conn->query($sql);
         }
 
-        function adjustExistedAskedPriceQuantity($conn, $user_username, $artist_username, $asked_price, $new_quantity, $new_date, $new_time)
+        function adjustExistedAskedPriceQuantity($conn, $user_username, $artist_username, $asked_price, $new_quantity, $new_date)
         {
             $status = 0;
             $sql = "UPDATE sell_order SET no_of_share = '$new_quantity' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
@@ -1100,23 +1126,20 @@
             {
                 $status = StatusCodes::ErrGeneric;
             }
-
-            $sql = "UPDATE sell_order SET time_posted = '$new_time' WHERE user_username = '$user_username' AND artist_username = '$artist_username' AND selling_price = '$asked_price'";
-            if($conn->query($sql) == TRUE)
-            {
-                $status = StatusCodes::Success;
-            }
-            else
-            {
-                $status = StatusCodes::ErrGeneric;
-            }
             return $status;
         }
 
         function updateBuyOrderQuantity($conn, $buy_order_id, $new_quantity)
         {
             $sql = "UPDATE buy_order SET quantity = '$new_quantity' WHERE id = '$buy_order_id'";
-            $conn->query($sql);
+            if($conn->query($sql) == true)
+            {
+                hx_info(HX::BUY_ORDER, "Updated quantity to ".$new_quantity." for buy order id ".$buy_order_id);
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
         }
 
         function updateArtistShareholder($conn, $shareholder_username, $artist_username, $new_share_amount)
@@ -1152,6 +1175,7 @@
             else
             {
                 $status = StatusCodes::ErrGeneric;
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
             }
             return $status;
         }
@@ -1173,47 +1197,36 @@
             return $status;
         }
 
-        function postSellOrder($conn, $user_username, $artist_username, $quantity, $asked_price, $date_posted, $time_posted)
+        function postSellOrder($conn, $user_username, $artist_username, $quantity, $asked_price, $date_posted, $is_from_injection)
         {
             $status = 0;
-            $sell_order_id = 0;
 
-            $res = getMaxSellOrderID($conn);
-            if($res->num_rows != 0)
-            {
-                $max_id = $res->fetch_assoc();
-                $sell_order_id = $max_id['max_id'] + 1;
-            }
-            $sql = "INSERT INTO sell_order (id, user_username, artist_username, selling_price, no_of_share, date_posted, time_posted)
-                    VALUES(?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO sell_order (user_username, artist_username, selling_price, no_of_share, is_from_injection, date_posted)
+                    VALUES(?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('issddss', $sell_order_id, $user_username, $artist_username, $asked_price, $quantity, $date_posted, $time_posted);
+            $stmt->bind_param('ssdiis', $user_username, $artist_username, $asked_price, $quantity, $is_from_injection, $date_posted);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;
+                $msg = "a sell order to sell shares for artist ".$artist_username." is posted";
+                hx_info(HX::SELL_SHARES, $msg);
             }
             else
             {
                 $status = StatusCodes::ErrGeneric;
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
             }
             return $status;
         }
 
-        function postBuyOrder($conn, $user_username, $artist_username, $quantity, $request_price, $date_posted, $time_posted)
+        function postBuyOrder($conn, $user_username, $artist_username, $quantity, $request_price, $date_posted)
         {
-            $buy_order_id = 0;
-
-            $res = getMaxBuyOrderID($conn);
-            if($res->num_rows != 0)
-            {
-                $max_id = $res->fetch_assoc();
-                $buy_order_id = $max_id['max_id'] + 1;
-            }
             $status = 0;
-            $sql = "INSERT INTO buy_order (id, user_username, artist_username, quantity, siliqas_requested, date_posted, time_posted)
-                    VALUES(?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO buy_order (user_username, artist_username, quantity, siliqas_requested, date_posted)
+                    VALUES(?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('issidss', $buy_order_id, $user_username, $artist_username, $quantity, $request_price, $date_posted, $time_posted);
+            $stmt->bind_param('ssids', $user_username, $artist_username, $quantity, $request_price, $date_posted);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;

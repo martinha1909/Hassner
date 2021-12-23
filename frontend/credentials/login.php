@@ -21,6 +21,7 @@ hassnerInit();
   <link rel="icon" href="../../frontend/Images/hx_tmp_2.ico" type="image/ico">
   <link rel="stylesheet" href="../css/default.css" id="theme-color">
   <link rel="stylesheet" href="../css/menu.css" id="theme-color">
+  <link rel="stylesheet" href="../css/login.css">
 </head>
 
 <body>
@@ -65,26 +66,24 @@ hassnerInit();
             <!-- username field -->
             <div class="form-group">
               <h5>Username</h5>
-              <input name="username" type="text" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter username">
+              <input name="username" type="text" class="form-control" id="username" aria-describedby="signupUsernameHelp" placeholder="Username">
             </div>
 
             <!-- password field -->
             <div class="form-group">
               <h5>Password</h5>
-              <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              <input name="password" type="password" class="form-control" id="password" placeholder="Password">
             </div>
 
             <div class="form-group">
-              <p><?php
-                      getStatusMessage("Your credentials do not match", "Account created successfully");
-                  ?>
-              </p>
+              <p id="login-error" class="error-msg"></p>
             </div>
 
 
             <!-- login button -->
             <div class="col-md-8 col-12 mx-auto pt-5 text-center">
-              <input type="submit" class="btn btn-primary" role="button" aria-pressed="true" name="button" value="Login">
+              
+              <input type="button" class="btn btn-primary" role="button" aria-pressed="true" id="login_btn" value="Login">
             </div>
           </form>
 
@@ -108,7 +107,7 @@ hassnerInit();
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-  <script src="js/scripts.js"></script>
+  <script src="../js/credentials/login.js"></script>
 </body>
 
 </html>
