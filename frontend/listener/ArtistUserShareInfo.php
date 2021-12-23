@@ -21,6 +21,7 @@
 
         $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
         $artist_market_tag = getArtistMarketTag($_SESSION['selected_artist']);
+        $balance = getUserBalance($_SESSION['username']);
     }
 ?>
 
@@ -143,7 +144,7 @@
                             $high = getHighestOrLowestPPS($_SESSION['selected_artist'], "MAX");
                             $low = getHighestOrLowestPPS($_SESSION['selected_artist'], "MIN");
                             echo '
-                                    <h2>'.$_SESSION['current_pps']['price_per_share'].'</h2>
+                                    <h2 id="pps">'.$_SESSION['current_pps']['price_per_share'].'</h2>
                                 ';
                             if($change == 0)
                             {
@@ -195,51 +196,64 @@
                     <?php
                     if($_SESSION['artist_found'])
                     {
-                        echo '
-                        <div class="accordion" id="buy_accordion">
-                            <h3 class="shares_header">Buy Shares</h3>
-                            <div class="slider_container">
-                                <div class="textbox_container">
-                                    <div class="stocktip">
-                                        <p id="buy_tip">Without limits the next available share(s) will be purchased</p>
+                        if(canCreateBuyOrder($_SESSION['username'], $_SESSION['selected_artist']))
+                        {
+                            if($balance > 0 && $balance > $_SESSION['current_pps']['price_per_share'])
+                            {
+                                echo '
+                                    <div class="accordion" id="buy_accordion">
+                                        <h3 class="shares_header">Buy Shares</h3>
+                                        <div class="slider_container">
+                                            <div class="textbox_container">
+                                                <div class="stocktip">
+                                                    <p id="buy_tip">Without limits the next available share(s) will be purchased</p>
+                                                </div>
+                                                <label for="buy_num_shares"># Shares:</label>
+                                                <input type="text" class="slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
+
+                                                <label for="buy_cost">Cost:</label>
+                                                <input type="text" class="slider_text" id="buy_cost" style="border:0; color:#f6931f; font-weight:bold;">
+                                            </div>
+
+                                            <div class="slider_slider" id="buy_num"></div>
+                                            <div class="slider_slider" id="buy_limit"></div>
+                                            <div class="order_btn_container">
+                                            <button id="buy_order">Buy</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <label for="buy_num_shares"># Shares:</label>
-                                    <input type="text" class="slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
-
-                                    <label for="buy_cost">Cost:</label>
-                                    <input type="text" class="slider_text" id="buy_cost" style="border:0; color:#f6931f; font-weight:bold;">
+                                ';
+                            }
+                            else
+                            {
+                                echo '<h6 class="error-msg">Not enough balance</h6>';
+                            }
+                        }
+                        if(canCreateSellOrder($_SESSION['username'], $_SESSION['selected_artist']))
+                        {
+                            echo '
+                                    <div class="spacer"></div>
+                                    <div class="accordion" id="sell_accordion">
+                                        <h3 class="shares_header">Sell Shares</h3>
+                                        <div class="slider_container">
+                                            <div class="textbox_container">
+                                                <div class="stocktip">
+                                                    <p id="sell_tip">Without limits your shares will be sold to the next available buyer</p>
+                                                </div>
+                                                <label for="sell_num_shares"># Shares:</label>
+                                                <input type="text" class="slider_text" id="sell_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
+                                                <label for="sell_cost">$:</label>
+                                                <input type="text" class="slider_text" id="sell_cost" style="border:0; color:#f6931f; font-weight:bold;">
+                                            </div>
+                                        <div class="slider_slider" id="sell_num"></div>
+                                        <div class="slider_slider" id="sell_limit"></div>
+                                        <div class="order_btn_container">
+                                            <button id="sell_order">Sell</button>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="slider_slider" id="buy_num"></div>
-                                <div class="slider_slider" id="buy_limit"></div>
-                                <div class="order_btn_container">
-                                  <button id="buy_order">Buy</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="accordion" id="sell_accordion">
-                          <h3 class="shares_header">Sell Shares</h3>
-                            <div class="slider_container">
-                            <div class="textbox_container">
-                                <div class="stocktip">
-                                    <p id="sell_tip">Without limits your shares will be sold to the next available buyer</p>
-                                </div>
-                                <label for="sell_num_shares"># Shares:</label>
-                                <input type="text" class="slider_text" id="sell_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
-
-                                <label for="sell_cost">$:</label>
-                                <input type="text" class="slider_text" id="sell_cost" style="border:0; color:#f6931f; font-weight:bold;">
-                            </div>
-                                <div class="slider_slider" id="sell_num"></div>
-                                <div class="slider_slider" id="sell_limit"></div>
-                                <div class="order_btn_container">
-                                  <button id="sell_order">Sell</button>
-                                </div>
-                            </div>
-                        </div>
-                        ';
-                        
+                            ';
+                        }
                     }
                     ?>
                 </div>
@@ -254,97 +268,6 @@
                     <?php
                         if($_SESSION['artist_found'])
                         {
-                            if ($_SESSION['buy_sell'] == ShareInteraction::BUY && $_SESSION['buy_options'] == "MARKET") {
-                                echo '
-                                        <div class="py-4 center-text">
-                                            <h3 class="h3-blue py-5">Market Price</h3>
-                                        </div>
-                                    ';
-
-                                //If the amount of artist shares has not sold out or the artist has distributed some shares, makes Buy option available 
-                                if ($_SESSION['available_shares'] > 0) {
-                                    //replaces the Buy button with a slide bar ranging from 0 to the quantity that is equivalent to the maximum available share for purchase
-                                    if ($_SESSION['buy_market_price'] == 0) {
-                                        echo '
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Seller username</th>
-                                                        <th scope="col">Price per share(q̶)</th>
-                                                        <th scope="col">Quantity</th>
-                                                        <th scope="col">+</th>
-                                                        <th scope="col"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">' . $_SESSION['selected_artist'] . '</th>
-                                                            <td>' . $_SESSION['current_pps']['price_per_share'] . '</td>
-                                                            <td>' . $_SESSION['available_shares'] . '</td>
-                                        ';
-                                        if (hasEnoughSiliqas($_SESSION['current_pps']['price_per_share'], $_SESSION['user_balance'])) {
-                                            echo '
-                                                            <form action="../../backend/listener/ToggleBuyMarketPriceBackend.php" method="post">
-                                                                <td><input name="buy_user_selling_price" role="button" type="submit" class="btn btn-primary" value="Buy"></td>
-                                                            </form>
-                                            ';
-                                        } else {
-                                            $_SESSION['status'] = "ERROR";
-                                            echo '
-                                                                <td>
-                                            ';
-                                            getStatusMessage("Not enough siliqas", "");
-                                            echo '
-                                                                </td>
-                                            ';
-                                        }
-                                        echo '
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        ';
-                                    } else {
-                                        $_SESSION['seller_toggle'] = $_SESSION['selected_artist'];
-                                        $_SESSION['purchase_price'] = $_SESSION['current_pps']['price_per_share'];
-                                        echo '
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Seller username</th>
-                                                        <th scope="col">Price per share(q̶)</th>
-                                                        <th scope="col">Quantity</th>
-                                                        <th scope="col">+</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">' . $_SESSION['selected_artist'] . '</th>
-                                                            <td>' . $_SESSION['current_pps']['price_per_share'] . '</td>
-                                                            <td>' . $_SESSION['available_shares'] . '</td>
-                                                            <td>
-                                                                <form action="../../backend/shared/BuySharesBackend.php" method="post">
-                                                                    <input name = "purchase_quantity" type="range" min="1" max=' . $_SESSION['available_shares'] . ' value="1" class="slider" id="myRange">
-                                                                    <p>Quantity: <span id="demo"></span></p>
-                                                                    <input name="buy_user_selling_price" type="submit" id="abc" class="menu-text" role="button" aria-pressed="true" value="->">
-                                                                </form>
-                                                                <form action="../../backend/listener/ToggleBuyMarketPriceBackend.php" method="post">
-                                                                    <td><input name="buy_user_selling_price" type="submit" id="abc" class="menu-text" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
-                                                                </form>
-                                                            </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        ';
-                                    }
-                                } else {
-                                    echo '
-                                        <div class="py-4 text-center">
-                                            <h4>No shares are currently available from ' . $_SESSION['selected_artist'] . '</h4>
-                                        </div>
-                                    ';
-                                }
-                            }
-
                             echo '
                                 <div class="col-6">
                                     <h3 class="h3-blue py-5">Buy History</h3>
@@ -355,7 +278,6 @@
                                                 <th scope="col">Price</th>
                                                 <th scope="col">Quantity</th>
                                                 <th scope="col">Date Purchased</th>
-                                                <th scope="col">Time Purchased</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -366,9 +288,8 @@
                             $prices = array();
                             $quantities = array();
                             $date_purchase = array();
-                            $time_purchase = array();
 
-                            buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $time_purchase, $_SESSION['username']);
+                            buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $_SESSION['username']);
 
                             for ($i = 0; $i < sizeof($sellers); $i++) {
                                 echo '
@@ -377,7 +298,6 @@
                                                 <td>' . $prices[$i] . '</td>
                                                 <td>' . $quantities[$i] . '</td>
                                                 <td>' . $date_purchase[$i] . '</td>
-                                                <td>' . $time_purchase[$i] . '</td>
                                             </tr>
                                 ';
                             }
@@ -460,9 +380,9 @@
         id="artist_user_share_info_script" 
         artist_tag='<?= $artist_market_tag; ?>'
     ></script>
-    <script type="text/javascript" src="../js/Chart.min.js"></script>
-    <script type="text/javascript" src="../js/linegraph.js"></script>
-    <script type="text/javascript" src="../js/artist_sliders.js"></script>
+    <script type="text/javascript" src="../js/graph/Chart.min.js"></script>
+    <script type="text/javascript" src="../js/graph/linegraph.js"></script>
+    <script type="text/javascript" src="../js/listener/artist_sliders.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");

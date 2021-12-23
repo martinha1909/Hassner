@@ -127,7 +127,6 @@
             deleteInjectionHistory($conn, $username);
             deleteCampaigns($conn, $username);
             deleteArtistShareholders($conn, $username);
-            deleteArtistAccountData($conn, $username);
         }
     }
 
