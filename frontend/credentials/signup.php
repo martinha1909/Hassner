@@ -11,7 +11,7 @@ hassnerInit();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Hassner - Sign Up</title>
+  <title>Sign Up</title>
   <meta name="description" content="Hassner is a platform to raise music for artists" />
 
   <!--Inter UI font-->
@@ -30,7 +30,7 @@ hassnerInit();
       <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
 
         <a class="navbar-brand" href="index.php" onclick='window.location.reload();'>
-          HASSNER
+           ❖ HX
         </a>
 
         <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">

@@ -24,7 +24,7 @@ input[type="form-text"] {
 }
 
 input[type="form-text"]:focus {
-  border-color: #11171a;
+  border-color: #1c1c1cff;
   outline: none;
 }
 
@@ -42,7 +42,7 @@ input[type="search"] {
 }
 
 input[type="search"]:focus {
-  border-color: #11171a;
+  border-color: #1c1c1cff;
   outline: none;
 }
 

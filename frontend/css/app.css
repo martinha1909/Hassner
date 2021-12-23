@@ -16,14 +16,14 @@
   line-height: 1.5;
   color: #cfd8dc;
   text-align: left;
-  background: #11171a;
-  background: linear-gradient(13deg, #11171a 0%, #ff9100 100%); */
+  background: #1c1c1cff;
+  background: linear-gradient(13deg, #1c1c1cff 0%, #ff9100 100%); */
 /* } */
 
 main {
   width: 500px;
   overflow: hidden;
-  background-color: #11171a;
+  background-color: #1c1c1cff;
   font-size: 16px;
   line-height: 22px;
   color: #000;
@@ -243,12 +243,12 @@ a#icon-btn {
   padding: 5px 10px;
   transition: background-color 0.5s ease;
   background-color: #ffffff;
-  color: #11171a;
+  color: #1c1c1cff;
 }
 
 .edit-btn:hover {
   cursor: pointer;
-  background-color: #11171a;
+  background-color: #1c1c1cff;
   color: #ffffff;
 }
 

@@ -26,7 +26,7 @@ include '../../backend/shared/include/PersonalPageHelpers.php';
     <div class="container-xxl">
       <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
         <a class="navbar-brand heading-black" href="listener.php" onclick='window.location.reload();'>
-          HASSNER
+            ❖ HX
         </a>
     </div>
   </header>

@@ -18,7 +18,7 @@ hassnerInit();
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Hassner</title>
+    <title>Hassner Exchange</title>
     <meta name="description" content="Hassner is a service to invest in artists." />
 
     <!--Inter UI font-->
@@ -35,7 +35,7 @@ hassnerInit();
     <!--navigation-->
     <section class="smart-scroll">
         <div class="container-fluid">
-            <nav class="navbar navbar-expand-md navbar-dark bg-darkblue">
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                 <a class="navbar-index" href="#" onclick='window.location.reload();'>
                 ❖ HX
                 </a>
