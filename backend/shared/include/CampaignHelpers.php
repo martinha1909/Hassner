@@ -293,6 +293,14 @@
         return round($ret, 2);
     }
 
+    /**
+    * Determine if a user is eligible to participte in a given campaign or not
+    *
+    * @param  	user_username	        user username
+    * @param  	artist_username	        artist username to query user's investment
+    * @param  	campaign_id	            campaign id to be determined
+    * @return 	ret	                    true if the user is eligible to participate in the given campaign, false otherwise
+    */
     function userIsParticipatingInCampaign($user_username, $artist_username, $campaign_id)
     {
         $conn = connect();
@@ -314,6 +322,13 @@
         return $ret;
     }
 
+    /**
+    * Determine if a user has above 90% of a given campaign requirement or not
+    *
+    * @param  	user_num_shares	        amount of shares a user has
+    * @param  	campaign_min_ethos	    campaign requirement
+    * @return 	ret	                    true if the user has above 90% towards the campaign requirement, false otherwise
+    */
     function isNearParticipation($user_num_shares, $campaign_min_ethos)
     {
         $conn = connect();

@@ -265,6 +265,13 @@
         return $ret;
     }
 
+    /**
+    * Fetches all participating campaign of a given user. 
+    * If a user has less than the required ethos amount, the campaign will not be added to the returning array
+    *
+    * @param  	user_username	    Username to fetch campaigns for
+    * @return 	ret	                an array of campaign objects, containing all campaigns that a user is participating in
+    */
     function fetchInvestedArtistCampaigns($user_username)
     {
         $ret = array();
@@ -343,6 +350,12 @@
         return $ret;
     }
 
+    /**
+    * Fetches all past participated campaigns of a given user.
+    *
+    * @param  	user_username	    Username to fetch campaigns for
+    * @return 	ret	                an array of campaign objects, containing all campaigns that a user has participated in
+    */
     function fetchParticipatedCampaigns($user_username)
     {
         $ret = array();
@@ -375,6 +388,15 @@
         return $ret;
     }
 
+    /**
+    * Fetches all near participation campaign of a given user. 
+    * A near participation campaign is determined if a user has a completion progress of more than 90% towards the campaign minimum requirement
+    * For example, a campaign that has a minimum requirement of 20 ethos, any users that has invested 18 or more ethos in the owner of that campaign 
+    * will be treated as a near participation campaign
+    *
+    * @param  	user_username	    Username to fetch campaigns for
+    * @return 	ret	                an array of campaign objects, containing all campaigns that a user almost has enough ethos to participate
+    */
     function fetchNearParticipationCampaign($user_username)
     {
         $ret = array();
