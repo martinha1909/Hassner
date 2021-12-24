@@ -292,4 +292,25 @@
 
         return round($ret, 2);
     }
+
+    function userIsParticipatingInCampaign($user_username, $artist_username, $campaign_id)
+    {
+        $conn = connect();
+        $ret = false;
+
+        $res_min_ethos = searchCampaignMinimumEthos($conn, $campaign_id);
+        $row_min_ethos = $res_min_ethos->fetch_assoc();
+        $campaign_min_ethos = $row_min_ethos['minimum_ethos'];
+
+        $res_user_shares = searchSharesInArtistShareHolders($conn, $user_username, $artist_username);
+        $row_user_shares = $res_user_shares->fetch_assoc();
+        $user_shares = $row_user_shares['shares_owned'];
+
+        if($user_shares > $campaign_min_ethos)
+        {
+            $ret = true;
+        }
+
+        return $ret;
+    }
 ?>

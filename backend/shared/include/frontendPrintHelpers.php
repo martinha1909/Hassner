@@ -120,7 +120,7 @@
 
     function printNearParticipationCampaignTable($username)
     {
-        // $near_parti_campaigns = fetchNearParticipationCampaign($username);
+        $near_parti_campaigns = fetchNearParticipationCampaign($username);
 
         // if (sizeof($participated_campaigns) > 0) 
         // {

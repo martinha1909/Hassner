@@ -313,23 +313,29 @@
                     }
                     if($row['type'] == "raffle")
                     {
-                        $chance = calculateCampaignWinningChance($user_username, 
-                                                                 $row['artist_username'],
-                                                                 $row['id'],
-                                                                 $row['minimum_ethos'],
-                                                                 $total_shares_bought);
+                        if(userIsParticipatingInCampaign($user_username, $row['artist_username'], $row['id']))
+                        {
+                            $chance = calculateCampaignWinningChance($user_username, 
+                                                                    $row['artist_username'],
+                                                                    $row['id'],
+                                                                    $row['minimum_ethos'],
+                                                                    $total_shares_bought);
+                        }
                     }
 
-                    $participating_campaign->setArtistUsername($row['artist_username']);
-                    $participating_campaign->setOffering($row['offering']);
-                    $participating_campaign->setProgress($progress_calc);
-                    $participating_campaign->setTimeLeft($campaign_time_left);
-                    $participating_campaign->setMinEthos($row['minimum_ethos']);
-                    $participating_campaign->setUserOwnedEthos($total_shares_bought);
-                    $participating_campaign->setType($row['type']);
-                    $participating_campaign->setWinningChance($chance);
+                    if(userIsParticipatingInCampaign($user_username, $row['artist_username'], $row['id']))
+                    {
+                        $participating_campaign->setArtistUsername($row['artist_username']);
+                        $participating_campaign->setOffering($row['offering']);
+                        $participating_campaign->setProgress($progress_calc);
+                        $participating_campaign->setTimeLeft($campaign_time_left);
+                        $participating_campaign->setMinEthos($row['minimum_ethos']);
+                        $participating_campaign->setUserOwnedEthos($total_shares_bought);
+                        $participating_campaign->setType($row['type']);
+                        $participating_campaign->setWinningChance($chance);
 
-                    array_push($ret, $participating_campaign);
+                        array_push($ret, $participating_campaign);
+                    }
                 }
             }
         }
