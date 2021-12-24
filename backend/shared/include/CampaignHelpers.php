@@ -313,4 +313,20 @@
 
         return $ret;
     }
+
+    function isNearParticipation($user_num_shares, $campaign_min_ethos)
+    {
+        $conn = connect();
+        $ret = false;
+
+        $progress = ($user_num_shares/$campaign_min_ethos) * 100;
+
+        //A campaign is treated as near participation if it is above 90% towards the minimum requirement
+        if($progress >= 90 && $progress < 100)
+        {
+            $ret = true;
+        }
+
+        return $ret;
+    }
 ?>

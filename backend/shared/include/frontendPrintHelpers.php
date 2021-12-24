@@ -12,7 +12,7 @@
                             <th scope="col">Artist</th>
                             <th scope="col">Offering</th>
                             <th scope="col">Progess</th>
-                            <th scope="col">Time left</th>
+                            <th scope="col">⏳</th>
                             <th scope="col">Minimum Ethos</th>
                             <th scope="col">Owned Ethos</th>
                             <th scope="col">Chance of winning</th>
@@ -122,56 +122,38 @@
     {
         $near_parti_campaigns = fetchNearParticipationCampaign($username);
 
-        // if (sizeof($participated_campaigns) > 0) 
-        // {
-        //     echo '
-        //             <table class="table">
-        //                 <thead>
-        //                     <tr>
-        //                         <th scope="col">Artist</th>
-        //                         <th scope="col">Offering</th>
-        //                         <th scope="col">Minimum Ethos</th>
-        //                         <th scope="col">Winner</th>
-        //                         <th scope="col">Type</th>
-        //                         <th scope="col">Date Released</th>
-        //                     </tr>
-        //                 </thead>
-        //                 <tbody>
-        //     ';
+        if (sizeof($near_parti_campaigns) > 0) 
+        {
+            echo '
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Artist</th>
+                                <th scope="col">Offering</th>
+                                <th scope="col">Progress</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">⏳</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            ';
 
-        //     for ($i = 0; $i < sizeof($participated_campaigns); $i++) 
-        //     {
-        //         if ($participated_campaigns[$i]->getWinner() == $username) 
-        //         {
-        //             echo '
-        //                         <tr>
-        //                             <th class="campaign_winner">' . $participated_campaigns[$i]->getArtistUsername() . '</th>
-        //                             <td class="campaign_winner">' . $participated_campaigns[$i]->getOffering() . '</td>
-        //                             <td class="campaign_winner">' . $participated_campaigns[$i]->getMinEthos() . '</td>
-        //                             <td class="campaign_winner">' . $participated_campaigns[$i]->getWinner() . '</td>
-        //                             <td class="campaign_winner">' . $participated_campaigns[$i]->getType() . '</td>
-        //                             <td class="campaign_winner">' . $participated_campaigns[$i]->getDatePosted() . '</td>
-        //                         </tr>
-        //             ';
-        //         } 
-        //         else 
-        //         {
-        //             echo '
-        //                         <tr>
-        //                             <th>' . $participated_campaigns[$i]->getArtistUsername() . '</th>
-        //                             <td>' . $participated_campaigns[$i]->getOffering() . '</td>
-        //                             <td>' . $participated_campaigns[$i]->getMinEthos() . '</td>
-        //                             <td>' . $participated_campaigns[$i]->getWinner() . '</td>
-        //                             <td>' . $participated_campaigns[$i]->getType() . '</td>
-        //                             <td>' . $participated_campaigns[$i]->getDatePosted() . '</td>
-        //                         </tr>
-        //             ';
-        //         }
-        //     }
-        //     echo '
-        //                     </tbody>
-        //                 </table>
-        //     ';
-        // }
+            for ($i = 0; $i < sizeof($near_parti_campaigns); $i++) 
+            {
+                echo '
+                            <tr>
+                                <th>' . $near_parti_campaigns[$i]->getArtistUsername() . '</th>
+                                <td>' . $near_parti_campaigns[$i]->getOffering() . '</td>
+                                <td>' . $near_parti_campaigns[$i]->getUserOwnedEthos() . '/'. $near_parti_campaigns[$i]->getMinEthos() .' ('.$near_parti_campaigns[$i]->getProgress().')</td>
+                                <td>' . $near_parti_campaigns[$i]->getType() . '</td>
+                                <td>' . $near_parti_campaigns[$i]->getTimeLeft() . '</td>
+                            </tr>
+                ';
+            }
+            echo '
+                            </tbody>
+                        </table>
+            ';
+        }
     }
 ?>

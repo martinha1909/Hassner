@@ -377,54 +377,54 @@
 
     function fetchNearParticipationCampaign($user_username)
     {
-        // $ret = array();
-        // $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
-        // $conn = connect();
-        // $all_artists = getAllInvestedArtists($user_username);
+        $ret = array();
+        $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
+        $conn = connect();
+        $all_artists = getAllInvestedArtists($user_username);
+        
+        for($i = 0; $i < sizeof($all_artists); $i++) 
+        {
+            $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
 
-        // for($i = 0; $i < sizeof($all_artists); $i++) 
-        // {
-        //     $near_parti_campaign = new Campaign();
-        //     $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
-        //     $res = searchArtistCampaigns($conn, $all_artists[$i]);
-        //     while($row = $res->fetch_assoc()) 
-        //     {
-        //         //assume not applicable
-        //         $chance = -1;
-        //         $res_1 = searchNumberOfShareDistributed($conn, $row['artist_username']);
-        //         $artist_share_distributed = $res_1->fetch_assoc();
-        //         if($row['date_expires'] != "0000-00-00 00:00:00")
-        //         {
-        //             if($total_shares_bought >= $row['minimum_ethos']) 
-        //             {
-        //                 $progress_calc = 100;
-        //             }
-        //             else 
-        //             {
-        //                 $progress_calc = ($total_shares_bought/$row['minimum_ethos']) * 100;
-        //             }
-        //             $date_expires = explode(" ", $row['date_expires'])[0];
-        //             $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
-        //             $campaign_time_left = calculateTimeLeft($current_date[0], 
-        //                                                     $current_date[1], 
-        //                                                     $date_expires, 
-        //                                                     $time_expires);
+            $res = searchArtistCampaigns($conn, $all_artists[$i]);
+            while($row = $res->fetch_assoc())
+            {
+                $near_participation_campaign = new Campaign();
 
-        //             $participating_campaign->setArtistUsername($row['artist_username']);
-        //             $participating_campaign->setOffering($row['offering']);
-        //             $participating_campaign->setProgress($progress_calc);
-        //             $participating_campaign->setTimeLeft($campaign_time_left);
-        //             $participating_campaign->setMinEthos($row['minimum_ethos']);
-        //             $participating_campaign->setUserOwnedEthos($total_shares_bought);
-        //             $participating_campaign->setType($row['type']);
-        //             $participating_campaign->setWinningChance($chance);
+                //Skip inactive campaigns
+                if($row['date_expires'] != "0000-00-00 00:00:00")
+                {
+                    if(!userIsParticipatingInCampaign($user_username, $row['artist_username'], $row['id']) && isNearParticipation($total_shares_bought, $row['minimum_ethos']))
+                    {
+                        $date_expires = explode(" ", $row['date_expires'])[0];
+                        $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
+                        $campaign_time_left = calculateTimeLeft($current_date[0], 
+                                                                $current_date[1], 
+                                                                $date_expires, 
+                                                                $time_expires);
 
-        //             array_push($ret, $participating_campaign);
-        //         }
-        //     }
-        // }
+                        $progress_calc = ($total_shares_bought/$row['minimum_ethos']) * 100;
 
-        // return $ret;
+                        if($campaign_time_left != "0000-00-00 00:00:00")
+                        {                 
+                            $near_participation_campaign->setArtistUsername($row['artist_username']);
+                            $near_participation_campaign->setOffering($row['offering']);
+                            $near_participation_campaign->setProgress($progress_calc);
+                            $near_participation_campaign->setTimeLeft($campaign_time_left);
+                            $near_participation_campaign->setMinEthos($row['minimum_ethos']);
+                            $near_participation_campaign->setUserOwnedEthos($total_shares_bought);
+                            $near_participation_campaign->setType($row['type']);
+                            //User hasn't participated yet, so winning chance is still 0
+                            $near_participation_campaign->setWinningChance(0);
+    
+                            array_push($ret, $near_participation_campaign);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $ret;
     }
 
     function tradeHistoryInit($artist_username)

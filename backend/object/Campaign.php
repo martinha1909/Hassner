@@ -50,7 +50,7 @@
          */ 
         public function getArtistUsername()
         {
-            $this->artist_username;
+            return $this->artist_username;
         }
 
         /**
