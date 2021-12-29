@@ -274,6 +274,69 @@
             echo '
                                 </tbody>
                             </table>
+            ';
+        }
+        else
+        {
+            echo '
+                <h4>No investors found</h4>
+            ';
+        }
+    }
+
+    function printArtistCampaignsWinners($artist_username)
+    {
+        $campaign_info = array();
+        $campaign_winners = fetchArtistCampaignWinners($artist_username, $campaign_info);
+
+        if(sizeof($campaign_winners) > 0)
+        {
+            echo '
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Amount Invested ($)</th>
+                            <th scope="col">Fulfilled</th>
+                            <th scope="col">Campaign Offering</th>
+                            <th scope="col">End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ';
+
+            for ($i = 0; $i < sizeof($campaign_winners); $i++) 
+            {
+                echo '
+                                    <tr>
+                                        <th>' . $campaign_winners[$i]->getUsername() . '</th>
+                                        <td>' . $campaign_winners[$i]->getEmail() . '</td>
+                                        <td>' . $campaign_winners[$i]->getAmountInvested() . '</td>
+                ';
+                if($campaign_info[$i]->getDeliverProgress() == CampaignDeliverProgress::POSITIVE)
+                {
+                    echo '<td>✔️</td>';
+                }
+                else if($campaign_info[$i]->getDeliverProgress() == CampaignDeliverProgress::NEGATIVE)
+                {
+                    echo '<td>❌</td>';
+                }
+                elseif($campaign_info[$i]->getDeliverProgress() == CampaignDeliverProgress::IN_PROGRESS)
+                {
+                    echo '<td>⌛</td>';
+                }
+
+
+                echo '
+                                        <td>' . $campaign_info[$i]->getOffering() . '</td>
+                                        <td>' . $campaign_info[$i]->getDateExpires() . '</td>
+                                    </tr>
+                ';
+            }
+            echo '
+                                </tbody>
+                            </table>
                         </div>
             ';
         }

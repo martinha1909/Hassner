@@ -8,6 +8,7 @@
     include '../../backend/constants/TradeHistoryType.php';
     include '../../backend/constants/EthosOption.php';
     include '../../backend/constants/GraphOption.php';
+    include '../../backend/constants/CampaignDeliverProgress.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
     include '../../backend/object/Campaign.php';
@@ -552,6 +553,14 @@
                         ';
 
                         printArtistApexInvestors($_SESSION['username']);
+
+                        echo '
+                            <div class="py-4 text-center">
+                                <h4 class="h4-blue">Campaign Winners</h4>
+                            </div>
+                        ';
+
+                        printArtistCampaignsWinners($_SESSION['username']);
                     }
                     ?>
                 </div>
