@@ -17,8 +17,9 @@
         return $ret;
     }
 
-    function fetchCampaigns($artist_username, &$offerings, &$time_left, &$eligible_participants, &$min_ethos, &$types, &$time_releases, &$roll_results)
+    function fetchArtistCurrentCampaigns($artist_username)
     {
+        $ret = array();
         $conn = connect();
         //First index contains date
         //Second index contains time
@@ -27,6 +28,7 @@
         $res = searchArtistCampaigns($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
+            $current_campaign = new Campaign();
             //Avoid fetching campaigns that are already expired in the past
             if($row['date_expires'] != "0000-00-00 00:00:00")
             {
@@ -74,36 +76,47 @@
                     }
                     $time_released = dbDateTimeParser($row['date_expires']);
 
-                    array_push($offerings, $row['offering']);
-                    array_push($time_left, $campaign_time_left);
-                    array_push($eligible_participants, $eligible_participant);
-                    array_push($min_ethos, $row['minimum_ethos']);
-                    array_push($types, $row['type']);
-                    array_push($roll_results, $roll_res);
-                    array_push($time_releases, $time_released);
+                    $current_campaign->setOffering($row['offering']);
+                    $current_campaign->setTimeLeft($campaign_time_left);
+                    $current_campaign->setEligibleParticipants($eligible_participant);
+                    $current_campaign->setMinEthos($row['minimum_ethos']);
+                    $current_campaign->setType($row['type']);
+                    $current_campaign->setWinner($roll_res);
+                    $current_campaign->setDatePosted($time_released);
+
+                    array_push($ret, $current_campaign);
                 }
             }
         }
+
+        return $ret;
     }
-    function fetchExpiredCampaigns($artist_username, &$offerings, &$eligible_participants, &$min_ethos, &$types, &$time_releases, &$roll_results)
+
+    function fetchArtistExpiredCampaigns($artist_username)
     {
+        $ret = array();
         $conn = connect();
 
         $res = searchArtistCampaigns($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
+            $expired_campaign = new Campaign();
             if($row['date_expires'] == "0000-00-00 00:00:00")
             {
                 $time_released = dbDateTimeParser($row['date_posted']);
 
-                array_push($offerings, $row['offering']);
-                array_push($eligible_participants, $row['eligible_participants']);
-                array_push($min_ethos, $row['minimum_ethos']);
-                array_push($types, $row['type']);
-                array_push($roll_results, $row['winner']);
-                array_push($time_releases, $time_released);
+                $expired_campaign->setOffering($row['offering']);
+                $expired_campaign->setEligibleParticipants($row['eligible_participants']);
+                $expired_campaign->setMinEthos($row['minimum_ethos']);
+                $expired_campaign->setType($row['type']);
+                $expired_campaign->setWinner($row['winner']);
+                $expired_campaign->setDatePosted($time_released);
+
+                array_push($ret, $expired_campaign);
             }
         }
+
+        return $ret;
     }
 
     function getRaffleResult($conn, $campaign_id, $artist_share_distributed): string

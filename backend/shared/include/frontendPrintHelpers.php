@@ -156,4 +156,85 @@
             ';
         }
     }
+
+    function printArtistCurrentCampaignTable($artist_username)
+    {
+        $current_campaigns = fetchArtistCurrentCampaigns($artist_username);
+
+        if (sizeof($current_campaigns) > 0) {
+            echo '
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Offering</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Eligible Participants</th>
+                                    <th scope="col">Minimum Ethos</th>
+                                    <th scope="col">Time left</th>
+                                    <th scope="col">Roll Result</th>
+                                    <th scope="col">Time Released</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
+
+            for ($i = 0; $i < sizeof($current_campaigns); $i++) {
+                echo '
+                                <tr>
+                                    <th>' . $current_campaigns[$i]->getOffering() . '</th>
+                                    <td>' . $current_campaigns[$i]->getType() . '</td>
+                                    <td>' . $current_campaigns[$i]->getEligibleParticipants() . '</td>
+                                    <td>' . $current_campaigns[$i]->getMinEthos() . '</td>
+                                    <td>' . $current_campaigns[$i]->getTimeLeft() . '</td>
+                                    <td>' . $current_campaigns[$i]->getWinner() . '</td>
+                                    <td>' . $current_campaigns[$i]->getDatePosted() . '</td>
+                                </tr>
+                    ';
+            }
+            echo '
+                            </tbody>
+                        </table>
+                ';
+        }
+    }
+
+    function printArtistExpiredCampaignTable($artist_username)
+    {
+        $expired_campaigns = fetchArtistExpiredCampaigns($artist_username);
+
+        if (sizeof($expired_campaigns) > 0) 
+        {
+            echo '
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Offering</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Eligible Participants</th>
+                                        <th scope="col">Minimum Ethos</th>
+                                        <th scope="col">Roll Result</th>
+                                        <th scope="col">Time Released</th>
+                                    </tr>
+                                </thead>
+                                <tbody>';
+
+            for ($i = 0; $i < sizeof($expired_campaigns); $i++) 
+            {
+                echo '
+                                    <tr>
+                                        <th>' . $expired_campaigns[$i]->getOffering() . '</th>
+                                        <td>' . $expired_campaigns[$i]->getType() . '</td>
+                                        <td>' . $expired_campaigns[$i]->getEligibleParticipants() . '</td>
+                                        <td>' . $expired_campaigns[$i]->getMinEthos() . '</td>
+                                        <td>' . $expired_campaigns[$i]->getWinner() . '</td>
+                                        <td>' . $expired_campaigns[$i]->getDatePosted() . '</td>
+                                    </tr>
+                    ';
+            }
+            echo '
+                                </tbody>
+                            </table>
+                        </div>
+                ';
+        }
+    }
 ?>
