@@ -17,6 +17,12 @@
         return $ret;
     }
 
+    /**
+    * Fetches all current campaigns of a given artist. 
+    *
+    * @param  	artist_username	    Artist username to fetch campaigns for
+    * @return 	ret	                an array of campaign objects, containing all campaigns that are currently active of the artist
+    */
     function fetchArtistCurrentCampaigns($artist_username)
     {
         $ret = array();
@@ -92,6 +98,12 @@
         return $ret;
     }
 
+    /**
+    * Fetches all expired campaigns of a given artist. 
+    *
+    * @param  	artist_username	    Artist username to fetch campaigns for
+    * @return 	ret	                an array of campaign objects, containing all campaigns that are expired of the artist
+    */
     function fetchArtistExpiredCampaigns($artist_username)
     {
         $ret = array();
