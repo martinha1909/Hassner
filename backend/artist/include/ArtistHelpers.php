@@ -347,4 +347,37 @@
 
         return $ret;
     }
+
+    function fetchAllInvestorsOfArtist($artist_username)
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = getArtistShareHoldersInfo($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            $investor = new Investor();
+            //Skips artist own share repurchase
+            if($row['user_username'] != $artist_username)
+            {
+                $res_account_info = searchAccount($conn, $row['user_username']);
+                $investor_info = $res_account_info->fetch_assoc();
+
+                $amount_invested = getAmountInvestedBetweenUserAndArtist($row['user_username'], $artist_username);
+                $campaigns_won = getUserCampaignWonByArtist($row['user_username'], $artist_username);
+                $campaigns_participated = getUserCampaignParticipatedByArtist($row['user_username'], $artist_username);
+
+                $investor->setUsername($row['user_username']);
+                $investor->setEmail($investor_info['email']);
+                $investor->setAmountInvested($amount_invested);
+                $investor->setCampaignsWon($campaigns_won);
+                $investor->setCampaignsParticipated($campaigns_participated);
+
+                array_push($ret, $investor);
+            }
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
 ?>

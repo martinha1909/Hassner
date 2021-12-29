@@ -1490,4 +1490,19 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
         closeCon($conn);
         return $ret;
     }
+
+    function getAmountInvestedBetweenUserAndArtist($user_username, $artist_username): float
+    {
+        $ret = 0;
+        $conn = connect();
+        
+        $res = searchInitialPriceWhenBought($conn, $user_username, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            $ret += $row['price_per_share_when_bought'];
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
 ?>

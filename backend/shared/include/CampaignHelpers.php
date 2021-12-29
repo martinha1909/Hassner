@@ -369,4 +369,46 @@
 
         return $ret;
     }
+
+    function getUserCampaignWonByArtist($user_username, $artist_username): int
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchCampaignWinnerByArtist($conn, $artist_username);
+        if($res->num_rows > 0)
+        {
+            while($row = $res->fetch_assoc())
+            {
+                if($row['winner'] == $user_username)
+                {
+                    $ret++;
+                }
+            }
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
+
+    function getUserCampaignParticipatedByArtist($user_username, $artist_username): int
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchArtistCampaigns($conn, $artist_username);
+        if($res->num_rows > 0)
+        {
+            while($row = $res->fetch_assoc())
+            {
+                if(userIsParticipatingInCampaign($user_username, $artist_username, $row['id']) && $row['date_expires'] == "0000-00-00 00:00:00")
+                {
+                    $ret++;
+                }
+            }
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
 ?>

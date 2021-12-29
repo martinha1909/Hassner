@@ -215,7 +215,8 @@
                                         <th scope="col">Time Released</th>
                                     </tr>
                                 </thead>
-                                <tbody>';
+                                <tbody>
+            ';
 
             for ($i = 0; $i < sizeof($expired_campaigns); $i++) 
             {
@@ -228,13 +229,59 @@
                                         <td>' . $expired_campaigns[$i]->getWinner() . '</td>
                                         <td>' . $expired_campaigns[$i]->getDatePosted() . '</td>
                                     </tr>
-                    ';
+                ';
             }
             echo '
                                 </tbody>
                             </table>
                         </div>
+            ';
+        }
+    }
+
+    function printArtistApexInvestors($artist_username)
+    {
+        $investors = fetchAllInvestorsOfArtist($artist_username);
+
+        if(sizeof($investors) > 0)
+        {
+            echo '
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Amount Invested ($)</th>
+                            <th scope="col">Campaigns Participated</th>
+                            <th scope="col">Campaigns Won</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ';
+
+            for ($i = 0; $i < sizeof($investors); $i++) 
+            {
+                echo '
+                                    <tr>
+                                        <th>' . $investors[$i]->getUsername() . '</th>
+                                        <td>' . $investors[$i]->getEmail() . '</td>
+                                        <td>' . $investors[$i]->getAmountInvested() . '</td>
+                                        <td>' . $investors[$i]->getCampaignsParticipated() . '</td>
+                                        <td>' . $investors[$i]->getCampaignsWon() . '</td>
+                                    </tr>
                 ';
+            }
+            echo '
+                                </tbody>
+                            </table>
+                        </div>
+            ';
+        }
+        else
+        {
+            echo '
+                <h4>No investors found</h4>
+            ';
         }
     }
 ?>
