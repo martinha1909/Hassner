@@ -88,6 +88,13 @@
                 return $ret;
         }
 
+        /**
+        * Swaps 2 elements of the array, using copy function as a variable placeholder
+        *
+        * @param  	arr array in which indices are swapped
+        * @param  	i   index to be swapped
+        * @param  	j   index to be swapped
+        */
         protected static function swap(&$arr, $i, $j)
         {
                 $temp = Investor::copy($arr[$i]);
@@ -95,6 +102,16 @@
                 $arr[$j] = $temp;
         }
 
+        /**
+        * takes last element as pivot, places the pivot element at its correct position in sorted array, 
+        * and places all smaller (smaller than pivot) to left of pivot and all greater elements to right of pivot
+        *
+        * @param  	info_arr	array to be partitiioned
+        * @param  	low	        starting index of the array
+        * @param  	high            ending index of the array
+        * @param  	option          descending or ascending option
+        * @param  	item            variable to use as a base to sort
+        */
         protected static function partition(&$info_arr, $low, $high, $option, $item)
         {
                 if($item == "Amount Invested")
@@ -133,6 +150,14 @@
                 return ($i + 1);
         }
 
+        /**
+        * Sort an Investor array using quick sort 
+        *
+        * @param  	info_arr	array to be sorted
+        * @param  	low	        starting index of the array
+        * @param  	high            ending index of the array
+        * @param  	item            variable to use as a base to sort
+        */
         public static function sort(&$info_arr, $low, $high, $option, $item)
         {
                 if($low < $high)
