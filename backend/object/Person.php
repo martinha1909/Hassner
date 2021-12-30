@@ -1,5 +1,5 @@
 <?php
-    class Person 
+    abstract class Person 
     {
         protected $username;
         protected $account_type;
@@ -261,5 +261,10 @@
         {
                 $this->swift_code = $swift_code;
         }
+
+        abstract protected static function copy(Person $person);
+        abstract protected static function sort(&$info_arr, $low, $high, $option, $item);
+        abstract protected static function partition(&$info_arr, $low, $high, $option, $item);
+        abstract protected static function swap(&$arr, $i, $j);
     }
 ?>

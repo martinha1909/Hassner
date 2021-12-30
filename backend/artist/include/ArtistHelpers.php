@@ -378,6 +378,17 @@
         }
 
         closeCon($conn);
+
+        //By default shows the top investor
+        if($_SESSION['artist_investor_amount_invested_sort'] == 0)
+        {
+            Investor::sort($ret, 0, (sizeof($ret)-1), "Descending", "Amount Invested");
+        }
+        else if($_SESSION['artist_investor_amount_invested_sort'] == 1)
+        {
+            Investor::sort($ret, 0, (sizeof($ret)-1), "Ascending", "Amount Invested");
+        }
+
         return $ret;
     }
 
@@ -426,41 +437,6 @@
 
                         array_push($ret, $investor);
                         array_push($campaign_info, $campaign);
-                    }
-                    //Winners of Campaign of type benchmark are considered as long as they have more shares than the minimum requirement 
-                    else if($row_winning_campaign['type'] == "benchmark")
-                    {
-                        if(userIsParticipatingInCampaign($row['user_username'], $artist_username, $row_winning_campaign['id']))
-                        {
-                            $investor = new Investor();
-                            $campaign = new Campaign();
-
-                            $res_account_info = searchAccount($conn, $row['user_username']);
-                            $investor_info = $res_account_info->fetch_assoc();
-
-                            $amount_invested = getAmountInvestedBetweenUserAndArtist($row['user_username'], $artist_username);
-
-                            $investor->setUsername($row['user_username']);
-                            $investor->setEmail($investor_info['email']);
-                            $investor->setAmountInvested($amount_invested);
-
-                            if($row_winning_campaign['date_expires'] != "0000-00-00 00:00:00")
-                            {
-                                $campaign->setDateExpires(dbDateTimeParser($row_winning_campaign['date_expires']));
-                                $campaign->setDeliverProgress(CampaignDeliverProgress::IN_PROGRESS);
-                            }
-                            else
-                            {
-                                //For now assume all campaigns are not delivered, TODO: have a checkbox or something for artist to check when they deliver 
-                                //the campaign promises
-                                $campaign->setDeliverProgress(CampaignDeliverProgress::NEGATIVE);
-                                $campaign->setDateExpires("Expired");
-                            }
-                            $campaign->setOffering($row_winning_campaign['offering']);
-
-                            array_push($ret, $investor);
-                            array_push($campaign_info, $campaign);
-                        }
                     }
                 }
             }

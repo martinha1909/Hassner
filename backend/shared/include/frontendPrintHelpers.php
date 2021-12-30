@@ -251,7 +251,24 @@
                         <tr>
                             <th scope="col">Username</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Amount Invested ($)</th>
+            ';
+            if($_SESSION['artist_investor_amount_invested_sort'] == 0)
+            {
+                echo '
+                            <form action = "../../backend/artist/include/SortInvestorAmountInvested.php" method="post">
+                                <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Amount Invested ($) ↑"></th>
+                            </form>
+                ';
+            }
+            else if($_SESSION['artist_investor_amount_invested_sort'] == 1)
+            {
+                echo '
+                            <form action = "../../backend/artist/include/SortInvestorAmountInvested.php" method="post">
+                                <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Amount Invested ($) ↓"></th>
+                            </form>
+                ';
+            }
+            echo '
                             <th scope="col">Campaigns Participated</th>
                             <th scope="col">Campaigns Won</th>
                         </tr>
@@ -284,7 +301,7 @@
         }
     }
 
-    function printArtistCampaignsWinners($artist_username)
+    function printArtistRaffleCampaignsWinners($artist_username)
     {
         $campaign_info = array();
         $campaign_winners = fetchArtistCampaignWinners($artist_username, $campaign_info);

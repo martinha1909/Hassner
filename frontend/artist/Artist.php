@@ -556,11 +556,11 @@
 
                         echo '
                             <div class="py-4 text-center">
-                                <h4 class="h4-blue">Campaign Winners</h4>
+                                <h4 class="h4-blue">Raffle Winners</h4>
                             </div>
                         ';
 
-                        printArtistCampaignsWinners($_SESSION['username']);
+                        printArtistRaffleCampaignsWinners($_SESSION['username']);
                     }
                     ?>
                 </div>

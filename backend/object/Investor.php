@@ -78,5 +78,70 @@
         {
                 $this->campaigns_participated = $campaigns_participated;
         }
+
+        protected static function copy(Person $investor)
+        {
+                $ret = new Investor();
+
+                $ret = clone $investor;
+
+                return $ret;
+        }
+
+        protected static function swap(&$arr, $i, $j)
+        {
+                $temp = Investor::copy($arr[$i]);
+                $arr[$i] = Investor::copy($arr[$j]);
+                $arr[$j] = $temp;
+        }
+
+        protected static function partition(&$info_arr, $low, $high, $option, $item)
+        {
+                if($item == "Amount Invested")
+                {
+                        $pivot = $info_arr[$high]->getAmountInvested();
+                }
+
+                $i = $low - 1;
+
+                for($j = $low; $j <= $high - 1; $j++)
+                {
+                        if($option == "Descending")
+                        {
+                                if($item == "Amount Invested")
+                                {
+                                        if($info_arr[$j]->getAmountInvested() > $pivot)
+                                        {
+                                                $i++;
+                                                Investor::swap($info_arr, $i, $j);
+                                        }
+                                }
+                        }
+                        else if($option == "Ascending")
+                        {
+                                if($item == "Amount Invested")
+                                {
+                                        if($info_arr[$j]->getAmountInvested() < $pivot)
+                                        {
+                                                $i++;
+                                                Investor::swap($info_arr, $i, $j);
+                                        }
+                                }
+                        }
+                }
+                Investor::swap($info_arr, ($i + 1), $high);
+                return ($i + 1);
+        }
+
+        public static function sort(&$info_arr, $low, $high, $option, $item)
+        {
+                if($low < $high)
+                {
+                    $pi = Investor::partition($info_arr, $low, $high, $option, $item);
+    
+                    Investor::sort($info_arr, $low, ($pi - 1), $option, $item);
+                    Investor::sort($info_arr, ($pi + 1), $high, $option, $item);
+                }
+        }
     }
 ?>
