@@ -278,6 +278,18 @@
         return $ret;
     }
 
+    /**
+    * Calculates the weighted winning chance of a user in a campaign based on how much shares he/she has. 
+    * The higher the amount of shares the user has, the higher the winning chance
+    *
+    * @param  	user_username	                        user username to determine the winning chance
+    * @param  	artist_username	                        username of the artist who distributed the campaign
+    * @param  	campaign_id	                            campaign id distributed by the artist
+    * @param  	min_ethos	                            campaign minumum ethos requirement
+    * @param  	users_total_shares_bought	            total number of shares bought by the user towards the given artist
+    *
+    * @return 	ret	                                    the winning chance of the user
+    */
     function calculateCampaignWinningChance($user_username, $artist_username, $campaign_id, $min_ethos, $users_total_shares_bought)
     {
         $ret = 0;
@@ -370,6 +382,14 @@
         return $ret;
     }
 
+    /**
+    * Determine the number of campaigns a user has won with a given artist
+    *
+    * @param  	user_username	        user username to determine the amount of campaigns won
+    * @param  	artist_username	        given artist username
+    *
+    * @return 	ret	                    the amount of campaigns won of a user towards the given artist
+    */
     function getUserCampaignWonByArtist($user_username, $artist_username): int
     {
         $ret = 0;
@@ -391,6 +411,14 @@
         return $ret;
     }
 
+    /**
+    * Determine the number of campaigns a user has participated with a given artist
+    *
+    * @param  	user_username	        user username to determine the amount of campaigns participated
+    * @param  	artist_username	        given artist username
+    *
+    * @return 	ret	                    the amount of campaigns participated of a user towards the given artist
+    */
     function getUserCampaignParticipatedByArtist($user_username, $artist_username): int
     {
         $ret = 0;

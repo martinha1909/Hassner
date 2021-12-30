@@ -1491,6 +1491,14 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
         return $ret;
     }
 
+    /**
+     * Calculates the total amount of money a user has invested in an artist, which is determined by all the past buy activities
+     *
+     * @param user_username         user username to determine total amount has invested
+     * @param artist_username       artist username that the user has invested in
+     *
+     * @return ret                  Total amount a user has spent on the given artist
+     */
     function getAmountInvestedBetweenUserAndArtist($user_username, $artist_username): float
     {
         $ret = 0;
