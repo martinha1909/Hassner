@@ -1,7 +1,7 @@
 <?php
-    class ArtistInfo
+    include 'Person.php';
+    class Artist extends Person
     {
-        private $username;
         private $market_tag;
         //total number of shares other users have bought from the artist
         private $shares_bought;
@@ -23,22 +23,6 @@
             $this->market_cap = 0;
             $this->share_repurchase = 0;
             $this->day_change = 0;
-        } 
-
-        /**
-         * Get the value of username
-         */ 
-        public function getUsername()
-        {
-            return $this->username;
-        }
-
-        /**
-         * Set the value of username
-         */ 
-        public function setUsername($username)
-        {
-            $this->username = $username;
         }
 
         /**
@@ -169,9 +153,9 @@
             $this->day_change = $day_change;
         }
 
-        private static function copy(ArtistInfo $artist)
+        protected static function copy(Person $artist)
         {
-            $ret = new ArtistInfo();
+            $ret = new Artist();
 
             $ret = clone $artist;
 
@@ -185,10 +169,10 @@
         * @param  	i   index to be swapped
         * @param  	j   index to be swapped
         */
-        private static function swap(&$arr, $i, $j)
+        protected static function swap(&$arr, $i, $j)
         {
-            $temp = ArtistInfo::copy($arr[$i]);
-            $arr[$i] = ArtistInfo::copy($arr[$j]);
+            $temp = Artist::copy($arr[$i]);
+            $arr[$i] = Artist::copy($arr[$j]);
             $arr[$j] = $temp;
         }
 
@@ -202,7 +186,7 @@
         * @param  	option          descending or ascending option
         * @param  	item            variable to use as a base to sort
         */
-        private static function partition(&$artist_info_arr, $low, $high, $option, $item)
+        protected static function partition(&$artist_info_arr, $low, $high, $option, $item)
         {
             if($item == "Day Change")
             {
@@ -224,7 +208,7 @@
                         if($artist_info_arr[$j]->getDayChange() > $pivot)
                         {
                             $i++;
-                            ArtistInfo::swap($artist_info_arr, $i, $j);
+                            Artist::swap($artist_info_arr, $i, $j);
                         }
                     }
                     else if($item == "Market Cap")
@@ -232,7 +216,7 @@
                         if($artist_info_arr[$j]->getMarketCap() > $pivot)
                         {
                             $i++;
-                            ArtistInfo::swap($artist_info_arr, $i, $j);
+                            Artist::swap($artist_info_arr, $i, $j);
                         }
                     }
                 }
@@ -243,7 +227,7 @@
                         if($artist_info_arr[$j]->getDayChange() < $pivot)
                         {
                             $i++;
-                            ArtistInfo::swap($artist_info_arr, $i, $j);
+                            Artist::swap($artist_info_arr, $i, $j);
                         }
                     }
                     else if($item == "Market Cap")
@@ -251,17 +235,17 @@
                         if($artist_info_arr[$j]->getMarketCap() < $pivot)
                         {
                             $i++;
-                            ArtistInfo::swap($artist_info_arr, $i, $j);
+                            Artist::swap($artist_info_arr, $i, $j);
                         }
                     }
                 }
             }
-            ArtistInfo::swap($artist_info_arr, ($i + 1), $high);
+            Artist::swap($artist_info_arr, ($i + 1), $high);
             return ($i + 1);
         }
 
         /**
-        * Sort an ArtistInfo array using quick sort 
+        * Sort an Artist array using quick sort 
         *
         * @param  	artist_info_arr	array to be sorted
         * @param  	low	            starting index of the array
@@ -272,10 +256,10 @@
         {
             if($low < $high)
             {
-                $pi = ArtistInfo::partition($artist_info_arr, $low, $high, $option, $item);
+                $pi = Artist::partition($artist_info_arr, $low, $high, $option, $item);
 
-                ArtistInfo::sort($artist_info_arr, $low, ($pi - 1), $option, $item);
-                ArtistInfo::sort($artist_info_arr, ($pi + 1), $high, $option, $item);
+                Artist::sort($artist_info_arr, $low, ($pi - 1), $option, $item);
+                Artist::sort($artist_info_arr, ($pi + 1), $high, $option, $item);
             }
         }
     }
