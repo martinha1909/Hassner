@@ -10,7 +10,7 @@
     if($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS)
     {
         //Amount of money that user input in
-        $_SESSION['fiat'] = $_POST['currency'];
+        $_SESSION['fiat'] = $_POST['amount'];
         $msg = "empty message";
         if($_SESSION['currency'] == Currency::CAD)
         {
@@ -62,7 +62,7 @@
     else if($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS)
     {
         //Amount of money that user input in
-        $_SESSION['usd'] = $_POST['currency'];
+        $_SESSION['usd'] = $_POST['amount'];
         $msg = $_SESSION['username']." entered ".$_SESSION['usd']." USD for withdrawal";  
         hx_debug(HX::CURRENCY, $msg);
 

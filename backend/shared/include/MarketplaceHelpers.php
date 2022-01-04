@@ -589,8 +589,8 @@ function fiatInit()
     {
         echo '
                     <div style="float:none;margin:auto;" class="select-dark">
-                        <select name="currency" id="dark" onchange="this.form.submit()">
-                            <option selected disabled>Currency</option>
+                        <select name="currency" id="dark" value="USD" onchange="this.form.submit()">
+                            <option value="USD" selected disabled>USD</option>
                             <option value="USD">USD</option>
                             <option value="CAD">CAD</option>
                             <option value="EUR">EUR</option>
@@ -603,8 +603,8 @@ function fiatInit()
     {
         echo '
                     <div style="float:none;margin:auto;" class="select-dark">
-                        <select name="currency" id="dark" onchange="this.form.submit()">
-                            <option selected disabled>' . $_SESSION['currency'] . '</option>
+                        <select name="currency" id="dark" value="'.$_SESSION['currency'].'" onchange="this.form.submit()">
+                            <option value="'.$_SESSION['currency'].'" selected disabled>' . $_SESSION['currency'] . '</option>
                             <option value="USD">USD</option>
                             <option value="CAD">CAD</option>
                             <option value="EUR">EUR</option>
@@ -623,70 +623,34 @@ function fiatInit()
         } 
         else 
         {
-            if ($_SESSION['fiat_options'] == BalanceOption::NONE) 
-            {
-                echo '
-                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
-                            <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
-                        </div>
-                    ';
-            } 
-            else if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) 
-            {
-                echo '
-                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            <input name = "options" type = "submit" class="btn btn-primary" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
-                            <input name = "options" type = "submit" class="btn btn-secondary" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
-                        </div>
-                    ';
-            } 
-            else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) 
-            {
-                echo '
-                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
-                            <input name = "options" type = "submit" class="btn btn-primary" name = "button" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
-                        </div>
-                    ';
-            }
+            echo '
+                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                        <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
+                        <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
+                    </div>
+                ';
         }
     }
-    if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) 
+
+    if($_SESSION['fiat_options'] != BalanceOption::NONE && $_SESSION['currency'] != 0)
     {
         echo '
-                    <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
+                    <div style="display: none" id="balance_div">  
                         <div class="form-group">
-            ';
+        ';
         echo '
-                            <h5 style="padding-top:150px;">Enter Amount in ' . $_SESSION['currency'] . '</h5>
-                            <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
+                            <h5 style="padding-top:150px;" id="deposit_or_withdraw_header">Enter Amount in ' . $_SESSION['currency'] . '</h5>
+                            <input type="text" name = "amount" style="border-color: white;" class="form-control form-control-sm" id="deposit_withdraw_amount" placeholder="Enter amount">
                         </div>
                         <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue to Checkout" onclick="window.location.reload();"> 
+                                <input type = "submit" class="btn btn-primary" id="checkout_btn" value = "Continue to Checkout" onclick="window.location.reload();"> 
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>';
-    } 
-    else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) 
-    {
-        echo '
-                    <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
-                        <div class="form-group">
-                            <h5 style="padding-top:150px;">Enter Amount in USD</h5>
-                            <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
-                        </div>
-                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue to Checkout" onclick="window.location.reload();"> 
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>';
+    </section>
+        ';
     }
 }
 

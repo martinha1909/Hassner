@@ -7,6 +7,9 @@
     $msg = $option." has been selected";
     hx_debug(HX::CURRENCY, $msg);
 
+    echo(json_encode(array(            
+        "fiat_options"=> ($option == BalanceOption::WITHDRAW) ? BalanceOption::WITHDRAW_CAPS : BalanceOption::DEPOSIT_CAPS
+    )));
 
     $_SESSION['fiat_options'] = ($option == BalanceOption::WITHDRAW) ? BalanceOption::WITHDRAW_CAPS : BalanceOption::DEPOSIT_CAPS;
 

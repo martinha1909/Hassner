@@ -8,8 +8,19 @@ function deposit()
         },
         async: false,
         dataType: "json",
-        success: function(){
-            window.location.href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/listener.php";
+        success: function(data){
+            var fiat_options = data.fiat_options;
+            if(fiat_options == "DEPOSIT")
+            {
+                var currency = $('#dark').find(":selected").text();
+                // var currency = $("#dark").val();
+                console.log(currency);
+                $("#deposit_btn").removeClass("btn btn-primary");
+                $("#deposit_btn").addClass("btn btn-secondary");
+
+                $("#balance_div").show();
+                $("#deposit_or_withdraw_header").text("Enter Amount in " + currency);
+            }
         },
         error: function(){
 
@@ -28,7 +39,15 @@ function withdraw()
         async: false,
         dataType: "json",
         success: function(data){
-            window.location.href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/listener.php";
+            var fiat_options = data.fiat_options;
+            if(fiat_options == "WITHDRAW")
+            {
+                $("#withdraw_btn").removeClass("btn btn-primary");
+                $("#withdraw_btn").addClass("btn btn-secondary");
+
+                $("#balance_div").show();
+                $("#deposit_or_withdraw_header").text("Enter Amount in USD");
+            }
         },
         error: function(data){
 
@@ -36,9 +55,29 @@ function withdraw()
     });
 }
 
+function checkout()
+{
+    $.ajax({
+        type: "POST",
+        url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/shared/FiatSendSwitcher.php",
+        data: {
+            amount: $("#deposit_withdraw_amount").val(),
+        },
+        async: false,
+        dataType: "json",
+        success: function(data){
+
+        },
+        error: function(data){
+            
+        }
+    });
+}
+
 $( function() {
     $("#deposit_btn").click(deposit);
     $("#withdraw_btn").click(withdraw);
+    $("#checkout_btn").click(checkout);
 });
 
 $(document).keypress(function (e) {
