@@ -13,8 +13,6 @@ function deposit()
             if(fiat_options == "DEPOSIT")
             {
                 var currency = $('#dark').find(":selected").text();
-                // var currency = $("#dark").val();
-                console.log(currency);
                 $("#deposit_btn").removeClass("btn btn-primary");
                 $("#deposit_btn").addClass("btn btn-secondary");
 
@@ -66,10 +64,38 @@ function checkout()
         async: false,
         dataType: "json",
         success: function(data){
+            var status = data.status;
+            var logging_mode = data.logging_mode;
 
+            if(logging_mode == "DEPOSIT")
+            {
+                if(status != "SUCCESS")
+                {
+                    $("#js_status_msg").show();
+                    $("#js_msg").addClass("error-msg");
+                    $("#js_msg").text(data.msg);
+                }
+                else
+                {
+                    window.location.href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/shared/Checkout.php";
+                }
+            }
+            else if(logging_mode == "WITHDRAW")
+            {
+                if(status != "SUCCESS")
+                {
+                    $("#js_status_msg").show();
+                    $("#js_msg").addClass("error-msg");
+                    $("#js_msg").text(data.msg);
+                }
+                else
+                {
+                    window.location.href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/shared/Sellout.php";
+                }
+            }
         },
         error: function(data){
-            
+
         }
     });
 }

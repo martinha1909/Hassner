@@ -46,6 +46,15 @@
         $_SESSION['logging_mode'] = LogModes::NONE;
     }
 
+    function showJSStatusMsg()
+    {
+        echo '
+            <div class="div-hidden" id="js_status_msg">  
+                <p id="js_msg"></p>
+            </div>
+        ';
+    }
+
     function getAccount($username)
     {
         $conn = connect();
