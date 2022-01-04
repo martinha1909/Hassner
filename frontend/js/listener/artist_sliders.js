@@ -1,3 +1,53 @@
+function recalcSliderLimits(){
+  var balance = 0;
+  var num_available_shares = 0;
+  // Get # of available shares
+  $.ajax({
+    url : "../../backend/shared/NumAvailableShares.php",
+    method : "POST",
+    data:{
+      "artist": $("#selected_artist").text()
+    },
+    async: false,
+    success : function(data){
+      num_available_shares = data
+    },
+    error : function(data){
+
+    }
+  });
+
+
+  // Get account balance
+  $.ajax({
+    url : "../../backend/shared/MyBalance.php",
+    method : "GET",
+    async: false,
+    success : function(data){
+      balance = data
+      
+      // Get requested price per share (buy) - use upper limit
+      req_pps = $("#buy_limit").slider("values", 1);
+
+      if (balance > (req_pps * num_available_shares)){
+        max_shares_buyable = Math.floor(balance/req_pps);
+      }
+      else{
+        max_shares_buyable = num_available_shares;
+      }
+
+      // Update buy slider
+      $("#buy_num").slider("option", "max", max_shares_buyable);
+
+      console.log(max_shares_buyable);
+    },
+    error : function(data){
+
+    }
+  });
+
+}
+
 $( function() {
   var max_limit = 0;
   var min_limit = 0;
@@ -7,17 +57,9 @@ $( function() {
   var url_max_limit = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/StockPrice.php";
   var url_max_num_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/MaxNumOfShares.php";
   var url_sellable_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/SellableShares.php";
-  $.ajax({
-    url : url_max_limit,
-    method : "GET",
-    async: false,
-    success : function(data){
-      max_limit = data;
-    },
-    error : function(data){
+  
 
-    }
-  });
+
   $.ajax({
     url : url_max_limit,
     method : "GET",
@@ -62,6 +104,7 @@ $( function() {
           $("#buy_tip").text("The buy order will be executed as soon as the price is >= " + max);
           $("#buy_cost").val("$" + $("#buy_num").slider("value")*max);
         }
+        recalcSliderLimits()
       }
     });
 
