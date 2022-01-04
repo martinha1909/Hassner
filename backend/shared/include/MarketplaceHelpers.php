@@ -614,7 +614,6 @@ function fiatInit()
         echo "Account balance: " . $balance . "<br>";
         echo '
                     </form>
-                    <form action = "../../backend/shared/FiatOptionsSwitcher.php" method = "post">
             ';
         if ($_SESSION['currency'] == 0) 
         {
@@ -627,31 +626,28 @@ function fiatInit()
             if ($_SESSION['fiat_options'] == BalanceOption::NONE) 
             {
                 echo '
-                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::WITHDRAW.'" onclick="window.location.reload();"> 
-                            </div>
-                        </form>
+                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                            <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
+                            <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
+                        </div>
                     ';
             } 
             else if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) 
             {
                 echo '
-                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::WITHDRAW.'" onclick="window.location.reload();"> 
-                            </div>
-                        </form>
+                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                            <input name = "options" type = "submit" class="btn btn-primary" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
+                            <input name = "options" type = "submit" class="btn btn-secondary" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
+                        </div>
                     ';
             } 
             else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) 
             {
                 echo '
-                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::WITHDRAW.'" onclick="window.location.reload();"> 
-                            </div>
-                        </form>
+                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                            <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
+                            <input name = "options" type = "submit" class="btn btn-primary" name = "button" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
+                        </div>
                     ';
             }
         }

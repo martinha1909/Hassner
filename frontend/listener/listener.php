@@ -560,6 +560,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <script src="js/scripts.js"></script>
+    <script src="../js/balance/DepositWithdraw.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
