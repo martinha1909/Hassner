@@ -38,13 +38,14 @@
     hx_debug(HX::CURRENCY, $msg);
 
     # Basic CC verification. This would be done by a payment processor in the future
-    if((strlen($card_number) < 14) || (strlen($card_number) > 16))
-    {
-        $_SESSION['status'] = StatusCodes::ErrCard;
-        $msg = "Not a valid card for user ".$_SESSION['username'];
-        hx_error(HX::CURRENCY, $msg);
-    }
-    else if($save_info == "Yes")
+    # Comment out for now. TODO: use card verification API
+    // if((strlen($card_number) < 14) || (strlen($card_number) > 16))
+    // {
+    //     $_SESSION['status'] = StatusCodes::ErrCard;
+    //     $msg = "Not a valid card for user ".$_SESSION['username'];
+    //     hx_error(HX::CURRENCY, $msg);
+    // }
+    if($save_info == "Yes")
     {
         if(!empty($full_name) && !empty($email) && !empty($address) && !empty($city) && !empty($state) && !empty($zip) && !empty($card_name) && !empty($card_number) && !empty($expmonth) && !empty($expyear) && !empty($cvv))
         {

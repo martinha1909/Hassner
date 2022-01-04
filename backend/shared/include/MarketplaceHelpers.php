@@ -599,26 +599,23 @@ function fiatInit()
         }
     }
 
-    if($_SESSION['fiat_options'] != BalanceOption::NONE && $_SESSION['currency'] != 0)
-    {
-        echo '
-                    <div class="div-hidden" id="balance_div">  
-                        <div class="form-group">
-        ';
-        echo '
-                            <h5 style="padding-top:150px;" id="deposit_or_withdraw_header">Enter Amount in ' . $_SESSION['currency'] . '</h5>
-                            <input type="text" name = "amount" style="border-color: white;" class="form-control form-control-sm" id="deposit_withdraw_amount" placeholder="Enter amount">
-                        </div>
-                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input type = "submit" class="btn btn-primary" id="checkout_btn" value = "Continue to Checkout"> 
-                        </div>
+    echo '
+                <div class="div-hidden" id="balance_div">  
+                    <div class="form-group">
+    ';
+    echo '
+                        <h5 style="padding-top:150px;" id="deposit_or_withdraw_header">Enter Amount in ' . $_SESSION['currency'] . '</h5>
+                        <input type="text" name = "amount" style="border-color: white;" class="form-control form-control-sm" id="deposit_withdraw_amount" placeholder="Enter amount">
+                    </div>
+                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                            <input type = "submit" class="btn btn-primary" id="checkout_btn" value = "Continue to Checkout"> 
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-        ';
-    }
+    </div>
+</section>
+    ';
 }
 
 function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, &$date_injected)
