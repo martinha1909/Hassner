@@ -106,5 +106,5 @@
 
     $_SESSION['dependencies'] = "FRONTEND";
      
-    // returnToMainPage();
+    returnToMainPage();
 ?>
