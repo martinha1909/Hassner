@@ -7,7 +7,7 @@
     include '../constants/BalanceOption.php';
     include '../constants/Currency.php';
 
-    if($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS)
+    if($_SESSION['fiat_options'] == BalanceOption::DEPOSIT)
     {
         //Amount of money that user input in
         $_SESSION['fiat'] = $_POST['amount'];
@@ -68,7 +68,7 @@
             )));
         }
     }
-    else if($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS)
+    else if($_SESSION['fiat_options'] == BalanceOption::WITHDRAW)
     {
         //Amount of money that user input in
         $_SESSION['usd'] = $_POST['amount'];

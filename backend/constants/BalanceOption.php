@@ -3,10 +3,8 @@ if(!defined('BALANCEOPTION_LOADED')){
     abstract class BalanceOption
     {
         const NONE = 0;
-        const WITHDRAW = "Withdraw";
-        const DEPOSIT = "Deposit";
-        const WITHDRAW_CAPS = "WITHDRAW";
-        const DEPOSIT_CAPS = "DEPOSIT";
+        const WITHDRAW = "WITHDRAW";
+        const DEPOSIT = "DEPOSIT";
     }
     define('BALANCEOPTION_LOADED', 1);
 }
