@@ -1354,12 +1354,16 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
         $conn = connect();
         $connPDO = connectPDO();
         $market_cap = 0;
-        $res1 = searchArtistTotalSharesBought($conn, $artist_username);
+        $res1 = getArtistShareHoldersInfo($conn, $artist_username);
         $res2 = searchArtistCurrentPricePerShare($conn, $artist_username);
         $pps = $res2->fetch_assoc();
         while($row = $res1->fetch_assoc())
         {
-            $market_cap += ($row['shares_owned'] * $pps['price_per_share']);
+            //skip artist own buy back shares
+            if($row['user_username'] != $artist_username)
+            {
+                $market_cap += ($row['shares_owned'] * $pps['price_per_share']);
+            }
         }
 
         //update the market cap 
