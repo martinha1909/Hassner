@@ -10,7 +10,6 @@ function deposit()
         dataType: "json",
         success: function(data){
             var fiat_options = data.fiat_options;
-            console.log(fiat_options);
             if(fiat_options == "DEPOSIT")
             {
                 var currency = $('#dark').find(":selected").text();
