@@ -82,101 +82,110 @@
                 <ul class="list-group bg-dark">
                     <?php
                     checkRaffleRoll();
+
+                    echo '
+                                    <li class="selected-no-hover list-group-item-no-hover">
+                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                            <input name="display_type" type="submit" class="menu-text menu-style" value="❖ Portfolio">
+                                        </form>
+                                    </li>
+                    ';
                     //By default My Portfolio is selected
                     //When My Portfolio is selected
-                    if ($_SESSION['display'] == MenuOption::None || $_SESSION['display'] == MenuOption::Portfolio) {
-                        echo '
-                                    <li class="selected-no-hover list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="❖ Portfolio"
-                                        </form>
-                                    </li>
-                                ';
-                    } else {
-                        echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Portfolio">
-                                        </form>
-                                    </li>
-                                ';
-                    }
+                    // if ($_SESSION['display'] == MenuOption::None || $_SESSION['display'] == MenuOption::Portfolio) 
+                    // {
+                    //     echo '
+                    //                 <li class="selected-no-hover list-group-item-no-hover">
+                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                    //                         <input name="display_type" type="submit" class="menu-text menu-style" value="❖ Portfolio">
+                    //                     </form>
+                    //                 </li>
+                    //             ';
+                    // } else {
+                    //     echo '
+                    //                 <li class="list-group-item-no-hover">
+                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                    //                         <input name="display_type" type="submit" class="menu-text menu-no-underline" value="Portfolio">
+                    //                     </form>
+                    //                 </li>
+                    //             ';
+                    // }
 
-                    //When settings is selected
-                    if ($_SESSION['display'] == MenuOption::Campaign) {
-                        echo '
-                                    <li class="selected-no-hover list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◔ Campaign">
-                                        </form>
-                                    </li>
-                                ';
-                    } else {
-                        echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Campaign">
-                                        </form>
-                                    </li>
-                                ';
-                    }
+                    // //When settings is selected
+                    // if ($_SESSION['display'] == MenuOption::Campaign) {
+                    //     echo '
+                    //                 <li class="selected-no-hover list-group-item-no-hover">
+                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                    //                         <input name="display_type" type="submit" class="menu-text menu-style" value="◔ Campaign">
+                    //                     </form>
+                    //                 </li>
+                    //             ';
+                    // } else {
+                    //     echo '
+                    //                 <li class="list-group-item-no-hover">
+                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                    //                         <input name="display_type" type="submit" class="menu-text menu-no-underline" value="Campaign">
+                    //                     </form>
+                    //                 </li>
+                    //             ';
+                    // }
 
-                    //When Siliqas option is selected
-                    if ($_SESSION['display'] == MenuOption::Balance) {
-                        echo '
-                                    <li class="selected-no-hover list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Balance">
-                                        </form>
-                                    </li>
-                                ';
-                    } else {
-                        echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Balance">
-                                        </form>
-                                    </li>
-                                ';
-                    }
+                    // //When Siliqas option is selected
+                    // if ($_SESSION['display'] == MenuOption::Balance) {
+                    //     echo '
+                    //                 <li class="selected-no-hover list-group-item-no-hover">
+                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                    //                         <input name="display_type" type="submit" id="menu-style" class="menu-text menu-style" value="※ Balance">
+                    //                     </form>
+                    //                 </li>
+                    //             ';
+                    // } else {
+                    //     echo '
+                    //                 <li class="list-group-item-no-hover">
+                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                    //                         <input name="display_type" type="submit" class="menu-text menu-no-underline" value="Balance">
+                    //                     </form>
+                    //                 </li>
+                    //             ';
+                    // }
 
-                    //When Artists is selected
-                    if ($_SESSION['display'] == MenuOption::Artists) {
-                        echo '
-                                    <li class="selected-no-hover list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Artists">
-                                        </form>
-                                    </li>
-                                ';
-                    } else {
-                        echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Artists">
-                                        </form>
-                                    </li>
-                                ';
-                    }
+                    // //When Artists is selected
+                    // if ($_SESSION['display'] == MenuOption::Artists) {
+                    //     echo '
+                    //                 <li class="selected-no-hover list-group-item-no-hover">
+                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                    //                         <input name="display_type" type="submit" id="menu-style" class="menu-text menu-style" value="◈ Artists">
+                    //                     </form>
+                    //                 </li>
+                    //             ';
+                    // } else {
+                    //     echo '
+                    //                 <li class="list-group-item-no-hover">
+                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                    //                         <input name="display_type" type="submit" class="menu-text menu-no-underline" value="Artists">
+                    //                     </form>
+                    //                 </li>
+                    //             ';
+                    // }
 
-                    //When Account is selected
-                    if ($_SESSION['display'] == MenuOption::Account) {
-                        echo '
-                                    <li class="selected-no-hover list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="▤ Account">
-                                        </form>
-                                    </li>
-                                ';
-                    } else {
-                        echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Account">
-                                        </form>
-                                    </li>
-                                ';
-                    }
+                    // //When Account is selected
+                    // if ($_SESSION['display'] == MenuOption::Account) {
+                    //     echo '
+                    //                 <li class="selected-no-hover list-group-item-no-hover">
+                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                    //                         <input name="display_type" type="submit" id="menu-style" class="menu-text menu-style" value="▤ Account">
+                    //                     </form>
+                    //                 </li>
+                    //             ';
+                    // } else {
+                    //     echo '
+                    //                 <li class="list-group-item-no-hover">
+                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                    //                         <input name="display_type" type="submit" class="menu-text menu-no-underline" value="Account">
+                    //                     </form>
+                    //                 </li>
+                    //             ';
+                    // }
 
                     ?>
                 </ul>
