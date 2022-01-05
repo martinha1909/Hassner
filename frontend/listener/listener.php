@@ -83,15 +83,39 @@
                     <?php
                     checkRaffleRoll();
 
-                    echo '
-                                    <li class="selected-no-hover list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" class="menu-text menu-style" value="❖ Portfolio">
-                                        </form>
-                                    </li>
-                    ';
                     //By default My Portfolio is selected
                     //When My Portfolio is selected
+                    echo '
+                                <li class="selected-no-hover list-group-item-no-hover">
+                                    <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                        <input name="display_type" type="submit" id="portfolio_btn" class="menu-text menu-style" value="❖ Portfolio">
+                                    </form>
+                                </li>
+
+                                <li class="list-group-item-no-hover">
+                                    <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                        <input name="display_type" type="submit" id="campaign_btn" class="menu-text menu-no-underline" value="Campaign">
+                                    </form>
+                                </li>
+
+                                <li class="list-group-item-no-hover">
+                                    <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                        <input name="display_type" type="submit" id="balance_btn" class="menu-text menu-no-underline" value="Balance">
+                                    </form>
+                                </li>
+
+                                <li class="list-group-item-no-hover">
+                                    <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                        <input name="display_type" type="submit" id="artist_btn" class="menu-text menu-no-underline" value="Artists">
+                                    </form>
+                                </li>
+
+                                <li class="list-group-item-no-hover">
+                                    <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                        <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
+                                    </form>
+                                </li>
+                    ';
                     // if ($_SESSION['display'] == MenuOption::None || $_SESSION['display'] == MenuOption::Portfolio) 
                     // {
                     //     echo '
