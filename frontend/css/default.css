@@ -10707,3 +10707,7 @@ a#dashboard-hover:hover {
   background-color: transparent; 
   font-weight: bold;
 }
+
+.div-hidden {
+  display: none;
+}
