@@ -1208,9 +1208,11 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
         $ret = 0;
         $conn = connect();
 
-        $res = searchSpecificInvestment($conn, $user_username, $artist_username);
-        while($row = $res->fetch_assoc()) {
-            $ret += $row['no_of_share_bought'];
+        $res = searchSharesInArtistShareHolders($conn, $user_username, $artist_username);
+        if($res->num_rows > 0)
+        {
+            $row = $res->fetch_assoc();
+            $ret = $row['shares_owned'];
         }
 
         return $ret;

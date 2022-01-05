@@ -17,8 +17,15 @@
         return $ret;
     }
 
-    function fetchCampaigns($artist_username, &$offerings, &$time_left, &$eligible_participants, &$min_ethos, &$types, &$time_releases, &$roll_results)
+    /**
+    * Fetches all current campaigns of a given artist. 
+    *
+    * @param  	artist_username	    Artist username to fetch campaigns for
+    * @return 	ret	                an array of campaign objects, containing all campaigns that are currently active of the artist
+    */
+    function fetchArtistCurrentCampaigns($artist_username)
     {
+        $ret = array();
         $conn = connect();
         //First index contains date
         //Second index contains time
@@ -27,6 +34,7 @@
         $res = searchArtistCampaigns($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
+            $current_campaign = new Campaign();
             //Avoid fetching campaigns that are already expired in the past
             if($row['date_expires'] != "0000-00-00 00:00:00")
             {
@@ -74,36 +82,53 @@
                     }
                     $time_released = dbDateTimeParser($row['date_expires']);
 
-                    array_push($offerings, $row['offering']);
-                    array_push($time_left, $campaign_time_left);
-                    array_push($eligible_participants, $eligible_participant);
-                    array_push($min_ethos, $row['minimum_ethos']);
-                    array_push($types, $row['type']);
-                    array_push($roll_results, $roll_res);
-                    array_push($time_releases, $time_released);
+                    $current_campaign->setOffering($row['offering']);
+                    $current_campaign->setTimeLeft($campaign_time_left);
+                    $current_campaign->setEligibleParticipants($eligible_participant);
+                    $current_campaign->setMinEthos($row['minimum_ethos']);
+                    $current_campaign->setType($row['type']);
+                    $current_campaign->setWinner($roll_res);
+                    $current_campaign->setDatePosted($time_released);
+
+                    array_push($ret, $current_campaign);
                 }
             }
         }
+
+        return $ret;
     }
-    function fetchExpiredCampaigns($artist_username, &$offerings, &$eligible_participants, &$min_ethos, &$types, &$time_releases, &$roll_results)
+
+    /**
+    * Fetches all expired campaigns of a given artist. 
+    *
+    * @param  	artist_username	    Artist username to fetch campaigns for
+    * @return 	ret	                an array of campaign objects, containing all campaigns that are expired of the artist
+    */
+    function fetchArtistExpiredCampaigns($artist_username)
     {
+        $ret = array();
         $conn = connect();
 
         $res = searchArtistCampaigns($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
+            $expired_campaign = new Campaign();
             if($row['date_expires'] == "0000-00-00 00:00:00")
             {
                 $time_released = dbDateTimeParser($row['date_posted']);
 
-                array_push($offerings, $row['offering']);
-                array_push($eligible_participants, $row['eligible_participants']);
-                array_push($min_ethos, $row['minimum_ethos']);
-                array_push($types, $row['type']);
-                array_push($roll_results, $row['winner']);
-                array_push($time_releases, $time_released);
+                $expired_campaign->setOffering($row['offering']);
+                $expired_campaign->setEligibleParticipants($row['eligible_participants']);
+                $expired_campaign->setMinEthos($row['minimum_ethos']);
+                $expired_campaign->setType($row['type']);
+                $expired_campaign->setWinner($row['winner']);
+                $expired_campaign->setDatePosted($time_released);
+
+                array_push($ret, $expired_campaign);
             }
         }
+
+        return $ret;
     }
 
     function getRaffleResult($conn, $campaign_id, $artist_share_distributed): string
@@ -249,6 +274,98 @@
             $i++; 
         } 
         $ret = $values[$i];
+
+        return $ret;
+    }
+
+    function calculateCampaignWinningChance($user_username, $artist_username, $campaign_id, $min_ethos, $users_total_shares_bought)
+    {
+        $ret = 0;
+        $conn = connect();
+        $res_eligible = searchCampaignEligibleParticipants($conn, $campaign_id);
+        $row_eligible = $res_eligible->fetch_assoc();
+        if($row_eligible['eligible_participants'] == 0)
+        {
+            //shouldn't reach here, but does this check to be safe anyway
+            $ret = 0;
+        }
+        else if($row_eligible['eligible_participants'] == 1)
+        {
+            //If the user is the only one participates in the campaign, the chance of him winning is 100%
+            $ret = 100;
+        }
+        else
+        {
+            $shareholder_values = array();
+            $res = searchArtistTotalSharesBought($conn, $artist_username);
+            while($row = $res->fetch_assoc())
+            {
+                if($row['shares_owned'] >= $min_ethos && $row['user_username'] != $user_username)
+                {
+                    array_push($shareholder_values, $row['shares_owned']);
+                }
+            }
+            
+            $sum = $users_total_shares_bought;
+            for($i = 0; $i < sizeof($shareholder_values); $i++)
+            {
+                $sum += $shareholder_values[$i];
+            }
+
+            $ret = $users_total_shares_bought/$sum * 100;
+        }
+
+        return round($ret, 2);
+    }
+
+    /**
+    * Determine if a user is eligible to participte in a given campaign or not
+    *
+    * @param  	user_username	        user username
+    * @param  	artist_username	        artist username to query user's investment
+    * @param  	campaign_id	            campaign id to be determined
+    * @return 	ret	                    true if the user is eligible to participate in the given campaign, false otherwise
+    */
+    function userIsParticipatingInCampaign($user_username, $artist_username, $campaign_id)
+    {
+        $conn = connect();
+        $ret = false;
+
+        $res_min_ethos = searchCampaignMinimumEthos($conn, $campaign_id);
+        $row_min_ethos = $res_min_ethos->fetch_assoc();
+        $campaign_min_ethos = $row_min_ethos['minimum_ethos'];
+
+        $res_user_shares = searchSharesInArtistShareHolders($conn, $user_username, $artist_username);
+        $row_user_shares = $res_user_shares->fetch_assoc();
+        $user_shares = $row_user_shares['shares_owned'];
+
+        if($user_shares > $campaign_min_ethos)
+        {
+            $ret = true;
+        }
+
+        return $ret;
+    }
+
+    /**
+    * Determine if a user has above 90% of a given campaign requirement or not
+    *
+    * @param  	user_num_shares	        amount of shares a user has
+    * @param  	campaign_min_ethos	    campaign requirement
+    * @return 	ret	                    true if the user has above 90% towards the campaign requirement, false otherwise
+    */
+    function isNearParticipation($user_num_shares, $campaign_min_ethos)
+    {
+        $conn = connect();
+        $ret = false;
+
+        $progress = ($user_num_shares/$campaign_min_ethos) * 100;
+
+        //A campaign is treated as near participation if it is above 90% towards the minimum requirement
+        if($progress >= 90 && $progress < 100)
+        {
+            $ret = true;
+        }
 
         return $ret;
     }

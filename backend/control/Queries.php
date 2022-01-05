@@ -364,7 +364,7 @@
 
         function searchArtistTotalSharesBought($conn, $artist_username)
         {
-            $sql = "SELECT shares_owned FROM artist_shareholders WHERE artist_username = ?";
+            $sql = "SELECT shares_owned, user_username, artist_username FROM artist_shareholders WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -400,6 +400,17 @@
             $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchCampaignEligibleParticipants($conn, $campaign_id)
+        {
+            $sql = "SELECT eligible_participants FROM campaign WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $campaign_id);
             $stmt->execute();
             $result = $stmt->get_result();
 

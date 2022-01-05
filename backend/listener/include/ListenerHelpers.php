@@ -265,8 +265,16 @@
         return $ret;
     }
 
-    function fetchInvestedArtistCampaigns($user_username, &$artists, &$offerings, &$progress, &$time_left, &$minimum_ethos, &$owned_ethos, &$types, &$chances)
+    /**
+    * Fetches all participating campaign of a given user. 
+    * If a user has less than the required ethos amount, the campaign will not be added to the returning array
+    *
+    * @param  	user_username	    Username to fetch campaigns for
+    * @return 	ret	                an array of campaign objects, containing all campaigns that a user is participating in
+    */
+    function fetchInvestedArtistCampaigns($user_username)
     {
+        $ret = array();
         $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
         $conn = connect();
         $all_artists = getAllInvestedArtists($user_username);
@@ -277,6 +285,7 @@
             $res = searchArtistCampaigns($conn, $all_artists[$i]);
             while($row = $res->fetch_assoc()) 
             {
+                $participating_campaign = new Campaign();
                 //assume not applicable
                 $chance = -1;
                 $res_1 = searchNumberOfShareDistributed($conn, $row['artist_username']);
@@ -286,7 +295,7 @@
                     if($total_shares_bought >= $row['minimum_ethos']) 
                     {
                         $progress_calc = 100;
-                    } 
+                    }
                     else 
                     {
                         $progress_calc = ($total_shares_bought/$row['minimum_ethos']) * 100;
@@ -311,43 +320,133 @@
                     }
                     if($row['type'] == "raffle")
                     {
-                        $chance = $total_shares_bought/$artist_share_distributed['Share_Distributed'] * 100;
+                        if(userIsParticipatingInCampaign($user_username, $row['artist_username'], $row['id']))
+                        {
+                            $chance = calculateCampaignWinningChance($user_username, 
+                                                                    $row['artist_username'],
+                                                                    $row['id'],
+                                                                    $row['minimum_ethos'],
+                                                                    $total_shares_bought);
+                        }
                     }
-                    array_push($artists, $row['artist_username']);
-                    array_push($offerings, $row['offering']);
-                    array_push($progress, $progress_calc);
-                    array_push($time_left, $campaign_time_left);
-                    array_push($minimum_ethos, $row['minimum_ethos']);
-                    array_push($owned_ethos, $total_shares_bought);
-                    array_push($types, $row['type']);
-                    array_push($chances, $chance);
+
+                    if(userIsParticipatingInCampaign($user_username, $row['artist_username'], $row['id']))
+                    {
+                        $participating_campaign->setArtistUsername($row['artist_username']);
+                        $participating_campaign->setOffering($row['offering']);
+                        $participating_campaign->setProgress($progress_calc);
+                        $participating_campaign->setTimeLeft($campaign_time_left);
+                        $participating_campaign->setMinEthos($row['minimum_ethos']);
+                        $participating_campaign->setUserOwnedEthos($total_shares_bought);
+                        $participating_campaign->setType($row['type']);
+                        $participating_campaign->setWinningChance($chance);
+
+                        array_push($ret, $participating_campaign);
+                    }
                 }
             }
         }
+
+        return $ret;
     }
 
-    function fetchParticipatedCampaigns($user_username, &$artists, &$offerings, &$minimum_ethos, &$winners, &$time_releases, &$types)
+    /**
+    * Fetches all past participated campaigns of a given user.
+    *
+    * @param  	user_username	    Username to fetch campaigns for
+    * @return 	ret	                an array of campaign objects, containing all campaigns that a user has participated in
+    */
+    function fetchParticipatedCampaigns($user_username)
     {
+        $ret = array();
         $conn = connect();
         $all_artists = getAllInvestedArtists($user_username);
 
-        for($i = 0; $i < sizeof($all_artists); $i++) {
+        for($i = 0; $i < sizeof($all_artists); $i++) 
+        {
+            $participated_campaign = new Campaign();
             $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
             $res = searchArtistCampaigns($conn, $all_artists[$i]);
-            while($row = $res->fetch_assoc()) {
+            while($row = $res->fetch_assoc()) 
+            {
                 if($row['date_expires'] == "0000-00-00 00:00:00")
                 {
                     $time_released = dbDateTimeParser($row['date_posted']);
 
-                    array_push($artists, $row['artist_username']);
-                    array_push($offerings, $row['offering']);
-                    array_push($minimum_ethos, $row['minimum_ethos']);
-                    array_push($winners, $row['winner']);
-                    array_push($time_releases, $time_released);
-                    array_push($types, $row['type']);
+                    $participated_campaign->setArtistUsername($row['artist_username']);
+                    $participated_campaign->setOffering($row['offering']);
+                    $participated_campaign->setMinEthos($row['minimum_ethos']);
+                    $participated_campaign->setWinner($row['winner']);
+                    $participated_campaign->setDatePosted($time_released);
+                    $participated_campaign->setType($row['type']);
+
+                    array_push($ret, $participated_campaign);
                 }
             }
         }
+
+        return $ret;
+    }
+
+    /**
+    * Fetches all near participation campaign of a given user. 
+    * A near participation campaign is determined if a user has a completion progress of more than 90% towards the campaign minimum requirement
+    * For example, a campaign that has a minimum requirement of 20 ethos, any users that has invested 18 or more ethos in the owner of that campaign 
+    * will be treated as a near participation campaign
+    *
+    * @param  	user_username	    Username to fetch campaigns for
+    * @return 	ret	                an array of campaign objects, containing all campaigns that a user almost has enough ethos to participate
+    */
+    function fetchNearParticipationCampaign($user_username)
+    {
+        $ret = array();
+        $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
+        $conn = connect();
+        $all_artists = getAllInvestedArtists($user_username);
+        
+        for($i = 0; $i < sizeof($all_artists); $i++) 
+        {
+            $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
+
+            $res = searchArtistCampaigns($conn, $all_artists[$i]);
+            while($row = $res->fetch_assoc())
+            {
+                $near_participation_campaign = new Campaign();
+
+                //Skip inactive campaigns
+                if($row['date_expires'] != "0000-00-00 00:00:00")
+                {
+                    if(!userIsParticipatingInCampaign($user_username, $row['artist_username'], $row['id']) && isNearParticipation($total_shares_bought, $row['minimum_ethos']))
+                    {
+                        $date_expires = explode(" ", $row['date_expires'])[0];
+                        $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
+                        $campaign_time_left = calculateTimeLeft($current_date[0], 
+                                                                $current_date[1], 
+                                                                $date_expires, 
+                                                                $time_expires);
+
+                        $progress_calc = ($total_shares_bought/$row['minimum_ethos']) * 100;
+
+                        if($campaign_time_left != "0000-00-00 00:00:00")
+                        {                 
+                            $near_participation_campaign->setArtistUsername($row['artist_username']);
+                            $near_participation_campaign->setOffering($row['offering']);
+                            $near_participation_campaign->setProgress($progress_calc);
+                            $near_participation_campaign->setTimeLeft($campaign_time_left);
+                            $near_participation_campaign->setMinEthos($row['minimum_ethos']);
+                            $near_participation_campaign->setUserOwnedEthos($total_shares_bought);
+                            $near_participation_campaign->setType($row['type']);
+                            //User hasn't participated yet, so winning chance is still 0
+                            $near_participation_campaign->setWinningChance(0);
+    
+                            array_push($ret, $near_participation_campaign);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $ret;
     }
 
     function tradeHistoryInit($artist_username)

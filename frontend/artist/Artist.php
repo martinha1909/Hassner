@@ -3,12 +3,14 @@
     include '../../backend/artist/include/ArtistHelpers.php';
     include '../../backend/shared/include/MarketplaceHelpers.php';
     include '../../backend/shared/include/CampaignHelpers.php';
+    include '../../backend/shared/include/frontendPrintHelpers.php';
     include '../../backend/constants/ShareInteraction.php';
     include '../../backend/constants/TradeHistoryType.php';
     include '../../backend/constants/EthosOption.php';
     include '../../backend/constants/GraphOption.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
+    include '../../backend/object/Campaign.php';
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
@@ -181,121 +183,32 @@
                 <div class="col">
                     <?php
                     //Artist campaigns, including benchmark, raffle, and give aways.
-                    if ($_SESSION['display'] == MenuOption::Campaign) {
-                        $offerings = array();
-                        $time_left = array();
-                        $eligible_participants = array();
-                        $min_ethos = array();
-                        $types = array();
-                        $time_releases = array();
-                        $roll_results = array();
-                        fetchCampaigns(
-                            $_SESSION['username'],
-                            $offerings,
-                            $time_left,
-                            $eligible_participants,
-                            $min_ethos,
-                            $types,
-                            $time_releases,
-                            $roll_results
-                        );
+                    if ($_SESSION['display'] == MenuOption::Campaign) 
+                    {
                         echo '
-                                    <div class="mx-auto py-6 text-center">
-                                        <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>
-                                    </div>
-                            ';
-                        if (sizeof($offerings) > 0) {
-                            echo '
-                                        <h4>Your other campaigns</h4>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Offering</th>
-                                                    <th scope="col">Type</th>
-                                                    <th scope="col">Eligible Participants</th>
-                                                    <th scope="col">Minimum Ethos</th>
-                                                    <th scope="col">Time left</th>
-                                                    <th scope="col">Roll Result</th>
-                                                    <th scope="col">Time Released</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>';
+                                <div class="mx-auto py-6 text-center">
+                                    <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>
+                                </div>
+                        ';
 
-                            for ($i = 0; $i < sizeof($offerings); $i++) {
-                                echo '
-                                                <tr>
-                                                    <th>' . $offerings[$i] . '</th>
-                                                    <td>' . $types[$i] . '</td>
-                                                    <td>' . $eligible_participants[$i] . '</td>
-                                                    <td>' . $min_ethos[$i] . '</td>
-                                                    <td>' . $time_left[$i] . '</td>
-                                                    <td>' . $roll_results[$i] . '</td>
-                                                    <td>' . $time_releases[$i] . '</td>
-                                                </tr>
-                                    ';
-                            }
-                            echo '
-                                            </tbody>
-                                        </table>
-                                ';
-                        }
-
-                        $offerings = array();
-                        $eligible_participants = array();
-                        $min_ethos = array();
-                        $types = array();
-                        $time_releases = array();
-                        $roll_results = array();
-                        fetchExpiredCampaigns(
-                            $_SESSION['username'],
-                            $offerings,
-                            $eligible_participants,
-                            $min_ethos,
-                            $types,
-                            $time_releases,
-                            $roll_results
-                        );
                         echo '
-                                    <div class="py-6 text-center">
+                                <div class="py-4 text-center">
+                                    <h4 class="h4-blue">Active Campaigns</h4>
+                                </div>
+
+                        ';
+
+                        printArtistCurrentCampaignTable($_SESSION['username']);
+
+                        echo '
+                                    <div class="py-4 text-center">
                                         <h4 class="h4-blue">Expired Campaigns</h4>
                                     </div>
-                            ';
+                        ';
 
-                        if (sizeof($offerings) > 0) {
-                            echo '
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Offering</th>
-                                                        <th scope="col">Type</th>
-                                                        <th scope="col">Eligible Participants</th>
-                                                        <th scope="col">Minimum Ethos</th>
-                                                        <th scope="col">Roll Result</th>
-                                                        <th scope="col">Time Released</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>';
+                        printArtistExpiredCampaignTable($_SESSION['username']);
 
-                            for ($i = 0; $i < sizeof($offerings); $i++) {
-                                echo '
-                                                    <tr>
-                                                        <th>' . $offerings[$i] . '</th>
-                                                        <td>' . $types[$i] . '</td>
-                                                        <td>' . $eligible_participants[$i] . '</td>
-                                                        <td>' . $min_ethos[$i] . '</td>
-                                                        <td>' . $roll_results[$i] . '</td>
-                                                        <td>' . $time_releases[$i] . '</td>
-                                                    </tr>
-                                    ';
-                            }
-                            echo '
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                ';
-                        }
                     }
-
                     //Artists Ethos
                     else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) 
                     {
