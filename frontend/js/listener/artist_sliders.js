@@ -29,7 +29,7 @@ function recalcSliderLimits(){
       // Get requested price per share (buy) - use upper limit
       req_pps = $("#buy_limit").slider("values", 1);
 
-      if (balance > (req_pps * num_available_shares)){
+      if (balance < (req_pps * num_available_shares)){
         max_shares_buyable = Math.floor(balance/req_pps);
       }
       else{
