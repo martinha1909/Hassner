@@ -211,17 +211,14 @@
                 </ul>
                 <div class="container my-auto mx-auto col-6">
                     <ul class="list-group my-4">
-                        <?php
-                        //displaying My Portfolio
-                        if ($_SESSION['display'] == MenuOption::None || $_SESSION['display'] == MenuOption::Portfolio) {
-                            echo '
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" style="color: white;" class="bg-dark">#</th>
-                                                <form action="../../backend/listener/include/SortPortfolioArtistHelpers.php">
-                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
-                                ';
+                        <div id="portfolio_content">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="color: white;" class="bg-dark">#</th>
+                                        <form action="../../backend/listener/include/SortPortfolioArtistHelpers.php">
+                                            <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
+                            <?php
                             //sort Artist ascending alphabetically
                             if ($_SESSION['sort_type'] == 1) {
                                 echo " ↑";
@@ -376,83 +373,85 @@
                                             </tbody>
                                         </table>
                                         </div>
-                                    ';
-                            }
-                        } else if ($_SESSION['display'] == MenuOption::Campaign) {
-                            echo '
-                                <div class="py-6">
-                                    <h4>Participating</h4>
-                            ';
-
-                            printParticipatingCampaignTable($_SESSION['username']);
-
-                            echo '
-                                </div>
-                                <div class="py-6">
-                                    <h4>Near Participation</h4>
-                            ';
-
-                            printNearParticipationCampaignTable($_SESSION['username']);
-
-                            echo '
-                                </div>
-                                <div class="py-6">
-                                    <h4>Past Participation</h4>
-                            ';
-
-                            printPastParticipatedCampaignTable($_SESSION['username']);
-
-                            echo '</div>';
-                        }
-
-                        //displaying Top Invested Artist
-                        else if ($_SESSION['display'] == MenuOption::Artists) 
-                        {
-                            $all_artists = getAllArtist();
-
-                            if(sizeof($all_artists) == 0)
-                            {
-                                echo "<h3>No artists to display<h3>";
-                            }
-                            else
-                            {
-                                followedArtist($_SESSION['username']);
-
-                                topsAndFlops($all_artists);
-
-                                apex($all_artists);
-
-                                localArtist();
-                            }
-                        } else if ($_SESSION['display'] == MenuOption::Balance) {
-                            fiatInit();
-                        }
-
-                        //Account page functionality
-                        else if ($_SESSION['display'] == MenuOption::Account) {
-                            echo '
-                                    <section id="login">
-                                        <div class="container">
-                                            <div class="text-center">
-                                                <h3 class="h3-blue">Verify your password to access personal page</h3>
-                                                <form action="../../backend/listener/PersonalPageBackend.php" method="post">
-                                                    <div class="form-group col-4 mx-auto">
-                                                        <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">';
-                            if ($_SESSION['logging_mode'] == LogModes::PERSONAL) {
-                                getStatusMessage("Incorrect Password, please try again", "");
-                            }
-                            echo '
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </section>
                                 ';
-                        }
+                            }
                         ?>
+                        </div>
+
+                        <div class="div-hidden" id="campaign_content">
+                            <div class="py-6">
+                                <h4>Participating</h4>
+                                <?php
+                                    printParticipatingCampaignTable($_SESSION['username']);
+                                ?>
+                            </div>
+
+                            <div class="py-6">
+                                <h4>Near Participation</h4>
+                                <?php
+                                    printNearParticipationCampaignTable($_SESSION['username']);
+                                ?>
+                            </div>
+
+                            <div class="py-6">
+                                <h4>Past Participation</h4>
+                                <?php
+                                    printPastParticipatedCampaignTable($_SESSION['username']);
+                                ?>
+                            </div>
+                        </div>
+
+                        <div class="div-hidden" id="artists_content">
+                            <?php
+                                //displaying Top Invested Artist
+                                $all_artists = getAllArtist();
+
+                                if(sizeof($all_artists) == 0)
+                                {
+                                    echo "<h3>No artists to display<h3>";
+                                }
+                                else
+                                {
+                                    followedArtist($_SESSION['username']);
+
+                                    topsAndFlops($all_artists);
+
+                                    apex($all_artists);
+
+                                    localArtist();
+                                }
+                            ?>
+                        </div>
+
+                        <div class="div-hidden" id="balance_content">
+                            <?php
+                                fiatInit();
+                            ?>
+                        </div>
+
+                        <div class="div-hidden" id="account_content">
+                            <section id="login">
+                                <div class="container">
+                                    <div class="text-center">
+                                        <h3 class="h3-blue">Verify your password to access personal page</h3>
+                                        <form action="../../backend/listener/PersonalPageBackend.php" method="post">
+                                            <div class="form-group col-4 mx-auto">
+                                                <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
+                            <?php
+                                if ($_SESSION['logging_mode'] == LogModes::PERSONAL) 
+                                {
+                                    getStatusMessage("Incorrect Password, please try again", "");
+                                }
+                            ?>
+                                            </div>
+                                            <div class="text-center">
+                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
                     </ul>
                 </div>
             </div>

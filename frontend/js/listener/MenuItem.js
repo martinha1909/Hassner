@@ -4,6 +4,8 @@ function unselectPortfolio()
     $("#portfolio_btn").addClass("menu-text menu-no-underline");
     $("#portfolio_btn").val('Portfolio');
     $("#li_portfolio").removeClass("selected-no-hover");
+
+    $("#portfolio_content").hide();
 }
 
 function unselectCampaign()
@@ -12,6 +14,8 @@ function unselectCampaign()
     $("#campaign_btn").addClass("menu-text menu-no-underline");
     $("#campaign_btn").val('Campaign');
     $("#li_campaign").removeClass("selected-no-hover");
+
+    $("#campaign_content").hide();
 }
 
 function unselectBalance()
@@ -20,6 +24,8 @@ function unselectBalance()
     $("#balance_btn").addClass("menu-text menu-no-underline");
     $("#balance_btn").val('Balance');
     $("#li_balance").removeClass("selected-no-hover");
+
+    $("#balance_content").hide();
 }
 
 function unselectArtists()
@@ -28,6 +34,8 @@ function unselectArtists()
     $("#artists_btn").addClass("menu-text menu-no-underline");
     $("#artists_btn").val('Artists');
     $("#li_artists").removeClass("selected-no-hover");
+
+    $("#artists_content").hide();
 }
 
 function unselectAccount()
@@ -36,6 +44,8 @@ function unselectAccount()
     $("#account_btn").addClass("menu-text menu-no-underline");
     $("#account_btn").val('Account');
     $("#li_account").removeClass("selected-no-hover");
+
+    $("#account_content").hide();
 }
 
 function selectPortfolio(button)
@@ -49,6 +59,8 @@ function selectPortfolio(button)
     button.addClass("menu-text menu-style");
     button.val("❖ Portfolio");
     $("#li_portfolio").addClass("selected-no-hover");
+
+    $("#portfolio_content").show();
 }
 
 function selectCampaign(button)
@@ -62,6 +74,8 @@ function selectCampaign(button)
     button.addClass("menu-text menu-style");
     button.val("◔ Campaign");
     $("#li_campaign").addClass("selected-no-hover");
+
+    $("#campaign_content").show();
 }
 
 function selectBalance(button)
@@ -75,6 +89,8 @@ function selectBalance(button)
     button.addClass("menu-text menu-style");
     button.val("※ Balance");
     $("#li_balance").addClass("selected-no-hover");
+
+    $("#balance_content").show();
 }
 
 function selectArtists(button)
@@ -88,6 +104,8 @@ function selectArtists(button)
     button.addClass("menu-text menu-style");
     button.val("◈ Artists");
     $("#li_artists").addClass("selected-no-hover");
+
+    $("#artists_content").show();
 }
 
 function selectAccount(button)
@@ -101,6 +119,8 @@ function selectAccount(button)
     button.addClass("menu-text menu-style");
     button.val("▤ Account");
     $("#li_account").addClass("selected-no-hover");
+
+    $("#account_content").show();
 }
 
 function portfolioPressed()
