@@ -8,5 +8,4 @@
             "display" => $type,
         )));
     }
-    // header("Location: ../../frontend/listener/Listener.php");
 ?>

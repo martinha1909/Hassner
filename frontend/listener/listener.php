@@ -81,133 +81,27 @@
             <div class="row">
                 <ul class="list-group bg-dark">
                     <?php
-                    checkRaffleRoll();
-
-                    //By default My Portfolio is selected
-                    //When My Portfolio is selected
-                    echo '
-                            <li class="selected-no-hover list-group-item-no-hover" id="li_portfolio">
-                                <input name="display_type" type="submit" id="portfolio_btn" class="menu-text menu-style" value="❖ Portfolio">
-                            </li>
-
-                            <li class="list-group-item-no-hover" id="li_campaign">
-                                <input name="display_type" type="submit" id="campaign_btn" class="menu-text menu-no-underline" value="Campaign">
-                            </li>
-
-                            <li class="list-group-item-no-hover" id="li_balance">
-                                <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                    <input name="display_type" type="submit" id="balance_btn" class="menu-text menu-no-underline" value="Balance">
-                                </form>
-                            </li>
-
-                            <li class="list-group-item-no-hover" id="li_artists">
-                                <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                    <input name="display_type" type="submit" id="artists_btn" class="menu-text menu-no-underline" value="Artists">
-                                </form>
-                            </li>
-
-                            <li class="list-group-item-no-hover" id="li_account">
-                                <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                    <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
-                                </form>
-                            </li>
-                    ';
-                    // if ($_SESSION['display'] == MenuOption::None || $_SESSION['display'] == MenuOption::Portfolio) 
-                    // {
-                    //     echo '
-                    //                 <li class="selected-no-hover list-group-item-no-hover">
-                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                    //                         <input name="display_type" type="submit" class="menu-text menu-style" value="❖ Portfolio">
-                    //                     </form>
-                    //                 </li>
-                    //             ';
-                    // } else {
-                    //     echo '
-                    //                 <li class="list-group-item-no-hover">
-                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                    //                         <input name="display_type" type="submit" class="menu-text menu-no-underline" value="Portfolio">
-                    //                     </form>
-                    //                 </li>
-                    //             ';
-                    // }
-
-                    // //When settings is selected
-                    // if ($_SESSION['display'] == MenuOption::Campaign) {
-                    //     echo '
-                    //                 <li class="selected-no-hover list-group-item-no-hover">
-                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                    //                         <input name="display_type" type="submit" class="menu-text menu-style" value="◔ Campaign">
-                    //                     </form>
-                    //                 </li>
-                    //             ';
-                    // } else {
-                    //     echo '
-                    //                 <li class="list-group-item-no-hover">
-                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                    //                         <input name="display_type" type="submit" class="menu-text menu-no-underline" value="Campaign">
-                    //                     </form>
-                    //                 </li>
-                    //             ';
-                    // }
-
-                    // //When Siliqas option is selected
-                    // if ($_SESSION['display'] == MenuOption::Balance) {
-                    //     echo '
-                    //                 <li class="selected-no-hover list-group-item-no-hover">
-                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                    //                         <input name="display_type" type="submit" id="menu-style" class="menu-text menu-style" value="※ Balance">
-                    //                     </form>
-                    //                 </li>
-                    //             ';
-                    // } else {
-                    //     echo '
-                    //                 <li class="list-group-item-no-hover">
-                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                    //                         <input name="display_type" type="submit" class="menu-text menu-no-underline" value="Balance">
-                    //                     </form>
-                    //                 </li>
-                    //             ';
-                    // }
-
-                    // //When Artists is selected
-                    // if ($_SESSION['display'] == MenuOption::Artists) {
-                    //     echo '
-                    //                 <li class="selected-no-hover list-group-item-no-hover">
-                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                    //                         <input name="display_type" type="submit" id="menu-style" class="menu-text menu-style" value="◈ Artists">
-                    //                     </form>
-                    //                 </li>
-                    //             ';
-                    // } else {
-                    //     echo '
-                    //                 <li class="list-group-item-no-hover">
-                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                    //                         <input name="display_type" type="submit" class="menu-text menu-no-underline" value="Artists">
-                    //                     </form>
-                    //                 </li>
-                    //             ';
-                    // }
-
-                    // //When Account is selected
-                    // if ($_SESSION['display'] == MenuOption::Account) {
-                    //     echo '
-                    //                 <li class="selected-no-hover list-group-item-no-hover">
-                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                    //                         <input name="display_type" type="submit" id="menu-style" class="menu-text menu-style" value="▤ Account">
-                    //                     </form>
-                    //                 </li>
-                    //             ';
-                    // } else {
-                    //     echo '
-                    //                 <li class="list-group-item-no-hover">
-                    //                     <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                    //                         <input name="display_type" type="submit" class="menu-text menu-no-underline" value="Account">
-                    //                     </form>
-                    //                 </li>
-                    //             ';
-                    // }
-
+                        checkRaffleRoll();
                     ?>
+                    <li class="selected-no-hover list-group-item-no-hover" id="li_portfolio">
+                        <input name="display_type" type="submit" id="portfolio_btn" class="menu-text menu-style" value="❖ Portfolio">
+                    </li>
+
+                    <li class="list-group-item-no-hover" id="li_campaign">
+                        <input name="display_type" type="submit" id="campaign_btn" class="menu-text menu-no-underline" value="Campaign">
+                    </li>
+
+                    <li class="list-group-item-no-hover" id="li_balance">
+                        <input name="display_type" type="submit" id="balance_btn" class="menu-text menu-no-underline" value="Balance">
+                    </li>
+
+                    <li class="list-group-item-no-hover" id="li_artists">
+                        <input name="display_type" type="submit" id="artists_btn" class="menu-text menu-no-underline" value="Artists">
+                    </li>
+
+                    <li class="list-group-item-no-hover" id="li_account">
+                        <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
+                    </li>
                 </ul>
                 <div class="container my-auto mx-auto col-6">
                     <ul class="list-group my-4">
@@ -220,13 +114,17 @@
                                             <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
                             <?php
                             //sort Artist ascending alphabetically
-                            if ($_SESSION['sort_type'] == 1) {
+                            if ($_SESSION['sort_type'] == 1) 
+                            {
                                 echo " ↑";
                             }
                             //sort Artist descending alphabetically
-                            else if ($_SESSION['sort_type'] == 4) {
+                            else if ($_SESSION['sort_type'] == 4) 
+                            {
                                 echo " ↓";
-                            } else {
+                            } 
+                            else 
+                            {
                                 echo "";
                             }
                             echo '
@@ -235,13 +133,17 @@
                                                 <form action="../../backend/listener/include/SortPortfolioShareHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
                             //sort Shares bought ascending alphabetically
-                            if ($_SESSION['sort_type'] == 2) {
+                            if ($_SESSION['sort_type'] == 2) 
+                            {
                                 echo ' ↑';
                             }
                             //sort Shares bought descending alphabetically
-                            else if ($_SESSION['sort_type'] == 5) {
+                            else if ($_SESSION['sort_type'] == 5) 
+                            {
                                 echo " ↓";
-                            } else {
+                            } 
+                            else 
+                            {
                                 echo "";
                             }
                             echo '
@@ -250,13 +152,17 @@
                                                 <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
                             //sort Price per share ascending alphabetically
-                            if ($_SESSION['sort_type'] == 3) {
+                            if ($_SESSION['sort_type'] == 3) 
+                            {
                                 echo ' ↑';
                             }
                             //sort Price per share descending alphabetically
-                            else if ($_SESSION['sort_type'] == 6) {
+                            else if ($_SESSION['sort_type'] == 6) 
+                            {
                                 echo " ↓";
-                            } else {
+                            }
+                            else 
+                            {
                                 echo "";
                             }
 
@@ -292,21 +198,36 @@
                             //retrieving data from the data base to populate arrays that store information of artists that the user has invested in
                             populateVars($_SESSION['username'], $all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
 
-                            if ($_SESSION['sort_type'] == 0) {
+                            if ($_SESSION['sort_type'] == 0) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Ascending");
-                            } else if ($_SESSION['sort_type'] == 1) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 1) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Ascending");
-                            } else if ($_SESSION['sort_type'] == 2) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 2) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Ascending");
-                            } else if ($_SESSION['sort_type'] == 3) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 3) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Ascending");
-                            } else if ($_SESSION['sort_type'] == 4) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 4) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Descending");
-                            } else if ($_SESSION['sort_type'] == 5) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 5) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Descending");
-                            } else if ($_SESSION['sort_type'] == 6) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 6) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Descending");
-                            } else if ($_SESSION['sort_type'] == 7) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 7) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Descending");
                             }
                             printMyPortfolioChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
