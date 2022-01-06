@@ -9,7 +9,7 @@
     include '../../backend/object/CampaignParticipant.php';
     include '../../backend/object/Campaign.php';
     include '../../backend/object/Node.php';
-    include '../../backend/object/ArtistInfo.php';
+    include '../../backend/object/Artist.php';
     include '../../backend/object/TickerInfo.php';
 
     $_SESSION['selected_artist'] = 0;

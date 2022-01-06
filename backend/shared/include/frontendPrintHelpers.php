@@ -215,7 +215,8 @@
                                         <th scope="col">Time Released</th>
                                     </tr>
                                 </thead>
-                                <tbody>';
+                                <tbody>
+            ';
 
             for ($i = 0; $i < sizeof($expired_campaigns); $i++) 
             {
@@ -228,13 +229,139 @@
                                         <td>' . $expired_campaigns[$i]->getWinner() . '</td>
                                         <td>' . $expired_campaigns[$i]->getDatePosted() . '</td>
                                     </tr>
-                    ';
+                ';
             }
             echo '
                                 </tbody>
                             </table>
                         </div>
+            ';
+        }
+    }
+
+    function printArtistApexInvestors($artist_username)
+    {
+        $investors = fetchAllInvestorsOfArtist($artist_username);
+
+        if(sizeof($investors) > 0)
+        {
+            echo '
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+            ';
+            if($_SESSION['artist_investor_amount_invested_sort'] == 0)
+            {
+                echo '
+                            <form action = "../../backend/artist/include/SortInvestorAmountInvested.php" method="post">
+                                <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Amount Invested ($) ↑"></th>
+                            </form>
                 ';
+            }
+            else if($_SESSION['artist_investor_amount_invested_sort'] == 1)
+            {
+                echo '
+                            <form action = "../../backend/artist/include/SortInvestorAmountInvested.php" method="post">
+                                <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Amount Invested ($) ↓"></th>
+                            </form>
+                ';
+            }
+            echo '
+                            <th scope="col">Campaigns Participated</th>
+                            <th scope="col">Campaigns Won</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ';
+
+            for ($i = 0; $i < sizeof($investors); $i++) 
+            {
+                echo '
+                                    <tr>
+                                        <th>' . $investors[$i]->getUsername() . '</th>
+                                        <td>' . $investors[$i]->getEmail() . '</td>
+                                        <td>' . $investors[$i]->getAmountInvested() . '</td>
+                                        <td>' . $investors[$i]->getCampaignsParticipated() . '</td>
+                                        <td>' . $investors[$i]->getCampaignsWon() . '</td>
+                                    </tr>
+                ';
+            }
+            echo '
+                                </tbody>
+                            </table>
+            ';
+        }
+        else
+        {
+            echo '
+                <h4>No investors found</h4>
+            ';
+        }
+    }
+
+    function printArtistRaffleCampaignsWinners($artist_username)
+    {
+        $campaign_info = array();
+        $campaign_winners = fetchArtistCampaignWinners($artist_username, $campaign_info);
+
+        if(sizeof($campaign_winners) > 0)
+        {
+            echo '
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Amount Invested ($)</th>
+                            <th scope="col">Fulfilled</th>
+                            <th scope="col">Campaign Offering</th>
+                            <th scope="col">End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ';
+
+            for ($i = 0; $i < sizeof($campaign_winners); $i++) 
+            {
+                echo '
+                                    <tr>
+                                        <th>' . $campaign_winners[$i]->getUsername() . '</th>
+                                        <td>' . $campaign_winners[$i]->getEmail() . '</td>
+                                        <td>' . $campaign_winners[$i]->getAmountInvested() . '</td>
+                ';
+                if($campaign_info[$i]->getDeliverProgress() == CampaignDeliverProgress::POSITIVE)
+                {
+                    echo '<td>✔️</td>';
+                }
+                else if($campaign_info[$i]->getDeliverProgress() == CampaignDeliverProgress::NEGATIVE)
+                {
+                    echo '<td>❌</td>';
+                }
+                elseif($campaign_info[$i]->getDeliverProgress() == CampaignDeliverProgress::IN_PROGRESS)
+                {
+                    echo '<td>⌛</td>';
+                }
+
+
+                echo '
+                                        <td>' . $campaign_info[$i]->getOffering() . '</td>
+                                        <td>' . $campaign_info[$i]->getDateExpires() . '</td>
+                                    </tr>
+                ';
+            }
+            echo '
+                                </tbody>
+                            </table>
+                        </div>
+            ';
+        }
+        else
+        {
+            echo '
+                <h4>No investors found</h4>
+            ';
         }
     }
 ?>

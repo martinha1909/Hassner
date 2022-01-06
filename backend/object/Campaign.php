@@ -15,6 +15,7 @@
         private $progress;
         private $winning_chance;
         private $time_left;
+        private $deliver_progress;
 
         function __construct()
         {
@@ -235,6 +236,22 @@
         public function setWinningChance($winning_chance)
         {
             $this->winning_chance = $winning_chance;
+        }
+
+        /**
+         * Get the value of deliver_progress
+         */ 
+        public function getDeliverProgress()
+        {
+                return $this->deliver_progress;
+        }
+
+        /**
+         * Set the value of deliver_progress
+         */ 
+        public function setDeliverProgress($deliver_progress)
+        {
+                $this->deliver_progress = $deliver_progress;
         }
     }
 ?>

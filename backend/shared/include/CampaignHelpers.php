@@ -278,6 +278,18 @@
         return $ret;
     }
 
+    /**
+    * Calculates the weighted winning chance of a user in a campaign based on how much shares he/she has. 
+    * The higher the amount of shares the user has, the higher the winning chance
+    *
+    * @param  	user_username	                        user username to determine the winning chance
+    * @param  	artist_username	                        username of the artist who distributed the campaign
+    * @param  	campaign_id	                            campaign id distributed by the artist
+    * @param  	min_ethos	                            campaign minumum ethos requirement
+    * @param  	users_total_shares_bought	            total number of shares bought by the user towards the given artist
+    *
+    * @return 	ret	                                    the winning chance of the user
+    */
     function calculateCampaignWinningChance($user_username, $artist_username, $campaign_id, $min_ethos, $users_total_shares_bought)
     {
         $ret = 0;
@@ -367,6 +379,64 @@
             $ret = true;
         }
 
+        return $ret;
+    }
+
+    /**
+    * Determine the number of campaigns a user has won with a given artist
+    *
+    * @param  	user_username	        user username to determine the amount of campaigns won
+    * @param  	artist_username	        given artist username
+    *
+    * @return 	ret	                    the amount of campaigns won of a user towards the given artist
+    */
+    function getUserCampaignWonByArtist($user_username, $artist_username): int
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchCampaignWinnerByArtist($conn, $artist_username);
+        if($res->num_rows > 0)
+        {
+            while($row = $res->fetch_assoc())
+            {
+                if($row['winner'] == $user_username)
+                {
+                    $ret++;
+                }
+            }
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
+
+    /**
+    * Determine the number of campaigns a user has participated with a given artist
+    *
+    * @param  	user_username	        user username to determine the amount of campaigns participated
+    * @param  	artist_username	        given artist username
+    *
+    * @return 	ret	                    the amount of campaigns participated of a user towards the given artist
+    */
+    function getUserCampaignParticipatedByArtist($user_username, $artist_username): int
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchArtistCampaigns($conn, $artist_username);
+        if($res->num_rows > 0)
+        {
+            while($row = $res->fetch_assoc())
+            {
+                if(userIsParticipatingInCampaign($user_username, $artist_username, $row['id']) && $row['date_expires'] == "0000-00-00 00:00:00")
+                {
+                    $ret++;
+                }
+            }
+        }
+
+        closeCon($conn);
         return $ret;
     }
 ?>
