@@ -406,6 +406,28 @@
             return $result;
         }
 
+        function searchCampaignWinnerByArtist($conn, $artist_username)
+        {
+            $sql = "SELECT winner FROM campaign WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchUserWinningCampaigns($conn, $user_username)
+        {
+            $sql = "SELECT id, offering, type FROM campaign WHERE winner = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchCampaignEligibleParticipants($conn, $campaign_id)
         {
             $sql = "SELECT eligible_participants FROM campaign WHERE id = ?";

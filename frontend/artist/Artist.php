@@ -8,6 +8,7 @@
     include '../../backend/constants/TradeHistoryType.php';
     include '../../backend/constants/EthosOption.php';
     include '../../backend/constants/GraphOption.php';
+    include '../../backend/constants/CampaignDeliverProgress.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
     include '../../backend/object/Campaign.php';
@@ -16,6 +17,7 @@
     include '../../backend/object/Node.php';
     include '../../backend/object/TickerInfo.php';
     include '../../backend/object/SellOrder.php';
+    include '../../backend/object/Investor.php';
 
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
@@ -544,6 +546,21 @@
                     } 
                     else if ($_SESSION['display'] == MenuOption::Investors) 
                     {
+                        echo '
+                            <div class="py-4 text-center">
+                                <h4 class="h4-blue">Apex Investors</h4>
+                            </div>
+                        ';
+
+                        printArtistApexInvestors($_SESSION['username']);
+
+                        echo '
+                            <div class="py-4 text-center">
+                                <h4 class="h4-blue">Raffle Winners</h4>
+                            </div>
+                        ';
+
+                        printArtistRaffleCampaignsWinners($_SESSION['username']);
                     }
                     ?>
                 </div>

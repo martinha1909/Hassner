@@ -619,7 +619,7 @@
             //Changes in last 24 hours
             $change = getArtistDayChange($row['username']);
 
-            $artist = new ArtistInfo();
+            $artist = new Artist();
 
             //only populate fields that we need to use in this case
             $artist->setUsername($row['username']);
@@ -679,7 +679,7 @@
 
     function topsAndFlops($all_artists)
     {
-        ArtistInfo::sort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Day Change");
+        Artist::sort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Day Change");
 
         echo '
             <h3 class="h3-blue">Tops And Flops</h3>
@@ -731,7 +731,7 @@
         $res = searchFollowingArtist($conn, $user_username);
         while($row = $res->fetch_assoc())
         {
-            $artist_info = new ArtistInfo();
+            $artist_info = new Artist();
 
             $res_ticker = searchArtistTicker($conn, $row['artist_username']);
             $artist_ticker = $res_ticker->fetch_assoc();
@@ -761,7 +761,7 @@
 
     function apex($all_artists)
     {
-        ArtistInfo::sort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Market Cap");
+        Artist::sort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Market Cap");
         echo '
             <h3 class="h3-blue">Apex (Market Cap)</h3>
             <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
