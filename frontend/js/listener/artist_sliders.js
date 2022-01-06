@@ -26,8 +26,8 @@ function recalcSliderLimits(){
     success : function(data){
       balance = data
       
-      // Get requested price per share (buy) - use upper limit
-      req_pps = $("#buy_limit").slider("values", 1);
+      // Get requested price per share (buy) - use lower limit
+      req_pps = $("#buy_limit").slider("values", 0);
 
       if (balance < (req_pps * num_available_shares)){
         max_shares_buyable = Math.floor(balance/req_pps);
@@ -300,4 +300,5 @@ $( function() {
     $( "#buy_num_shares" ).val($("#buy_num").slider("value"));
     $("#buy_cost").val("$" + $("#buy_num").slider("value")*$("#pps").text());
     $("#sell_cost").val("$" + $("#sell_num").slider("value")*$("#pps").text());
+    recalcSliderLimits();
   } );
