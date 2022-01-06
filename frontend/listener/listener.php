@@ -86,35 +86,31 @@
                     //By default My Portfolio is selected
                     //When My Portfolio is selected
                     echo '
-                                <li class="selected-no-hover list-group-item-no-hover">
-                                    <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                        <input name="display_type" type="submit" id="portfolio_btn" class="menu-text menu-style" value="❖ Portfolio">
-                                    </form>
-                                </li>
+                            <li class="selected-no-hover list-group-item-no-hover" id="li_portfolio">
+                                <input name="display_type" type="submit" id="portfolio_btn" class="menu-text menu-style" value="❖ Portfolio">
+                            </li>
 
-                                <li class="list-group-item-no-hover">
-                                    <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                        <input name="display_type" type="submit" id="campaign_btn" class="menu-text menu-no-underline" value="Campaign">
-                                    </form>
-                                </li>
+                            <li class="list-group-item-no-hover" id="li_campaign">
+                                <input name="display_type" type="submit" id="campaign_btn" class="menu-text menu-no-underline" value="Campaign">
+                            </li>
 
-                                <li class="list-group-item-no-hover">
-                                    <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                        <input name="display_type" type="submit" id="balance_btn" class="menu-text menu-no-underline" value="Balance">
-                                    </form>
-                                </li>
+                            <li class="list-group-item-no-hover" id="li_balance">
+                                <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                    <input name="display_type" type="submit" id="balance_btn" class="menu-text menu-no-underline" value="Balance">
+                                </form>
+                            </li>
 
-                                <li class="list-group-item-no-hover">
-                                    <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                        <input name="display_type" type="submit" id="artist_btn" class="menu-text menu-no-underline" value="Artists">
-                                    </form>
-                                </li>
+                            <li class="list-group-item-no-hover" id="li_artists">
+                                <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                    <input name="display_type" type="submit" id="artists_btn" class="menu-text menu-no-underline" value="Artists">
+                                </form>
+                            </li>
 
-                                <li class="list-group-item-no-hover">
-                                    <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                        <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
-                                    </form>
-                                </li>
+                            <li class="list-group-item-no-hover" id="li_account">
+                                <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
+                                    <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
+                                </form>
+                            </li>
                     ';
                     // if ($_SESSION['display'] == MenuOption::None || $_SESSION['display'] == MenuOption::Portfolio) 
                     // {
@@ -479,6 +475,7 @@
     <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <script src="js/scripts.js"></script>
     <script src="../js/shared/balance/DepositWithdraw.js"></script>
+    <script src="../js/listener/MenuItem.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
