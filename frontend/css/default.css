@@ -10711,3 +10711,7 @@ a#dashboard-hover:hover {
 .div-hidden {
   display: none;
 }
+
+.text-blue {
+  color: #0a60d0;
+}

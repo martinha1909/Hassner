@@ -381,43 +381,23 @@
                 <h6>Day High: $'.$high.'</h6>
                 <h6>Day Low: $'.$low.'</h6>
                 <br>
-                <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
-                    <input name="display_type" type="submit" class="btn btn-primary py-2" value="Inject More Shares">
-                </form>
+                <p id="inject_success" class="suc-msg"></p>
+                <input name="display_type" type="submit" class="btn btn-primary py-2" id="inject_shares_btn" value="Inject More Shares">
             </div>
-        ';
 
-        if ($_SESSION['share_distribute'] != 0) 
-        {
-            if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
-            {
-                if($_SESSION['status'] == StatusCodes::ErrEmpty)
-                {
-                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                    getStatusMessage("Amount cannot be empty", "");
-                }
-                else if($_SESSION['status'] == StatusCodes::ErrNum)
-                {
-                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                    getStatusMessage("Amount has to be a number", "");
-                }
-            }
-            echo '
+            <div class="div-hidden" id="inject_shares_content">
                 <div class="col-6 mx-auto">
-                    <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
-                        <p class="text-center">How many shares are you injecting?</p>
-                        <input type="text" name = "share_distributing" class="form-control form-control-sm col-4 mx-auto" placeholder="Enter amount">
-                        <p>Comments</p>
-                        <input type="text" name = "inject_comment" class="form-control form-control-sm py-3" placeholder="Enter comment">
-                        <div class="text-center">
-                        <input type = "submit" class="btn btn-primary my-4" role="button" aria-pressed="true" name = "button" value = "Save">  
-                        </div>
-                    </form>
+                    <p class="text-center text-blue">How many shares are you injecting?</p>
+                    <input type="text" id="shares_injecting" class="form-control form-control-sm col-4 mx-auto" placeholder="Enter amount">
+                    <p>Comments</p>
+                    <input type="text" id="comment" class="form-control form-control-sm py-3" placeholder="Enter comment">
+                    <p id="inject_error" class="error-msg"></p>
+                    <div class="text-center">
+                    <input type = "submit" id="confirm_inject_btn" class="btn btn-primary my-4" role="button" value = "Save">  
+                    </div>
                 </div>
-            ';
-        }
-        
-        echo '
+            </div>
+
             <div class="text-center">
                 <button id = "'.GraphOption::ONE_DAY.'" class="btn btn-secondary">'.GraphOption::ONE_DAY.'</button>
                 <button id = "'.GraphOption::FIVE_DAY.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_DAY.'</button>

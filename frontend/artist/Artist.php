@@ -261,6 +261,7 @@
     <script src="../js/artist/MenuItem.js"></script>
     <script src="../js/artist/IPO.js"></script>
     <script src="../js/artist/EthosOptions.js"></script>
+    <script src="../js/artist/injectShares.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
