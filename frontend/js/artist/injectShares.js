@@ -1,3 +1,5 @@
+let inject_flag = 0;
+
 function confirmInject()
 {
     $.ajax({
@@ -14,6 +16,8 @@ function confirmInject()
             {
                 $("#inject_error").text(data.msg);
                 $("#inject_error").show();
+
+                inject_flag = 1;
             }
             else
             {
@@ -24,7 +28,9 @@ function confirmInject()
                 $("#inject_shares_content").hide();
 
                 $("#inject_shares_btn").removeClass("btn-warning");
-                $("#inject_shares_btn").addClass("btn-primary");                
+                $("#inject_shares_btn").addClass("btn-primary");
+
+                inject_flag = 0;
             }
         },
         error: function(data){
@@ -35,12 +41,28 @@ function confirmInject()
 
 function injectShares()
 {
-    $("#inject_shares_content").show();
-    $("#inject_shares_btn").removeClass("btn-primary");
-    $("#inject_shares_btn").addClass("btn-warning");
+    if(inject_flag == 0)
+    {
+        $("#inject_shares_content").show();
+        $("#inject_shares_btn").removeClass("btn-primary");
+        $("#inject_shares_btn").addClass("btn-warning");
 
-    $("#inject_error").hide();
-    $("#inject_success").hide();
+        $("#inject_error").hide();
+        $("#inject_success").hide();
+
+        inject_flag = 1;
+    }
+    else
+    {
+        $("#inject_shares_content").hide();
+        $("#inject_shares_btn").removeClass("btn-warning");
+        $("#inject_shares_btn").addClass("btn-primary");
+
+        $("#inject_error").hide();
+        $("#inject_success").hide();
+
+        inject_flag = 0;
+    }
 }
 
 $( function () {
