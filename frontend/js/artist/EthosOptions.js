@@ -21,8 +21,8 @@ function selectQuotes(button)
     unselectHistory();
     unselectBuyBackShares();
 
-    button.removeClass("btn btn-secondary");
-    button.addClass("btn btn-warning");
+    $("#quotes_btn").removeClass("btn btn-secondary");
+    $("#quotes_btn").addClass("btn btn-warning");
 }
 
 function selectBuyBackShares(button)
