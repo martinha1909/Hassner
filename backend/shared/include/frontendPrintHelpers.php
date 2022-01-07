@@ -364,4 +364,199 @@
             ';
         }
     }
+
+    function printArtistQuotesTab($artist_username, $account_info)
+    {
+        $shareholder_list = fetchCurrentShareholders($artist_username);
+        $market_cap = calculateMarketCap($artist_username);
+        $high = getHighestOrLowestPPS($artist_username, "MAX");
+        $low = getHighestOrLowestPPS($artist_username, "MIN");
+
+        echo '
+            <div class="text-center py-4">
+                <h6>Price Per Share: $'.$account_info['price_per_share'].'</h6>
+                <h6>Volumn:'.$account_info['Share_Distributed'].'</h6>
+                <h6>Current Shareholders:'.$shareholder_list->num_rows.'</h6>
+                <h6>Market cap: $'.$market_cap.'</h6>
+                <h6>Day High: $'.$high.'</h6>
+                <h6>Day Low: $'.$low.'</h6>
+                <br>
+                <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
+                    <input name="display_type" type="submit" class="btn btn-primary py-2" value="Inject More Shares">
+                </form>
+            </div>
+        ';
+
+        if ($_SESSION['share_distribute'] != 0) 
+        {
+            if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
+            {
+                if($_SESSION['status'] == StatusCodes::ErrEmpty)
+                {
+                    $_SESSION['status'] = StatusCodes::ErrGeneric;
+                    getStatusMessage("Amount cannot be empty", "");
+                }
+                else if($_SESSION['status'] == StatusCodes::ErrNum)
+                {
+                    $_SESSION['status'] = StatusCodes::ErrGeneric;
+                    getStatusMessage("Amount has to be a number", "");
+                }
+            }
+            echo '
+                <div class="col-6 mx-auto">
+                    <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
+                        <p class="text-center">How many shares are you injecting?</p>
+                        <input type="text" name = "share_distributing" class="form-control form-control-sm col-4 mx-auto" placeholder="Enter amount">
+                        <p>Comments</p>
+                        <input type="text" name = "inject_comment" class="form-control form-control-sm py-3" placeholder="Enter comment">
+                        <div class="text-center">
+                        <input type = "submit" class="btn btn-primary my-4" role="button" aria-pressed="true" name = "button" value = "Save">  
+                        </div>
+                    </form>
+                </div>
+            ';
+        }
+        
+        echo '
+            <div class="text-center">
+                <button id = "'.GraphOption::ONE_DAY.'" class="btn btn-secondary">'.GraphOption::ONE_DAY.'</button>
+                <button id = "'.GraphOption::FIVE_DAY.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_DAY.'</button>
+                <button id = "'.GraphOption::ONE_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_MONTH.'</button>
+                <button id = "'.GraphOption::SIX_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::SIX_MONTH.'</button>
+                <button id = "'.GraphOption::YEAR_TO_DATE.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::YEAR_TO_DATE.'</button>
+                <button id = "'.GraphOption::ONE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_YEAR.'</button>
+                <button id = "'.GraphOption::FIVE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_YEAR.'</button>
+                <div class="chart-container mx-auto">
+                    <canvas id="stock_graph"></canvas>
+                </div>
+            </div>
+        ';
+    }
+
+    function printArtistBuyBackSharesTab($artist_username)
+    {
+        if($_SESSION['ethos_dashboard_options'] == EthosOption::BUY_BACK_SHARES)
+        {
+            if (artistCanCreateSellOrder($artist_username)) {
+                echo '
+                        <div class="text-right mx-6">
+                            <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
+                                <input name="buy_sell" type="submit" id="menu-style-invert" class="cursor-context" value="-Sell your shares">
+                            </form>
+                        </div>
+                ';
+            }
+
+            if ($_SESSION['buy_sell'] == ShareInteraction::SELL) {
+                $max = artistRepurchaseShares($artist_username) - artistShareSelling($artist_username);
+                echo '
+                    <div class="text-right mx-6">
+                        <h6>How many shares are you selling?</h6>
+                        <div class="wrapper-searchbar">
+                            <div class="container-searchbar mx-auto">
+                                <label>
+                                    <form action="../../backend/artist/SellOrderBackend.php" method="post">
+                                        <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
+                                        <p>Quantity: <span id="demo"></span></p>
+                                        <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter price per share">
+                                        <input type="submit" class="btn btn-primary my-2 py-2" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
+                                    </form>
+                                </label> 
+                            </div>
+                        </div>
+                    </div>
+                ';
+                $_SESSION['buy_sell'] = 0;
+            }
+
+            $amount_repurchase_available = getAmountAvailableForRepurchase($artist_username);
+            $price_for_all_available_repurchase = calculatePriceForAllRepurchase($artist_username);
+            $owned_shares = getArtistShareRepurchase($artist_username);
+
+            //Only to be used if artist clicks the button to buy back all shares that are being sold
+            $_SESSION['repurchase_sell_orders'] = getAllRepurchaseSellOrdersInfo($artist_username);
+
+            echo '
+            <div class="text-center px-4">
+                <h6>Your owned shares: '.$owned_shares.'</h6>
+                <h6>Shares available for repurchase: '.$amount_repurchase_available.'</h6>
+            </div>
+            ';
+
+            sellOrderInit();
+
+            if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
+            {
+                if($_SESSION['status'] == StatusCodes::Success)
+                {
+                    getStatusMessage("", "Shares bought back successfully");
+                }
+                else if($_SESSION['status'] == StatusCodes::ErrGeneric)
+                {
+                    getStatusMessage("An unexpected error occured", "");
+                }
+            }
+
+            askedPriceInit($artist_username, $_SESSION['account_type']);
+
+            if($amount_repurchase_available > 0)
+            {
+                echo '
+                            </tbody>
+                        </table>
+                        <form class="text-center my-6" action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
+                            <input type="submit" class="btn btn-primary py-2" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
+                        </form>
+                ';
+            }
+        }
+    }
+
+    function printArtistHistoryTab($artist_username)
+    {
+        echo '
+            <div class="mx-auto text-center py-2 col-6">
+                <h3 class="h3-blue">Buy Back History</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Price($)</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Seller</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            </div>
+        ';
+
+        $sellers = array();
+        $prices = array();
+        $quantities = array();
+        $date_purchase = array();
+
+        buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $artist_username);
+
+        for ($i = 0; $i < sizeof($sellers); $i++) {
+            echo '
+                        <tr>
+                            <td>' . $date_purchase[$i] . '</td>
+                            <td>' . $prices[$i] . '</td>
+                            <td>' . $quantities[$i] . '</td>
+                            <td>' . $sellers[$i] . '</td>
+                        </tr>
+            ';
+        }
+
+        echo '
+                    </tbody>
+                </table>
+        ';
+
+        tradeHistoryInit($artist_username);
+
+        echo '<h3 class="h3-blue">Inject history</h3>';
+
+        injectionHistoryInit($artist_username);
+    }
 ?>
