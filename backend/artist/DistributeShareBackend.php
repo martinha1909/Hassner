@@ -9,7 +9,7 @@
     $connPDO = connectPDO();
     $shares_distributing = 0;
     $shares_distributing = $_POST['distribute_share'];
-    $siliqas_raising = $_POST['siliqas_raising'];
+    $siliqas_raising = $_POST['amout_raising'];
     $msg = "data received from form: ".json_encode(array(
         "shares_distributing" => $shares_distributing,
         "siliqas_raising" => $siliqas_raising
@@ -23,23 +23,27 @@
 
     if(empty($shares_distributing) || empty($siliqas_raising))
     {
-        $_SESSION['status'] = StatusCodes::ErrEmpty;
         $msg = "Artist ".$_SESSION['username']." entered empty values for amount of shares and USD";
         hx_error(HX::SHARES_INJECT, $msg);
         $msg = "shares_distributing or siliqas_raising empty";
         hx_debug(HX::SHARES_INJECT, $msg);
 
-        returnToMainPage();
+        echo(json_encode(array(            
+            "status"=> StatusCodes::ErrEmpty,
+            "msg"=> "Please fill out all fields and try again"
+        )));
     }
     else if(!is_numeric($shares_distributing) || !is_numeric($siliqas_raising))
     {
-        $_SESSION['status'] = StatusCodes::ErrNum;
         $msg = "Artist ".$_SESSION['username']." entered non-numeric values for amount of shares and USD";
         hx_error(HX::SHARES_INJECT, $msg);
         $msg = "non-numeric values for shares_distributing or siliqas_raising";
         hx_debug(HX::SHARES_INJECT, $msg);
 
-        returnToMainPage();
+        echo(json_encode(array(            
+            "status"=> StatusCodes::ErrNum,
+            "msg"=> "Please enter in number format"
+        )));
     }
     else
     {
@@ -75,8 +79,11 @@
         //IPO is considered a sell order as well
         postSellOrder($conn, $_SESSION['username'], $_SESSION['username'], $shares_distributing, $initial_pps, $current_date, true);
 
-        $_SESSION['dependencies'] = "FRONTEND";
+        echo(json_encode(array(            
+            "status"=> StatusCodes::Success,
+            "msg"=> ""
+        )));
 
-        header("Location: ../../frontend/artist/Artist.php");
+        $_SESSION['dependencies'] = "FRONTEND";
     }
 ?>

@@ -113,70 +113,42 @@
                 <div class="col">
                     <div id="ethos_content">
                     <?php
-                        if ($account_info['Share_Distributed'] == 0) {
-                            if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
-                            {
-                                if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
-                                {
-                                    if($_SESSION['status'] == StatusCodes::ErrEmpty)
-                                    {
-                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                        getStatusMessage("Please fill out all fields and try again", "");
-                                    }
-                                    else if($_SESSION['status'] = StatusCodes::ErrNum)
-                                    {
-                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                        getStatusMessage("Format error", "");
-                                    }
-                                }
-                            }
-                            echo '
-                                        <form action="../../backend/artist/DistributeShareBackend.php" method="post">
-                                        <div class="form-group">
-                                            <h5>How much are you raising</h5>
-                                            <input name = "siliqas_raising" type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
-                                        </div>
-                                        <div class="form-group">
-                                            <h5>How many shares are you distributing?</h5>
-                                            <input name = "distribute_share" type="text" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
-                                        </div>';
-
-                            if ($_SESSION['logging_mode'] == LogModes::SHARE_DIST) {
-                                if ($_SESSION['status'] == "NUM_ERR") {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Please enter in number format", "");
-                                } else if ($_SESSION['status'] == "EMPTY_ERR") {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Please fill out all fields", "");
-                                }
-                            }
-
-                            echo '
-
-                                        <div class="mx-auto pt-5 text-center">
-                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
-                                        </div>
-
-                                    </form>
-                            ';
-                        } 
-                        else 
+                        if ($account_info['Share_Distributed'] == 0) 
                         {
-                            if($_SESSION['ethos_dashboard_options'] == EthosOption::NONE)
-                            {
+                    ?>
+                            <div class="form-group">
+                                <h5>How much are you raising</h5>
+                                <input type="text" class="form-control" id="amount_raising" placeholder="Enter amount">
+                            </div>
+                            <div class="form-group">
+                                <h5>How many shares are you distributing?</h5>
+                                <input type="text" class="form-control" id="shares_dist" placeholder="Enter amount of share">
+                            </div>
+
+                            <?php showJSStatusMsg(); ?>
+
+                            <div class="mx-auto pt-5 text-center">
+                                <input type = "submit" class="btn btn-primary" role="button" id="ipo_btn" value = "Continue">
+                            </div>
+                    <?php
+                        }
+                        else 
+                        { 
+                            // if($_SESSION['ethos_dashboard_options'] == EthosOption::NONE)
+                            // {
                                 echo '
+                                    <div id="no_tabs_selected">
                                         <div class="py-4">
-                                            <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
-                                                <div>
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
-                                                </div>
-                                            </form>
+                                            <div>
+                                                <input id="quotes_btn" type = "submit" class="btn btn-secondary" role="button" value = "'.EthosOption::QUOTES.'"> 
+                                                <input id="buy_back_shares_btn" type = "submit" class="btn btn-secondary" role="button" value = "'.EthosOption::BUY_BACK_SHARES.'"> 
+                                                <input id="history_btn" type = "submit" class="btn btn-secondary" role="button" value = "'.EthosOption::HISTORY.'"> 
+                                            </div>
                                         </div>
+                                    </div>
                                 ';
-                            }
-                            else if($_SESSION['ethos_dashboard_options'] == EthosOption::QUOTES)
+                            // }
+                            if($_SESSION['ethos_dashboard_options'] == EthosOption::QUOTES)
                             {
                                 echo '
                                         <div class="py-4">
@@ -500,6 +472,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script src="../js/shared/balance/DepositWithdraw.js"></script>
     <script src="../js/artist/MenuItem.js"></script>
+    <script src="../js/artist/IPO.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");

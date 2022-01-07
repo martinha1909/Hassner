@@ -8,6 +8,9 @@
     if(in_array($option, [EthosOption::QUOTES, EthosOption::BUY_BACK_SHARES, EthosOption::HISTORY]))
     {
         $_SESSION['ethos_dashboard_options'] = $option;
+        echo(json_encode(array(
+            "ethos_option" => $option,
+        )));
     }
 
     $_SESSION['dependencies'] = "FRONTEND";
