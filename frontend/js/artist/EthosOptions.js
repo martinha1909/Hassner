@@ -58,66 +58,24 @@ function selectHistory(button)
 function quotesPressed()
 {
     var button = $(this);
-    $.ajax({
-        cache: false,
-        type: "POST",
-        url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/artist/EthosDashboardOptionSwitcher.php",
-        data: {
-            ethos_options: "Quotes"
-        },
-        async: false,
-        dataType: "json",
-        success: function(data){
-            selectQuotes(button);
-        },
-        error: function(data){
+    selectQuotes(button);
 
-        }
-    });
     return false;
 }
 
 function buyBackSharesPressed()
 {
     var button = $(this);
-    $.ajax({
-        cache: false,
-        type: "POST",
-        url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/artist/EthosDashboardOptionSwitcher.php",
-        data: {
-            ethos_options: "Buy Back Shares"
-        },
-        async: false,
-        dataType: "json",
-        success: function(data){
-            selectBuyBackShares(button);
-        },
-        error: function(data){
+    selectBuyBackShares(button);
 
-        }
-    });
     return false;
 }
 
 function historyPressed()
 {
     var button = $(this);
-    $.ajax({
-        cache: false,
-        type: "POST",
-        url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/artist/EthosDashboardOptionSwitcher.php",
-        data: {
-            ethos_options: "History"
-        },
-        async: false,
-        dataType: "json",
-        success: function(data){
-            selectHistory(button);
-        },
-        error: function(data){
-
-        }
-    });
+    selectHistory(button);
+    
     return false;
 }
 
