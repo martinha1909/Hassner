@@ -147,94 +147,13 @@
                                     printArtistQuotesTab($_SESSION['username'], $account_info);
                                 ?>
                             </div>
+
+                            <div class="div-hidden" id="buy_back_shares_content">
+                            <?php
+                                printArtistBuyBackSharesTab($_SESSION['username']);
+                            ?>
+                            </div>
                         <?php
-                        //     else if($_SESSION['ethos_dashboard_options'] == EthosOption::BUY_BACK_SHARES)
-                        //     {
-                        //         echo '
-                        //                 <div class="py-4">
-                        //                     <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
-                        //                         <div>
-                        //                             <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
-                        //                             <input name = "ethos_options" type = "submit" class="btn btn-warning" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
-                        //                             <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
-                        //                         </div>
-                        //                     </form>
-                        //                 </div>
-                        //         ';
-
-                        //         if (artistCanCreateSellOrder($_SESSION['username'])) {
-                        //             echo '
-                        //                     <div class="text-right mx-6">
-                        //                         <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
-                        //                             <input name="buy_sell" type="submit" id="menu-style-invert" class="cursor-context" value="-Sell your shares">
-                        //                         </form>
-                        //                     </div>
-                        //             ';
-                        //         }
-
-                        //         if ($_SESSION['buy_sell'] == ShareInteraction::SELL) {
-                        //             $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
-                        //             echo '
-                        //                 <div class="text-right mx-6">
-                        //                     <h6>How many shares are you selling?</h6>
-                        //                     <div class="wrapper-searchbar">
-                        //                         <div class="container-searchbar mx-auto">
-                        //                             <label>
-                        //                                 <form action="../../backend/artist/SellOrderBackend.php" method="post">
-                        //                                     <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
-                        //                                     <p>Quantity: <span id="demo"></span></p>
-                        //                                     <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter price per share">
-                        //                                     <input type="submit" class="btn btn-primary my-2 py-2" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
-                        //                                 </form>
-                        //                             </label> 
-                        //                         </div>
-                        //                     </div>
-                        //                 </div>
-                        //             ';
-                        //             $_SESSION['buy_sell'] = 0;
-                        //         }
-
-                        //         $amount_repurchase_available = getAmountAvailableForRepurchase($_SESSION['username']);
-                        //         $price_for_all_available_repurchase = calculatePriceForAllRepurchase($_SESSION['username']);
-                        //         $owned_shares = getArtistShareRepurchase($_SESSION['username']);
-
-                        //         //Only to be used if artist clicks the button to buy back all shares that are being sold
-                        //         $_SESSION['repurchase_sell_orders'] = getAllRepurchaseSellOrdersInfo($_SESSION['username']);
-
-                        //         echo '
-                        //         <div class="text-center px-4">
-                        //             <h6>Your owned shares: '.$owned_shares.'</h6>
-                        //             <h6>Shares available for repurchase: '.$amount_repurchase_available.'</h6>
-                        //         </div>
-                        //         ';
-
-                        //         sellOrderInit();
-
-                        //         if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
-                        //         {
-                        //             if($_SESSION['status'] == StatusCodes::Success)
-                        //             {
-                        //                 getStatusMessage("", "Shares bought back successfully");
-                        //             }
-                        //             else if($_SESSION['status'] == StatusCodes::ErrGeneric)
-                        //             {
-                        //                 getStatusMessage("An unexpected error occured", "");
-                        //             }
-                        //         }
-
-                        //         askedPriceInit($_SESSION['username'], $_SESSION['account_type']);
-
-                        //         if($amount_repurchase_available > 0)
-                        //         {
-                        //             echo '
-                        //                         </tbody>
-                        //                     </table>
-                        //                     <form class="text-center my-6" action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
-                        //                         <input type="submit" class="btn btn-primary py-2" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
-                        //                     </form>
-                        //             ';
-                        //         }
-                        //     }
                         //     else if($_SESSION['ethos_dashboard_options'] == EthosOption::HISTORY)
                         //     {
                         //         echo '

@@ -63,14 +63,11 @@
 
         if(artistRepurchaseShares($artist_username) > 0)
         {
-            
-
-            if(artistShareSelling($artist_username) < artistRepurchaseShares($artist_username))
+            if(artistShareSelling($artist_username) >= artistRepurchaseShares($artist_username))
             {
                 $ret = true;
             }
         }
-
         return $ret;
     }
 
