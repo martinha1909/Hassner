@@ -362,4 +362,52 @@
             ';
         }
     }
+
+    function printArtistQuotesTab($artist_username, $account_info)
+    {
+        $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
+        $market_cap = calculateMarketCap($_SESSION['username']);
+        $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
+        $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
+
+        echo '
+            <div class="text-center py-4">
+                <h6>Price Per Share: $' . $account_info['price_per_share'] . '</h6>
+                <h6>Volumn: ' . $account_info['Share_Distributed'] . '</h6>
+                <h6>Current Shareholders: ' . $shareholder_list->num_rows . '</h6>
+                <h6>Market cap: $' . $market_cap . '</h6>
+                <h6>Day High: $' . $high . '</h6>
+                <h6>Day Low: $' . $low . '</h6>
+                <br>
+                <p id="inject_success" class="suc-msg"></p>
+                <input name="display_type" type="submit" class="btn btn-primary py-2" id="inject_shares_btn" value="Inject More Shares">
+            </div>
+
+            <div class="div-hidden" id="inject_shares_content">
+                <div class="col-6 mx-auto">
+                    <p class="text-center text-blue">How many shares are you injecting?</p>
+                    <input type="text" id="shares_injecting" class="form-control form-control-sm col-4 mx-auto" placeholder="Enter amount">
+                    <p>Comments</p>
+                    <input type="text" id="comment" class="form-control form-control-sm py-3" placeholder="Enter comment">
+                    <p id="inject_error" class="error-msg"></p>
+                    <div class="text-center">
+                    <input type = "submit" id="confirm_inject_btn" class="btn btn-primary my-4" role="button" value = "Save">  
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button id = "'.GraphOption::ONE_DAY.'" class="btn btn-secondary">'.GraphOption::ONE_DAY.'</button>
+                <button id = "'.GraphOption::FIVE_DAY.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_DAY.'</button>
+                <button id = "'.GraphOption::ONE_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_MONTH.'</button>
+                <button id = "'.GraphOption::SIX_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::SIX_MONTH.'</button>
+                <button id = "'.GraphOption::YEAR_TO_DATE.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::YEAR_TO_DATE.'</button>
+                <button id = "'.GraphOption::ONE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_YEAR.'</button>
+                <button id = "'.GraphOption::FIVE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_YEAR.'</button>
+                <div class="chart-container mx-auto">
+                    <canvas id="stock_graph"></canvas>
+                </div>
+            </div>
+        ';
+    }
 ?>
