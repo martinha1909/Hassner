@@ -413,7 +413,8 @@
 
     function printArtistBuyBackSharesTab($artist_username)
     {
-        if (artistCanCreateSellOrder($_SESSION['username'])) {
+        if (artistCanCreateSellOrder($artist_username)) 
+        {
             echo '
                 <div class="text-right mx-6">
                     <input id="artist_sell_share_btn" type="submit" class="cursor-context menu-style-invert" value="-Sell your shares">
@@ -421,8 +422,8 @@
                 </div>
             ';
         }
-        // <form action="../../backend/artist/SellOrderBackend.php" method="post">
-        $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
+
+        $max = artistRepurchaseShares($artist_username) - artistShareSelling($artist_username);
         echo '
                 <div class="div-hidden" id="artist_sell_share_content">
                     <div class="text-right mx-6">
@@ -442,12 +443,12 @@
                 </div>
         ';
 
-        $amount_repurchase_available = getAmountAvailableForRepurchase($_SESSION['username']);
-        $price_for_all_available_repurchase = calculatePriceForAllRepurchase($_SESSION['username']);
-        $owned_shares = getArtistShareRepurchase($_SESSION['username']);
+        $amount_repurchase_available = getAmountAvailableForRepurchase($artist_username);
+        $price_for_all_available_repurchase = calculatePriceForAllRepurchase($artist_username);
+        $owned_shares = getArtistShareRepurchase($artist_username);
 
         //Only to be used if artist clicks the button to buy back all shares that are being sold
-        $_SESSION['repurchase_sell_orders'] = getAllRepurchaseSellOrdersInfo($_SESSION['username']);
+        $_SESSION['repurchase_sell_orders'] = getAllRepurchaseSellOrdersInfo($artist_username);
 
         echo '
         <div class="text-center px-4">
@@ -470,7 +471,7 @@
             }
         }
 
-        askedPriceInit($_SESSION['username'], $_SESSION['account_type']);
+        askedPriceInit($artist_username, $_SESSION['account_type']);
 
         if($amount_repurchase_available > 0)
         {
