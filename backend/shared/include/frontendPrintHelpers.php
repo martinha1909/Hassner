@@ -385,7 +385,7 @@
 
             <div class="div-hidden" id="inject_shares_content">
                 <div class="col-6 mx-auto">
-                    <p class="text-center text-blue">How many shares are you injecting?</p>
+                    <p class="text-center text-blue" style="font-weight: bold;">How many shares are you injecting?</p>
                     <input type="text" id="shares_injecting" class="form-control form-control-sm col-4 mx-auto" placeholder="Enter amount">
                     <p>Comments</p>
                     <input type="text" id="comment" class="form-control form-control-sm py-3" placeholder="Enter comment">
