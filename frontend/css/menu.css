@@ -251,6 +251,19 @@ select#dark {
   /* text-decoration: underline; */
 }
 
+.menu-style-invert {
+  font-weight: 500;
+  /* background-color: #4c9ed9; */
+  color: #e2cda9ff;
+  padding: 0px 0px;
+}
+
+.menu-style-invert:hover {
+  font-weight: 500;
+  cursor: pointer;
+  color: white;
+}
+
 .th-dark {
   border-color: transparent;
   background-color: transparent;

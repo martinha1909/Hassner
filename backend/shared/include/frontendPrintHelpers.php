@@ -415,36 +415,32 @@
     {
         if (artistCanCreateSellOrder($_SESSION['username'])) {
             echo '
-                    <div class="text-right mx-6">
-                        <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
-                            <input name="buy_sell" type="submit" id="menu-style-invert" class="cursor-context" value="-Sell your shares">
-                        </form>
-                    </div>
+                <div class="text-right mx-6">
+                    <input id="artist_sell_share_btn" type="submit" class="cursor-context menu-style-invert" value="-Sell your shares">
+                    <p id="artist_sell_share_success"></p>
+                </div>
             ';
         }
-
-        if ($_SESSION['buy_sell'] == ShareInteraction::SELL) 
-        {
-            $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
-            echo '
-                <div class="text-right mx-6">
-                    <h6>How many shares are you selling?</h6>
-                    <div class="wrapper-searchbar">
-                        <div class="container-searchbar mx-auto">
-                            <label>
-                                <form action="../../backend/artist/SellOrderBackend.php" method="post">
-                                    <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
+        // <form action="../../backend/artist/SellOrderBackend.php" method="post">
+        $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
+        echo '
+                <div class="div-hidden" id="artist_sell_share_content">
+                    <div class="text-right mx-6">
+                        <h6>How many shares are you selling?</h6>
+                        <div class="wrapper-searchbar">
+                            <div class="container-searchbar mx-auto">
+                                <label>
+                                    <input type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
                                     <p>Quantity: <span id="demo"></span></p>
-                                    <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter price per share">
-                                    <input type="submit" class="btn btn-primary my-2 py-2" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
-                                </form>
-                            </label> 
+                                    <input id="artist_pps_selling" type="text" class="form-control" style="border-color: white;" placeholder="Enter price per share">
+                                    <p id="artist_sell_share_status"></p>
+                                    <input id="artist_post_sell_order_btn" type="submit" class="btn btn-primary my-2 py-2" role="button" value="Post">
+                                </label> 
+                            </div>
                         </div>
                     </div>
                 </div>
-            ';
-            $_SESSION['buy_sell'] = 0;
-        }
+        ';
 
         $amount_repurchase_available = getAmountAvailableForRepurchase($_SESSION['username']);
         $price_for_all_available_repurchase = calculatePriceForAllRepurchase($_SESSION['username']);

@@ -10557,19 +10557,6 @@ input#abc-no-underline:hover {
   /* text-decoration: underline; */
 }
 
-input#menu-style-invert {
-  font-weight: 500;
-  /* background-color: #4c9ed9; */
-  color: #e2cda9ff;
-  padding: 0px 0px;
-}
-
-input#menu-style-invert:hover {
-  font-weight: 500;
-  cursor: pointer;
-  color: white;
-}
-
 input#menu-style {
   font-weight: 500;
   /* background-color: #4c9ed9; */
