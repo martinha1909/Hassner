@@ -204,11 +204,16 @@
             }
 
             echo '
-                        </tbody>
-                    </table>
-                    </div>
+                    </tbody>
+                </table>
             ';
+
+        //     echo '
+        //                 </tbody>
+        //             </table>
+        //             </div>
         }
+        echo '</div>';
     }
 
     //Stock Ticker temporary waiting for backend to fill out values

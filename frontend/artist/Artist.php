@@ -153,67 +153,13 @@
                                 printArtistBuyBackSharesTab($_SESSION['username']);
                             ?>
                             </div>
-                        <?php
-                        //     else if($_SESSION['ethos_dashboard_options'] == EthosOption::HISTORY)
-                        //     {
-                        //         echo '
-                        //                 <div class="py-4">
-                        //                     <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
-                        //                         <div>
-                        //                             <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
-                        //                             <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
-                        //                             <input name = "ethos_options" type = "submit" class="btn btn-warning" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
-                        //                         </div>
-                        //                     </form>
-                        //                 </div>
-                        //         ';
 
-                        //         //Buy Back shares history 
-                        //         echo '
-                        //             <div class="mx-auto text-center py-2 col-6">
-                        //                 <h3 class="h3-blue">Buy Back History</h3>
-                        //                 <table class="table">
-                        //                     <thead>
-                        //                         <tr>
-                        //                             <th scope="col">Date</th>
-                        //                             <th scope="col">Price($)</th>
-                        //                             <th scope="col">Quantity</th>
-                        //                             <th scope="col">Seller</th>
-                        //                         </tr>
-                        //                     </thead>
-                        //                     <tbody>
-                        //             </div>
-                        //         ';
-            
-                        //         $sellers = array();
-                        //         $prices = array();
-                        //         $quantities = array();
-                        //         $date_purchase = array();
-            
-                        //         buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $_SESSION['username']);
-            
-                        //         for ($i = 0; $i < sizeof($sellers); $i++) {
-                        //             echo '
-                        //                         <tr>
-                        //                             <td>' . $date_purchase[$i] . '</td>
-                        //                             <td>' . $prices[$i] . '</td>
-                        //                             <td>' . $quantities[$i] . '</td>
-                        //                             <td>' . $sellers[$i] . '</td>
-                        //                         </tr>
-                        //             ';
-                        //         }
-
-                        //         echo '
-                        //                     </tbody>
-                        //                 </table>
-                        //         ';
-
-                        //         tradeHistoryInit($_SESSION['username']);
-
-                        //         echo '<h3 class="h3-blue">Inject history</h3>';
-
-                        //         injectionHistoryInit($_SESSION['username']);
-                        //     }
+                            <div class="div-hidden" id="history_content">
+                            <?php
+                                printArtistHistoryTab($_SESSION['username']);
+                            ?>
+                            </div>
+                    <?php
                         }
                     ?>
                     </div>
