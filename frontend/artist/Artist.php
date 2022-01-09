@@ -149,15 +149,15 @@
                             </div>
 
                             <div class="div-hidden" id="buy_back_shares_content">
-                            <?php
-                                printArtistBuyBackSharesTab($_SESSION['username']);
-                            ?>
+                                <?php
+                                    printArtistBuyBackSharesTab($_SESSION['username']);
+                                ?>
                             </div>
 
                             <div class="div-hidden" id="history_content">
-                            <?php
-                                printArtistHistoryTab($_SESSION['username']);
-                            ?>
+                                <?php
+                                    printArtistHistoryTab($_SESSION['username']);
+                                ?>
                             </div>
                     <?php
                         }

@@ -180,8 +180,8 @@
                     //Value displays total amount of siliqas that was traded of the artist that day
                     //Trades displays the total number of trades that day
                     echo '
-                                <div class="py-4">
-                                <table class="table">
+                        <div class="py-4">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th scope="col">Date</th>
@@ -192,7 +192,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                        </div>
                     ';
 
                     $trade_history_list->addListToTable();
@@ -204,14 +203,10 @@
             }
 
             echo '
-                    </tbody>
-                </table>
+                            </tbody>
+                        </table>
+                    </div>
             ';
-
-        //     echo '
-        //                 </tbody>
-        //             </table>
-        //             </div>
         }
         echo '</div>';
     }

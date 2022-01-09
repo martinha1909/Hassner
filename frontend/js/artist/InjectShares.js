@@ -78,4 +78,4 @@ $(document).keypress(function (e) {
         $('#confirm_inject_btn').click();
         return false;  
     }
-}); 
+});
