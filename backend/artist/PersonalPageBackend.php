@@ -18,7 +18,6 @@
             "status"=> StatusCodes::Success,
             "msg"=> ""
         )));
-        // header("Location: ../../frontend/artist/PersonalPage.php");
     }
     else
     {

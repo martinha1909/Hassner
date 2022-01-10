@@ -12,13 +12,20 @@
     
     if($result->num_rows > 0)
     {
+        echo(json_encode(array(            
+            "status"=> StatusCodes::Success,
+            "msg"=> ""
+        )));
+
         $_SESSION['dependencies'] = "FRONTEND";
-        header("Location: ../../frontend/listener/PersonalPage.php");
     }
     else
     {
-        $_SESSION['status'] = StatusCodes::ErrGeneric;
+        echo(json_encode(array(            
+            "status"=> StatusCodes::ErrGeneric,
+            "msg"=> "Wrong password"
+        )));
+
         $_SESSION['dependencies'] = "FRONTEND";
-        header("Location: ../../frontend/listener/listener.php");
     }
 ?>
