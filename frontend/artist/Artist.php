@@ -454,18 +454,9 @@
                                     <h3 class="h3-blue">Verify your password to access personal page</h3>
                                     <!-- <form action="../../backend/artist/PersonalPageBackend.php" method="post"> -->
                                     <div class="form-group col-4 mx-auto">
-                        <?php
-                        if($_SESSION['logging_mode'] == LogModes::PERSONAL)
-                        {
-                            if($_SESSION['status'] == StatusCodes::ErrPassword)
-                            {
-                                $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                getStatusMessage("Wrong password", "");
-                            }
-                        }
-                        ?>
                                         <h5>Password</h5>
                                         <input id="artist_personal_pwd" type="password" class="form-control form-control-sm" placeholder="Password">
+                                        <p id="artist_personal_status"></p>
                                     </div>
                                     <div class="text-center">
                                         <input id="artist_personal_btn" type = "submit" class="btn btn-primary" role="button" value = "Verify">
@@ -499,6 +490,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script src="../js/shared/balance/DepositWithdraw.js"></script>
     <script src="../js/artist/MenuItem.js"></script>
+    <script src="../js/shared/account/AccountPage.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");

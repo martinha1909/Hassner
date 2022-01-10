@@ -9,7 +9,16 @@ function artistPersonalPage()
         async: false,
         dataType: "json",
         success: function(data){
-            
+            if(data.status != "SUCCESS")
+            {
+                $("#artist_personal_status").show();
+                $("#artist_personal_status").addClass("error-msg");
+                $("#artist_personal_status").text(data.msg);
+            }
+            else
+            {
+                window.location.href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/artist/PersonalPage.php";
+            }
         },
         error: function(data){
 
