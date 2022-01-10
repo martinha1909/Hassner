@@ -8,4 +8,9 @@
             "display" => $type,
         )));
     }
+    //shouldnt reach here, but if for some reason wrong data is being sent will redirect to the first tab
+    else
+    {
+        $_SESSION['display'] = "PORTFOLIO";
+    }
 ?>
