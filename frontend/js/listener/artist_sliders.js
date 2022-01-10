@@ -27,7 +27,15 @@ function recalcSliderLimits(){
       balance = data
       
       // Get requested price per share (buy) - use lower limit
-      req_pps = $("#buy_limit").slider("values", 0);
+      req_pps_low = $("#buy_limit").slider("values", 0);
+      req_pps_high = $("#buy_limit").slider("values", 1);
+
+      if(req_pps_low > $("#buy_limit").slider("option", "min") && req_pps_high < $("#buy_limit").slider("option", "max")){
+        req_pps = Number($("#pps").text());
+      }
+      else{
+        req_pps = req_pps_low;
+      }
 
       if (balance < (req_pps * num_available_shares)){
         max_shares_buyable = Math.floor(balance/req_pps);
