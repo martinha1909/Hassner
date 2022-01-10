@@ -364,7 +364,7 @@
 
         function searchArtistTotalSharesBought($conn, $artist_username)
         {
-            $sql = "SELECT shares_owned FROM artist_shareholders WHERE artist_username = ?";
+            $sql = "SELECT shares_owned, user_username, artist_username FROM artist_shareholders WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -406,6 +406,39 @@
             return $result;
         }
 
+        function searchCampaignWinnerByArtist($conn, $artist_username)
+        {
+            $sql = "SELECT winner FROM campaign WHERE artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchUserWinningCampaigns($conn, $user_username)
+        {
+            $sql = "SELECT id, offering, type FROM campaign WHERE winner = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchCampaignEligibleParticipants($conn, $campaign_id)
+        {
+            $sql = "SELECT eligible_participants FROM campaign WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $campaign_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchCampaignMinimumEthos($conn, $campaign_id)
         {
             $sql = "SELECT minimum_ethos, artist_username FROM campaign WHERE id = ?";
@@ -430,7 +463,7 @@
 
         function getArtistShareHolders($conn, $artist_username)
         {
-            $sql = "SELECT user_username FROM buy_history WHERE artist_username = ?";
+            $sql = "SELECT user_username FROM artist_shareholders WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();

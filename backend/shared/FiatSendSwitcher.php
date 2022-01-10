@@ -7,10 +7,10 @@
     include '../constants/BalanceOption.php';
     include '../constants/Currency.php';
 
-    if($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS)
+    if($_SESSION['fiat_options'] == BalanceOption::DEPOSIT)
     {
         //Amount of money that user input in
-        $_SESSION['fiat'] = $_POST['currency'];
+        $_SESSION['fiat'] = $_POST['amount'];
         $msg = "empty message";
         if($_SESSION['currency'] == Currency::CAD)
         {
@@ -29,23 +29,29 @@
         $_SESSION['logging_mode'] = LogModes::DEPOSIT;
         if(empty($_SESSION['fiat']))
         {
-            $_SESSION['status'] = StatusCodes::ErrEmpty;
-
             $msg = "Empty deposit amount cannot be processed for user ".$_SESSION['username'];  
             hx_error(HX::CURRENCY, $msg);
 
             $_SESSION['dependencies'] = "FRONTEND";
-            returnToMainPage();
+
+            echo(json_encode(array(
+                "logging_mode" => LogModes::DEPOSIT,          
+                "status"=> StatusCodes::ErrEmpty,
+                "msg"=> "Please fill out all fields and try again"
+            )));
         }
         else if(!is_numeric($_SESSION['fiat']))
         {
-            $_SESSION['status'] = StatusCodes::ErrNum;
-
             $msg = "Non numeric amount cannot be processed for user ".$_SESSION['username'];  
             hx_error(HX::CURRENCY, $msg);
 
             $_SESSION['dependencies'] = "FRONTEND";
-            returnToMainPage();
+
+            echo(json_encode(array(
+                "logging_mode" => LogModes::DEPOSIT,          
+                "status"=> StatusCodes::ErrNum,
+                "msg"=> "Amount has to be a number"
+            )));
         }
         else
         {
@@ -55,35 +61,42 @@
             hx_debug(HX::CURRENCY, $msg);
 
             $_SESSION['dependencies'] = "FRONTEND";
-    
-            header("Location: ../../frontend/shared/Checkout.php");
+
+            echo(json_encode(array(
+                "logging_mode" => LogModes::DEPOSIT,          
+                "status"=> StatusCodes::Success,
+            )));
         }
     }
-    else if($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS)
+    else if($_SESSION['fiat_options'] == BalanceOption::WITHDRAW)
     {
         //Amount of money that user input in
-        $_SESSION['usd'] = $_POST['currency'];
+        $_SESSION['usd'] = $_POST['amount'];
         $msg = $_SESSION['username']." entered ".$_SESSION['usd']." USD for withdrawal";  
         hx_debug(HX::CURRENCY, $msg);
 
         $_SESSION['logging_mode'] = LogModes::WITHDRAW;
         if(empty($_SESSION['usd']))
         {
-            $_SESSION['status'] = StatusCodes::ErrEmpty;
-
             $msg = "Empty withdrawal amount cannot be processed for user ".$_SESSION['username'];  
             hx_error(HX::CURRENCY, $msg);
 
-            returnToMainPage();
+            echo(json_encode(array(
+                "logging_mode" => LogModes::WITHDRAW,          
+                "status"=> StatusCodes::ErrEmpty,
+                "msg" => "Please fill out all fields and try again"
+            )));
         }
-        else if(!is_numeric($_SESSION['fiat']))
+        else if(!is_numeric($_SESSION['usd']))
         {
-            $_SESSION['status'] = StatusCodes::ErrNum;
-
             $msg = "Non-numeric amount cannot be processed for user ".$_SESSION['username'];  
             hx_error(HX::CURRENCY, $msg);
 
-            returnToMainPage();
+            echo(json_encode(array(
+                "logging_mode" => LogModes::WITHDRAW,          
+                "status"=> StatusCodes::ErrNum,
+                "msg" => "Amount has to be a number"
+            )));
         }
         else
         {
@@ -92,11 +105,16 @@
             $balance = $res->fetch_assoc();
             if($balance['balance'] < $_SESSION['usd'])
             {
-                $_SESSION['status'] = StatusCodes::ErrNotEnough;
                 $msg = "Not enough to withdraw for user ".$_SESSION['username']."(".$balance['balance']."<".$_SESSION['usd'].")";  
                 hx_error(HX::CURRENCY, $msg);
 
-                returnToMainPage();
+                $_SESSION['dependencies'] = "FRONTEND";
+
+                echo(json_encode(array(
+                    "logging_mode" => LogModes::WITHDRAW,          
+                    "status"=> StatusCodes::ErrNotEnough,
+                    "msg" => "Not enough USD"
+                )));
             }
             else
             {
@@ -118,7 +136,10 @@
 
                 $_SESSION['dependencies'] = "FRONTEND";
 
-                header("Location: ../../frontend/shared/Sellout.php");
+                echo(json_encode(array(
+                    "logging_mode" => LogModes::WITHDRAW,          
+                    "status"=> StatusCodes::Success,
+                )));
             }
         }
     }

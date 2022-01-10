@@ -31,6 +31,7 @@
         $_SESSION['trade_history_from'] = 0;
         $_SESSION['trade_history_to'] = 0;
         $_SESSION['trade_history_type'] = 0;
+        $_SESSION['artist_investor_amount_invested_sort'] = 0;
         $_SESSION['ethos_dashboard_options'] = EthosOption::NONE;
     }
 
@@ -44,6 +45,15 @@
 
         $_SESSION['status'] = 0;
         $_SESSION['logging_mode'] = LogModes::NONE;
+    }
+
+    function showJSStatusMsg()
+    {
+        echo '
+            <div class="div-hidden" id="js_status_msg">  
+                <p id="js_msg"></p>
+            </div>
+        ';
     }
 
     function getAccount($username)

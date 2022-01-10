@@ -4,6 +4,13 @@
     if(in_array($type, ["Artists", "Portfolio", "Balance", "Account", "Campaign"]))
     {
         $_SESSION['display'] = strtoupper($type);
+        echo(json_encode(array(
+            "display" => $type,
+        )));
     }
-    header("Location: ../../frontend/listener/Listener.php");
+    //shouldnt reach here, but if for some reason wrong data is being sent will redirect to the first tab
+    else
+    {
+        $_SESSION['display'] = "PORTFOLIO";
+    }
 ?>

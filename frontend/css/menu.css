@@ -233,6 +233,24 @@ select#dark {
   background-color: transparent;
 }
 
+.menu-style {
+  font-weight: 500;
+  /* background-color: #4c9ed9; */
+  color: rgb(255, 255, 255);
+  padding: 0px 0px;
+}
+
+.menu-no-underline{
+  color: #e2cda9ff;
+  padding: 0px 0px;
+}
+
+.menu-no-underline:hover {
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  /* text-decoration: underline; */
+}
+
 .th-dark {
   border-color: transparent;
   background-color: transparent;

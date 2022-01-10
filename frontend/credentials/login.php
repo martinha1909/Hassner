@@ -60,9 +60,6 @@ hassnerInit();
             <a href="signup.php"> Need to register for an account?</a>
           </div>
 
-          <!-- signup form -->
-          <form action="../../backend/credentials/LoginBackend.php" method="post">
-
             <!-- username field -->
             <div class="form-group">
               <h5>Username</h5>
@@ -85,7 +82,6 @@ hassnerInit();
               
               <input type="button" class="btn btn-primary" role="button" aria-pressed="true" id="login_btn" value="Login">
             </div>
-          </form>
 
         </div>
       </div>

@@ -220,38 +220,37 @@
         $tickers = getAllArtistTickers();
         echo '
                     <div class="marquee">
-                            <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method = "post">
-                            <p>
+                        <p>
         ';
         for($i = 0; $i < sizeof($tickers); $i++)
         {
             echo '
-                                <input name = "artist_ticker" type = "submit" class="bold-ticker" aria-pressed="true" value ="'.$tickers[$i]->getTag().'"> '.$tickers[$i]->getPPS().'
+                            <mark class="font-weight-bold">'.$tickers[$i]->getTag().'</mark>
             ';
             
             if($tickers[$i]->getChange() < 0)
             {
                 echo '
-                                <mark class="markup-red">'.$tickers[$i]->getChange().'%</mark>
+                            <mark class="markup-red">'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
             else if($tickers[$i]->getChange() > 0)
             {
                 echo '
-                                <mark class="markup-green">+'.$tickers[$i]->getChange().'%</mark>
+                            <mark class="markup-green">+'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
             if($tickers[$i]->getChange() == 0)
             {
                 echo '
-                                <mark>'.$tickers[$i]->getChange().'%</mark>
+                            <mark>'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
+            echo '<mark> '.$tickers[$i]->getPPS().'</mark>';
             echo " | ";
         }
         echo '
-                        </p>
-                    </form>
+                    </p>
                 </div>
         ';
     }
@@ -345,6 +344,104 @@
             }
         }
 
+        return $ret;
+    }
+
+    function fetchAllInvestorsOfArtist($artist_username)
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = getArtistShareHoldersInfo($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            $investor = new Investor();
+            //Skips artist own share repurchase
+            if($row['user_username'] != $artist_username)
+            {
+                $res_account_info = searchAccount($conn, $row['user_username']);
+                $investor_info = $res_account_info->fetch_assoc();
+
+                $amount_invested = getAmountInvestedBetweenUserAndArtist($row['user_username'], $artist_username);
+                $campaigns_won = getUserCampaignWonByArtist($row['user_username'], $artist_username);
+                $campaigns_participated = getUserCampaignParticipatedByArtist($row['user_username'], $artist_username);
+
+                $investor->setUsername($row['user_username']);
+                $investor->setEmail($investor_info['email']);
+                $investor->setAmountInvested($amount_invested);
+                $investor->setCampaignsWon($campaigns_won);
+                $investor->setCampaignsParticipated($campaigns_participated);
+
+                array_push($ret, $investor);
+            }
+        }
+
+        closeCon($conn);
+
+        //By default shows the top investor
+        if($_SESSION['artist_investor_amount_invested_sort'] == 0)
+        {
+            Investor::sort($ret, 0, (sizeof($ret)-1), "Descending", "Amount Invested");
+        }
+        else if($_SESSION['artist_investor_amount_invested_sort'] == 1)
+        {
+            Investor::sort($ret, 0, (sizeof($ret)-1), "Ascending", "Amount Invested");
+        }
+
+        return $ret;
+    }
+
+    function fetchArtistCampaignWinners($artist_username, &$campaign_info)
+    {
+        $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
+        $conn = connect();
+        $ret = array();
+
+        $res = getArtistShareHoldersInfo($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            //Skips artist own share repurchase
+            if($row['user_username'] != $artist_username)
+            {
+                $res_winning_campaign = searchArtistCampaigns($conn, $artist_username);
+                while($row_winning_campaign = $res_winning_campaign->fetch_assoc())
+                {
+                    if($row_winning_campaign['type'] == "raffle" && $row_winning_campaign['winner'] == $row['user_username'])
+                    {
+                        $investor = new Investor();
+                        $campaign = new Campaign();
+
+                        $res_account_info = searchAccount($conn, $row['user_username']);
+                        $investor_info = $res_account_info->fetch_assoc();
+
+                        $amount_invested = getAmountInvestedBetweenUserAndArtist($row['user_username'], $artist_username);
+
+                        $investor->setUsername($row['user_username']);
+                        $investor->setEmail($investor_info['email']);
+                        $investor->setAmountInvested($amount_invested);
+
+                        if($row_winning_campaign['date_expires'] != "0000-00-00 00:00:00")
+                        {
+                            $campaign->setDateExpires(dbDateTimeParser($row_winning_campaign['date_expires']));
+                            $campaign->setDeliverProgress(CampaignDeliverProgress::IN_PROGRESS);
+                        }
+                        else
+                        {
+                            //For now assume all campaigns are not delivered, TODO: have a checkbox or something for artist to check when they deliver 
+                            //the campaign promises
+                            $campaign->setDeliverProgress(CampaignDeliverProgress::NEGATIVE);
+                            $campaign->setDateExpires("Expired");
+                        }
+                        $campaign->setOffering($row_winning_campaign['offering']);
+
+                        array_push($ret, $investor);
+                        array_push($campaign_info, $campaign);
+                    }
+                }
+            }
+        }
+
+        closeCon($conn);
         return $ret;
     }
 ?>

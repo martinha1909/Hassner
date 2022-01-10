@@ -3,17 +3,21 @@
     include '../../backend/artist/include/ArtistHelpers.php';
     include '../../backend/shared/include/MarketplaceHelpers.php';
     include '../../backend/shared/include/CampaignHelpers.php';
+    include '../../backend/shared/include/frontendPrintHelpers.php';
     include '../../backend/constants/ShareInteraction.php';
     include '../../backend/constants/TradeHistoryType.php';
     include '../../backend/constants/EthosOption.php';
     include '../../backend/constants/GraphOption.php';
+    include '../../backend/constants/CampaignDeliverProgress.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
+    include '../../backend/object/Campaign.php';
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
     include '../../backend/object/Node.php';
     include '../../backend/object/TickerInfo.php';
     include '../../backend/object/SellOrder.php';
+    include '../../backend/object/Investor.php';
 
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
@@ -85,220 +89,30 @@
         <div class="container-fluid">
             <div class="row">
                 <ul class="list-group bg-dark">
-                    <?php
-                    if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) {
-                        echo '
-                            <li class="selected-no-hover list-group-item-no-hover">
-                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="❖ Ethos"
-                                </form>
-                            </li>
-                        ';
-                    } else {
-                        echo '
-                            <li class="list-group-item-no-hover">
-                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Ethos">
-                                </form>
-                            </li>
-                        ';
-                    }
+                    <li class="selected-no-hover list-group-item-no-hover" id="li_ethos">
+                        <input name="display_type" type="submit" id="ethos_btn" class="menu-text menu-style" value="❖ Ethos">
+                    </li>
 
-                    if ($_SESSION['display'] == MenuOption::Campaign) {
-                        echo '
-                            <li class="selected-no-hover list-group-item-no-hover">
-                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◔ Campaign">
-                                </form>
-                            </li>
-                        ';
-                    } else {
-                        echo '
-                            <li class="list-group-item-no-hover">
-                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Campaign">
-                                </form>
-                            </li>
-                        ';
-                    }
+                    <li class="list-group-item-no-hover" id="li_campaign">
+                        <input name="display_type" type="submit" id="campaign_btn" class="menu-text menu-no-underline" value="Campaign">
+                    </li>
 
-                    if ($_SESSION['display'] == MenuOption::Balance) {
-                        echo '
-                            <li class="selected-no-hover list-group-item-no-hover">
-                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Balance">
-                                </form>
-                            </li>
-                        ';
-                    } else {
-                        echo '
-                            <li class="list-group-item-no-hover">
-                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Balance">
-                                </form>
-                            </li>
-                        ';
-                    }
+                    <li class="list-group-item-no-hover" id="li_balance">
+                        <input name="display_type" type="submit" id="balance_btn" class="menu-text menu-no-underline" value="Balance">
+                    </li>
 
-                    if ($_SESSION['display'] == MenuOption::Investors) {
-                        echo '
-                            <li class="selected-no-hover list-group-item-no-hover">
-                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Investors">
-                                </form>
-                            </li>
-                        ';
-                    } else {
-                        echo '
-                            <li class="list-group-item-no-hover">
-                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Investors">
-                                </form>
-                            </li>
-                        ';
-                    }
+                    <li class="list-group-item-no-hover" id="li_investors">
+                        <input name="display_type" type="submit" id="investors_btn" class="menu-text menu-no-underline" value="Investors">
+                    </li>
 
-                    if ($_SESSION['display'] == MenuOption::Account) {
-                        echo '
-                            <li class="selected-no-hover list-group-item-no-hover">
-                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="menu-style" class="menu-text" value="▤ Account">
-                                </form>
-                            </li>
-                        ';
-                    } else {
-                        echo '
-                            <li class="list-group-item-no-hover">
-                                <form action="../../backend/control/MenuDisplayArtistBackend.php" method="post">
-                                <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Account">
-                                </form>
-                            </li>
-                        ';
-                    }
-                    ?>
+                    <li class="list-group-item-no-hover" id="li_account">
+                        <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
+                    </li>
                 </ul>
 
                 <div class="col">
+                    <div id="ethos_content">
                     <?php
-                    //Artist campaigns, including benchmark, raffle, and give aways.
-                    if ($_SESSION['display'] == MenuOption::Campaign) {
-                        $offerings = array();
-                        $time_left = array();
-                        $eligible_participants = array();
-                        $min_ethos = array();
-                        $types = array();
-                        $time_releases = array();
-                        $roll_results = array();
-                        fetchCampaigns(
-                            $_SESSION['username'],
-                            $offerings,
-                            $time_left,
-                            $eligible_participants,
-                            $min_ethos,
-                            $types,
-                            $time_releases,
-                            $roll_results
-                        );
-                        echo '
-                                    <div class="mx-auto py-6 text-center">
-                                        <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>
-                                    </div>
-                            ';
-                        if (sizeof($offerings) > 0) {
-                            echo '
-                                        <h4>Your other campaigns</h4>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Offering</th>
-                                                    <th scope="col">Type</th>
-                                                    <th scope="col">Eligible Participants</th>
-                                                    <th scope="col">Minimum Ethos</th>
-                                                    <th scope="col">Time left</th>
-                                                    <th scope="col">Roll Result</th>
-                                                    <th scope="col">Time Released</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>';
-
-                            for ($i = 0; $i < sizeof($offerings); $i++) {
-                                echo '
-                                                <tr>
-                                                    <th>' . $offerings[$i] . '</th>
-                                                    <td>' . $types[$i] . '</td>
-                                                    <td>' . $eligible_participants[$i] . '</td>
-                                                    <td>' . $min_ethos[$i] . '</td>
-                                                    <td>' . $time_left[$i] . '</td>
-                                                    <td>' . $roll_results[$i] . '</td>
-                                                    <td>' . $time_releases[$i] . '</td>
-                                                </tr>
-                                    ';
-                            }
-                            echo '
-                                            </tbody>
-                                        </table>
-                                ';
-                        }
-
-                        $offerings = array();
-                        $eligible_participants = array();
-                        $min_ethos = array();
-                        $types = array();
-                        $time_releases = array();
-                        $roll_results = array();
-                        fetchExpiredCampaigns(
-                            $_SESSION['username'],
-                            $offerings,
-                            $eligible_participants,
-                            $min_ethos,
-                            $types,
-                            $time_releases,
-                            $roll_results
-                        );
-                        echo '
-                                    <div class="py-6 text-center">
-                                        <h4 class="h4-blue">Expired Campaigns</h4>
-                                    </div>
-                            ';
-
-                        if (sizeof($offerings) > 0) {
-                            echo '
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Offering</th>
-                                                        <th scope="col">Type</th>
-                                                        <th scope="col">Eligible Participants</th>
-                                                        <th scope="col">Minimum Ethos</th>
-                                                        <th scope="col">Roll Result</th>
-                                                        <th scope="col">Time Released</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>';
-
-                            for ($i = 0; $i < sizeof($offerings); $i++) {
-                                echo '
-                                                    <tr>
-                                                        <th>' . $offerings[$i] . '</th>
-                                                        <td>' . $types[$i] . '</td>
-                                                        <td>' . $eligible_participants[$i] . '</td>
-                                                        <td>' . $min_ethos[$i] . '</td>
-                                                        <td>' . $roll_results[$i] . '</td>
-                                                        <td>' . $time_releases[$i] . '</td>
-                                                    </tr>
-                                    ';
-                            }
-                            echo '
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                ';
-                        }
-                    }
-
-                    //Artists Ethos
-                    else if ($_SESSION['display'] == MenuOption::Ethos || $_SESSION['display'] == MenuOption::None) 
-                    {
                         if ($account_info['Share_Distributed'] == 0) {
                             if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
                             {
@@ -588,20 +402,59 @@
                                 injectionHistoryInit($_SESSION['username']);
                             }
                         }
-                    }
+                    ?>
+                    </div>
 
-                    //brings to Artist personal account page, where they can input their metrics, which are shown
-                    //when users search for them and also on their portfolio tab
-                    else if ($_SESSION['display'] == MenuOption::Account) 
-                    {
-                        echo '
-                                <section id="login">
-                                <div class="container">
-                                    <div">
-                                        <div class="text-center my-6">
-                                            <h3 class="h3-blue">Verify your password to access personal page</h3>
-                                            <form action="../../backend/artist/PersonalPageBackend.php" method="post">
-                                                <div class="form-group col-4 mx-auto">';
+                    <div class = "div-hidden" id="campaign_content">
+                        <div class="mx-auto py-6 text-center">
+                            <a class="btn btn-primary" href="CreateCampaign.php">Start a new campaign?</a>
+                        </div>
+
+                        <div class="py-4 text-center">
+                            <h4 class="h4-blue">Active Campaigns</h4>
+                        </div>
+                        <?php
+                            printArtistCurrentCampaignTable($_SESSION['username']);
+                        ?>
+
+                        <div class="py-4 text-center">
+                            <h4 class="h4-blue">Expired Campaigns</h4>
+                        </div>
+                        <?php
+                            printArtistExpiredCampaignTable($_SESSION['username']);
+                        ?>
+                    </div>
+
+                    <div class="div-hidden" id="balance_content">
+                    <?php
+                        fiatInit();
+                    ?>
+                    </div>
+
+                    <div class="div-hidden" id="investors_content">
+                        <div class="py-4 text-center">
+                            <h4 class="h4-blue">Apex Investors</h4>
+                        </div>
+                        <?php
+                            printArtistApexInvestors($_SESSION['username']);
+                        ?>
+
+                        <div class="py-4 text-center">
+                            <h4 class="h4-blue">Raffle Winners</h4>
+                        </div>
+                        <?php
+                            printArtistRaffleCampaignsWinners($_SESSION['username']);
+                        ?>
+                    </div>
+                    
+                    <div class="div-hidden" id="account_content">
+                        <section id="login">
+                            <div class="container">
+                                <div class="text-center my-6">
+                                    <h3 class="h3-blue">Verify your password to access personal page</h3>
+                                    <form action="../../backend/artist/PersonalPageBackend.php" method="post">
+                                        <div class="form-group col-4 mx-auto">
+                        <?php
                         if($_SESSION['logging_mode'] == LogModes::PERSONAL)
                         {
                             if($_SESSION['status'] == StatusCodes::ErrPassword)
@@ -610,29 +463,19 @@
                                 getStatusMessage("Wrong password", "");
                             }
                         }
-                        echo '
-                                                    <h5>Password</h5>
-                                                    <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
-                                                </div>
-                                                <div class="text-center">
-                                                    <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
-                                                </div>
-                                            </form>
-                                            </div>
+                        ?>
+                                            <h5>Password</h5>
+                                            <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
                                         </div>
-                                    </div>
-                                </section>
-                            ';
-                    }
-                    //Sell siliqas to USD/CAD/EUR
-                    else if ($_SESSION['display'] == MenuOption::Balance) 
-                    {
-                        fiatInit();
-                    } 
-                    else if ($_SESSION['display'] == MenuOption::Investors) 
-                    {
-                    }
-                    ?>
+                                        <div class="text-center">
+                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
                 </div>
                 <!-- header -->
 
@@ -655,6 +498,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="../js/shared/balance/DepositWithdraw.js"></script>
+    <script src="../js/artist/MenuItem.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");

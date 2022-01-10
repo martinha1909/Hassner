@@ -8,8 +8,14 @@
         private $date_expires;
         private $type;
         private $min_ethos;
+        private $user_owned_ethos;
         private $eligible_participants;
         private $winner;
+        //Progress towards the minimum ethos
+        private $progress;
+        private $winning_chance;
+        private $time_left;
+        private $deliver_progress;
 
         function __construct()
         {
@@ -45,7 +51,7 @@
          */ 
         public function getArtistUsername()
         {
-            $this->artist_username;
+            return $this->artist_username;
         }
 
         /**
@@ -166,6 +172,86 @@
         public function setWinner($winner)
         {
             $this->winner = $winner;
+        }
+
+        /**
+         * Get the value of progress
+         */ 
+        public function getProgress()
+        {
+            return $this->progress;
+        }
+
+        /**
+         * Set the value of progress
+         */ 
+        public function setProgress($progress)
+        {
+            $this->progress = $progress;
+        }
+
+        /**
+         * Get the value of time_left
+         */ 
+        public function getTimeLeft()
+        {
+            return $this->time_left;
+        }
+
+        /**
+         * Set the value of time_left
+         */ 
+        public function setTimeLeft($time_left)
+        {
+            $this->time_left = $time_left;
+        }
+
+        /**
+         * Get the value of user_owned_ethos
+         */ 
+        public function getUserOwnedEthos()
+        {
+            return $this->user_owned_ethos;
+        }
+
+        /**
+         * Set the value of user_owned_ethos
+         */ 
+        public function setUserOwnedEthos($user_owned_ethos)
+        {
+            $this->user_owned_ethos = $user_owned_ethos;
+        }
+
+        /**
+         * Get the value of winning_chance
+         */ 
+        public function getWinningChance()
+        {
+            return $this->winning_chance;
+        }
+
+        /**
+         * Set the value of winning_chance
+         */ 
+        public function setWinningChance($winning_chance)
+        {
+            $this->winning_chance = $winning_chance;
+        }
+
+        /**
+         * Get the value of deliver_progress
+         */ 
+        public function getDeliverProgress()
+        {
+                return $this->deliver_progress;
+        }
+
+        /**
+         * Set the value of deliver_progress
+         */ 
+        public function setDeliverProgress($deliver_progress)
+        {
+                $this->deliver_progress = $deliver_progress;
         }
     }
 ?>

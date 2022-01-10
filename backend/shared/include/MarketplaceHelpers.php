@@ -550,47 +550,14 @@ function fiatInit()
                         <form action="../../backend/shared/CurrencyBackend.php" method="post">
         ';
 
-    if ($_SESSION['logging_mode'] == LogModes::DEPOSIT) 
-    {
-        if ($_SESSION['status'] == StatusCodes::ErrEmpty) 
-        {
-            $_SESSION['status'] = StatusCodes::ErrGeneric;
-            getStatusMessage("Please fill out all fields and try again", "");
-        } 
-        else if($_SESSION['status'] == StatusCodes::ErrNum) 
-        {
-            $_SESSION['status'] = StatusCodes::ErrGeneric;
-            getStatusMessage("Amount has to be a number", "");
-        } 
-        else 
-        {
-            getStatusMessage("Failed to buy, an error occured", "Succeeded");
-        }
-    } 
-    else if ($_SESSION['logging_mode'] == LogModes::WITHDRAW) 
-    {
-        if ($_SESSION['status'] == StatusCodes::ErrEmpty) 
-        {
-            $_SESSION['status'] = StatusCodes::ErrGeneric;
-            getStatusMessage("Please fill out all fields and try again", "");
-        } 
-        else if ($_SESSION['status'] == StatusCodes::ErrNotEnough) 
-        {
-            $_SESSION['status'] = StatusCodes::ErrGeneric;
-            getStatusMessage("Not enough USD", "");
-        } 
-        else 
-        {
-            getStatusMessage("An error occured", "Succeeded");
-        }
-    }
+    showJSStatusMsg();
 
     if ($_SESSION['currency'] == 0) 
     {
         echo '
                     <div style="float:none;margin:auto;" class="select-dark">
-                        <select name="currency" id="dark" onchange="this.form.submit()">
-                            <option selected disabled>Currency</option>
+                        <select name="currency" id="dark" value="USD" onchange="this.form.submit()">
+                            <option value="USD" selected disabled>USD</option>
                             <option value="USD">USD</option>
                             <option value="CAD">CAD</option>
                             <option value="EUR">EUR</option>
@@ -603,8 +570,8 @@ function fiatInit()
     {
         echo '
                     <div style="float:none;margin:auto;" class="select-dark">
-                        <select name="currency" id="dark" onchange="this.form.submit()">
-                            <option selected disabled>' . $_SESSION['currency'] . '</option>
+                        <select name="currency" id="dark" value="'.$_SESSION['currency'].'" onchange="this.form.submit()">
+                            <option value="'.$_SESSION['currency'].'" selected disabled>' . $_SESSION['currency'] . '</option>
                             <option value="USD">USD</option>
                             <option value="CAD">CAD</option>
                             <option value="EUR">EUR</option>
@@ -614,7 +581,6 @@ function fiatInit()
         echo "Account balance: " . $balance . "<br>";
         echo '
                     </form>
-                    <form action = "../../backend/shared/FiatOptionsSwitcher.php" method = "post">
             ';
         if ($_SESSION['currency'] == 0) 
         {
@@ -624,74 +590,31 @@ function fiatInit()
         } 
         else 
         {
-            if ($_SESSION['fiat_options'] == BalanceOption::NONE) 
-            {
-                echo '
-                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::WITHDRAW.'" onclick="window.location.reload();"> 
-                            </div>
-                        </form>
-                    ';
-            } 
-            else if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) 
-            {
-                echo '
-                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::WITHDRAW.'" onclick="window.location.reload();"> 
-                            </div>
-                        </form>
-                    ';
-            } 
-            else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) 
-            {
-                echo '
-                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input name = "options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::DEPOSIT.'" onclick="window.location.reload();"> 
-                                <input name = "options" type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "'.BalanceOption::WITHDRAW.'" onclick="window.location.reload();"> 
-                            </div>
-                        </form>
-                    ';
-            }
+            echo '
+                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                        <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
+                        <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
+                    </div>
+                ';
         }
     }
-    if ($_SESSION['fiat_options'] == BalanceOption::DEPOSIT_CAPS) 
-    {
-        echo '
-                    <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
-                        <div class="form-group">
-            ';
-        echo '
-                            <h5 style="padding-top:150px;">Enter Amount in ' . $_SESSION['currency'] . '</h5>
-                            <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
-                        </div>
-                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue to Checkout" onclick="window.location.reload();"> 
-                        </div>
-                    </form>
+
+    echo '
+                <div class="div-hidden" id="balance_div">  
+                    <div class="form-group">
+    ';
+    echo '
+                        <h5 style="padding-top:150px;" id="deposit_or_withdraw_header">Enter Amount in ' . $_SESSION['currency'] . '</h5>
+                        <input type="text" name = "amount" style="border-color: white;" class="form-control form-control-sm" id="deposit_withdraw_amount" placeholder="Enter amount">
+                    </div>
+                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                            <input type = "submit" class="btn btn-primary" id="checkout_btn" value = "Continue to Checkout"> 
+                    </div>
                 </div>
             </div>
         </div>
-    </section>';
-    } 
-    else if ($_SESSION['fiat_options'] == BalanceOption::WITHDRAW_CAPS) 
-    {
-        echo '
-                    <form action = "../../backend/shared/FiatSendSwitcher.php" method = "post">
-                        <div class="form-group">
-                            <h5 style="padding-top:150px;">Enter Amount in USD</h5>
-                            <input type="text" name = "currency" style="border-color: white;" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount">
-                        </div>
-                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue to Checkout" onclick="window.location.reload();"> 
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>';
-    }
+</section>
+    ';
 }
 
 function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, &$date_injected)
@@ -1208,9 +1131,11 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
         $ret = 0;
         $conn = connect();
 
-        $res = searchSpecificInvestment($conn, $user_username, $artist_username);
-        while($row = $res->fetch_assoc()) {
-            $ret += $row['no_of_share_bought'];
+        $res = searchSharesInArtistShareHolders($conn, $user_username, $artist_username);
+        if($res->num_rows > 0)
+        {
+            $row = $res->fetch_assoc();
+            $ret = $row['shares_owned'];
         }
 
         return $ret;
@@ -1352,12 +1277,16 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
         $conn = connect();
         $connPDO = connectPDO();
         $market_cap = 0;
-        $res1 = searchArtistTotalSharesBought($conn, $artist_username);
+        $res1 = getArtistShareHoldersInfo($conn, $artist_username);
         $res2 = searchArtistCurrentPricePerShare($conn, $artist_username);
         $pps = $res2->fetch_assoc();
         while($row = $res1->fetch_assoc())
         {
-            $market_cap += ($row['shares_owned'] * $pps['price_per_share']);
+            //skip artist own buy back shares
+            if($row['user_username'] != $artist_username)
+            {
+                $market_cap += ($row['shares_owned'] * $pps['price_per_share']);
+            }
         }
 
         //update the market cap 
@@ -1483,6 +1412,29 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
 
                 array_push($ret, $campaign);
             }
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
+
+    /**
+     * Calculates the total amount of money a user has invested in an artist, which is determined by all the past buy activities
+     *
+     * @param user_username         user username to determine total amount has invested
+     * @param artist_username       artist username that the user has invested in
+     *
+     * @return ret                  Total amount a user has spent on the given artist
+     */
+    function getAmountInvestedBetweenUserAndArtist($user_username, $artist_username): float
+    {
+        $ret = 0;
+        $conn = connect();
+        
+        $res = searchInitialPriceWhenBought($conn, $user_username, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            $ret += $row['price_per_share_when_bought'];
         }
 
         closeCon($conn);
