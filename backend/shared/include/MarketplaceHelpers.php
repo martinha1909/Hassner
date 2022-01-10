@@ -613,7 +613,6 @@ function fiatInit()
                 </div>
             </div>
         </div>
-    </div>
 </section>
     ';
 }

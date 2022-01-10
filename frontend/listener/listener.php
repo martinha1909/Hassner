@@ -81,126 +81,50 @@
             <div class="row">
                 <ul class="list-group bg-dark">
                     <?php
-                    checkRaffleRoll();
-                    //By default My Portfolio is selected
-                    //When My Portfolio is selected
-                    if ($_SESSION['display'] == MenuOption::None || $_SESSION['display'] == MenuOption::Portfolio) {
-                        echo '
-                                    <li class="selected-no-hover list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="❖ Portfolio"
-                                        </form>
-                                    </li>
-                                ';
-                    } else {
-                        echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Portfolio">
-                                        </form>
-                                    </li>
-                                ';
-                    }
-
-                    //When settings is selected
-                    if ($_SESSION['display'] == MenuOption::Campaign) {
-                        echo '
-                                    <li class="selected-no-hover list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◔ Campaign">
-                                        </form>
-                                    </li>
-                                ';
-                    } else {
-                        echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Campaign">
-                                        </form>
-                                    </li>
-                                ';
-                    }
-
-                    //When Siliqas option is selected
-                    if ($_SESSION['display'] == MenuOption::Balance) {
-                        echo '
-                                    <li class="selected-no-hover list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="※ Balance">
-                                        </form>
-                                    </li>
-                                ';
-                    } else {
-                        echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Balance">
-                                        </form>
-                                    </li>
-                                ';
-                    }
-
-                    //When Artists is selected
-                    if ($_SESSION['display'] == MenuOption::Artists) {
-                        echo '
-                                    <li class="selected-no-hover list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="◈ Artists">
-                                        </form>
-                                    </li>
-                                ';
-                    } else {
-                        echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Artists">
-                                        </form>
-                                    </li>
-                                ';
-                    }
-
-                    //When Account is selected
-                    if ($_SESSION['display'] == MenuOption::Account) {
-                        echo '
-                                    <li class="selected-no-hover list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="menu-style" class="menu-text" value="▤ Account">
-                                        </form>
-                                    </li>
-                                ';
-                    } else {
-                        echo '
-                                    <li class="list-group-item-no-hover">
-                                        <form action="../../backend/control/MenuDisplayListenerBackend.php" method="post">
-                                            <input name="display_type" type="submit" id="abc-no-underline" class="menu-text" value="Account">
-                                        </form>
-                                    </li>
-                                ';
-                    }
-
+                        checkRaffleRoll();
                     ?>
+                    <li class="selected-no-hover list-group-item-no-hover" id="li_portfolio">
+                        <input name="display_type" type="submit" id="portfolio_btn" class="menu-text menu-style" value="❖ Portfolio">
+                    </li>
+
+                    <li class="list-group-item-no-hover" id="li_campaign">
+                        <input name="display_type" type="submit" id="campaign_btn" class="menu-text menu-no-underline" value="Campaign">
+                    </li>
+
+                    <li class="list-group-item-no-hover" id="li_balance">
+                        <input name="display_type" type="submit" id="balance_btn" class="menu-text menu-no-underline" value="Balance">
+                    </li>
+
+                    <li class="list-group-item-no-hover" id="li_artists">
+                        <input name="display_type" type="submit" id="artists_btn" class="menu-text menu-no-underline" value="Artists">
+                    </li>
+
+                    <li class="list-group-item-no-hover" id="li_account">
+                        <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
+                    </li>
                 </ul>
                 <div class="container my-auto mx-auto col-6">
                     <ul class="list-group my-4">
-                        <?php
-                        //displaying My Portfolio
-                        if ($_SESSION['display'] == MenuOption::None || $_SESSION['display'] == MenuOption::Portfolio) {
-                            echo '
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" style="color: white;" class="bg-dark">#</th>
-                                                <form action="../../backend/listener/include/SortPortfolioArtistHelpers.php">
-                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
-                                ';
+                        <div id="portfolio_content">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="color: white;" class="bg-dark">#</th>
+                                        <form action="../../backend/listener/include/SortPortfolioArtistHelpers.php">
+                                            <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
+                            <?php
                             //sort Artist ascending alphabetically
-                            if ($_SESSION['sort_type'] == 1) {
+                            if ($_SESSION['sort_type'] == 1) 
+                            {
                                 echo " ↑";
                             }
                             //sort Artist descending alphabetically
-                            else if ($_SESSION['sort_type'] == 4) {
+                            else if ($_SESSION['sort_type'] == 4) 
+                            {
                                 echo " ↓";
-                            } else {
+                            } 
+                            else 
+                            {
                                 echo "";
                             }
                             echo '
@@ -209,13 +133,17 @@
                                                 <form action="../../backend/listener/include/SortPortfolioShareHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
                             //sort Shares bought ascending alphabetically
-                            if ($_SESSION['sort_type'] == 2) {
+                            if ($_SESSION['sort_type'] == 2) 
+                            {
                                 echo ' ↑';
                             }
                             //sort Shares bought descending alphabetically
-                            else if ($_SESSION['sort_type'] == 5) {
+                            else if ($_SESSION['sort_type'] == 5) 
+                            {
                                 echo " ↓";
-                            } else {
+                            } 
+                            else 
+                            {
                                 echo "";
                             }
                             echo '
@@ -224,13 +152,17 @@
                                                 <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
                                                     <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
                             //sort Price per share ascending alphabetically
-                            if ($_SESSION['sort_type'] == 3) {
+                            if ($_SESSION['sort_type'] == 3) 
+                            {
                                 echo ' ↑';
                             }
                             //sort Price per share descending alphabetically
-                            else if ($_SESSION['sort_type'] == 6) {
+                            else if ($_SESSION['sort_type'] == 6) 
+                            {
                                 echo " ↓";
-                            } else {
+                            }
+                            else 
+                            {
                                 echo "";
                             }
 
@@ -266,21 +198,36 @@
                             //retrieving data from the data base to populate arrays that store information of artists that the user has invested in
                             populateVars($_SESSION['username'], $all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
 
-                            if ($_SESSION['sort_type'] == 0) {
+                            if ($_SESSION['sort_type'] == 0) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Ascending");
-                            } else if ($_SESSION['sort_type'] == 1) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 1) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Ascending");
-                            } else if ($_SESSION['sort_type'] == 2) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 2) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Ascending");
-                            } else if ($_SESSION['sort_type'] == 3) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 3) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Ascending");
-                            } else if ($_SESSION['sort_type'] == 4) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 4) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Descending");
-                            } else if ($_SESSION['sort_type'] == 5) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 5) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Descending");
-                            } else if ($_SESSION['sort_type'] == 6) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 6) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Descending");
-                            } else if ($_SESSION['sort_type'] == 7) {
+                            } 
+                            else if ($_SESSION['sort_type'] == 7) 
+                            {
                                 sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Descending");
                             }
                             printMyPortfolioChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
@@ -347,83 +294,85 @@
                                             </tbody>
                                         </table>
                                         </div>
-                                    ';
-                            }
-                        } else if ($_SESSION['display'] == MenuOption::Campaign) {
-                            echo '
-                                <div class="py-6">
-                                    <h4>Participating</h4>
-                            ';
-
-                            printParticipatingCampaignTable($_SESSION['username']);
-
-                            echo '
-                                </div>
-                                <div class="py-6">
-                                    <h4>Near Participation</h4>
-                            ';
-
-                            printNearParticipationCampaignTable($_SESSION['username']);
-
-                            echo '
-                                </div>
-                                <div class="py-6">
-                                    <h4>Past Participation</h4>
-                            ';
-
-                            printPastParticipatedCampaignTable($_SESSION['username']);
-
-                            echo '</div>';
-                        }
-
-                        //displaying Top Invested Artist
-                        else if ($_SESSION['display'] == MenuOption::Artists) 
-                        {
-                            $all_artists = getAllArtist();
-
-                            if(sizeof($all_artists) == 0)
-                            {
-                                echo "<h3>No artists to display<h3>";
-                            }
-                            else
-                            {
-                                followedArtist($_SESSION['username']);
-
-                                topsAndFlops($all_artists);
-
-                                apex($all_artists);
-
-                                localArtist();
-                            }
-                        } else if ($_SESSION['display'] == MenuOption::Balance) {
-                            fiatInit();
-                        }
-
-                        //Account page functionality
-                        else if ($_SESSION['display'] == MenuOption::Account) {
-                            echo '
-                                    <section id="login">
-                                        <div class="container">
-                                            <div class="text-center">
-                                                <h3 class="h3-blue">Verify your password to access personal page</h3>
-                                                <form action="../../backend/listener/PersonalPageBackend.php" method="post">
-                                                    <div class="form-group col-4 mx-auto">
-                                                        <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">';
-                            if ($_SESSION['logging_mode'] == LogModes::PERSONAL) {
-                                getStatusMessage("Incorrect Password, please try again", "");
-                            }
-                            echo '
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </section>
                                 ';
-                        }
+                            }
                         ?>
+                        </div>
+
+                        <div class="div-hidden" id="campaign_content">
+                            <div class="py-6">
+                                <h4>Participating</h4>
+                                <?php
+                                    printParticipatingCampaignTable($_SESSION['username']);
+                                ?>
+                            </div>
+
+                            <div class="py-6">
+                                <h4>Near Participation</h4>
+                                <?php
+                                    printNearParticipationCampaignTable($_SESSION['username']);
+                                ?>
+                            </div>
+
+                            <div class="py-6">
+                                <h4>Past Participation</h4>
+                                <?php
+                                    printPastParticipatedCampaignTable($_SESSION['username']);
+                                ?>
+                            </div>
+                        </div>
+
+                        <div class="div-hidden" id="artists_content">
+                            <?php
+                                //displaying Top Invested Artist
+                                $all_artists = getAllArtist();
+
+                                if(sizeof($all_artists) == 0)
+                                {
+                                    echo "<h3>No artists to display<h3>";
+                                }
+                                else
+                                {
+                                    followedArtist($_SESSION['username']);
+
+                                    topsAndFlops($all_artists);
+
+                                    apex($all_artists);
+
+                                    localArtist();
+                                }
+                            ?>
+                        </div>
+
+                        <div class="div-hidden" id="balance_content">
+                            <?php
+                                fiatInit();
+                            ?>
+                        </div>
+
+                        <div class="div-hidden" id="account_content">
+                            <section id="login">
+                                <div class="container">
+                                    <div class="text-center">
+                                        <h3 class="h3-blue">Verify your password to access personal page</h3>
+                                        <form action="../../backend/listener/PersonalPageBackend.php" method="post">
+                                            <div class="form-group col-4 mx-auto">
+                                                <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
+                            <?php
+                                if ($_SESSION['logging_mode'] == LogModes::PERSONAL) 
+                                {
+                                    getStatusMessage("Incorrect Password, please try again", "");
+                                }
+                            ?>
+                                            </div>
+                                            <div class="text-center">
+                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -446,6 +395,7 @@
     <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <script src="js/scripts.js"></script>
     <script src="../js/shared/balance/DepositWithdraw.js"></script>
+    <script src="../js/listener/MenuItem.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
