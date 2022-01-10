@@ -217,38 +217,37 @@
         $tickers = getAllArtistTickers();
         echo '
                     <div class="marquee">
-                            <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method = "post">
-                            <p>
+                        <p>
         ';
         for($i = 0; $i < sizeof($tickers); $i++)
         {
             echo '
-                                <input name = "artist_ticker" type = "submit" class="bold-ticker" aria-pressed="true" value ="'.$tickers[$i]->getTag().'"> '.$tickers[$i]->getPPS().'
+                            <mark class="font-weight-bold">'.$tickers[$i]->getTag().'</mark>
             ';
             
             if($tickers[$i]->getChange() < 0)
             {
                 echo '
-                                <mark class="markup-red">'.$tickers[$i]->getChange().'%</mark>
+                            <mark class="markup-red">'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
             else if($tickers[$i]->getChange() > 0)
             {
                 echo '
-                                <mark class="markup-green">+'.$tickers[$i]->getChange().'%</mark>
+                            <mark class="markup-green">+'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
             if($tickers[$i]->getChange() == 0)
             {
                 echo '
-                                <mark>'.$tickers[$i]->getChange().'%</mark>
+                            <mark>'.$tickers[$i]->getChange().'%</mark>
                 ';
             }
+            echo '<mark> '.$tickers[$i]->getPPS().'</mark>';
             echo " | ";
         }
         echo '
-                        </p>
-                    </form>
+                    </p>
                 </div>
         ';
     }
