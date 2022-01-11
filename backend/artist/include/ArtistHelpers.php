@@ -75,140 +75,90 @@
     {
         $conn = connect();
 
-        if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
-        {
-            echo '
-                <div class="mx-auto text-center py-2 col-8">
-                    <h3 class="h3-blue py-2">Trade History</h3>
-                    <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
-                        <h6>From</h6>
-                        <input type="date" name="trade_history_from">
-                        <h6>To</h6>
-                        <input type="date" name="trade_history_to">
-                        <input type="submit" class="cursor-context" role="button" aria-pressed="true" value="->">
-                    </form>
-            ';
-        }
-        else
-        {
-            echo '
-                <div class="mx-auto text-center py-2 col-8">
-                    <h3 class="h3-blue py-2">Trade History</h3>
-                    <form action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
-                        <h6>From</h6>
-                        <input type="date" name="trade_history_from" value="'.$_SESSION['trade_history_from'].'">
-                        <h6>To</h6>
-                        <input type="date" name="trade_history_to" value="'.$_SESSION['trade_history_to'].'">
-                        <input type="submit" class="cursor-context" role="button" aria-pressed="true" value="->">
-                    </form>
-            ';
-        }
+        echo '
+            <div class="mx-auto text-center py-2 col-8">
+                <h3 class="h3-blue py-2">Trade History</h3>
+                <h6>From</h6>
+                <input id="artist_trade_history_from" type="date" name="trade_history_from">
+                <h6>To</h6>
+                <input id="artist_trade_history_to" type="date" name="trade_history_to">
 
-        //By default we display all shares bought activity
-        if ($_SESSION['trade_history_type'] == 0) 
-        {
-            echo '
-                <div class="py-4">
-                    <form action="../../backend/shared/TradeHistoryTypeSwitcher.php" method="post">
-                        <div class="select-dark">
-                                <select name="trade_history_type" id="dark" onchange="this.form.submit()">
-                                    <option selected disabled>'.TradeHistoryType::SHARE_BOUGHT.'</option>
-                                    <option value="share repurchase">shares repurchase</option>
-                                    <option value="share repurchase">shares bought</option>
-                                </select>
-                        </div>
-                    </form>
+                <div class="my-4 mx-auto select-dark">
+                    <select class="select-dropdown select-dropdown-dark" id="artist_trade_history_type">
+                        <option id="artist_trade_history_type_selected" selected disabled>'.TradeHistoryType::SHARE_BOUGHT.'</option>
+                        <option value="share repurchase">'.TradeHistoryType::SHARE_REPURCHASE.'</option>
+                        <option value="share bought">'.TradeHistoryType::SHARE_BOUGHT.'</option>
+                    </select>
                 </div>
-            ';
-            $_SESSION['trade_history_type'] = TradeHistoryType::SHARE_BOUGHT;
-        } 
-        else
-        {
-            echo '
-                <div class="py-4">
-                    <form action="../../backend/shared/TradeHistoryTypeSwitcher.php" method="post">
-                        <div class="select-dark">
-                                <select name="trade_history_type" id="dark" onchange="this.form.submit()">
-                                    <option selected disabled>' . $_SESSION['trade_history_type'] . '</option>
-                                    <option value="'.TradeHistoryType::SHARE_REPURCHASE.'">'.TradeHistoryType::SHARE_REPURCHASE.'</option>
-                                    <option value="'.TradeHistoryType::SHARE_BOUGHT.'">'.TradeHistoryType::SHARE_BOUGHT.'</option>
-                                </select>
-                        </div>
-                    </form>
-                </div>
-            ';
-        }
+
+                <p id="artist_trade_history_status" class="error-msg"></p>
+
+                <input id="artist_trade_history_btn" type="submit" class="cursor-context" role="button" value="->">
+            </div>
+        ';
+
+        // printArtistShareRepurchaseTable($username);
+        printArtistShareBoughtTable($username);
+
+        $_SESSION['trade_history_type'] = 0;
+        $_SESSION['trade_history_from'] = 0;
+        $_SESSION['trade_history_to'] = 0;
+
+        // echo '
+        //         '..'
+
+        //     <div class="div-hidden" id="artist_shares_bought_content">
+        //         '.printArtistShareBoughtTable($username).'
+        //     </div>
+        // ';
         
-        if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
-        {
-            echo '<p class="error-msg">Please choose a range</p>';
-        }
-        else
-        {
-            $date = explode("-", $_SESSION['trade_history_from']);
-            //reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
-            $from_date = array($date[2], $date[1], $date[0]);
-            //We don't care about time 
-            $time = "00:00:00";
-            $from_time = explode(":", $time);
-            $to_date = explode("-", $_SESSION['trade_history_to']);
-            $time = "00:00";
-            $to_time = explode(":", $time);
-            if(!isInTheFuture($to_date, $from_date, $to_time, $from_time))
-            {
-                echo '<p class="error-msg">To date has to be later than from date</p>';
-            }
-            else
-            {
-                //Fetching arrays if shares repurchase was chosen
-                if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_REPURCHASE)
-                {
-                    $res = searchArtistBuyBackShares($conn, $username);
-                }
-                //Fetching arrays if shares bought was chosen
-                else if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_BOUGHT)
-                {
-                    $res = searchSharesBoughtFromArtist($conn, $username);
-                }
+        //         //Fetching arrays if shares repurchase was chosen
+        //         if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_REPURCHASE)
+        //         {
+        //             $res = searchArtistBuyBackShares($conn, $username);
+        //         }
+        //         //Fetching arrays if shares bought was chosen
+        //         else if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_BOUGHT)
+        //         {
+        //             $res = searchSharesBoughtFromArtist($conn, $username);
+        //         }
 
-                $trade_history_list = populateTradeHistory($conn, $res);
+                // $trade_history_list = populateTradeHistory($conn, $res);
 
-                if($trade_history_list->getListSize() > 0)
-                {
-                    //Price displays the highest and lowest trades of the day
-                    //Volumn displays how many total shares of the artist that was traded that day
-                    //Value displays total amount of siliqas that was traded of the artist that day
-                    //Trades displays the total number of trades that day
-                    echo '
-                        <div class="py-4">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Price(HIGH/LOW)</th>
-                                        <th scope="col">Volume</th>
-                                        <th scope="col">Value</th>
-                                        <th scope="col">Trades</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                    ';
+                // if($trade_history_list->getListSize() > 0)
+                // {
+                //     //Price displays the highest and lowest trades of the day
+                //     //Volumn displays how many total shares of the artist that was traded that day
+                //     //Value displays total amount of siliqas that was traded of the artist that day
+                //     //Trades displays the total number of trades that day
+                //     echo '
+                //         <div class="py-4">
+                //             <table class="table">
+                //                 <thead>
+                //                     <tr>
+                //                         <th scope="col">Date</th>
+                //                         <th scope="col">Price(HIGH/LOW)</th>
+                //                         <th scope="col">Volume</th>
+                //                         <th scope="col">Value</th>
+                //                         <th scope="col">Trades</th>
+                //                     </tr>
+                //                 </thead>
+                //                 <tbody>
+                //     ';
 
-                    $trade_history_list->addListToTable();
-                }
-                else
-                {
-                    echo '<h5>No trades found</h5>';
-                }
-            }
+                //     $trade_history_list->addListToTable();
+                // }
+                // else
+                // {
+                //     echo '<h5>No trades found</h5>';
+                // }
 
-            echo '
-                            </tbody>
-                        </table>
-                    </div>
-            ';
-        }
-        echo '</div>';
+        //     echo '
+        //                     </tbody>
+        //                 </table>
+        //             </div>
+        //     ';
+        // echo '</div>';
     }
 
     //Stock Ticker temporary waiting for backend to fill out values
