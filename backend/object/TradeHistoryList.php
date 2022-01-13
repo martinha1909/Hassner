@@ -167,15 +167,15 @@
                 }
             }
 
-            return json_encode(array(
-                "trade_history_size" => $this->size,
+            return array(
+                "size" => $this->size,
                 "date" => $date,
                 "price_high" => $price_high,
                 "price_low" => $price_low,
                 "volume" => $volume,
                 "value" => $value,
                 "trade" => $trade
-            ));
+            );
         }
     }
 ?>

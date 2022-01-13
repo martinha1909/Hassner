@@ -581,7 +581,7 @@
         closeCon($conn);
     }
 
-    function printArtistShareBoughtTable($artist_username)
+    function printArtistTradeHistoryTable($artist_username)
     {
         echo '
             <div class="div-hidden" id="trade_history_found">
@@ -596,7 +596,7 @@
                                 <th scope="col">Trades</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="trade_history_table_body">
                         </tbody>
                     </table>
                 </div>

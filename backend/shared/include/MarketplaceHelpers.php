@@ -556,7 +556,7 @@ function fiatInit()
     {
         echo '
                     <div style="float:none;margin:auto;" class="select-dark">
-                        <select name="currency" id="dark" value="USD" onchange="this.form.submit()">
+                        <select name="currency" class="select-dropdown select-dropdown-dark" value="USD" onchange="this.form.submit()">
                             <option value="USD" selected disabled>USD</option>
                             <option value="USD">USD</option>
                             <option value="CAD">CAD</option>
@@ -570,7 +570,7 @@ function fiatInit()
     {
         echo '
                     <div style="float:none;margin:auto;" class="select-dark">
-                        <select name="currency" id="dark" value="'.$_SESSION['currency'].'" onchange="this.form.submit()">
+                        <select name="currency" class="select-dropdown select-dropdown-dark" value="'.$_SESSION['currency'].'" onchange="this.form.submit()">
                             <option value="'.$_SESSION['currency'].'" selected disabled>' . $_SESSION['currency'] . '</option>
                             <option value="USD">USD</option>
                             <option value="CAD">CAD</option>

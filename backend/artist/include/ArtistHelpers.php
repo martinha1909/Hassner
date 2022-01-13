@@ -86,8 +86,8 @@
                 <div class="my-4 mx-auto select-dark">
                     <select class="select-dropdown select-dropdown-dark" id="artist_trade_history_type">
                         <option id="artist_trade_history_type_selected" selected disabled>'.TradeHistoryType::SHARE_BOUGHT.'</option>
-                        <option value="share repurchase">'.TradeHistoryType::SHARE_REPURCHASE.'</option>
-                        <option value="share bought">'.TradeHistoryType::SHARE_BOUGHT.'</option>
+                        <option value="'.TradeHistoryType::SHARE_REPURCHASE.'">'.TradeHistoryType::SHARE_REPURCHASE.'</option>
+                        <option value="'.TradeHistoryType::SHARE_BOUGHT.'">'.TradeHistoryType::SHARE_BOUGHT.'</option>
                     </select>
                 </div>
 
@@ -96,69 +96,11 @@
                 <input id="artist_trade_history_btn" type="submit" class="cursor-context" role="button" value="->">
             </div>
         ';
-
-        // printArtistShareRepurchaseTable($username);
-        printArtistShareBoughtTable($username);
+        printArtistTradeHistoryTable($username);
 
         $_SESSION['trade_history_type'] = 0;
         $_SESSION['trade_history_from'] = 0;
         $_SESSION['trade_history_to'] = 0;
-
-        // echo '
-        //         '..'
-
-        //     <div class="div-hidden" id="artist_shares_bought_content">
-        //         '.printArtistShareBoughtTable($username).'
-        //     </div>
-        // ';
-        
-        //         //Fetching arrays if shares repurchase was chosen
-        //         if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_REPURCHASE)
-        //         {
-        //             $res = searchArtistBuyBackShares($conn, $username);
-        //         }
-        //         //Fetching arrays if shares bought was chosen
-        //         else if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_BOUGHT)
-        //         {
-        //             $res = searchSharesBoughtFromArtist($conn, $username);
-        //         }
-
-                // $trade_history_list = populateTradeHistory($conn, $res);
-
-                // if($trade_history_list->getListSize() > 0)
-                // {
-                //     //Price displays the highest and lowest trades of the day
-                //     //Volumn displays how many total shares of the artist that was traded that day
-                //     //Value displays total amount of siliqas that was traded of the artist that day
-                //     //Trades displays the total number of trades that day
-                //     echo '
-                //         <div class="py-4">
-                //             <table class="table">
-                //                 <thead>
-                //                     <tr>
-                //                         <th scope="col">Date</th>
-                //                         <th scope="col">Price(HIGH/LOW)</th>
-                //                         <th scope="col">Volume</th>
-                //                         <th scope="col">Value</th>
-                //                         <th scope="col">Trades</th>
-                //                     </tr>
-                //                 </thead>
-                //                 <tbody>
-                //     ';
-
-                //     $trade_history_list->addListToTable();
-                // }
-                // else
-                // {
-                //     echo '<h5>No trades found</h5>';
-                // }
-
-        //     echo '
-        //                     </tbody>
-        //                 </table>
-        //             </div>
-        //     ';
-        // echo '</div>';
     }
 
     //Stock Ticker temporary waiting for backend to fill out values
