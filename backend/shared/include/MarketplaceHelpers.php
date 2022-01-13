@@ -1182,8 +1182,6 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
     {
         $trade_history_list = new TradeHistoryList();
 
-        echo $_SESSION['trade_history_from']."<br>".$_SESSION['trade_history_to'];
-
         while($row = $query_result->fetch_assoc())
         {
             $db_date_time = $row['date_purchased'];

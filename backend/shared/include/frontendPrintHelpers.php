@@ -583,50 +583,26 @@
 
     function printArtistShareBoughtTable($artist_username)
     {
-        $conn = connect();
-
         echo '
-            <div class="div-hidden" id="artist_shares_bought_content">
+            <div class="div-hidden" id="trade_history_found">
+                <div class="py-4">
+                    <table class="table" id="trade_history_table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Price(HIGH/LOW)</th>
+                                <th scope="col">Volume</th>
+                                <th scope="col">Value</th>
+                                <th scope="col">Trades</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h5 class="error-msg" id="trade_history_not_found"></h5>
         ';
-
-        $res = searchSharesBoughtFromArtist($conn, $artist_username);
-        $trade_history_list = populateTradeHistory($conn, $res);
-        if($trade_history_list->getListSize() > 0)
-        {
-            //Price displays the highest and lowest trades of the day
-            //Volumn displays how many total shares of the artist that was traded that day
-            //Value displays total amount of siliqas that was traded of the artist that day
-            //Trades displays the total number of trades that day
-            // echo '
-            //         <div class="py-4">
-            //             <table class="table">
-            //                 <thead>
-            //                     <tr>
-            //                         <th scope="col">Date</th>
-            //                         <th scope="col">Price(HIGH/LOW)</th>
-            //                         <th scope="col">Volume</th>
-            //                         <th scope="col">Value</th>
-            //                         <th scope="col">Trades</th>
-            //                     </tr>
-            //                 </thead>
-            //                 <tbody>
-            // ';
-
-            // $trade_history_list->addListToTable();
-
-            // echo '
-            //                 </tbody>
-            //             </table>
-            //         </div>
-            // ';
-        }
-        else
-        {
-            echo '<h5>No trades found</h5>';
-        }
-
-        echo '</div>';
-
-        closeCon($conn);
     }
 ?>

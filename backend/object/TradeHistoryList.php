@@ -141,5 +141,41 @@
                 }
             }
         }
+
+        function toDictionary()
+        {
+            $date = array();
+            $price_high = array();
+            $price_low = array();
+            $volume = array();
+            $value = array();
+            $trade = array();
+
+            if($this->size > 0)
+            {
+                $current_node = $this->head;
+                while($current_node != NULL)
+                {
+                    array_push($date, $current_node->getData()->getDate());
+                    array_push($price_high, $current_node->getData()->getFinalizeMax());
+                    array_push($price_low, $current_node->getData()->getFinalizeMin());
+                    array_push($volume, $current_node->getData()->getFinalizeVolume());
+                    array_push($value, $current_node->getData()->getFinalizeValue());
+                    array_push($trade, $current_node->getData()->getTrade());
+
+                    $current_node = $current_node->getNext();
+                }
+            }
+
+            return json_encode(array(
+                "trade_history_size" => $this->size,
+                "date" => $date,
+                "price_high" => $price_high,
+                "price_low" => $price_low,
+                "volume" => $volume,
+                "value" => $value,
+                "trade" => $trade
+            ));
+        }
     }
 ?>
