@@ -22,14 +22,18 @@
     if(empty($additional_shares))
     {
         hx_error(HX::SHARES_INJECT, "additional_shares cannot be empty (artist: ".$_SESSION['username'].")");
-        $_SESSION['status'] = StatusCodes::ErrEmpty;
-        returnToMainPage();
+        echo(json_encode(array(
+            "status" => StatusCodes::ErrEmpty,
+            "msg" => "Amount cannot be empty"
+        )));
     }
     else if(!is_numeric($additional_shares))
     {
         hx_error(HX::SHARES_INJECT, "additional_shares cannot be non-numeric (artist: ".$_SESSION['username'].")");
-        $_SESSION['status'] = StatusCodes::ErrNum;
-        returnToMainPage();
+        echo(json_encode(array(
+            "status" => StatusCodes::ErrNum,
+            "msg" => "Amount has to be a number"
+        )));
     }
     else
     {
@@ -101,9 +105,11 @@
             postSellOrder($conn, $_SESSION['username'], $_SESSION['username'], $new_quantity, $current_pps, $current_date, true);
         }
 
-        $_SESSION['share_distribute'] = 0;
+        echo(json_encode(array(
+            "status" => StatusCodes::Success,
+            "msg" => "Shares injected successfully"
+        )));
+
         $_SESSION['dependencies'] = "FRONTEND";
-        
-        returnToMainPage();
     }
 ?>
