@@ -29,63 +29,63 @@
             )
         )));
     }
-    // else
-    // {
-    //     $date = explode("-", $_SESSION['trade_history_from']);
-    //     //reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
-    //     $from_date = array($date[2], $date[1], $date[0]);
-    //     //We don't care about time 
-    //     $time = "00:00:00";
-    //     $from_time = explode(":", $time);
-    //     $to_date = explode("-", $_SESSION['trade_history_to']);
-    //     $time = "00:00";
-    //     $to_time = explode(":", $time);
-    //     if(!isInTheFuture($to_date, $from_date, $to_time, $from_time))
-    //     {
-    //         echo(json_encode(array(
-    //             "status" => StatusCodes::TIME_ERR,
-    //             "msg" => "To date has to be later than from date",
-    //             "trade_history_type" => $_SESSION['trade_history_type'],
-    //             "trade_history" => array(
-    //                 "size" => 0,
-    //                 "date" => "",
-    //                 "price_high" => "",
-    //                 "price_low" => "",
-    //                 "volume" => "",
-    //                 "value" => "",
-    //                 "trade" => ""
-    //             )
-    //         )));
-    //     }
-    //     else
-    //     {
-    //         if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_BOUGHT)
-    //         {
-    //             $conn = connect();
-    //             $res = searchSharesBoughtFromArtist($conn, $_SESSION['username']);
-    //             $trade_history_list = populateTradeHistory($conn, $res);
+    else
+    {
+        $date = explode("-", $_SESSION['trade_history_from']);
+        //reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
+        $from_date = array($date[2], $date[1], $date[0]);
+        //We don't care about time 
+        $time = "00:00:00";
+        $from_time = explode(":", $time);
+        $to_date = explode("-", $_SESSION['trade_history_to']);
+        $time = "00:00";
+        $to_time = explode(":", $time);
+        if(!isInTheFuture($to_date, $from_date, $to_time, $from_time))
+        {
+            echo(json_encode(array(
+                "status" => StatusCodes::TIME_ERR,
+                "msg" => "To date has to be later than from date",
+                "trade_history_type" => $_SESSION['trade_history_type'],
+                "trade_history" => array(
+                    "size" => 0,
+                    "date" => "",
+                    "price_high" => "",
+                    "price_low" => "",
+                    "volume" => "",
+                    "value" => "",
+                    "trade" => ""
+                )
+            )));
+        }
+        else
+        {
+            // if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_BOUGHT)
+            // {
+            //     $conn = connect();
+            //     $res = searchSharesBoughtFromArtist($conn, $_SESSION['username']);
+            //     $trade_history_list = populateTradeHistory($conn, $res);
 
-    //             closeCon($conn);
+            //     closeCon($conn);
             
-    //             echo json_encode(array(
-    //                 "status" => StatusCodes::Success,
-    //                 "msg" => "",
-    //                 "trade_history_type" => $_SESSION['trade_history_type'],
-    //                 "trade_history" => $trade_history_list->toDictionary()
-    //             ));
-    //         }
-    //         else if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_REPURCHASE)
-    //         {
-    //             $conn = connect();
-    //             $res = searchArtistBuyBackShares($conn, $_SESSION['username']);
-    //             $trade_history_list = populateTradeHistory($conn, $res);
-    //             echo json_encode(array(
-    //                 "status" => StatusCodes::Success,
-    //                 "msg" => "",
-    //                 "trade_history_type" => $_SESSION['trade_history_type'],
-    //                 "trade_history" => $trade_history_list->toDictionary()
-    //             ));
-    //         }
-    //     }
-    // }
+            //     echo json_encode(array(
+            //         "status" => StatusCodes::Success,
+            //         "msg" => "",
+            //         "trade_history_type" => $_SESSION['trade_history_type'],
+            //         "trade_history" => $trade_history_list->toDictionary()
+            //     ));
+            // }
+            // else if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_REPURCHASE)
+            // {
+            //     $conn = connect();
+            //     $res = searchArtistBuyBackShares($conn, $_SESSION['username']);
+            //     $trade_history_list = populateTradeHistory($conn, $res);
+            //     echo json_encode(array(
+            //         "status" => StatusCodes::Success,
+            //         "msg" => "",
+            //         "trade_history_type" => $_SESSION['trade_history_type'],
+            //         "trade_history" => $trade_history_list->toDictionary()
+            //     ));
+            // }
+        }
+    }
 ?>

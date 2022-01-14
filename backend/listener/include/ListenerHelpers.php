@@ -453,23 +453,23 @@
     {
         $conn = connect();
         
-        // echo '
-        //     <div class="mx-auto text-center py-2 col-8">
-        //         <h3 class="h3-blue py-2">Trade History</h3>
-        //         <h6>From</h6>
-        //         <input id="listener_trade_history_from" type="date" name="trade_history_from">
-        //         <h6>To</h6>
-        //         <input id="listener_trade_history_to" type="date" name="trade_history_to">
+        echo '
+            <div class="mx-auto text-center py-2 col-8">
+                <h3 class="h3-blue py-2">Trade History</h3>
+                <h6>From</h6>
+                <input id="listener_trade_history_from" type="date" name="trade_history_from">
+                <h6>To</h6>
+                <input id="listener_trade_history_to" type="date" name="trade_history_to">
 
-        //         <p style="color: red;">hienen</p>
+                <p id="listener_trade_history_status" class="error-msg"></p>
 
-        //         <input id="listener_trade_history_btn" type="submit" class="cursor-context" role="button" value="->">
-        //     </div>
-        // ';
+                <input id="listener_trade_history_btn" type="submit" class="cursor-context" role="button" value="->">
+            </div>
+        ';
 
         // if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
         // {
-            echo '<p class="error-msg">Please choose a range</p>';
+            // echo '<p class="error-msg">Please choose a range</p>';
         // }
         // else
         // {
