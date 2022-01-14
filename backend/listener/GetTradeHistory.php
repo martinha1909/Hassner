@@ -68,33 +68,6 @@
                 "msg" => "",
                 "trade_history" => $trade_history_list->toDictionary()
             ));
-            // if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_BOUGHT)
-            // {
-            //     $conn = connect();
-            //     $res = searchSharesBoughtFromArtist($conn, $_SESSION['username']);
-            //     $trade_history_list = populateTradeHistory($conn, $res);
-
-            //     closeCon($conn);
-            
-                // echo json_encode(array(
-                //     "status" => StatusCodes::Success,
-                //     "msg" => "",
-                //     "trade_history_type" => $_SESSION['trade_history_type'],
-                //     "trade_history" => $trade_history_list->toDictionary()
-                // ));
-            // }
-            // else if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_REPURCHASE)
-            // {
-            //     $conn = connect();
-            //     $res = searchArtistBuyBackShares($conn, $_SESSION['username']);
-            //     $trade_history_list = populateTradeHistory($conn, $res);
-            //     echo json_encode(array(
-            //         "status" => StatusCodes::Success,
-            //         "msg" => "",
-            //         "trade_history_type" => $_SESSION['trade_history_type'],
-            //         "trade_history" => $trade_history_list->toDictionary()
-            //     ));
-            // }
         }
     }
 ?>
