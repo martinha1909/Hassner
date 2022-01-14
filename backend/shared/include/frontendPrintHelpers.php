@@ -535,52 +535,6 @@
         injectionHistoryInit($_SESSION['username']);
     }
 
-    function printArtistShareRepurchaseTable($artist_username)
-    {
-        $conn = connect();
-
-        echo '<div class="div-hidden" id="artist_shares_repurchase_content">';
-        $res = searchArtistBuyBackShares($conn, $artist_username);
-        $trade_history_list = populateTradeHistory($conn, $res);
-        if($trade_history_list->getListSize() > 0)
-        {
-            //Price displays the highest and lowest trades of the day
-            //Volumn displays how many total shares of the artist that was traded that day
-            //Value displays total amount of siliqas that was traded of the artist that day
-            //Trades displays the total number of trades that day
-            echo '
-                    <div class="py-4">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Price(HIGH/LOW)</th>
-                                    <th scope="col">Volume</th>
-                                    <th scope="col">Value</th>
-                                    <th scope="col">Trades</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                ';
-
-            $trade_history_list->addListToTable();
-
-            echo '
-                            </tbody>
-                        </table>
-                    </div>
-            ';
-        }
-        else
-        {
-            echo '<h5>No trades found</h5>';
-        }
-
-        echo '</div>';
-
-        closeCon($conn);
-    }
-
     function printArtistTradeHistoryTable($artist_username)
     {
         echo '
