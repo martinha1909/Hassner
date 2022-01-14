@@ -449,10 +449,20 @@
         return $ret;
     }
 
+    /**
+    * Prints trade history of unique days of a given artist depends on the range that the user chooses
+    * Trade History information:
+    * -  Price displays the highest and lowest trades of the day
+    * -  Volumn displays how many total shares of the artist that was traded that day
+    * -  Value displays total amount of siliqas that was traded of the artist that day
+    * -  Trades displays the total number of trades that day
+    *
+    * @param  	artist_username	    chosen artist
+    */
     function tradeHistoryInit($artist_username)
     {
         $conn = connect();
-        
+
         echo '
             <div class="mx-auto text-center py-2 col-8">
                 <h3 class="h3-blue py-2">Trade History</h3>
@@ -465,60 +475,30 @@
 
                 <input id="listener_trade_history_btn" type="submit" class="cursor-context" role="button" value="->">
             </div>
+
+            <div class="div-hidden" id="listener_trade_history_found">
+                <div class="py-4">
+                    <table class="table" id="listener_trade_history_table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Price(HIGH/LOW)</th>
+                                <th scope="col">Volume</th>
+                                <th scope="col">Value</th>
+                                <th scope="col">Trades</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listener_trade_history_table_body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h5 class="error-msg" id="listener_trade_history_not_found"></h5>
         ';
 
-        // if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
-        // {
-            // echo '<p class="error-msg">Please choose a range</p>';
-        // }
-        // else
-        // {
-        //     $date = explode("-", $_SESSION['trade_history_from']);
-        //     //reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
-        //     $from_date = array($date[2], $date[1], $date[0]);
-        //     //We don't care about time 
-        //     $time = "00:00:00";
-        //     $from_time = explode(":", $time);
-        //     $to_date = explode("-", $_SESSION['trade_history_to']);
-        //     $time = "00:00";
-        //     $to_time = explode(":", $time);
-        //     if(!isInTheFuture($to_date, $from_date, $to_time, $from_time))
-        //     {
-        //         echo '<p class="error-msg">To date has to be later than from date</p>';
-        //     }
-        //     else
-        //     {
-        //         //Price displays the highest and lowest trades of the day
-        //         //Volumn displays how many total shares of the artist that was traded that day
-        //         //Value displays total amount of siliqas that was traded of the artist that day
-        //         //Trades displays the total number of trades that day
-        //         echo '
-        //                     <div class="py-4">
-        //                     <table class="table">
-        //                     <thead>
-        //                         <tr>
-        //                             <th scope="col">Date</th>
-        //                             <th scope="col">Price(HIGH/LOW)</th>
-        //                             <th scope="col">Volume</th>
-        //                             <th scope="col">Value</th>
-        //                             <th scope="col">Trades</th>
-        //                         </tr>
-        //                     </thead>
-        //                     <tbody>
-        //             </div>
-        //         ';
-        //         $res = searchSharesBoughtFromArtist($conn, $artist_username);
-        //         $trade_history_list = populateTradeHistory($conn, $res);
-
-        //         $trade_history_list->addListToTable();
-
-        //         echo '
-        //                     </tbody>
-        //                 </table>
-        //                 </div>
-        //         ';
-        //     }
-        // }
+        $_SESSION['trade_history_from'] = 0;
+        $_SESSION['trade_history_to'] = 0;
     }
 
     /**

@@ -120,28 +120,6 @@
             return $ret;
         }
 
-        function addListToTable()
-        {
-            if($this->size > 0)
-            {
-                $current_node = $this->head;
-                while($current_node != NULL)
-                {
-                    echo '
-                                <tr>
-                                    <td>' . $current_node->getData()->getDate() . '</td>
-                                    <td>' . $current_node->getData()->getFinalizeMin() . '/'.$current_node->getData()->getFinalizeMax().'</td>
-                                    <td>' . $current_node->getData()->getFinalizeVolume() . '</td>
-                                    <td>' . $current_node->getData()->getFinalizeValue() . '</td>
-                                    <td>' . $current_node->getData()->getTrade() . '</td>
-                                </tr>
-                    ';
-
-                    $current_node = $current_node->getNext();
-                }
-            }
-        }
-
         function toDictionary()
         {
             $date = array();

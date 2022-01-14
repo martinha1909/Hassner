@@ -5,7 +5,6 @@
     include '../object/TradeHistory.php';
     include '../object/TradeHistoryList.php';
     include '../object/Node.php';
-    include '../constants/TradeHistoryType.php';
 
     $_SESSION['trade_history_from'] = $_POST['trade_history_from'];
     $_SESSION['trade_history_to'] = $_POST['trade_history_to'];
@@ -45,7 +44,6 @@
             echo(json_encode(array(
                 "status" => StatusCodes::TIME_ERR,
                 "msg" => "To date has to be later than from date",
-                "trade_history_type" => $_SESSION['trade_history_type'],
                 "trade_history" => array(
                     "size" => 0,
                     "date" => "",
@@ -59,6 +57,17 @@
         }
         else
         {
+            $conn = connect();
+            $res = searchSharesBoughtFromArtist($conn, $_SESSION['selected_artist']);
+            $trade_history_list = populateTradeHistory($conn, $res);
+
+            closeCon($conn);
+
+            echo json_encode(array(
+                "status" => StatusCodes::Success,
+                "msg" => "",
+                "trade_history" => $trade_history_list->toDictionary()
+            ));
             // if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_BOUGHT)
             // {
             //     $conn = connect();
@@ -67,12 +76,12 @@
 
             //     closeCon($conn);
             
-            //     echo json_encode(array(
-            //         "status" => StatusCodes::Success,
-            //         "msg" => "",
-            //         "trade_history_type" => $_SESSION['trade_history_type'],
-            //         "trade_history" => $trade_history_list->toDictionary()
-            //     ));
+                // echo json_encode(array(
+                //     "status" => StatusCodes::Success,
+                //     "msg" => "",
+                //     "trade_history_type" => $_SESSION['trade_history_type'],
+                //     "trade_history" => $trade_history_list->toDictionary()
+                // ));
             // }
             // else if($_SESSION['trade_history_type'] == TradeHistoryType::SHARE_REPURCHASE)
             // {
