@@ -579,9 +579,6 @@ function fiatInit()
                     </div>
             ';
         echo "Account balance: " . $balance . "<br>";
-        echo '
-                    </form>
-            ';
         if ($_SESSION['currency'] == 0) 
         {
             echo '
@@ -602,8 +599,6 @@ function fiatInit()
     echo '
                 <div class="div-hidden" id="balance_div">  
                     <div class="form-group">
-    ';
-    echo '
                         <h5 style="padding-top:150px;" id="deposit_or_withdraw_header">Enter Amount in ' . $_SESSION['currency'] . '</h5>
                         <input type="text" name = "amount" style="border-color: white;" class="form-control form-control-sm" id="deposit_withdraw_amount" placeholder="Enter amount">
                     </div>
@@ -611,6 +606,7 @@ function fiatInit()
                             <input type = "submit" class="btn btn-primary" id="checkout_btn" value = "Continue to Checkout"> 
                     </div>
                 </div>
+                </form>
             </div>
         </div>
 </section>
