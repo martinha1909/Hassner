@@ -5,7 +5,7 @@ function IPO()
         url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/artist/DistributeShareBackend.php",
         data: {
             distribute_share: $("#shares_dist").val(),
-            amout_raising: $("#amount_raising").val()
+            amount_raising: $("#amount_raising").val()
         },
         async: false,
         dataType: "json",

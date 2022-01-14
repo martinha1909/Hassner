@@ -9,7 +9,7 @@
     $connPDO = connectPDO();
     $shares_distributing = 0;
     $shares_distributing = $_POST['distribute_share'];
-    $siliqas_raising = $_POST['amout_raising'];
+    $siliqas_raising = $_POST['amount_raising'];
     $msg = "data received from form: ".json_encode(array(
         "shares_distributing" => $shares_distributing,
         "siliqas_raising" => $siliqas_raising
