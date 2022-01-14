@@ -355,20 +355,13 @@
                                 <div class="container">
                                     <div class="text-center">
                                         <h3 class="h3-blue">Verify your password to access personal page</h3>
-                                        <form action="../../backend/listener/PersonalPageBackend.php" method="post">
-                                            <div class="form-group col-4 mx-auto">
-                                                <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
-                            <?php
-                                if ($_SESSION['logging_mode'] == LogModes::PERSONAL) 
-                                {
-                                    getStatusMessage("Incorrect Password, please try again", "");
-                                }
-                            ?>
-                                            </div>
-                                            <div class="text-center">
-                                                <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
-                                            </div>
-                                        </form>
+                                        <div class="form-group col-4 mx-auto">
+                                            <input id="listener_personal_pwd" type="password" class="form-control form-control-sm" placeholder="Password">
+                                            <p id="listener_personal_status"></p>
+                                        </div>
+                                        <div class="text-center">
+                                            <input id="listener_personal_btn" type = "submit" class="btn btn-primary" role="button" value = "Verify">
+                                        </div>
                                     </div>
                                 </div>
                             </section>
@@ -396,6 +389,7 @@
     <script src="js/scripts.js"></script>
     <script src="../js/shared/balance/DepositWithdraw.js"></script>
     <script src="../js/listener/MenuItem.js"></script>
+    <script src="../js/shared/account/AccountPage.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
