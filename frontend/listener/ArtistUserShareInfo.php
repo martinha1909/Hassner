@@ -383,6 +383,7 @@
     <script type="text/javascript" src="../js/graph/Chart.min.js"></script>
     <script type="text/javascript" src="../js/graph/linegraph.js"></script>
     <script type="text/javascript" src="../js/listener/artist_sliders.js"></script>
+    <script src="../js/listener/TradeHistory.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
