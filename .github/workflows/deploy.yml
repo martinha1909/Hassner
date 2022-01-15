@@ -23,13 +23,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Delete old files
-        uses: fifsky/ssh-action@master
-        with:
-          command: rm -rf /opt/bitnami/apache/htdocs/Hassner/*
-          host: ${{ secrets.HOST }}
-          user: github
-          key: ${{ secrets.PRIVATE_KEY}}
+  #    - name: Delete old files
+  #      uses: fifsky/ssh-action@master
+   #     with:
+   #       command: rm -rf /opt/bitnami/apache/htdocs/Hassner/*
+   #       host: ${{ secrets.HOST }}
+   #       user: github
+   #       key: ${{ secrets.PRIVATE_KEY}}
           
       - name: Upload Files
         uses: siva1024/scp-deployer@latest
