@@ -1,0 +1,55 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Delete old files
+        uses: fifsky/ssh-action@master
+        with:
+          command: rm -rf /opt/bitnami/apache/htdocs/Hassner/*
+          host: ${{ secrets.HOST }}
+          user: github
+          key: ${{ secrets.PRIVATE_KEY}}
+          
+      - name: Upload Files
+        uses: siva1024/scp-deployer@latest
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          source: "./"
+          target: "/opt/bitnami/apache/htdocs/Hassner/"
+
+      - name: Replace the DB
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            mysql -u ${{ secrets.MYSQL_USER }} -p
+            ${{ secrets.MYSQL_PWD }} 
+            DROP DATABASE `hassner`;
+            CREATE DATABASE `hassner`;
+            USE `hassner`;
+            source /opt/bitnami/apache/htdocs/Hassner/backend/database/hassner.sql;
+          host: ${{ secrets.HOST }}
+          user: github
+          key: ${{ secrets.PRIVATE_KEY}}
