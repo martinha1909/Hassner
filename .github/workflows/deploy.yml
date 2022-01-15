@@ -38,19 +38,20 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
-          source: "./"
+          source: $GITHUB_WORKSPACE
           target: "/opt/bitnami/apache/htdocs/Hassner/"
 
       - name: Replace the DB
-        uses: fifsky/ssh-action@master
+        uses: appleboy/ssh-action@master
         with:
-          command: |
+          host: ${{ secrets.HOST }}
+          username: github
+          key: ${{ secrets.PRIVATE_KEY}}
+          port: 22
+          script: |
             mysql -u ${{ secrets.MYSQL_USER }} -p
             ${{ secrets.MYSQL_PWD }} 
             DROP DATABASE `hassner`;
             CREATE DATABASE `hassner`;
             USE `hassner`;
             source /opt/bitnami/apache/htdocs/Hassner/backend/database/hassner.sql;
-          host: ${{ secrets.HOST }}
-          user: github
-          key: ${{ secrets.PRIVATE_KEY}}
