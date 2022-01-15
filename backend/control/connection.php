@@ -1,7 +1,7 @@
 <?php
         $host = 'localhost';
         $user = 'root';
-        $pwd = '';
+        $pwd = 'sGVZgh3s1OG2';
         $db = 'hassner';
 
         $conn;
