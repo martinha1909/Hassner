@@ -1,6 +1,6 @@
 <?php
         $host = 'localhost';
-        $user = 'hassner';
+        $user = 'hassner'; // Running locally user: root pw: ""
         $pwd = 'bingus123';
         $db = 'hassner';
 
