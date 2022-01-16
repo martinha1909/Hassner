@@ -14,11 +14,16 @@
     
     if($result->num_rows > 0)
     {
-        header("Location: ../../frontend/artist/PersonalPage.php");
+        echo(json_encode(array(            
+            "status"=> StatusCodes::Success,
+            "msg"=> ""
+        )));
     }
     else
     {
-        $_SESSION['status'] = StatusCodes::ErrPassword;
-        header("Location: ../../frontend/artist/Artist.php");
+        echo(json_encode(array(            
+            "status"=> StatusCodes::ErrPassword,
+            "msg"=> "Wrong password"
+        )));
     }
 ?>

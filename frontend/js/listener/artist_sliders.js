@@ -212,7 +212,7 @@ $( function() {
           }
           else if(data === "SUCCESS")
           {
-            window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/listener.php";
+            window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/Listener.php";
           }
         },
         error : function(data){
@@ -245,7 +245,7 @@ $( function() {
           }
           else if(data === "SUCCESS")
           {
-            window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/listener.php";
+            window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/Listener.php";
           }
         },
         error : function(data){

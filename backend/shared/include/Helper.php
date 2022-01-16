@@ -26,13 +26,11 @@
         $_SESSION['buy_asked_price'] = 0;
         $_SESSION['buy_market_price'] = 0;
         $_SESSION['fiat_options'] = BalanceOption::NONE;
-        $_SESSION['share_distribute'] = 0;
         $_SESSION['buy_options'] = 0;
         $_SESSION['trade_history_from'] = 0;
         $_SESSION['trade_history_to'] = 0;
         $_SESSION['trade_history_type'] = 0;
         $_SESSION['artist_investor_amount_invested_sort'] = 0;
-        $_SESSION['ethos_dashboard_options'] = EthosOption::NONE;
     }
 
     function getStatusMessage($err_msg, $suc_msg)
@@ -168,7 +166,7 @@
     function returnToMainPage()
     {
         if ($_SESSION['account_type'] == AccountType::User) {
-            header("Location: ../../frontend/listener/listener.php");
+            header("Location: ../../frontend/listener/Listener.php");
         } else if ($_SESSION['account_type'] ==  AccountType::Artist) {
             header("Location: ../../frontend/artist/Artist.php");
         }

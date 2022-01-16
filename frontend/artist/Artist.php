@@ -113,294 +113,53 @@
                 <div class="col">
                     <div id="ethos_content">
                     <?php
-                        if ($account_info['Share_Distributed'] == 0) {
-                            if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
-                            {
-                                if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
-                                {
-                                    if($_SESSION['status'] == StatusCodes::ErrEmpty)
-                                    {
-                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                        getStatusMessage("Please fill out all fields and try again", "");
-                                    }
-                                    else if($_SESSION['status'] = StatusCodes::ErrNum)
-                                    {
-                                        $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                        getStatusMessage("Format error", "");
-                                    }
-                                }
-                            }
-                            echo '
-                                        <form action="../../backend/artist/DistributeShareBackend.php" method="post">
-                                        <div class="form-group">
-                                            <h5>How much are you raising</h5>
-                                            <input name = "siliqas_raising" type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter amount">
-                                        </div>
-                                        <div class="form-group">
-                                            <h5>How many shares are you distributing?</h5>
-                                            <input name = "distribute_share" type="text" class="form-control" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter amount of share">
-                                        </div>';
+                        if ($account_info['Share_Distributed'] == 0) 
+                        {
+                    ?>
+                            <div class="form-group">
+                                <h5>How much are you raising</h5>
+                                <input id="amount_raising" type="text" class="form-control" placeholder="Enter amount">
+                            </div>
+                            <div class="form-group">
+                                <h5>How many shares are you distributing?</h5>
+                                <input id="shares_dist" type="text" class="form-control" id="signupUsername" placeholder="Enter amount of share">
+                            </div>
 
-                            if ($_SESSION['logging_mode'] == LogModes::SHARE_DIST) {
-                                if ($_SESSION['status'] == "NUM_ERR") {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Please enter in number format", "");
-                                } else if ($_SESSION['status'] == "EMPTY_ERR") {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Please fill out all fields", "");
-                                }
-                            }
+                            <div class="mx-auto pt-5 text-center">
+                                <input id="ipo_btn" type = "submit" class="btn btn-primary" role="button" name = "button" value = "Continue">
+                            </div>
 
-                            echo '
+                            <?php showJSStatusMsg(); ?>
 
-                                        <div class="mx-auto pt-5 text-center">
-                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Continue">
-                                        </div>
-
-                                    </form>
-                            ';
+                    <?php
                         } 
                         else 
                         {
-                            if($_SESSION['ethos_dashboard_options'] == EthosOption::NONE)
-                            {
-                                echo '
-                                        <div class="py-4">
-                                            <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
-                                                <div>
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
-                                                </div>
-                                            </form>
-                                        </div>
-                                ';
-                            }
-                            else if($_SESSION['ethos_dashboard_options'] == EthosOption::QUOTES)
-                            {
-                                echo '
-                                        <div class="py-4">
-                                            <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
-                                                <div>
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-warning" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
-                                                </div>
-                                            </form>
-                                        </div>
-                                ';
+                    ?>
+                            <div class="py-4">
+                                <input id="quotes_btn" type = "submit" class="btn btn-secondary" role="button" value = "<?php echo EthosOption::QUOTES; ?>"> 
+                                <input id="buy_back_shares_btn" type = "submit" class="btn btn-secondary" role="button" value = "<?php echo EthosOption::BUY_BACK_SHARES; ?>"> 
+                                <input id="history_btn" type = "submit" class="btn btn-secondary" role="button" value = "<?php echo EthosOption::HISTORY; ?>"> 
+                            </div>
 
-                                $shareholder_list = fetchCurrentShareholders($_SESSION['username']);
-                                $market_cap = calculateMarketCap($_SESSION['username']);
-                                $high = getHighestOrLowestPPS($_SESSION['username'], "MAX");
-                                $low = getHighestOrLowestPPS($_SESSION['username'], "MIN");
-                                echo '
-                                        <div class="text-center py-4">
-                                            <h6>Price Per Share: $' . $account_info['price_per_share'] . '</h6>
-                                            <h6>Volumn: ' . $account_info['Share_Distributed'] . '</h6>
-                                            <h6>Current Shareholders: ' . $shareholder_list->num_rows . '</h6>
-                                            <h6>Market cap: $' . $market_cap . '</h6>
-                                            <h6>Day High: $' . $high . '</h6>
-                                            <h6>Day Low: $' . $low . '</h6>
-                                            <br>
-                                            <form action="../../backend/shared/GlobalVarsSwitchBackend.php" method="post">
-                                                <input name="display_type" type="submit" class="btn btn-primary py-2" value="Inject More Shares">
-                                            </form>
-                                        </div>
-                                ';
+                            <div class="div-hidden" id="quotes_content">
+                                <?php
+                                    printArtistQuotesTab($_SESSION['username'], $account_info);
+                                ?>
+                            </div>
 
-                                if ($_SESSION['share_distribute'] != 0) {
-                                    if($_SESSION['logging_mode'] == LogModes::SHARE_DIST)
-                                    {
-                                        if($_SESSION['status'] == StatusCodes::ErrEmpty)
-                                        {
-                                            $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                            getStatusMessage("Amount cannot be empty", "");
-                                        }
-                                        else if($_SESSION['status'] == StatusCodes::ErrNum)
-                                        {
-                                            $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                            getStatusMessage("Amount has to be a number", "");
-                                        }
-                                    }
-                                    echo '
-                                        <div class="col-6 mx-auto">
-                                            <form action="../../backend/artist/UpdateShareDistributedBackend.php" method="post">
-                                                <p class="text-center">How many shares are you injecting?</p>
-                                                <input type="text" name = "share_distributing" class="form-control form-control-sm col-4 mx-auto" placeholder="Enter amount">
-                                                <p>Comments</p>
-                                                <input type="text" name = "inject_comment" class="form-control form-control-sm py-3" placeholder="Enter comment">
-                                                <div class="text-center">
-                                                <input type = "submit" class="btn btn-primary my-4" role="button" aria-pressed="true" name = "button" value = "Save">  
-                                                </div>
-                                            </form>
-                                        </div>
-                                    ';
-                                }
-                                
-                                echo '
-                                    <div class="text-center">
-                                        <button id = "'.GraphOption::ONE_DAY.'" class="btn btn-secondary">'.GraphOption::ONE_DAY.'</button>
-                                        <button id = "'.GraphOption::FIVE_DAY.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_DAY.'</button>
-                                        <button id = "'.GraphOption::ONE_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_MONTH.'</button>
-                                        <button id = "'.GraphOption::SIX_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::SIX_MONTH.'</button>
-                                        <button id = "'.GraphOption::YEAR_TO_DATE.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::YEAR_TO_DATE.'</button>
-                                        <button id = "'.GraphOption::ONE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_YEAR.'</button>
-                                        <button id = "'.GraphOption::FIVE_YEAR.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_YEAR.'</button>
-                                        <div class="chart-container mx-auto">
-                                            <canvas id="stock_graph"></canvas>
-                                        </div>
-                                    </div>
-                                ';
-                                
-                            }
-                            else if($_SESSION['ethos_dashboard_options'] == EthosOption::BUY_BACK_SHARES)
-                            {
-                                echo '
-                                        <div class="py-4">
-                                            <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
-                                                <div>
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-warning" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
-                                                </div>
-                                            </form>
-                                        </div>
-                                ';
+                            <div class="div-hidden" id="buy_back_shares_content">
+                                <?php
+                                    printArtistBuyBackSharesTab($_SESSION['username']);
+                                ?>
+                            </div>
 
-                                if (artistCanCreateSellOrder($_SESSION['username'])) {
-                                    echo '
-                                            <div class="text-right mx-6">
-                                                <form action="../../backend/shared/ToggleBuySellShareBackend.php" method="post">
-                                                    <input name="buy_sell" type="submit" id="menu-style-invert" class="cursor-context" value="-Sell your shares">
-                                                </form>
-                                            </div>
-                                    ';
-                                }
-
-                                if ($_SESSION['buy_sell'] == ShareInteraction::SELL) {
-                                    $max = artistRepurchaseShares($_SESSION['username']) - artistShareSelling($_SESSION['username']);
-                                    echo '
-                                        <div class="text-right mx-6">
-                                            <h6>How many shares are you selling?</h6>
-                                            <div class="wrapper-searchbar">
-                                                <div class="container-searchbar mx-auto">
-                                                    <label>
-                                                        <form action="../../backend/artist/SellOrderBackend.php" method="post">
-                                                            <input name = "purchase_quantity" type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
-                                                            <p>Quantity: <span id="demo"></span></p>
-                                                            <input type="text" name="asked_price" class="form-control" style="border-color: white;" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter price per share">
-                                                            <input type="submit" class="btn btn-primary my-2 py-2" role="button" aria-pressed="true" value="Post" onclick="window.location.reload();">
-                                                        </form>
-                                                    </label> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ';
-                                    $_SESSION['buy_sell'] = 0;
-                                }
-
-                                $amount_repurchase_available = getAmountAvailableForRepurchase($_SESSION['username']);
-                                $price_for_all_available_repurchase = calculatePriceForAllRepurchase($_SESSION['username']);
-                                $owned_shares = getArtistShareRepurchase($_SESSION['username']);
-
-                                //Only to be used if artist clicks the button to buy back all shares that are being sold
-                                $_SESSION['repurchase_sell_orders'] = getAllRepurchaseSellOrdersInfo($_SESSION['username']);
-
-                                echo '
-                                <div class="text-center px-4">
-                                    <h6>Your owned shares: '.$owned_shares.'</h6>
-                                    <h6>Shares available for repurchase: '.$amount_repurchase_available.'</h6>
-                                </div>
-                                ';
-
-                                sellOrderInit();
-
-                                if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
-                                {
-                                    if($_SESSION['status'] == StatusCodes::Success)
-                                    {
-                                        getStatusMessage("", "Shares bought back successfully");
-                                    }
-                                    else if($_SESSION['status'] == StatusCodes::ErrGeneric)
-                                    {
-                                        getStatusMessage("An unexpected error occured", "");
-                                    }
-                                }
-
-                                askedPriceInit($_SESSION['username'], $_SESSION['account_type']);
-
-                                if($amount_repurchase_available > 0)
-                                {
-                                    echo '
-                                                </tbody>
-                                            </table>
-                                            <form class="text-center my-6" action="../../backend/artist/RepurchaseAllSharesBackend.php" method="post">
-                                                <input type="submit" class="btn btn-primary py-2" value="Purchase all '.$amount_repurchase_available.' at $'.$price_for_all_available_repurchase.'">
-                                            </form>
-                                    ';
-                                }
-                            }
-                            else if($_SESSION['ethos_dashboard_options'] == EthosOption::HISTORY)
-                            {
-                                echo '
-                                        <div class="py-4">
-                                            <form class="text-center" action="../../backend/artist/EthosDashboardOptionSwitcher.php" method="post">
-                                                <div>
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::QUOTES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-secondary" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::BUY_BACK_SHARES.'" onclick="window.location.reload();"> 
-                                                    <input name = "ethos_options" type = "submit" class="btn btn-warning" role="button" aria-pressed="true" name = "button" value = "'.EthosOption::HISTORY.'" onclick="window.location.reload();"> 
-                                                </div>
-                                            </form>
-                                        </div>
-                                ';
-
-                                //Buy Back shares history 
-                                echo '
-                                    <div class="mx-auto text-center py-2 col-6">
-                                        <h3 class="h3-blue">Buy Back History</h3>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Price($)</th>
-                                                    <th scope="col">Quantity</th>
-                                                    <th scope="col">Seller</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                    </div>
-                                ';
-            
-                                $sellers = array();
-                                $prices = array();
-                                $quantities = array();
-                                $date_purchase = array();
-            
-                                buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $_SESSION['username']);
-            
-                                for ($i = 0; $i < sizeof($sellers); $i++) {
-                                    echo '
-                                                <tr>
-                                                    <td>' . $date_purchase[$i] . '</td>
-                                                    <td>' . $prices[$i] . '</td>
-                                                    <td>' . $quantities[$i] . '</td>
-                                                    <td>' . $sellers[$i] . '</td>
-                                                </tr>
-                                    ';
-                                }
-
-                                echo '
-                                            </tbody>
-                                        </table>
-                                ';
-
-                                tradeHistoryInit($_SESSION['username']);
-
-                                echo '<h3 class="h3-blue">Inject history</h3>';
-
-                                injectionHistoryInit($_SESSION['username']);
-                            }
+                            <div class="div-hidden" id="history_content">
+                                <?php
+                                    printArtistHistoryTab($_SESSION['username']);
+                                ?>
+                            </div>
+                    <?php
                         }
                     ?>
                     </div>
@@ -452,25 +211,15 @@
                             <div class="container">
                                 <div class="text-center my-6">
                                     <h3 class="h3-blue">Verify your password to access personal page</h3>
-                                    <form action="../../backend/artist/PersonalPageBackend.php" method="post">
-                                        <div class="form-group col-4 mx-auto">
-                        <?php
-                        if($_SESSION['logging_mode'] == LogModes::PERSONAL)
-                        {
-                            if($_SESSION['status'] == StatusCodes::ErrPassword)
-                            {
-                                $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                getStatusMessage("Wrong password", "");
-                            }
-                        }
-                        ?>
-                                            <h5>Password</h5>
-                                            <input name = "verify_password" type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password">
-                                        </div>
-                                        <div class="text-center">
-                                            <input type = "submit" class="btn btn-primary" role="button" aria-pressed="true" name = "button" value = "Verify" onclick="window.location.reload();">
-                                        </div>
-                                    </form>
+                                    <!-- <form action="../../backend/artist/PersonalPageBackend.php" method="post"> -->
+                                    <div class="form-group col-4 mx-auto">
+                                        <h5>Password</h5>
+                                        <input id="artist_personal_pwd" type="password" class="form-control form-control-sm" placeholder="Password">
+                                        <p id="artist_personal_status"></p>
+                                    </div>
+                                    <div class="text-center">
+                                        <input id="artist_personal_btn" type = "submit" class="btn btn-primary" role="button" value = "Verify">
+                                    </div>
                                 </div>
                             </div>
                         </section>
@@ -500,6 +249,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script src="../js/shared/balance/DepositWithdraw.js"></script>
     <script src="../js/artist/MenuItem.js"></script>
+    <script src="../js/shared/account/AccountPage.js"></script>
+    <script src="../js/artist/IPO.js"></script>
+    <script src="../js/artist/EthosOptions.js"></script>
+    <script src="../js/artist/InjectShares.js"></script>
+    <script src="../js/shared/transaction/BuyOrSellShares.js"></script>
+    <script src="../js/artist/TradeHistory.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
