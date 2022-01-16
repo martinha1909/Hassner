@@ -34,3 +34,7 @@ Notes on the database
 2. To delete database (for importing purposes): go to web browser and run localhost:80/Hassner/database/        deleteDatabase.php
 
 3. To clean database (resetting values to 0): go to web browser and run localhost:80/Hassner/database/        CleanDatabase.php
+
+
+## Live page
+Currently on https://35.89.4.89/ soon to be https://hassner.ca/
