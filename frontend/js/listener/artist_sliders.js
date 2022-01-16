@@ -26,11 +26,11 @@ function recalcSliderLimits(){
     success : function(data){
       balance = data
       
-      // Get requested price per share (buy) - use lower limit
+      // Get requested price per share (buy) - use lower limit if set otherwise market price
       req_pps_low = $("#buy_limit").slider("values", 0);
       req_pps_high = $("#buy_limit").slider("values", 1);
 
-      if(req_pps_low > $("#buy_limit").slider("option", "min") && req_pps_high < $("#buy_limit").slider("option", "max")){
+      if(req_pps_low == $("#buy_limit").slider("option", "min")){
         req_pps = Number($("#pps").text());
       }
       else{
