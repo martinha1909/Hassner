@@ -166,7 +166,7 @@
     function returnToMainPage()
     {
         if ($_SESSION['account_type'] == AccountType::User) {
-            header("Location: ../../frontend/listener/listener.php");
+            header("Location: ../../frontend/listener/Listener.php");
         } else if ($_SESSION['account_type'] ==  AccountType::Artist) {
             header("Location: ../../frontend/artist/Artist.php");
         }

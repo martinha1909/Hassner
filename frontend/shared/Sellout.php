@@ -28,7 +28,7 @@ $_SESSION['expyear'] = 0;
         if ($_SESSION['account_type'] == "user") 
         {
           echo '
-                              <a class="navbar-brand" href="../listener/listener.php">
+                              <a class="navbar-brand" href="../listener/Listener.php">
                                 HASSNER
                               </a>
                         ';

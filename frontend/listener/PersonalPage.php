@@ -25,7 +25,7 @@ include '../../backend/shared/include/PersonalPageHelpers.php';
   <header class="smart-scroll">
     <div class="container-xxl">
       <nav class="navbar navbar-expand-md navbar-dark bg-darkcyan">
-        <a class="navbar-brand heading-black" href="listener.php" onclick='window.location.reload();'>
+        <a class="navbar-brand heading-black" href="Listener.php" onclick='window.location.reload();'>
             ❖ HX
         </a>
     </div>
