@@ -449,91 +449,56 @@
         return $ret;
     }
 
+    /**
+    * Prints trade history of unique days of a given artist depends on the range that the user chooses
+    * Trade History information:
+    * -  Price displays the highest and lowest trades of the day
+    * -  Volumn displays how many total shares of the artist that was traded that day
+    * -  Value displays total amount of siliqas that was traded of the artist that day
+    * -  Trades displays the total number of trades that day
+    *
+    * @param  	artist_username	    chosen artist
+    */
     function tradeHistoryInit($artist_username)
     {
         $conn = connect();
 
-        if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
-        {
-            echo '
-                <div class="mx-auto text-center py-2 col-8">
-                    <h3 class="h3-blue">Trade History</h3>
-                    <form class="form-inline" action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
-                        <h6>From</h6>
-                        <input type="date" name="trade_history_from">
-                        <h6>To</h6>
-                        <input type="date" name="trade_history_to">
-                        <input type="submit" class="cursor-context" role="button" aria-pressed="true" value="->">
-                    </form>
-            ';
-        }
-        else
-        {
-            echo '
-                <div class="mx-auto text-center py-2 col-8">
-                    <h3 class="h3-blue">Trade History</h3>
-                    <form class="form-inline" action="../../backend/shared/TradeHistoryRangeSwitcher.php" method="post">
-                        <h6>From</h6>
-                        <input type="date" name="trade_history_from" value="'.$_SESSION['trade_history_from'].'">
-                        <h6>To</h6>
-                        <input type="date" name="trade_history_to" value="'.$_SESSION['trade_history_to'].'">
-                        <input type="submit" class="cursor-context" role="button" aria-pressed="true" value="->">
-                    </form>
-            ';
-        }
+        echo '
+            <div class="mx-auto text-center py-2 col-8">
+                <h3 class="h3-blue py-2">Trade History</h3>
+                <h6>From</h6>
+                <input id="listener_trade_history_from" type="date" name="trade_history_from">
+                <h6>To</h6>
+                <input id="listener_trade_history_to" type="date" name="trade_history_to">
 
-        if($_SESSION['trade_history_from'] == 0 || $_SESSION['trade_history_to'] == 0)
-        {
-            echo '<p class="error-msg">Please choose a range</p>';
-        }
-        else
-        {
-            $date = explode("-", $_SESSION['trade_history_from']);
-            //reformat to match the expectation of isInTheFuture, which is of form DD-MM-YYYY
-            $from_date = array($date[2], $date[1], $date[0]);
-            //We don't care about time 
-            $time = "00:00:00";
-            $from_time = explode(":", $time);
-            $to_date = explode("-", $_SESSION['trade_history_to']);
-            $time = "00:00";
-            $to_time = explode(":", $time);
-            if(!isInTheFuture($to_date, $from_date, $to_time, $from_time))
-            {
-                echo '<p class="error-msg">To date has to be later than from date</p>';
-            }
-            else
-            {
-                //Price displays the highest and lowest trades of the day
-                //Volumn displays how many total shares of the artist that was traded that day
-                //Value displays total amount of siliqas that was traded of the artist that day
-                //Trades displays the total number of trades that day
-                echo '
-                            <div class="py-4">
-                            <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Price(HIGH/LOW)</th>
-                                    <th scope="col">Volume</th>
-                                    <th scope="col">Value</th>
-                                    <th scope="col">Trades</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    </div>
-                ';
-                $res = searchSharesBoughtFromArtist($conn, $artist_username);
-                $trade_history_list = populateTradeHistory($conn, $res);
+                <p id="listener_trade_history_status" class="error-msg"></p>
 
-                $trade_history_list->addListToTable();
+                <input id="listener_trade_history_btn" type="submit" class="cursor-context" role="button" value="->">
+            </div>
 
-                echo '
-                            </tbody>
-                        </table>
-                        </div>
-                ';
-            }
-        }
+            <div class="div-hidden" id="listener_trade_history_found">
+                <div class="py-4">
+                    <table class="table" id="listener_trade_history_table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Price(HIGH/LOW)</th>
+                                <th scope="col">Volume</th>
+                                <th scope="col">Value</th>
+                                <th scope="col">Trades</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listener_trade_history_table_body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h5 class="error-msg" id="listener_trade_history_not_found"></h5>
+        ';
+
+        $_SESSION['trade_history_from'] = 0;
+        $_SESSION['trade_history_to'] = 0;
     }
 
     /**

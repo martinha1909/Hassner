@@ -1,6 +1,61 @@
 option {
   font-weight: bold;
 }
+
+.select-dropdown {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: white;
+  background-image: none;
+}
+
+.select-dropdown::-ms-expand {
+  display: none;
+}
+
+.select-dropdown-dark {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 10px !important;
+  color: white;
+  background: #1c1c1cff;
+  background-image: none;
+}
+
+.select-dropdown-dark {
+  font-weight: bold;
+  flex: 1;
+  padding: 0 0.5em;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.select-dropdown-dark:hover {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 10px !important;
+  color: #1c1c1cff;
+  background: white;
+  background-image: none;
+}
+
+.select-dropdown-dark::-ms-expand {
+  display: none;
+}
+
 /* Reset Select */
 select {
   -webkit-appearance: none;
@@ -14,35 +69,6 @@ select {
   background-image: none;
 }
 
-select#dark {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  appearance: none;
-  outline: 0;
-  box-shadow: none;
-  border: 10px !important;
-  color: white;
-  background: #1c1c1cff;
-  background-image: none;
-}
-
-select#dark:hover {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  appearance: none;
-  outline: 0;
-  box-shadow: none;
-  border: 10px !important;
-  color: #1c1c1cff;
-  background: white;
-  background-image: none;
-}
-
-select#dark::-ms-expand {
-  display: none;
-}
 /* Remove IE arrow */
 select::-ms-expand {
   display: none;
@@ -93,13 +119,7 @@ select::-ms-expand {
   color: #e2cda9ff;
   background-color: #1c1c1cff;
 }
-select#dark {
-  font-weight: bold;
-  flex: 1;
-  padding: 0 0.5em;
-  color: #ffffff;
-  cursor: pointer;
-}
+
 /* Arrow */
 .select::after {
   content: "\25BC";
@@ -116,7 +136,7 @@ select#dark {
 }
 /* Transition */
 .select:hover::after {
-  color: #f39c12;
+  color: #0a60d0;
   background-color: #1c1c1cff;
 }
 
@@ -249,6 +269,19 @@ select#dark {
   cursor: pointer;
   color: rgb(255, 255, 255);
   /* text-decoration: underline; */
+}
+
+.menu-style-invert {
+  font-weight: 500;
+  /* background-color: #4c9ed9; */
+  color: #e2cda9ff;
+  padding: 0px 0px;
+}
+
+.menu-style-invert:hover {
+  font-weight: 500;
+  cursor: pointer;
+  color: white;
 }
 
 .th-dark {

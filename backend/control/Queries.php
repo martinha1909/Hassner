@@ -880,7 +880,7 @@
 
         function redirectToListener()
         {
-            header("Location: ../../frontend/listener/listener.php");
+            header("Location: ../../frontend/listener/Listener.php");
         }
 
         function purchaseAskedPriceShare($conn, $buyer, $seller, $buyer_account_type, $seller_account_type, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $indicator, $buy_mode)
