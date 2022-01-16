@@ -38,3 +38,13 @@ Notes on the database
 
 ## Live page
 Currently on https://35.89.4.89/ soon to be https://hassner.ca/
+
+To access the server as dev (recommend using putty):
+- under Connection/SSH/auth. add your private key (if you don't have an ssh key, please reach out)
+- then under Connection/SSH/tunnels, add the following
+    - Source port: 8888
+    - Destination: localhost:80
+- Under Session tab on the left, Host name: 35.89.4.89 
+- Click open then a log in window will appear, type bitnami. 
+- Navigate to your browser, then put http://127.0.0.1:8888/phpmyadmin 
+- Contact me for server's credentials after navigating to that link
