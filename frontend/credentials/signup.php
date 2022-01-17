@@ -66,7 +66,7 @@ hassnerInit();
           </div>
 
           <!-- signup form -->
-          <form action="../../backend/credentials/SignUpBackend.php" method="post">
+          <form action="../../backend/credentials/SignUpBackEnd.php" method="post">
 
             <!-- username field -->
 
