@@ -113,7 +113,7 @@
                                 echo '
                                     <p>
                                         <form action="../../backend/listener/FollowArtistBackend.php" method="post">
-                                            <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" class="cursor-context" aria-pressed="true" value ="Follow">
+                                            <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" class="cursor-context" aria-pressed="true" value ="✧ Follow">
                                         </form>
                                     </p>
                                 ';
@@ -123,7 +123,7 @@
                                 echo '
                                     <p>
                                         <form action="../../backend/listener/UnFollowArtistBackend.php" method="post">
-                                            <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" class="cursor-context" aria-pressed="true" value ="Unfollow">
+                                            <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" class="cursor-context" aria-pressed="true" value ="✦ Unfollow">
                                         </form>
                                     </p>
                                 ';
@@ -179,11 +179,11 @@
                             echo '
                                 <canvas id="stock_graph"></canvas>
                                 <div class="text-center">
-                                    <h6>Mkt Cap: '.$market_cap.'</h6>
-                                    <h6>Volume: '.$volume.'</h6>
-                                    <h6>Open: '.$open.'</h6>
-                                    <h6>High: '.$high.'</h6>
-                                    <h6>Low: '.$low.'</h6>
+                                    <a>Mkt Cap: '.$market_cap.'</a>
+                                    <a>Volume: '.$volume.'</a>
+                                    <a>Open: '.$open.'</a>
+                                    <a>High: '.$high.'</a>
+                                    <a>Low: '.$low.'</a>
                                 </div>
                             ';
                         ?>
