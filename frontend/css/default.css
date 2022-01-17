@@ -10682,11 +10682,11 @@ a#dashboard-hover:hover {
 }
 
 .error-msg {
-  color: red;
+  color: red !important;
 }
 
 .suc-msg {
-  color: green;
+  color: green !important;
 }
 
 .input-no-background {

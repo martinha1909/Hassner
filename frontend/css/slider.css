@@ -30,8 +30,8 @@
 
 .shares_header {
   font-weight: bold;
-  color: white;
-  background: #052b51;
+  color: #1c1c1cff;
+  background: #fff;
   border: none;
   border-radius: 5px;
 }

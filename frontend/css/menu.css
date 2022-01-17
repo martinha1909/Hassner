@@ -363,3 +363,11 @@ select::-ms-expand {
   background-color: transparent; 
   font-weight: bold;
 }
+
+.shares-owned {
+  background-color: transparent; 
+  border-top: 1px #ffffff;
+  border-bottom: 1px #ffffff;
+  border-left: 1px #ffffff;
+  border-right: 1px #ffffff;
+}
