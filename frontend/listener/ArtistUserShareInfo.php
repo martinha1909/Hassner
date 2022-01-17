@@ -276,7 +276,7 @@
                         if($_SESSION['artist_found'])
                         {
                             echo '
-                                <div class="col-6">
+                                <div>
                                     <h3 class="h3-blue py-5">Buy History</h3>
                                     <table class="table">
                                         <thead>
