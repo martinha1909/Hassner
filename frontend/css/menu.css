@@ -371,3 +371,12 @@ select::-ms-expand {
   border-left: 1px #ffffff;
   border-right: 1px #ffffff;
 }
+
+.campaign-box {
+  border-radius: 25px;
+  background: #fcfcfc;
+  padding: 15px;
+  margin: 20px;
+  width: 200px;
+  height: 200px;
+}

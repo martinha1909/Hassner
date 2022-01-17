@@ -301,22 +301,29 @@
                         </div>
 
                         <div class="div-hidden" id="campaign_content">
-                            <div class="py-6">
-                                <h4>Participating</h4>
+                            <div class="py-4">
+                                <h4 class="h4-blue">Participating</h4>
                                 <?php
                                     printParticipatingCampaignTable($_SESSION['username']);
                                 ?>
+                                <div class="row">
+                                    <div class="campaign-box col-2.5"><h3 class="h3-blue">88GM</h3><b style="color:black">🤲 NFTs</b><p style="color:black">⌛ 1h, 5m</p><b style="color:black">⌖ 9000</b></div>
+                                    <div class="campaign-box col-2.5"><h3 class="h3-blue">11NA</h3><b style="color:black">🤲 Tickets</b><p style="color:black">⌛ 1mo, 5d, 5m</p><b style="color:black">⌖ 12</b></div>
+                                    <div class="campaign-box col-2.5"><h3 class="h3-blue">21SV</h3><b style="color:black">🤲 Tickets</b><p style="color:black">⌛ 2mo, 2d, 2m</p><b style="color:black">⌖ 200</b></div>
+                                    <div class="campaign-box col-2.5"><h3 class="h3-blue">00VH</h3><b style="color:black">🤲 NFTs</b><p style="color:black">⌛ 100y, 1m</p><b style="color:black">⌖ 56</b></div>
+                                    <div class="campaign-box col-2.5"><h3 class="h3-blue">00DR</h3><b style="color:black">🤲 Backstage</b><p style="color:black">⌛ 1y, 5d</p><b style="color:black">⌖ 3</b></div>
+                                </div>
                             </div>
 
-                            <div class="py-6">
-                                <h4>Near Participation</h4>
+                            <div class="py-4">
+                                <h4 class="h4-blue">Near Participation</h4>
                                 <?php
                                     printNearParticipationCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
-                            <div class="py-6">
-                                <h4>Past Participation</h4>
+                            <div class="py-4">
+                                <h4 class="h4-blue">Past Participation</h4>
                                 <?php
                                     printPastParticipatedCampaignTable($_SESSION['username']);
                                 ?>
