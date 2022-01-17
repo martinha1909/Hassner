@@ -1,6 +1,6 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
-    include '../control/dependencies.php';
+    include '../control/Dependencies.php';
 
     $_SESSION['saved'] = 1;
 
