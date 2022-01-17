@@ -1,5 +1,5 @@
 <?php
-    include '../../backend/control/dependencies.php';
+    include '../../backend/control/Dependencies.php';
     include '../../backend/shared/include/MarketplaceHelpers.php';
     include '../../backend/constants/StatusCodes.php';
     include '../../backend/constants/LoggingModes.php';
