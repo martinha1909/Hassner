@@ -646,7 +646,7 @@ function injectionHistoryInit($artist_username)
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Ethos amount</th>
+                        <th scope="col">Share amount</th>
                         <th scope="col">Comment</th>
                         <th scope="col">Date Injected</th>
                     </tr>

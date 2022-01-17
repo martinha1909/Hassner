@@ -151,7 +151,7 @@
                                                 </th>
                                                 </form>
                                                 <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
-                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
+                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share" onclick="window.location.reload();">';
                             //sort Price per share ascending alphabetically
                             if ($_SESSION['sort_type'] == 3) 
                             {

@@ -34,7 +34,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo $_SESSION['selected_artist']; ?> Ethos</title>
+    <title><?php echo $_SESSION['selected_artist']; ?>'s Ethos</title>
     <meta name="description" content="Rateify is a music service that allows users to rate songs" />
 
     <!--Inter UI font-->
@@ -316,7 +316,7 @@
 
                             tradeHistoryInit($_SESSION['selected_artist']);
 
-                            echo '<h3 class="h3-blue py-5">Ethos Injection History</h3>';
+                            echo '<h3 class="h3-blue py-5">Share Injection History</h3>';
 
                             injectionHistoryInit($_SESSION['selected_artist']);
                     }
