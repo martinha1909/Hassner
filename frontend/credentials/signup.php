@@ -118,17 +118,17 @@ hassnerInit();
             <!-- account type -->
             <h6 class="h6-tan">Account Type</h6>
             <div>
-              <input type="radio" id="signup_account_type" value="user" checked>
+              <input name="signup_radio" type="radio" id="signup_account_type" value="user" checked>
               <label for="user">Listener</label>
             </div>
 
             <p id="signup_error" class="error-msg"><p>
 
             <!-- TODO: Disable when testing phase ends -->
-            <!-- <div>
-              <input type="radio" name="signup_account_type" value="artist">
+            <div>
+              <input type="radio" name="signup_radio" value="artist">
               <label for="artist">Artist</label>
-            </div> -->
+            </div>
 
             <!-- register button -->
             <!-- TODO: register button functionality-->
