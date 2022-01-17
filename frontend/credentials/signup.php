@@ -92,43 +92,16 @@ hassnerInit();
               <input type="text" class="form-control" id="signupTicker" placeholder="Ticker" maxlength=4>
             </div>
 
-            <?php
-            // $status = "";
-            // if ($_SESSION['status'] == StatusCodes::ErrUsername) {
-            //   $_SESSION['status'] = StatusCodes::ErrGeneric;
-            //   $status = getStatusMessage("Username already taken", "");
-            // } else if ($_SESSION['status'] == StatusCodes::ErrServer) {
-            //   $_SESSION['status'] = StatusCodes::ErrGeneric;
-            //   $status = getStatusMessage("Server error, cannot create account", "");
-            // } else if ($_SESSION['status'] == StatusCodes::ErrEmpty) {
-            //   $_SESSION['status'] = StatusCodes::ErrGeneric;
-            //   $status = getStatusMessage("Please fill out all fields", "");
-            // } else if ($_SESSION['status'] == StatusCodes::ErrEmailDuplicate) {
-            //   $_SESSION['status'] = StatusCodes::ErrGeneric;
-            //   $status = getStatusMessage("Email already taken", "");
-            // } else if ($_SESSION['status'] == StatusCodes::ErrTickerDuplicate) {
-            //   $_SESSION['status'] = StatusCodes::ErrGeneric;
-            //   $status = getStatusMessage("Ticker already taken", "");
-            // } else if ($_SESSION['status'] == StatusCodes::ErrTickerFormat) {
-            //   $_SESSION['status'] = StatusCodes::ErrGeneric;
-            //   $status = getStatusMessage("Invalid ticker format", "");
-            // }
-            ?>
-
             <!-- account type -->
             <h6 class="h6-tan">Account Type</h6>
-            <div>
-              <input name="signup_radio" type="radio" id="signup_account_type" value="user" checked>
-              <label for="user">Listener</label>
-            </div>
+            <input name="signup_radio" type="radio" id="signup_account_type" value="user" checked>
+            <label for="user">Listener</label>
 
             <p id="signup_error" class="error-msg"><p>
 
             <!-- TODO: Disable when testing phase ends -->
-            <div>
-              <input type="radio" name="signup_radio" value="artist">
-              <label for="artist">Artist</label>
-            </div>
+            <!-- <input type="radio" name="signup_radio" id="signup_account_type" value="artist">
+            <label for="artist">Artist</label> -->
 
             <!-- register button -->
             <!-- TODO: register button functionality-->

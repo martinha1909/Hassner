@@ -7,13 +7,21 @@ function signup()
             username: $("#signup_username").val(),
             password: $("#signup_pwd").val(),
             email: $("#signup_email").val(),
-            account_type: $("#signup_account_type").val(),
             ticker: $("#signupTicker").val()
         },
         async: false,
         dataType: "json",
         success: function(data){
             console.log(data);
+            if(data.status != "SUCCESS")
+            {
+                $("#signup_error").text(data.msg);
+                // $("#signup_error").show();
+            }
+            else
+            {
+
+            }
         },
         error: function(data){
 
