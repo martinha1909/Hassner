@@ -325,6 +325,7 @@ select::-ms-expand {
 #myVideo {
   position: relative;
   z-index: 0;
+  width: 100%;
 }
 
 .video-overlay {
@@ -361,4 +362,21 @@ select::-ms-expand {
   border:1px transparent; 
   background-color: transparent; 
   font-weight: bold;
+}
+
+.shares-owned {
+  background-color: transparent; 
+  border-top: 1px #ffffff;
+  border-bottom: 1px #ffffff;
+  border-left: 1px #ffffff;
+  border-right: 1px #ffffff;
+}
+
+.campaign-box {
+  border-radius: 25px;
+  background: #fcfcfc;
+  padding: 15px;
+  margin: 20px;
+  width: 200px;
+  height: 200px;
 }
