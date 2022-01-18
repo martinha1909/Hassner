@@ -18,13 +18,13 @@
         $account_type = AccountType::Artist;
     }
 
-    // echo(json_encode(array(            
-    //     "username"=> $username,
-    //     "password"=> $password,
-    //     "email"=> $email,
-    //     "account_type"=> $account_type,
-    //     "ticker"=> $ticker
-    // )));
+    hx_debug(HX::SIGNUP, "posting data: ".json_encode(array(            
+        "username"=> $username,
+        "password"=> $password,
+        "email"=> $email,
+        "account_type"=> $account_type,
+        "ticker"=> $ticker
+    )));
 
     if(!empty($username) && !empty($password) && !empty($email))
     {
@@ -134,11 +134,10 @@
 
                     echo(json_encode(array(            
                         "status"=> StatusCodes::Success,
-                        "msg"=> ""
+                        "msg"=> "Account created successfully"
                     )));
 
                     $_SESSION['dependencies'] = "FRONTEND";
-                    // header("Location: ../../frontend/credentials/login.php");
                 }
                 else
                 {
