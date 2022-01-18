@@ -182,10 +182,10 @@
                             echo '
                                 <canvas id="stock_graph"></canvas>
                                 <div class="text-center">
-                                    <a>Mkt Cap: '.$market_cap.'</a>
-                                    <a>Volume: '.$volume.'</a>
-                                    <a>Open: '.$open.'</a>
-                                    <a>High: '.$high.'</a>
+                                    <a>Mkt Cap: '.$market_cap.' | </a>
+                                    <a>Volume: '.$volume.' | </a>
+                                    <a>Open: '.$open.' | </a>
+                                    <a>High: '.$high.' | </a>
                                     <a>Low: '.$low.'</a>
                                 </div>
                             ';
@@ -300,11 +300,11 @@
                                     '.injectionHistoryInit($_SESSION['selected_artist']).'
                                 </div>
                             ';
-                    }
-                    else
-                    {
-                        echo '<h3>No results for "'.$_SESSION['selected_artist'].'"</h3>';
-                    }
+                        }
+                        else
+                        {
+                            echo '<h3>No results for "'.$_SESSION['selected_artist'].'"</h3>';
+                        }
                     ?>
                     </div>
                 </div>

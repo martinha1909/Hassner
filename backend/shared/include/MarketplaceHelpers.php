@@ -442,13 +442,13 @@ function getAmountSharesRequesting($user_username, $artist_username)
 }
 
 /**
-    * Get artist highest or lowest sell order, depends on the selected option
-    *
-    * @param  	artist_username	  artist username to retrieve all the sell orders from
-    * @param  	indicator	      option to have action upon, MAX would get the highest and MIN would get the lowest
-    *
-    * @return 	the price of the sell order, as indicated by indicator
-    */
+* Get artist highest or lowest sell order, depends on the selected option
+*
+* @param  	artist_username	  artist username to retrieve all the sell orders from
+* @param  	indicator	      option to have action upon, MAX would get the highest and MIN would get the lowest
+*
+* @return 	the price of the sell order, as indicated by indicator
+*/
 function getHighestOrLowestPPS($artist_username, $indicator)
 {
     if ($indicator == "MAX") 
@@ -484,6 +484,12 @@ function getHighestOrLowestPPS($artist_username, $indicator)
 
         $res2 = searchArtistLowestPrice($conn, $artist_username);
         $lowest_asked_price = $res2->fetch_assoc();
+
+        //If no sell order found, return the market price
+        if($lowest_asked_price['minimum'] == NULL)
+        {
+            return $market_price['price_per_share'];
+        }
 
         //if market price is lower, return that as a lowest value
         if ($market_price['price_per_share'] < $lowest_asked_price['minimum']) {
