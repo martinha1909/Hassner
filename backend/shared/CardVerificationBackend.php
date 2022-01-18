@@ -1,6 +1,6 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
-    include '../control/dependencies.php';
+    include '../control/Dependencies.php';
     include '../constants/LoggingModes.php';
     include '../constants/StatusCodes.php';
     include '../constants/AccountTypes.php';
