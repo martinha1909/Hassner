@@ -15,6 +15,8 @@
         $_SESSION['debug'] = false;
         $_SESSION['error'] = false;
         $_SESSION['info'] = false;
+        //Set this to false for developement
+        $_SESSION['testing_phase'] = true;
         $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['display'] = MenuOption::None;
         $_SESSION['sort_type'] = 0;
