@@ -35,6 +35,7 @@
 
     <!-- Bootstrap CSS / Color Scheme -->
     <link rel="icon" href="../../frontend/Images/hx_tmp_2.ico" type="image/ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/default.css" id="theme-color">
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
@@ -150,7 +151,7 @@
                                                 </th>
                                                 </form>
                                                 <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
-                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
+                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share" onclick="window.location.reload();">';
                             //sort Price per share ascending alphabetically
                             if ($_SESSION['sort_type'] == 3) 
                             {
@@ -300,22 +301,29 @@
                         </div>
 
                         <div class="div-hidden" id="campaign_content">
-                            <div class="py-6">
-                                <h4>Participating</h4>
+                            <div class="py-4">
+                                <h4 class="h4-blue">Participating</h4>
                                 <?php
                                     printParticipatingCampaignTable($_SESSION['username']);
                                 ?>
+                                <div class="row">
+                                    <div class="campaign-box col-2.5"><h3 class="h3-blue">88GM</h3><b style="color:black">🤲 NFTs</b><p style="color:black">⌛ 1h, 5m</p><b style="color:black">⌖ 9000</b></div>
+                                    <div class="campaign-box col-2.5"><h3 class="h3-blue">11NA</h3><b style="color:black">🤲 Tickets</b><p style="color:black">⌛ 1mo, 5d, 5m</p><b style="color:black">⌖ 12</b></div>
+                                    <div class="campaign-box col-2.5"><h3 class="h3-blue">21SV</h3><b style="color:black">🤲 Tickets</b><p style="color:black">⌛ 2mo, 2d, 2m</p><b style="color:black">⌖ 200</b></div>
+                                    <div class="campaign-box col-2.5"><h3 class="h3-blue">00VH</h3><b style="color:black">🤲 NFTs</b><p style="color:black">⌛ 100y, 1m</p><b style="color:black">⌖ 56</b></div>
+                                    <div class="campaign-box col-2.5"><h3 class="h3-blue">00DR</h3><b style="color:black">🤲 Backstage</b><p style="color:black">⌛ 1y, 5d</p><b style="color:black">⌖ 3</b></div>
+                                </div>
                             </div>
 
-                            <div class="py-6">
-                                <h4>Near Participation</h4>
+                            <div class="py-4">
+                                <h4 class="h4-blue">Near Participation</h4>
                                 <?php
                                     printNearParticipationCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
-                            <div class="py-6">
-                                <h4>Past Participation</h4>
+                            <div class="py-4">
+                                <h4 class="h4-blue">Past Participation</h4>
                                 <?php
                                     printPastParticipatedCampaignTable($_SESSION['username']);
                                 ?>
@@ -373,7 +381,7 @@
     </section>
 
     <a class="btn btn-success py-2" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
-
+ 
     <!--scroll to top-->
     <div class="scroll-top">
         <i class="fa fa-angle-up" aria-hidden="true"></i>
