@@ -15,7 +15,7 @@
         $_SESSION['debug'] = false;
         $_SESSION['error'] = false;
         $_SESSION['info'] = false;
-        //Set this to false for developement
+        //Set this to false to enable functionalities that are not available during testing phase
         $_SESSION['testing_phase'] = true;
         $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['display'] = MenuOption::None;
