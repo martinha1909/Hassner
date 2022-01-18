@@ -291,14 +291,15 @@
                                 <div class="div-hidden" id="user_buy_history_content">
                                     '.printUserBuyHistoryTable($_SESSION['username']).'
                                 </div>
+
+                                <div class="div-hidden" id="user_trade_history_content">
+                                    '.tradeHistoryInit($_SESSION['selected_artist']).'
+                                </div>
+
+                                <div class="div-hidden" id="user_inject_history_content">
+                                    '.injectionHistoryInit($_SESSION['selected_artist']).'
+                                </div>
                             ';
-                            
-
-                            // tradeHistoryInit($_SESSION['selected_artist']);
-
-                            // echo '<h3 class="h3-blue py-5">Share Injection History</h3>';
-
-                            // injectionHistoryInit($_SESSION['selected_artist']);
                     }
                     else
                     {

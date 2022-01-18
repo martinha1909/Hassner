@@ -629,8 +629,17 @@ function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, 
     }
 }
 
-function injectionHistoryInit($artist_username)
+/**
+* Fetch injection history of a given artist
+*
+* @param  	artist_username	    chosen artist username
+*
+* @return 	ret	                a string to be printed out in the frontend, 
+*                               contains injection history information in tabular format
+*/
+function injectionHistoryInit($artist_username): string
 {
+    $ret = '';
     $comments = array();
     $amount_injected = array();
     $date_injected = array();
@@ -642,7 +651,7 @@ function injectionHistoryInit($artist_username)
         $amount_injected,
         $date_injected,
     );
-    echo '
+    $ret .= '
             <table class="table">
                 <thead>
                     <tr>
@@ -652,22 +661,24 @@ function injectionHistoryInit($artist_username)
                     </tr>
                 </thead>
                 <tbody>
-        ';
+    ';
 
     for ($i = 0; $i < sizeof($amount_injected); $i++) {
-        echo '
+        $ret .= '
                     <tr>
                         <th scope="row">' . $amount_injected[$i] . '</th>
                         <td>' . $comments[$i] . '</td>
                         <td>' . dbDateTimeParser($date_injected[$i]).'</td>
                     </tr>
-            ';
+        ';
     }
 
-    echo '
+    $ret .= '
                     </tbody>
                 </table>
-        ';
+    ';
+
+    return $ret;
 }
 
 /**

@@ -532,7 +532,7 @@
 
         echo '<h3 class="h3-blue">Inject history</h3>';
 
-        injectionHistoryInit($_SESSION['username']);
+        echo injectionHistoryInit($_SESSION['username']);
     }
 
     function printArtistTradeHistoryTable($artist_username)
