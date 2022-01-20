@@ -406,9 +406,14 @@ select::-ms-expand {
 .campaign-box-near {
   border-radius: 25px;
   /* background: linear-gradient(180deg, #1c1c1cff 10%, rgb(255, 116, 116) 90%); */
-  background: rgb(255, 116, 116);
+  background: rgb(255, 131, 131);
   padding: 10px;
   margin: 20px;
   width: 200px;
   height: 200px;
+}
+
+.input-no-border {
+  border:0px transparent;
+  background-color: transparent;
 }
