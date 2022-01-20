@@ -390,8 +390,8 @@
 
     /**
     * Fetches all near participation campaign of a given user. 
-    * A near participation campaign is determined if a user has a completion progress of more than 90% towards the campaign minimum requirement
-    * For example, a campaign that has a minimum requirement of 20 ethos, any users that has invested 18 or more ethos in the owner of that campaign 
+    * A near participation campaign is determined if a user has a completion progress of more than 80% towards the campaign minimum requirement
+    * For example, a campaign that has a minimum requirement of 20 ethos, any users that has invested 16 or more ethos in the owner of that campaign 
     * will be treated as a near participation campaign
     *
     * @param  	user_username	    Username to fetch campaigns for
@@ -425,7 +425,7 @@
                                                                 $date_expires, 
                                                                 $time_expires);
 
-                        $progress_calc = ($total_shares_bought/$row['minimum_ethos']) * 100;
+                        $progress_calc = round(($total_shares_bought/$row['minimum_ethos']) * 100, 2);
 
                         if($campaign_time_left != "0000-00-00 00:00:00")
                         {                 

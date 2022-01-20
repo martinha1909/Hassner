@@ -6,53 +6,48 @@
         if (sizeof($participating_campaigns) > 0) 
         {
             echo '
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Artist</th>
-                            <th scope="col">Offering</th>
-                            <th scope="col">Progess</th>
-                            <th scope="col">⏳</th>
-                            <th scope="col">Minimum Ethos</th>
-                            <th scope="col">Owned Ethos</th>
-                            <th scope="col">Chance of winning</th>
-                            </form>
-                            <th scope="col">Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="row">
             ';
 
-            for ($i = 0; $i < sizeof($participating_campaigns); $i++) {
+            for ($i = 0; $i < sizeof($participating_campaigns); $i++) 
+            {
+                $artist_market_tag = getArtistMarketTag($participating_campaigns[$i]->getArtistUsername());
                 echo '
-                            <tr>
-                                <th>' . $participating_campaigns[$i]->getArtistUsername() . '</th>
-                                <td>' . $participating_campaigns[$i]->getOffering() . '</td>
-                                <td>' . round($participating_campaigns[$i]->getProgress(), 2) . '%</td>
-                                <td>' . $participating_campaigns[$i]->getTimeLeft() . '</td>
-                                <td>' . $participating_campaigns[$i]->getMinEthos() . '</td>
-                                <td>' . $participating_campaigns[$i]->getUserOwnedEthos() . '</td>
+                    <div class="campaign-box col-2.5">
                 ';
-                if ($participating_campaigns[$i]->getWinningChance() != -1) {
+
+                if($participating_campaigns[$i]->getType() == CampaignType::BENCHMARK)
+                {
                     echo '
-                                    <form action="../../backend/listener/IncreaseChanceBackend.php" method="post">
-                                        <td>' . $participating_campaigns[$i]->getWinningChance() . '%<input name = "artist_name[' . $participating_campaigns[$i]->getArtistUsername() . ']" type = "submit" id="abc" class="no-background" role="button" aria-pressed="true" value = " +"></td>
-                                    </form>
+                        <h3 class="h3-blue">'.$artist_market_tag.'
+                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                        </h3>
                     ';
-                } else {
+                }
+                else if($participating_campaigns[$i]->getType() == CampaignType::RAFFLE)
+                {
                     echo '
-                                    <td>N/A</td>
+                        <h3 class="h3-blue">'.$artist_market_tag.'
+                            <b class="text-dark"><b class="font-size-15">('.$participating_campaigns[$i]->getWinningChance().'%<input name = "artist_name[' . $participating_campaigns[$i]->getArtistUsername() . ']" type = "submit" id="abc" class="text-dark no-background" role="button" value = "+">)</b>♣</b>
+                        </h3>
                     ';
                 }
 
                 echo '
-                                <td>' . $participating_campaigns[$i]->getType() . '</td>
-                            </tr>
+                        <b style="color:black">🤲 '.$participating_campaigns[$i]->getOffering().'</b>
+                        <p style="color:black">⌛ '.$participating_campaigns[$i]->getTimeLeft().'</p>
+                        <b style="color:black">⌖ '.$participating_campaigns[$i]->getMinEthos().'</b>
+                    </div>
                 ';
             }
             echo '
-                        </tbody>
-                    </table>
+                </div>
+            ';
+        }
+        else
+        {
+            echo '
+                <h6>No campaign found</h6>
             ';
         }
     }
@@ -114,7 +109,7 @@
         }
         else 
         {
-            echo '<h5>No campaigns participated</h5>';
+            echo '<h6>No campaigns participated</h6>';
         }
     }
 
@@ -125,34 +120,48 @@
         if (sizeof($near_parti_campaigns) > 0) 
         {
             echo '
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Artist</th>
-                                <th scope="col">Offering</th>
-                                <th scope="col">Progress</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">⏳</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <div class="row">
             ';
 
             for ($i = 0; $i < sizeof($near_parti_campaigns); $i++) 
             {
+                $artist_market_tag = getArtistMarketTag($near_parti_campaigns[$i]->getArtistUsername());
                 echo '
-                            <tr>
-                                <th>' . $near_parti_campaigns[$i]->getArtistUsername() . '</th>
-                                <td>' . $near_parti_campaigns[$i]->getOffering() . '</td>
-                                <td>' . $near_parti_campaigns[$i]->getUserOwnedEthos() . '/'. $near_parti_campaigns[$i]->getMinEthos() .' ('.$near_parti_campaigns[$i]->getProgress().')</td>
-                                <td>' . $near_parti_campaigns[$i]->getType() . '</td>
-                                <td>' . $near_parti_campaigns[$i]->getTimeLeft() . '</td>
-                            </tr>
+                    <div class="campaign-box col-2.5">
+                ';
+
+                if($near_parti_campaigns[$i]->getType() == CampaignType::BENCHMARK)
+                {
+                    echo '
+                        <h3 class="h3-blue">'.$artist_market_tag.'
+                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                        </h3>
+                    ';
+                }
+                else if($near_parti_campaigns[$i]->getType() == CampaignType::RAFFLE)
+                {
+                    echo '
+                        <h3 class="h3-blue">'.$artist_market_tag.'
+                            <b class="text-dark"><b class="font-size-15">('.$near_parti_campaigns[$i]->getWinningChance().'%<input name = "artist_name[' . $near_parti_campaigns[$i]->getArtistUsername() . ']" type = "submit" id="abc" class="text-dark no-background" role="button" value = "+">)</b>♣</b>
+                        </h3>
+                    ';
+                }
+
+                echo '
+                        <b style="color:black">🤲 '.$near_parti_campaigns[$i]->getOffering().'</b>
+                        <p style="color:black">⌛ '.$near_parti_campaigns[$i]->getTimeLeft().'</p>
+                        <b style="color:black">⌖ '.$near_parti_campaigns[$i]->getUserOwnedEthos().'/'.$near_parti_campaigns[$i]->getMinEthos().'('.$near_parti_campaigns[$i]->getProgress().'%)</b>
+                    </div>
                 ';
             }
             echo '
-                            </tbody>
-                        </table>
+                </div>
+            ';
+        }
+        else
+        {
+            echo '
+                <h6>No campaign found</h6>
             ';
         }
     }
