@@ -123,17 +123,21 @@
                 if($near_parti_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
                     echo '
-                        <h3 class="h3-white">'.$artist_market_tag.'
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
-                        </h3>
+                        <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
+                            <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="text-bold" role="button" value = "'.$artist_market_tag.'">
+                                <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                            </h3>
+                        </form>
                     ';
                 }
                 else if($near_parti_campaigns[$i]->getType() == CampaignType::RAFFLE)
                 {
                     echo '
-                        <h3 class="h3-white">'.$artist_market_tag.'
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
-                        </h3>
+                        <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
+                            <h3 class="h3-white"><input name = "artist_tag" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" value = "'.$artist_market_tag.'">
+                                <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                            </h3>
+                        </form>
                     ';
                 }
 

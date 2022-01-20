@@ -1316,6 +1316,30 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
     }
 
     /**
+    * Get artist's username based on a given market tag
+    *
+    * @param  	artist_market_tag   given market tag of the artist to search for their username
+    *
+    * @return 	ret	                a string, containing the artist username
+    */
+    function getArtistUsernameFromTag($artist_market_tag)
+    {
+        $ret = StatusCodes::ErrGeneric;
+        $conn = connect();
+
+        $res = searchArtistByTicker($conn, $artist_market_tag);
+        if($res->num_rows > 0)
+        {
+            $artist_username = $res->fetch_assoc();
+            $ret = $artist_username['artist_username'];
+        }
+
+        closeCon($conn);
+
+        return $ret;
+    }
+
+    /**
     * Get the maximum price per share of an artist within a given day
     *
     * @param  	all_pps_in_a_day   an array containing all price per share of a specific day
