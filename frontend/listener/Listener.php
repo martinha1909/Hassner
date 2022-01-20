@@ -310,7 +310,7 @@
                             </div>
 
                             <div class="py-4">
-                                <h4 class="h4-blue">Near Participation</h4>
+                                <h4 class="h4-blue">Potential Participation</h4>
                                 <?php
                                     printNearParticipationCampaignTable($_SESSION['username']);
                                 ?>
