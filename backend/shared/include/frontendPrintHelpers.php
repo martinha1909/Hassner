@@ -26,9 +26,11 @@
                 }
                 else if($participating_campaigns[$i]->getType() == CampaignType::RAFFLE)
                 {
+                    //Add this to line 32 if we want to include the winning chance
+                    // <b class="font-size-15">('.$participating_campaigns[$i]->getWinningChance().'%)</b>
                     echo '
                         <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b class="text-dark"><b class="font-size-15">('.$participating_campaigns[$i]->getWinningChance().'%)</b>♣</b>
+                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
                         </h3>
                     ';
                 }
@@ -105,59 +107,67 @@
 
     function printNearParticipationCampaignTable($username)
     {
+        $campaign_display_max = 5;
         $near_parti_campaigns = fetchNearParticipationCampaign($username);
+        // $near_parti_campaigns = array();
 
-        if (sizeof($near_parti_campaigns) > 0) 
+        if (sizeof($near_parti_campaigns) == 0) 
         {
+            $near_parti_campaigns = fetchPotentialParticipationCampaign($username);
+            // $near_parti_campaigns = array();
+            if(sizeof($near_parti_campaigns) == 0)
+            {
+                $near_parti_campaigns = fetchTrendingCampaign($username);
+            }
+        }
+
+        if(sizeof($near_parti_campaigns) < 5)
+        {
+            $campaign_display_max = sizeof($near_parti_campaigns);
+        }
+
+        echo '
+            <div class="row">
+        ';
+
+        for ($i = 0; $i < $campaign_display_max; $i++) 
+        {
+            $artist_market_tag = getArtistMarketTag($near_parti_campaigns[$i]->getArtistUsername());
             echo '
-                <div class="row">
+                <div class="campaign-box-near col-2.5">
             ';
 
-            for ($i = 0; $i < sizeof($near_parti_campaigns); $i++) 
+            if($near_parti_campaigns[$i]->getType() == CampaignType::BENCHMARK)
             {
-                $artist_market_tag = getArtistMarketTag($near_parti_campaigns[$i]->getArtistUsername());
                 echo '
-                    <div class="campaign-box-near col-2.5">
-                ';
-
-                if($near_parti_campaigns[$i]->getType() == CampaignType::BENCHMARK)
-                {
-                    echo '
-                        <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
-                            <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
-                                <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
-                            </h3>
-                        </form>
-                    ';
-                }
-                else if($near_parti_campaigns[$i]->getType() == CampaignType::RAFFLE)
-                {
-                    echo '
-                        <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
-                            <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
-                                <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
-                            </h3>
-                        </form>
-                    ';
-                }
-
-                echo '
-                        <b class="text-black">🤲 '.$near_parti_campaigns[$i]->getOffering().'</b>
-                        <p class="text-black text-bold">⌛ '.$near_parti_campaigns[$i]->getTimeLeft().'</p>
-                        <b class="text-black">⌖ '.$near_parti_campaigns[$i]->getUserOwnedEthos().'/'.$near_parti_campaigns[$i]->getMinEthos().'('.$near_parti_campaigns[$i]->getProgress().'%)</b>
-                    </div>
+                    <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
+                        <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
+                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                        </h3>
+                    </form>
                 ';
             }
+            else if($near_parti_campaigns[$i]->getType() == CampaignType::RAFFLE)
+            {
+                echo '
+                    <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
+                        <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
+                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                        </h3>
+                    </form>
+                ';
+            }
+
             echo '
+                    <b class="text-black">🤲 '.$near_parti_campaigns[$i]->getOffering().'</b>
+                    <p class="text-black text-bold">⌛ '.$near_parti_campaigns[$i]->getTimeLeft().'</p>
+                    <b class="text-black">⌖ '.$near_parti_campaigns[$i]->getUserOwnedEthos().'/'.$near_parti_campaigns[$i]->getMinEthos().'('.$near_parti_campaigns[$i]->getProgress().'%)</b>
                 </div>
             ';
         }
-        else
-        {
-            echo '
-                <h6>No campaign found</h6>
-            ';
-        }
+        echo '
+            </div>
+        ';
     }
 
     function printArtistCurrentCampaignTable($artist_username)
