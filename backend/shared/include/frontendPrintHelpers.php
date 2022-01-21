@@ -161,7 +161,7 @@
             {
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
-                        <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
+                        <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
                             <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
                         </h3>
                     </form>
@@ -171,7 +171,7 @@
             {
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
-                        <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
+                        <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
                             <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
                         </h3>
                     </form>

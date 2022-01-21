@@ -106,7 +106,7 @@
                     </li>
                 </ul>
                 <div class="container my-auto mx-auto col-6">
-                    <ul class="list-group my-4">
+                    <ul class="list-group-campaign my-4">
                         <div id="portfolio_content">
                             <table class="table">
                                 <thead>

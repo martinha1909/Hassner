@@ -5157,6 +5157,16 @@ input[type="button"].btn-block {
   min-width: 200px;
 }
 
+.list-group-campaign {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  min-width: 800px;
+}
+
 .list-group-item-action {
   width: 100%;
   color: #546e7a;
