@@ -455,7 +455,8 @@
     }
 
     /**
-    * Fetches partly participated campaigns of a user. Sort by the progress towards that campaign descendingly
+    * Fetches partly participated campaigns of a user (0% < x < 80%, with x is progress towards campaign's completion). 
+    * Sort by the progress towards that campaign descendingly
     *
     * @param  	user_username	    Username to fetch campaigns for
     * @return 	ret	                an array of campaign objects, containing all campaigns that a user has more than 0% of progress
@@ -511,6 +512,13 @@
         return $ret;
     }
 
+    /**
+    * Fetch campaigns that have the most users participated in accross all artists
+    *
+    * @param  	username	    user username to query campaigns to display for
+    *
+    * @return   ret             an array of campaigns
+    */
     function fetchTrendingCampaign($user_username)
     {
         $ret = array();

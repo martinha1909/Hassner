@@ -105,16 +105,27 @@
         }
     }
 
+    /**
+    * Prints potential participation campaigns for a user. 
+    * The purpose of this is to encourage listeners to discover artists faster as well as for new users to discover campaigns faster
+    * The sequence of this function is as follows:
+    * If a user has been invested in some artists, then we fetch the artist campaigns that the user has completed 80% or more first
+    * If the above condition returns 0 campaigns, we then fetch all the campaigns that the user could potential participate, which is 0% < x < 80%
+    * If both conditions above return 0, then it means that a user is a new user and has not invested in any artists, we then browse the most trending campaigns to display
+    * Note: a trending campaign is determined by having the most participating users at that given time
+    *
+    * @param  	username	    user username to query campaigns to display for
+    *
+    * @return   ret             an array of campaigns
+    */
     function printNearParticipationCampaignTable($username)
     {
         $campaign_display_max = 5;
         $near_parti_campaigns = fetchNearParticipationCampaign($username);
-        // $near_parti_campaigns = array();
 
         if (sizeof($near_parti_campaigns) == 0) 
         {
             $near_parti_campaigns = fetchPotentialParticipationCampaign($username);
-            // $near_parti_campaigns = array();
             if(sizeof($near_parti_campaigns) == 0)
             {
                 $near_parti_campaigns = fetchTrendingCampaign($username);
