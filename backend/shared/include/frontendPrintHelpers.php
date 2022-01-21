@@ -559,4 +559,52 @@
             <h5 class="error-msg" id="trade_history_not_found"></h5>
         ';
     }
+
+    function printUserCurrentArtistCampaign($artist_username)
+    {
+        $current_campaigns = artistCurrentCampaigns($artist_username);
+
+        if($_SESSION['artist_found'])
+        {
+            echo '
+                <h3 class="h3-blue py-5">Current Campaigns</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Offering</th>
+                            <th scope="col">Minimum Shares</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Date Commenced</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ';
+
+            for($i = 0; $i < sizeof($current_campaigns); $i++)
+            {
+                $type = "Error in parsing type";
+                if($current_campaigns[$i]->getType() == CampaignType::RAFFLE)
+                {
+                    $type = "♢";
+                }
+                else if($current_campaigns[$i]->getType() == CampaignType::BENCHMARK)
+                {
+                    $type = "♧";
+                }
+                echo '
+                        <tr>
+                            <th scope="row">' . $current_campaigns[$i]->getOffering() . '</th>
+                            <td>' . $current_campaigns[$i]->getMinEthos() . '</td>
+                            <td>' . $type .'</td>
+                            <td>'. dbDateTimeParser($current_campaigns[$i]->getDatePosted()) .'</td>
+                        </tr>
+                ';
+            }
+
+            echo '
+                    </tbody>
+                </table>
+            ';
+        }
+    }
 ?>
