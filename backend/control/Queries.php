@@ -424,8 +424,8 @@
         function searchTrendingCampaign($conn)
         {
             $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner 
-            FROM campaign
-            ORDER BY eligible_participants DESC";
+                    FROM campaign
+                    ORDER BY eligible_participants DESC";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();

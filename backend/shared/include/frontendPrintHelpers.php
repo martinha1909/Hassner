@@ -1,4 +1,9 @@
 <?php
+    /**
+    * Prints campaigns that a user is currently participating
+    *
+    * @param  	username	    user username to query campaigns to display for
+    */
     function printParticipatingCampaignTable($username)
     {
         $participating_campaigns = fetchInvestedArtistCampaigns($username);
@@ -54,6 +59,11 @@
         }
     }
 
+    /**
+    * Prints campaigns that a user has participated in the past
+    *
+    * @param  	username	    user username to query campaigns to display for
+    */
     function printPastParticipatedCampaignTable($username)
     {
         $participated_campaigns = fetchParticipatedCampaigns($username);
@@ -116,8 +126,6 @@
     * Maximum number of campaigns to display is 5
     *
     * @param  	username	    user username to query campaigns to display for
-    *
-    * @return   ret             an array of campaigns
     */
     function printNearParticipationCampaignTable($username)
     {
