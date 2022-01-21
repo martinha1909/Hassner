@@ -61,9 +61,10 @@ hassnerInit();
             <a href="login.php"> Already have an account?</a>
           </div>
 
-          <div class="col text-center">
+          <!-- TODO: Uncomment this when admin is available -->
+          <!-- <div class="col text-center">
             <a href="AdminSignUp.php"> Want to become an admin?</a>
-          </div>
+          </div> -->
 
           <!-- signup form -->
           <form action="../../backend/credentials/SignUpBackEnd.php" method="post">
