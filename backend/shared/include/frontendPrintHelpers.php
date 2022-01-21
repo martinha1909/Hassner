@@ -113,6 +113,7 @@
     * If the above condition returns 0 campaigns, we then fetch all the campaigns that the user could potential participate, which is 0% < x < 80%
     * If both conditions above return 0, then it means that a user is a new user and has not invested in any artists, we then browse the most trending campaigns to display
     * Note: a trending campaign is determined by having the most participating users at that given time
+    * Maximum number of campaigns to display is 5
     *
     * @param  	username	    user username to query campaigns to display for
     *
