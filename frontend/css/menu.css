@@ -417,3 +417,7 @@ select::-ms-expand {
   border:0px transparent;
   background-color: transparent;
 }
+
+.input-no-border:hover {
+  cursor: pointer;
+}
