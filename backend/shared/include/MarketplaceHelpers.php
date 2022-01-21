@@ -537,79 +537,45 @@ function USDToCurrencies($amount, $currency): float
 
 function fiatInit()
 {
-    $account_info = getAccount($_SESSION['username']);
-
     $balance = getUserBalance($_SESSION['username']);
     $msg = "getUserBalance returned ".$balance." as a result";
     hx_debug(HX::HELPER, $msg);
 
     echo '
-            <section id="login" class="py-5";>
-                <div class="container">
-                    <div class="col-12 mx-auto my-auto text-center">
-                        <form action="../../backend/shared/CurrencyBackend.php" method="post">
-        ';
+        <section id="login" class="py-5";>
+            <div class="container">
+                <div class="col-12 mx-auto my-auto text-center">
 
-    showJSStatusMsg();
-
-    if ($_SESSION['currency'] == 0) 
-    {
-        echo '
                     <div style="float:none;margin:auto;" class="select-dark">
-                        <select name="currency" class="select-dropdown select-dropdown-dark" value="USD" onchange="this.form.submit()">
-                            <option value="USD" selected disabled>USD</option>
-                            <option value="USD">USD</option>
-                            <option value="CAD">CAD</option>
-                            <option value="EUR">EUR</option>
+                        <select id="balance_dropdown" class="select-dropdown select-dropdown-dark">
+                            <option id="balance_dropdown_selected" selected disabled>Choose a currency</option>
+                            <option value="'.Currency::USD.'">'.Currency::USD.'</option>
+                            <option value="'.Currency::CAD.'">'.Currency::CAD.'</option>
+                            <option value="'.Currency::EUR.'">'.Currency::EUR.'</option>
                         </select>
                     </div>
-            ';
-        echo "Account balance: " . $balance . "<br>";
-    } 
-    else 
-    {
-        echo '
-                    <div style="float:none;margin:auto;" class="select-dark">
-                        <select name="currency" class="select-dropdown select-dropdown-dark" value="'.$_SESSION['currency'].'" onchange="this.form.submit()">
-                            <option value="'.$_SESSION['currency'].'" selected disabled>' . $_SESSION['currency'] . '</option>
-                            <option value="USD">USD</option>
-                            <option value="CAD">CAD</option>
-                            <option value="EUR">EUR</option>
-                        </select>
-                    </div>
-            ';
-        echo "Account balance: " . $balance . "<br>";
-        if ($_SESSION['currency'] == 0) 
-        {
-            echo '
-                        <h5 style="padding-top:150px;"> Please choose a currency</h5>
-                ';
-        } 
-        else 
-        {
-            echo '
-                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                        <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
-                        <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
-                    </div>
-                ';
-        }
-    }
+                    Account balance: ' . $balance . '<br>
+                    '.showJSStatusMsg().'
 
-    echo '
-                <div class="div-hidden" id="balance_div">  
-                    <div class="form-group">
-                        <h5 style="padding-top:150px;" id="deposit_or_withdraw_header">Enter Amount in ' . $_SESSION['currency'] . '</h5>
-                        <input type="text" name = "amount" style="border-color: white;" class="form-control form-control-sm" id="deposit_withdraw_amount" placeholder="Enter amount">
-                    </div>
-                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            <input type = "submit" class="btn btn-primary" id="checkout_btn" value = "Continue to Checkout"> 
+                    <div class="div-hidden" id="after_currency_div">
+                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                            <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
+                            <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
+                        </div>
+
+                        <div class="div-hidden" id="balance_div">  
+                            <div class="form-group">
+                                <h5 style="padding-top:150px;" id="deposit_or_withdraw_header"></h5>
+                                <input type="text" name = "amount" style="border-color: white;" class="form-control form-control-sm" id="deposit_withdraw_amount" placeholder="Enter amount">
+                            </div>
+                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                <input type = "submit" class="btn btn-primary" id="checkout_btn" value = "Continue to Checkout"> 
+                            </div>
+                        </div>
                     </div>
                 </div>
-                </form>
             </div>
-        </div>
-</section>
+        </section>
     ';
 }
 
@@ -646,7 +612,7 @@ function injectionHistoryInit($artist_username)
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Ethos amount</th>
+                        <th scope="col">Share amount</th>
                         <th scope="col">Comment</th>
                         <th scope="col">Date Injected</th>
                     </tr>
