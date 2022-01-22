@@ -313,11 +313,25 @@ select::-ms-expand {
 /* User Balance Classes */
 
 .user-balance {
+  border-radius: 8px;
   color: #1c1c1cff;
   font-weight: bold;
   background-color: white;
-  border-left: 4px solid #1c1c1cff;
-  border-right: 4px solid white;
+  border: 2px solid #1c1c1cff;
+  padding: 4px;
+}
+
+.user-balance:hover {
+  border-radius: 8px;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  background-color: white;
+  border: 2px solid #0a60d0;
+  padding: 4px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 /* Video ID */
