@@ -532,7 +532,7 @@
 
         echo '<h3 class="h3-blue">Inject history</h3>';
 
-        injectionHistoryInit($_SESSION['username']);
+        echo injectionHistoryInit($_SESSION['username']);
     }
 
     function printArtistTradeHistoryTable($artist_username)
@@ -606,5 +606,49 @@
                 </table>
             ';
         }
+    }
+
+    function printUserBuyHistoryTable($user_username): string
+    {
+        $ret = "";
+
+        $sellers = array();
+        $prices = array();
+        $quantities = array();
+        $date_purchase = array();
+
+        buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $user_username);
+        $ret .= '
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Seller</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Date Purchased</th>
+                    </tr>
+                </thead>
+                <tbody>
+        ';
+
+        
+
+        for ($i = 0; $i < sizeof($sellers); $i++) {
+            $ret .= '
+                        <tr>
+                            <td>' . $sellers[$i] . '</td>
+                            <td>' . $prices[$i] . '</td>
+                            <td>' . $quantities[$i] . '</td>
+                            <td>' . $date_purchase[$i] . '</td>
+                        </tr>
+            ';
+        }
+
+        $ret .= '
+                </tbody>
+            </table>   
+        ';
+
+        return $ret;
     }
 ?>

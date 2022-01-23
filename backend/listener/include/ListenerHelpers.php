@@ -458,12 +458,14 @@
     * -  Trades displays the total number of trades that day
     *
     * @param  	artist_username	    chosen artist
+    * @return   ret                 string that contains the information to be printed on the frontend
     */
-    function tradeHistoryInit($artist_username)
+    function tradeHistoryInit($artist_username): string
     {
+        $ret = '';
         $conn = connect();
 
-        echo '
+        $ret .= '
             <div class="mx-auto text-center py-2 col-8">
                 <h3 class="h3-blue py-2">Trade History</h3>
                 <h6>From</h6>
@@ -499,6 +501,8 @@
 
         $_SESSION['trade_history_from'] = 0;
         $_SESSION['trade_history_to'] = 0;
+
+        return $ret;
     }
 
     /**

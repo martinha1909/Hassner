@@ -9,6 +9,7 @@
     include '../../backend/constants/CampaignType.php';
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
+    include '../../backend/constants/TradeHistoryType.php';
     include '../../backend/object/Node.php';
     include '../../backend/object/TickerInfo.php';
     include '../../backend/object/SellOrder.php';
@@ -181,10 +182,10 @@
                             echo '
                                 <canvas id="stock_graph"></canvas>
                                 <div class="text-center">
-                                    <a>Mkt Cap: '.$market_cap.'</a>
-                                    <a>Volume: '.$volume.'</a>
-                                    <a>Open: '.$open.'</a>
-                                    <a>High: '.$high.'</a>
+                                    <a>Mkt Cap: '.$market_cap.' | </a>
+                                    <a>Volume: '.$volume.' | </a>
+                                    <a>Open: '.$open.' | </a>
+                                    <a>High: '.$high.' | </a>
                                     <a>Low: '.$low.'</a>
                                 </div>
                             ';
@@ -272,66 +273,47 @@
         <div class="container-fluid">
             <div class="row align-items-start">
                 <div class="my-auto text-center col-6">
+                    <div>
                     <?php
                         if($_SESSION['artist_found'])
                         {
                             echo '
-                                <div>
-                                    <h3 class="h3-blue py-5">Buy History</h3>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Seller</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Quantity</th>
-                                                <th scope="col">Date Purchased</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                <h3 class="h3-blue py-5">History</h3>
+                                <div class="my-4 mx-auto select-dark">
+                                    <select class="select-dropdown select-dropdown-dark text-center" id="user_history_dropdown">
+                                        <option selected disabled>'.TradeHistoryType::NONE.'</option>
+                                        <option value="'.TradeHistoryType::BUY_HISTORY.'">'.TradeHistoryType::BUY_HISTORY.'</option>
+                                        <option value="'.TradeHistoryType::TRADE_HISTORY.'">'.TradeHistoryType::TRADE_HISTORY.'</option>
+                                        <option value="'.TradeHistoryType::INJECTION_HISTORY.'">'.TradeHistoryType::INJECTION_HISTORY.'</option>
+                                    </select>
+                                </div>
+
+                                <div class="div-hidden" id="user_buy_history_content">
+                                    '.printUserBuyHistoryTable($_SESSION['username']).'
+                                </div>
+
+                                <div class="div-hidden" id="user_trade_history_content">
+                                    '.tradeHistoryInit($_SESSION['selected_artist']).'
+                                </div>
+
+                                <div class="div-hidden" id="user_inject_history_content">
+                                    '.injectionHistoryInit($_SESSION['selected_artist']).'
                                 </div>
                             ';
-
-                            $sellers = array();
-                            $prices = array();
-                            $quantities = array();
-                            $date_purchase = array();
-
-                            buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $_SESSION['username']);
-
-                            for ($i = 0; $i < sizeof($sellers); $i++) {
-                                echo '
-                                            <tr>
-                                                <td>' . $sellers[$i] . '</td>
-                                                <td>' . $prices[$i] . '</td>
-                                                <td>' . $quantities[$i] . '</td>
-                                                <td>' . $date_purchase[$i] . '</td>
-                                            </tr>
-                                ';
-                            }
-
-                            echo '
-                                        </tbody>
-                                    </table>
-                            ';
-
-                            tradeHistoryInit($_SESSION['selected_artist']);
-
-                            echo '<h3 class="h3-blue py-5">Share Injection History</h3>';
-
-                            injectionHistoryInit($_SESSION['selected_artist']);
-                    }
-                    else
-                    {
-                        echo '<h3>No results for "'.$_SESSION['selected_artist'].'"</h3>';
-                    }
+                        }
+                        else
+                        {
+                            echo '<h3>No results for "'.$_SESSION['selected_artist'].'"</h3>';
+                        }
+                    ?>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <?php
+                        printUserCurrentArtistCampaign($_SESSION['selected_artist']);
                     ?>
                 </div>
             </div>
-            <div class="col-6">
-                <?php
-                    printUserCurrentArtistCampaign($_SESSION['selected_artist']);
-                ?>
-                </div>
         </div>
     </section>
 
@@ -354,6 +336,7 @@
     <script type="text/javascript" src="../js/graph/linegraph.js"></script>
     <script type="text/javascript" src="../js/listener/artist_sliders.js"></script>
     <script src="../js/listener/TradeHistory.js"></script>
+    <script src="../js/listener/EthosHistory.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
