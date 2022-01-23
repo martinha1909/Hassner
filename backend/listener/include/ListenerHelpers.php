@@ -390,8 +390,8 @@
 
     /**
     * Fetches all near participation campaign of a given user. 
-    * A near participation campaign is determined if a user has a completion progress of more than 90% towards the campaign minimum requirement
-    * For example, a campaign that has a minimum requirement of 20 ethos, any users that has invested 18 or more ethos in the owner of that campaign 
+    * A near participation campaign is determined if a user has a completion progress of more than 80% towards the campaign minimum requirement
+    * For example, a campaign that has a minimum requirement of 20 ethos, any users that has invested 16 or more ethos in the owner of that campaign 
     * will be treated as a near participation campaign
     *
     * @param  	user_username	    Username to fetch campaigns for
@@ -425,7 +425,7 @@
                                                                 $date_expires, 
                                                                 $time_expires);
 
-                        $progress_calc = ($total_shares_bought/$row['minimum_ethos']) * 100;
+                        $progress_calc = round(($total_shares_bought/$row['minimum_ethos']) * 100, 2);
 
                         if($campaign_time_left != "0000-00-00 00:00:00")
                         {                 
@@ -443,6 +443,116 @@
                         }
                     }
                 }
+            }
+        }
+
+        if(sizeof($ret) > 1)
+        {
+            Campaign::sort($ret, 0, (sizeof($ret)-1), "Descending", "Progress");
+        }
+
+        return $ret;
+    }
+
+    /**
+    * Fetches partly participated campaigns of a user (0% < x < 80%, with x is progress towards campaign's completion). 
+    * Sort by the progress towards that campaign descendingly
+    *
+    * @param  	user_username	    Username to fetch campaigns for
+    * @return 	ret	                an array of campaign objects, containing all campaigns that a user has more than 0% of progress
+    */
+    function fetchPotentialParticipationCampaign($user_username)
+    {
+        $ret = array();
+        $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
+        $conn = connect();
+        $all_artists = getAllInvestedArtists($user_username);
+
+        for($i = 0; $i < sizeof($all_artists); $i++) 
+        {
+            $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
+            $res = searchArtistCampaignsByExpDateNotEnough($conn, $all_artists[$i], $total_shares_bought);
+            while($row = $res->fetch_assoc())
+            {
+                $near_participation_campaign = new Campaign();
+                $date_expires = explode(" ", $row['date_expires'])[0];
+                $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
+
+                $campaign_time_left = calculateTimeLeft($current_date[0], 
+                                                        $current_date[1], 
+                                                        $date_expires, 
+                                                        $time_expires);
+
+                $progress_calc = round(($total_shares_bought/$row['minimum_ethos']) * 100, 2);
+
+                //Just a safe check
+                if($campaign_time_left != "0000-00-00 00:00:00")
+                {                 
+                    $near_participation_campaign->setArtistUsername($row['artist_username']);
+                    $near_participation_campaign->setOffering($row['offering']);
+                    $near_participation_campaign->setProgress($progress_calc);
+                    $near_participation_campaign->setTimeLeft($campaign_time_left);
+                    $near_participation_campaign->setMinEthos($row['minimum_ethos']);
+                    $near_participation_campaign->setUserOwnedEthos($total_shares_bought);
+                    $near_participation_campaign->setType($row['type']);
+                    //User hasn't participated yet, so winning chance is still 0
+                    $near_participation_campaign->setWinningChance(0);
+
+                    array_push($ret, $near_participation_campaign);
+                }
+            }
+            
+        }
+
+        if(sizeof($ret) > 1)
+        {
+            Campaign::sort($ret, 0, (sizeof($ret)-1), "Descending", "Progress");
+        }
+
+        return $ret;
+    }
+
+    /**
+    * Fetch campaigns that have the most users participated in accross all artists
+    *
+    * @param  	username	    user username to query campaigns to display for
+    *
+    * @return   ret             an array of campaigns
+    */
+    function fetchTrendingCampaign($user_username)
+    {
+        $ret = array();
+        $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
+        $conn = connect();
+        $res = searchTrendingCampaign($conn);
+        while($row = $res->fetch_assoc())
+        {
+            $trending_campaign = new Campaign();
+            $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $row['artist_username']);
+
+            $date_expires = explode(" ", $row['date_expires'])[0];
+            $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
+
+            $campaign_time_left = calculateTimeLeft($current_date[0], 
+                                                    $current_date[1], 
+                                                    $date_expires, 
+                                                    $time_expires);
+
+            $progress_calc = round(($total_shares_bought/$row['minimum_ethos']) * 100, 2);
+
+            if($campaign_time_left != "0000-00-00 00:00:00")
+            {                 
+                $trending_campaign->setArtistUsername($row['artist_username']);
+                $trending_campaign->setOffering($row['offering']);
+                $trending_campaign->setProgress($progress_calc);
+                $trending_campaign->setTimeLeft($campaign_time_left);
+                $trending_campaign->setMinEthos($row['minimum_ethos']);
+                $trending_campaign->setUserOwnedEthos($total_shares_bought);
+                $trending_campaign->setType($row['type']);
+                //User hasn't participated yet, so winning chance is still 0
+                $trending_campaign->setWinningChance(0);
+
+                array_push($ret, $trending_campaign);
             }
         }
 
