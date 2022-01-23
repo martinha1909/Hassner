@@ -63,6 +63,10 @@
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
                 $purchase_price = $chosen_min;
+                $new_quantity = autoPurchaseWithLimitSet($_SESSION['username'],
+                                                         $_SESSION['selected_artist'],
+                                                         $quantity,
+                                                         $purchase_price);
                 //TODO: Code to handle when limit is set
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)

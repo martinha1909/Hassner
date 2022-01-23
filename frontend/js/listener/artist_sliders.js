@@ -22,11 +22,18 @@ function recalcSliderLimits(new_chosen_min, new_chosen_max)
     success : function(data) {
       max_num_of_shares = data;
       $("#buy_num").slider("option", "max", data);
-      console.log($("#buy_num").slider("value"));
       $("#buy_num_shares").val($("#buy_num").slider("value"));
       if(new_chosen_max < max_limit)
       {
         $("#buy_cost").val($("#buy_num").slider("value") * max);
+      }
+      if(new_chosen_min > min_limit)
+      {
+        $("#buy_cost").val($("#buy_num").slider("value") * min);
+      }
+      if((new_chosen_max == max_limit && new_chosen_min == min_limit) || (new_chosen_max < max_limit && new_chosen_min > min_limit))
+      {
+        $("#buy_cost").val($("#buy_num").slider("value") * $("#pps").text());
       }
     },
     error : function(data){
@@ -69,21 +76,21 @@ $( function() {
         min = ui.values[0];
         max = ui.values[1];
         if(min == min_limit && max == max_limit){
-          $("#buy_tip").text("Without limits the next available share(s) will be purchased at market price");
+          $("#buy_tip").text("Order will be executed as market price");
           $("#buy_cost").val("$" + $("#buy_num").slider("value")*$("#pps").text());
           recalcSliderLimits(min, max);
         }
         else if (min > min_limit && max == max_limit){
-          $("#buy_tip").text("The buy order will be executed as soon as the price is <= " + min);
+          $("#buy_tip").text("The buy order will be executed as soon as the price is ≤  " + min);
           $("#buy_cost").val("$" + $("#buy_num").slider("value")*min);
           recalcSliderLimits(min, max);
         }
         else if (min > min_limit && max < max_limit){
-          $("#buy_tip").text("The buy order will be executed as soon as the price is <= " + min + " or >= " + max);
+          $("#buy_tip").text("The buy order will be executed as soon as the price is ≤  " + min + " or ≥ " + max);
           recalcSliderLimits(min, max);
         }
         else if (min == min_limit && max < max_limit){
-          $("#buy_tip").text("The buy order will be executed as soon as the price is >= " + max);
+          $("#buy_tip").text("The buy order will be executed as soon as the price is ≥ " + max);
           $("#buy_cost").val("$" + $("#buy_num").slider("value")*max);
           recalcSliderLimits(min, max);
         }
@@ -101,18 +108,18 @@ $( function() {
         min = ui.values[0];
         max = ui.values[1];
         if(min == min_limit && max == max_limit){
-          $("#sell_tip").text("Without limits the next available share(s) will be purchased at market price");
+          $("#sell_tip").text("Order will be executed as market price");
           $("#sell_cost").val("$" + $("#sell_num").slider("value")*$("#pps").text());
         }
         else if (min > min_limit && max == max_limit){
-          $("#sell_tip").text("The sell order will be executed as soon as the price is <= " + min);
+          $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + min);
           $("#sell_cost").val("$" + $("#sell_num").slider("value")*min);
         }
         else if (min > min_limit && max < max_limit){
-          $("#sell_tip").text("The sell order will be executed as soon as the price is <= " + min + " or >= " + max);
+          $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + min + " or ≥ " + max);
         }
         else if (min == min_limit && max < max_limit){
-          $("#sell_tip").text("The sell order will be executed as soon as the price is >= " + max);
+          $("#sell_tip").text("The sell order will be executed as soon as the price is ≥ " + max);
           $("#sell_cost").val("$" + $("#sell_num").slider("value")*max);
         }
       }

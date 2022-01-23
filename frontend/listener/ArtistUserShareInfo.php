@@ -227,7 +227,7 @@
                                         <div class="slider_container">
                                             <div class="textbox_container">
                                                 <div class="stocktip">
-                                                    <p id="buy_tip">Without limits the next available share(s) will be purchased</p>
+                                                    <p id="buy_tip">Order will be executed as market price</p>
                                                 </div>
                                                 <label for="buy_num_shares"># Shares:</label>
                                                 <input type="text" class="slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
@@ -259,7 +259,7 @@
                                         <div class="slider_container">
                                             <div class="textbox_container">
                                                 <div class="stocktip">
-                                                    <p id="sell_tip">Without limits your shares will be sold to the next available buyer</p>
+                                                    <p id="sell_tip">Order will be executed as market price</p>
                                                 </div>
                                                 <label for="sell_num_shares"># Shares:</label>
                                                 <input type="text" class="slider_text" id="sell_num_shares" style="border:0; color:#f6931f; font-weight:bold;">

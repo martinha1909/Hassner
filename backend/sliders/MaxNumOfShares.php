@@ -18,7 +18,7 @@
     //User should be able to create for a buy order up to the max number of share distributed - total shares bought by him
     $num_of_available_shares = $artist_share_distributed - $num_of_shares_invested;
 
-    if($chosen_min == $min_lim && $chosen_max == $max_lim)
+    if(($chosen_min == $min_lim && $chosen_max == $max_lim) || ($chosen_min > $min_lim && $chosen_max < $max_lim))
     {
         //maximum amount of shares user can buy at current price per share with current amount of balance
         $max_amount_can_purchase = $user_balance/$artist_pps;
@@ -52,7 +52,7 @@
             $json_data = $max_amount_can_purchase;
         }
     }
-    else if (($chosen_min > $min_lim && $chosen_max < $max_lim) || ($chosen_min == $min_lim && $chosen_max < $max_lim))
+    else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
     {
         //maximum amount of shares user can buy at chosen stop with current amount of balance
         $max_amount_can_purchase = $user_balance/$chosen_max;
