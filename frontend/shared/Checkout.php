@@ -164,7 +164,7 @@ $_SESSION['expyear'] = 0;
               <label for="expmonth">Exp Month</label>
               <?php
               echo '<div class="select-dark">
-                          <select name="expmonth" id="dark">
+                          <select name="expmonth" class="select-dropdown select-dropdown-dark">
                               <option selected disabled>Month</option>
                               <option value="1">01</option>
                               <option value="2">02</option>
@@ -186,7 +186,7 @@ $_SESSION['expyear'] = 0;
                   <label for="expyear">Exp Year</label>
                   <?php
                   echo '<div class="select-dark">
-                          <select name="expyear" id="dark">
+                          <select name="expyear" class="select-dropdown select-dropdown-dark">
                               <option selected disabled>Year</option>';
                   for ($i = 2021; $i < 2031; $i++) 
                   {

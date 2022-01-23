@@ -253,5 +253,95 @@
         {
                 $this->deliver_progress = $deliver_progress;
         }
+
+        private static function copy(Campaign $campaign)
+        {
+            $ret = new Campaign();
+
+            $ret = clone $campaign;
+
+            return $ret;
+        }
+
+        /**
+        * Swaps 2 elements of the array, using copy function as a variable placeholder
+        *
+        * @param  	arr array in which indices are swapped
+        * @param  	i   index to be swapped
+        * @param  	j   index to be swapped
+        */
+        private static function swap(&$arr, $i, $j)
+        {
+            $temp = Campaign::copy($arr[$i]);
+            $arr[$i] = Campaign::copy($arr[$j]);
+            $arr[$j] = $temp;
+        }
+
+        /**
+        * takes last element as pivot, places the pivot element at its correct position in sorted array, 
+        * and places all smaller (smaller than pivot) to left of pivot and all greater elements to right of pivot
+        *
+        * @param  	campaign_info_arr	array to be partitiioned
+        * @param  	low	                starting index of the array
+        * @param  	high                ending index of the array
+        * @param  	option              descending or ascending option
+        * @param  	item                variable to use as a base to sort
+        */
+        private static function partition(&$campaign_info_arr, $low, $high, $option, $item)
+        {
+            if($item == "Progress")
+            {
+                $pivot = $campaign_info_arr[$high]->getProgress();
+            }
+
+            $i = $low - 1;
+
+            for($j = $low; $j <= $high - 1; $j++)
+            {
+                if($option == "Descending")
+                {
+                    if($item == "Progress")
+                    {
+                        if($campaign_info_arr[$j]->getProgress() > $pivot)
+                        {
+                            $i++;
+                            Campaign::swap($campaign_info_arr, $i, $j);
+                        }
+                    }
+                }
+                else if($option == "Ascending")
+                {
+                    if($item == "Progress")
+                    {
+                        if($campaign_info_arr[$j]->getProgress() < $pivot)
+                        {
+                            $i++;
+                            Campaign::swap($campaign_info_arr, $i, $j);
+                        }
+                    }
+                }
+            }
+            Campaign::swap($campaign_info_arr, ($i + 1), $high);
+            return ($i + 1);
+        }
+
+        /**
+        * Sort an Campaign array using quick sort 
+        *
+        * @param  	campaign_info_arr	array to be sorted
+        * @param  	low	                starting index of the array
+        * @param  	high                ending index of the array
+        * @param  	item                variable to use as a base to sort
+        */
+        public static function sort(&$campaign_info_arr, $low, $high, $option, $item)
+        {
+            if($low < $high)
+            {
+                $pi = Campaign::partition($campaign_info_arr, $low, $high, $option, $item);
+
+                Campaign::sort($campaign_info_arr, $low, ($pi - 1), $option, $item);
+                Campaign::sort($campaign_info_arr, ($pi + 1), $high, $option, $item);
+            }
+        }
     }
 ?>

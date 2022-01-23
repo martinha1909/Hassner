@@ -442,13 +442,13 @@ function getAmountSharesRequesting($user_username, $artist_username)
 }
 
 /**
-    * Get artist highest or lowest sell order, depends on the selected option
-    *
-    * @param  	artist_username	  artist username to retrieve all the sell orders from
-    * @param  	indicator	      option to have action upon, MAX would get the highest and MIN would get the lowest
-    *
-    * @return 	the price of the sell order, as indicated by indicator
-    */
+* Get artist highest or lowest sell order, depends on the selected option
+*
+* @param  	artist_username	  artist username to retrieve all the sell orders from
+* @param  	indicator	      option to have action upon, MAX would get the highest and MIN would get the lowest
+*
+* @return 	the price of the sell order, as indicated by indicator
+*/
 function getHighestOrLowestPPS($artist_username, $indicator)
 {
     if ($indicator == "MAX") 
@@ -484,6 +484,12 @@ function getHighestOrLowestPPS($artist_username, $indicator)
 
         $res2 = searchArtistLowestPrice($conn, $artist_username);
         $lowest_asked_price = $res2->fetch_assoc();
+
+        //If no sell order found, return the market price
+        if($lowest_asked_price['minimum'] == NULL)
+        {
+            return $market_price['price_per_share'];
+        }
 
         //if market price is lower, return that as a lowest value
         if ($market_price['price_per_share'] < $lowest_asked_price['minimum']) {
@@ -537,81 +543,65 @@ function USDToCurrencies($amount, $currency): float
 
 function fiatInit()
 {
-    $account_info = getAccount($_SESSION['username']);
-
     $balance = getUserBalance($_SESSION['username']);
     $msg = "getUserBalance returned ".$balance." as a result";
     hx_debug(HX::HELPER, $msg);
 
     echo '
-            <section id="login" class="py-5";>
-                <div class="container">
-                    <div class="col-12 mx-auto my-auto text-center">
-                        <form action="../../backend/shared/CurrencyBackend.php" method="post">
+        <section id="login" class="py-5";>
+            <div class="container">
+                <div class="col-12 mx-auto my-auto text-center">
+    ';
+    if(!($_SESSION['testing_phase']))
+    {
+        $balance = getUserBalance($_SESSION['username']);
+        $msg = "getUserBalance returned ".$balance." as a result";
+        hx_debug(HX::HELPER, $msg);
+
+        echo '
+
+                    <div style="float:none;margin:auto;" class="select-dark">
+                        <select id="balance_dropdown" class="select-dropdown select-dropdown-dark">
+                            <option id="balance_dropdown_selected" selected disabled>Choose a currency</option>
+                            <option value="'.Currency::USD.'">'.Currency::USD.'</option>
+                            <option value="'.Currency::CAD.'">'.Currency::CAD.'</option>
+                            <option value="'.Currency::EUR.'">'.Currency::EUR.'</option>
+                        </select>
+                    </div>
+                    Account balance: ' . $balance . '<br>
+                    '.showJSStatusMsg().'
+
+                    <div class="div-hidden" id="after_currency_div">
+                        <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                            <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
+                            <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
+                        </div>
+
+                        <div class="div-hidden" id="balance_div">  
+                            <div class="form-group">
+                                <h5 style="padding-top:150px;" id="deposit_or_withdraw_header"></h5>
+                                <input type="text" name = "amount" style="border-color: white;" class="form-control form-control-sm" id="deposit_withdraw_amount" placeholder="Enter amount">
+                            </div>
+                            <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
+                                <input type = "submit" class="btn btn-primary" id="checkout_btn" value = "Continue to Checkout"> 
+                            </div>
+                        </div>
+                    </div>
         ';
-
-    showJSStatusMsg();
-
-    if ($_SESSION['currency'] == 0) 
+    }
+    else
     {
-        echo '
-                    <div style="float:none;margin:auto;" class="select-dark">
-                        <select name="currency" class="select-dropdown select-dropdown-dark" value="USD" onchange="this.form.submit()">
-                            <option value="USD" selected disabled>USD</option>
-                            <option value="USD">USD</option>
-                            <option value="CAD">CAD</option>
-                            <option value="EUR">EUR</option>
-                        </select>
-                    </div>
-            ';
-        echo "Account balance: " . $balance . "<br>";
-    } 
-    else 
-    {
-        echo '
-                    <div style="float:none;margin:auto;" class="select-dark">
-                        <select name="currency" class="select-dropdown select-dropdown-dark" value="'.$_SESSION['currency'].'" onchange="this.form.submit()">
-                            <option value="'.$_SESSION['currency'].'" selected disabled>' . $_SESSION['currency'] . '</option>
-                            <option value="USD">USD</option>
-                            <option value="CAD">CAD</option>
-                            <option value="EUR">EUR</option>
-                        </select>
-                    </div>
-            ';
-        echo "Account balance: " . $balance . "<br>";
-        if ($_SESSION['currency'] == 0) 
-        {
-            echo '
-                        <h5 style="padding-top:150px;"> Please choose a currency</h5>
-                ';
-        } 
-        else 
-        {
-            echo '
-                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                        <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="deposit_btn" value = "'.BalanceOption::DEPOSIT.'"> 
-                        <input name = "options" type = "submit" class="btn btn-secondary" name = "button" id="withdraw_btn" value = "'.BalanceOption::WITHDRAW.'"> 
-                    </div>
-                ';
-        }
+        echo'
+                    <h4>Balance tab is not available during testing phase</h4>
+        ';
     }
 
     echo '
-                <div class="div-hidden" id="balance_div">  
-                    <div class="form-group">
-                        <h5 style="padding-top:150px;" id="deposit_or_withdraw_header">Enter Amount in ' . $_SESSION['currency'] . '</h5>
-                        <input type="text" name = "amount" style="border-color: white;" class="form-control form-control-sm" id="deposit_withdraw_amount" placeholder="Enter amount">
-                    </div>
-                    <div class="navbar-light bg-dark" class="col-md-8 col-12 mx-auto pt-5 text-center">
-                            <input type = "submit" class="btn btn-primary" id="checkout_btn" value = "Continue to Checkout"> 
-                    </div>
                 </div>
-                </form>
             </div>
-        </div>
-</section>
+        </section>    
     ';
-}
+};
 
 function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, &$date_injected)
 {
@@ -629,8 +619,17 @@ function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, 
     }
 }
 
-function injectionHistoryInit($artist_username)
+/**
+* Fetch injection history of a given artist
+*
+* @param  	artist_username	    chosen artist username
+*
+* @return 	ret	                a string to be printed out in the frontend, 
+*                               contains injection history information in tabular format
+*/
+function injectionHistoryInit($artist_username): string
 {
+    $ret = '';
     $comments = array();
     $amount_injected = array();
     $date_injected = array();
@@ -642,32 +641,34 @@ function injectionHistoryInit($artist_username)
         $amount_injected,
         $date_injected,
     );
-    echo '
+    $ret .= '
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Ethos amount</th>
+                        <th scope="col">Share amount</th>
                         <th scope="col">Comment</th>
                         <th scope="col">Date Injected</th>
                     </tr>
                 </thead>
                 <tbody>
-        ';
+    ';
 
     for ($i = 0; $i < sizeof($amount_injected); $i++) {
-        echo '
+        $ret .= '
                     <tr>
                         <th scope="row">' . $amount_injected[$i] . '</th>
                         <td>' . $comments[$i] . '</td>
                         <td>' . dbDateTimeParser($date_injected[$i]).'</td>
                     </tr>
-            ';
+        ';
     }
 
-    echo '
+    $ret .= '
                     </tbody>
                 </table>
-        ';
+    ';
+
+    return $ret;
 }
 
 /**
@@ -1308,6 +1309,30 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
         {
             $artist_tag = $res->fetch_assoc();
             $ret = $artist_tag['ticker'];
+        }
+
+        closeCon($conn);
+
+        return $ret;
+    }
+
+    /**
+    * Get artist's username based on a given market tag
+    *
+    * @param  	artist_market_tag   given market tag of the artist to search for their username
+    *
+    * @return 	ret	                a string, containing the artist username
+    */
+    function getArtistUsernameFromTag($artist_market_tag)
+    {
+        $ret = StatusCodes::ErrGeneric;
+        $conn = connect();
+
+        $res = searchArtistByTicker($conn, $artist_market_tag);
+        if($res->num_rows > 0)
+        {
+            $artist_username = $res->fetch_assoc();
+            $ret = $artist_username['artist_username'];
         }
 
         closeCon($conn);

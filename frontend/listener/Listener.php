@@ -5,6 +5,7 @@
     include '../../backend/shared/include/frontendPrintHelpers.php';
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/BalanceOption.php';
+    include '../../backend/constants/CampaignType.php';
     include '../../backend/object/ParticipantList.php';
     include '../../backend/object/CampaignParticipant.php';
     include '../../backend/object/Campaign.php';
@@ -35,6 +36,7 @@
 
     <!-- Bootstrap CSS / Color Scheme -->
     <link rel="icon" href="../../frontend/Images/hx_tmp_2.ico" type="image/ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/default.css" id="theme-color">
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
@@ -104,7 +106,7 @@
                     </li>
                 </ul>
                 <div class="container my-auto mx-auto col-6">
-                    <ul class="list-group my-4">
+                    <ul class="list-group-campaign my-4">
                         <div id="portfolio_content">
                             <table class="table">
                                 <thead>
@@ -150,7 +152,7 @@
                                                 </th>
                                                 </form>
                                                 <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
-                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share (q̶)" onclick="window.location.reload();">';
+                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share" onclick="window.location.reload();">';
                             //sort Price per share ascending alphabetically
                             if ($_SESSION['sort_type'] == 3) 
                             {
@@ -300,22 +302,22 @@
                         </div>
 
                         <div class="div-hidden" id="campaign_content">
-                            <div class="py-6">
-                                <h4>Participating</h4>
+                            <div class="py-4">
+                                <h4 class="h4-blue">Participating</h4>
                                 <?php
                                     printParticipatingCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
-                            <div class="py-6">
-                                <h4>Near Participation</h4>
+                            <div class="py-4">
+                                <h4 class="h4-blue">Potential Participation</h4>
                                 <?php
                                     printNearParticipationCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
-                            <div class="py-6">
-                                <h4>Past Participation</h4>
+                            <div class="py-4">
+                                <h4 class="h4-blue">Past Participation</h4>
                                 <?php
                                     printPastParticipatedCampaignTable($_SESSION['username']);
                                 ?>
@@ -373,7 +375,7 @@
     </section>
 
     <a class="btn btn-success py-2" type="submit" role="button" aria-pressed="true" name="button" href="../credentials/login.php">Log out</a>
-
+ 
     <!--scroll to top-->
     <div class="scroll-top">
         <i class="fa fa-angle-up" aria-hidden="true"></i>

@@ -2586,12 +2586,12 @@ fieldset:disabled a.btn {
 }
 
 .btn-success {
-  color: #1c1c1cff;
-  background-color: #e2cda9ff;
-}
-.btn-success:hover {
   color: #e2cda9ff;
   background-color: #1c1c1cff;
+}
+.btn-success:hover {
+  color: #1c1c1cff;
+  background-color: #e2cda9ff;
 }
 .btn-success:focus,
 .btn-success.focus {
@@ -5155,6 +5155,16 @@ input[type="button"].btn-block {
   padding-left: 0;
   margin-bottom: 0;
   min-width: 200px;
+}
+
+.list-group-campaign {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  min-width: 800px;
 }
 
 .list-group-item-action {
@@ -10682,11 +10692,11 @@ a#dashboard-hover:hover {
 }
 
 .error-msg {
-  color: red;
+  color: red !important;
 }
 
 .suc-msg {
-  color: green;
+  color: green !important;
 }
 
 .input-no-background {
@@ -10699,6 +10709,10 @@ a#dashboard-hover:hover {
   display: none;
 }
 
-.text-blue {
-  color: #0a60d0;
+.font-size-15 {
+  font-size: 15px;
+}
+
+.text-bold {
+  font-weight: bold;
 }

@@ -1,6 +1,7 @@
 <?php
     include '../../backend/control/Dependencies.php';
     include '../../backend/shared/include/MarketplaceHelpers.php';
+    include '../../backend/shared/include/frontendPrintHelpers.php';
     include '../../backend/constants/StatusCodes.php';
     include '../../backend/constants/LoggingModes.php';
     include '../../backend/constants/ShareInteraction.php';
@@ -8,6 +9,7 @@
     include '../../backend/constants/CampaignType.php';
     include '../../backend/object/TradeHistory.php';
     include '../../backend/object/TradeHistoryList.php';
+    include '../../backend/constants/TradeHistoryType.php';
     include '../../backend/object/Node.php';
     include '../../backend/object/TickerInfo.php';
     include '../../backend/object/SellOrder.php';
@@ -22,6 +24,7 @@
         $available_share = calculateArtistAvailableShares($_SESSION['selected_artist']);
         $artist_market_tag = getArtistMarketTag($_SESSION['selected_artist']);
         $balance = getUserBalance($_SESSION['username']);
+        $user_shares_owned = getShareInvestedInArtist($_SESSION['username'], $_SESSION['selected_artist']);
     }
 ?>
 
@@ -32,7 +35,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo $_SESSION['selected_artist']; ?> Ethos</title>
+    <title><?php echo $_SESSION['selected_artist']; ?>'s Ethos</title>
     <meta name="description" content="Rateify is a music service that allows users to rate songs" />
 
     <!--Inter UI font-->
@@ -105,7 +108,7 @@
                             }
                         ?>
                         <div>
-                        <h2 class="h2-blue"><?php echo $_SESSION['selected_artist']; ?></h2>
+                        <h2 id="selected_artist" class="h2-blue"><?php echo $_SESSION['selected_artist']; ?></h2>
                         <h4 class="h4-blue">(<?php echo strtoupper($artist_market_tag); ?>)</h4>
                         <?php
                             if(!isAlreadyFollowed($_SESSION['username'], $_SESSION['selected_artist']))
@@ -113,7 +116,7 @@
                                 echo '
                                     <p>
                                         <form action="../../backend/listener/FollowArtistBackend.php" method="post">
-                                            <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" class="cursor-context" aria-pressed="true" value ="Follow">
+                                            <input name = "follow['.$_SESSION['selected_artist'].']" type = "submit" class="cursor-context" aria-pressed="true" value ="✧ Follow">
                                         </form>
                                     </p>
                                 ';
@@ -123,7 +126,7 @@
                                 echo '
                                     <p>
                                         <form action="../../backend/listener/UnFollowArtistBackend.php" method="post">
-                                            <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" class="cursor-context" aria-pressed="true" value ="Unfollow">
+                                            <input name = "unfollow['.$_SESSION['selected_artist'].']" type = "submit" class="cursor-context" aria-pressed="true" value ="✦ Unfollow">
                                         </form>
                                     </p>
                                 ';
@@ -179,11 +182,11 @@
                             echo '
                                 <canvas id="stock_graph"></canvas>
                                 <div class="text-center">
-                                    <h6>Mkt Cap: '.$market_cap.'</h6>
-                                    <h6>Volume: '.$volume.'</h6>
-                                    <h6>Open: '.$open.'</h6>
-                                    <h6>High: '.$high.'</h6>
-                                    <h6>Low: '.$low.'</h6>
+                                    <a>Mkt Cap: '.$market_cap.' | </a>
+                                    <a>Volume: '.$volume.' | </a>
+                                    <a>Open: '.$open.' | </a>
+                                    <a>High: '.$high.' | </a>
+                                    <a>Low: '.$low.'</a>
                                 </div>
                             ';
                         ?>
@@ -192,7 +195,11 @@
                     <!-- displaying current share information between current user and selected artist -->
                         <?php }?>
                 </div>
-                <div class="mx-auto my-auto text-center col-4 buy_sell_container">
+                <div class="col-4 my-8 text-center">
+                    <div class="shares-owned">
+                    <h3 class="h3-blue"><a style="color:white"><?php echo $user_shares_owned; ?></a> Shares Owned</h3>
+                    </div>
+                <div class="mx-auto my-auto text-center buy_sell_container">
                     <?php
                     if($_SESSION['artist_found'])
                     {
@@ -218,7 +225,7 @@
                                             <div class="slider_slider" id="buy_num"></div>
                                             <div class="slider_slider" id="buy_limit"></div>
                                             <div class="order_btn_container">
-                                            <button id="buy_order">Buy</button>
+                                            <button class="btn btn-primary py-2" id="buy_order">Buy</button>
                                             </div>
                                         </div>
                                     </div>
@@ -248,7 +255,7 @@
                                         <div class="slider_slider" id="sell_num"></div>
                                         <div class="slider_slider" id="sell_limit"></div>
                                         <div class="order_btn_container">
-                                            <button id="sell_order">Sell</button>
+                                            <button class="btn btn-primary py-2" id="sell_order">Sell</button>
                                         </div>
                                     </div>
                                 </div>
@@ -256,6 +263,7 @@
                         }
                     }
                     ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -264,101 +272,45 @@
     <section class="vh-md-100" id="Marketplace">
         <div class="container-fluid">
             <div class="row align-items-start">
-                <div class="my-auto text-center col">
+                <div class="my-auto text-center col-6">
+                    <div>
                     <?php
                         if($_SESSION['artist_found'])
                         {
                             echo '
-                                <div class="col-6">
-                                    <h3 class="h3-blue py-5">Buy History</h3>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Seller</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Quantity</th>
-                                                <th scope="col">Date Purchased</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                <h3 class="h3-blue py-5">History</h3>
+                                <div class="my-4 mx-auto select-dark">
+                                    <select class="select-dropdown select-dropdown-dark text-center" id="user_history_dropdown">
+                                        <option selected disabled>'.TradeHistoryType::NONE.'</option>
+                                        <option value="'.TradeHistoryType::BUY_HISTORY.'">'.TradeHistoryType::BUY_HISTORY.'</option>
+                                        <option value="'.TradeHistoryType::TRADE_HISTORY.'">'.TradeHistoryType::TRADE_HISTORY.'</option>
+                                        <option value="'.TradeHistoryType::INJECTION_HISTORY.'">'.TradeHistoryType::INJECTION_HISTORY.'</option>
+                                    </select>
+                                </div>
+
+                                <div class="div-hidden" id="user_buy_history_content">
+                                    '.printUserBuyHistoryTable($_SESSION['username']).'
+                                </div>
+
+                                <div class="div-hidden" id="user_trade_history_content">
+                                    '.tradeHistoryInit($_SESSION['selected_artist']).'
+                                </div>
+
+                                <div class="div-hidden" id="user_inject_history_content">
+                                    '.injectionHistoryInit($_SESSION['selected_artist']).'
                                 </div>
                             ';
-
-                            $sellers = array();
-                            $prices = array();
-                            $quantities = array();
-                            $date_purchase = array();
-
-                            buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $_SESSION['username']);
-
-                            for ($i = 0; $i < sizeof($sellers); $i++) {
-                                echo '
-                                            <tr>
-                                                <td>' . $sellers[$i] . '</td>
-                                                <td>' . $prices[$i] . '</td>
-                                                <td>' . $quantities[$i] . '</td>
-                                                <td>' . $date_purchase[$i] . '</td>
-                                            </tr>
-                                ';
-                            }
-
-                            echo '
-                                        </tbody>
-                                    </table>
-                            ';
-
-                            tradeHistoryInit($_SESSION['selected_artist']);
-
-                            echo '<h3 class="h3-blue py-5">Ethos Injection History</h3>';
-
-                            injectionHistoryInit($_SESSION['selected_artist']);
-
-                            $current_campaigns = artistCurrentCampaigns($_SESSION['selected_artist']);
-
-                            echo '
-                                <h3 class="h3-blue py-5">Current Campaigns</h3>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Offering</th>
-                                            <th scope="col">Minimum Shares</th>
-                                            <th scope="col">Type</th>
-                                            <th scope="col">Date Commenced</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                            ';
-
-                            for($i = 0; $i < sizeof($current_campaigns); $i++)
-                            {
-                                $type = "Error in parsing type";
-                                if($current_campaigns[$i]->getType() == CampaignType::RAFFLE)
-                                {
-                                    $type = "♢";
-                                }
-                                else if($current_campaigns[$i]->getType() == CampaignType::BENCHMARK)
-                                {
-                                    $type = "♧";
-                                }
-                                echo '
-                                        <tr>
-                                            <th scope="row">' . $current_campaigns[$i]->getOffering() . '</th>
-                                            <td>' . $current_campaigns[$i]->getMinEthos() . '</td>
-                                            <td>' . $type .'</td>
-                                            <td>'. dbDateTimeParser($current_campaigns[$i]->getDatePosted()) .'</td>
-                                        </tr>
-                                ';
-                            }
-
-                            echo '
-                                    </tbody>
-                                </table>
-                            ';
-                    }
-                    else
-                    {
-                        echo '<h3>No results for "'.$_SESSION['selected_artist'].'"</h3>';
-                    }
+                        }
+                        else
+                        {
+                            echo '<h3>No results for "'.$_SESSION['selected_artist'].'"</h3>';
+                        }
+                    ?>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <?php
+                        printUserCurrentArtistCampaign($_SESSION['selected_artist']);
                     ?>
                 </div>
             </div>
@@ -384,6 +336,7 @@
     <script type="text/javascript" src="../js/graph/linegraph.js"></script>
     <script type="text/javascript" src="../js/listener/artist_sliders.js"></script>
     <script src="../js/listener/TradeHistory.js"></script>
+    <script src="../js/listener/EthosHistory.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
