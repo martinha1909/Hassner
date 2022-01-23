@@ -1,53 +1,33 @@
-function recalcSliderLimits(){
-  var balance = 0;
-  var num_available_shares = 0;
-  // Get # of available shares
+var max_limit = 0;
+var min_limit = 0;
+var max_num_of_shares = 0;
+var sellable_shares = 0;
+var step_value = 0.5;
+var url_max_num_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/MaxNumOfShares.php";
+
+function recalcSliderLimits(new_chosen_min, new_chosen_max) 
+{
+  var currentBuyNumValue = $("#buy_num_shares").val();
+
   $.ajax({
-    url : "../../backend/shared/NumAvailableShares.php",
+    url : url_max_num_shares,
     method : "POST",
-    data:{
-      "artist": $("#selected_artist").text()
+    data : {
+      min_lim: min_limit,
+      max_lim: max_limit, 
+      chosen_min: new_chosen_min,
+      chosen_max: new_chosen_max
     },
     async: false,
-    success : function(data){
-      num_available_shares = data
-    },
-    error : function(data){
-
-    }
-  });
-
-
-  // Get account balance
-  $.ajax({
-    url : "../../backend/shared/MyBalance.php",
-    method : "GET",
-    async: false,
-    success : function(data){
-      balance = data
-      
-      // Get requested price per share (buy) - use lower limit if set otherwise market price
-      req_pps_low = $("#buy_limit").slider("values", 0);
-      req_pps_high = $("#buy_limit").slider("values", 1);
-
-      if(req_pps_low == $("#buy_limit").slider("option", "min")){
-        req_pps = Number($("#pps").text());
+    success : function(data) {
+      max_num_of_shares = data;
+      $("#buy_num").slider("option", "max", data);
+      console.log($("#buy_num").slider("value"));
+      $("#buy_num_shares").val($("#buy_num").slider("value"));
+      if(new_chosen_max < max_limit)
+      {
+        $("#buy_cost").val($("#buy_num").slider("value") * max);
       }
-      else{
-        req_pps = req_pps_low;
-      }
-
-      if (balance < (req_pps * num_available_shares)){
-        max_shares_buyable = Math.floor(balance/req_pps);
-      }
-      else{
-        max_shares_buyable = num_available_shares;
-      }
-
-      // Update buy slider
-      $("#buy_num").slider("option", "max", max_shares_buyable);
-
-      console.log(max_shares_buyable);
     },
     error : function(data){
 
@@ -57,16 +37,8 @@ function recalcSliderLimits(){
 }
 
 $( function() {
-  var max_limit = 0;
-  var min_limit = 0;
-  var max_num_of_shares = 0;
-  var sellable_shares = 0;
-  var step_value = 0.5;
   var url_max_limit = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/StockPrice.php";
-  var url_max_num_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/MaxNumOfShares.php";
   var url_sellable_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/SellableShares.php";
-  
-
 
   $.ajax({
     url : url_max_limit,
@@ -97,22 +69,24 @@ $( function() {
         min = ui.values[0];
         max = ui.values[1];
         if(min == min_limit && max == max_limit){
-          console.log(max);
           $("#buy_tip").text("Without limits the next available share(s) will be purchased at market price");
           $("#buy_cost").val("$" + $("#buy_num").slider("value")*$("#pps").text());
+          recalcSliderLimits(min, max);
         }
         else if (min > min_limit && max == max_limit){
           $("#buy_tip").text("The buy order will be executed as soon as the price is <= " + min);
           $("#buy_cost").val("$" + $("#buy_num").slider("value")*min);
+          recalcSliderLimits(min, max);
         }
         else if (min > min_limit && max < max_limit){
           $("#buy_tip").text("The buy order will be executed as soon as the price is <= " + min + " or >= " + max);
+          recalcSliderLimits(min, max);
         }
         else if (min == min_limit && max < max_limit){
           $("#buy_tip").text("The buy order will be executed as soon as the price is >= " + max);
           $("#buy_cost").val("$" + $("#buy_num").slider("value")*max);
+          recalcSliderLimits(min, max);
         }
-        recalcSliderLimits()
       }
     });
 
@@ -253,7 +227,9 @@ $( function() {
           chosen_max: max_limit_top,
           min_lim: min_limit,
           max_lim: max_limit,
-          market_price: $("#pps").text()
+          market_price: $("#pps").text(),
+          num_shares: $("#buy_num_shares").val(),
+          cost: $('#buy_cost').val()
         },
         success : function(data){
           console.log(data);
