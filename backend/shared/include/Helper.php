@@ -35,6 +35,16 @@
         $_SESSION['artist_investor_amount_invested_sort'] = 0;
     }
 
+    function displaySearchBar()
+    {
+        echo '
+            <form id="search_artist" class="form-inline" action="../../backend/listener/SearchArtistSwitcher.php" method="post">
+                <input id="submit_search_form" type="search" class="search-field" placeholder="Search for Artist(s)" name="artist_search"/>
+                <input type="submit" class="div-hidden"/>
+            </form>
+        ';
+    }
+
     function getStatusMessage($err_msg, $suc_msg)
     {
         if ($_SESSION['status'] == StatusCodes::ErrGeneric) {

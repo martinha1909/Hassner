@@ -55,9 +55,7 @@
                     <div class="container-searchbar">
                         <label>
                             <span class="screen-reader-text">Search for...</span>
-                            <form class="form-inline" action="../../backend/listener/SearchArtistSwitcher.php" method="post">
-                                <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_search" />
-                            </form>
+                            <?php displaySearchBar(); ?>
                         </label>
                     </div>
                 </div>
@@ -392,6 +390,7 @@
     <script src="../js/shared/balance/DepositWithdraw.js"></script>
     <script src="../js/listener/MenuItem.js"></script>
     <script src="../js/shared/account/AccountPage.js"></script>
+    <script type="text/javascript" src="../js/shared/search/searchArtist.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
