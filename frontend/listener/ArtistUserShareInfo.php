@@ -66,9 +66,7 @@
                     <div class="container-searchbar">
                         <label>
                             <span class="screen-reader-text">Search for...</span>
-                            <form class="form-inline" action="../../backend/listener/SearchArtistSwitcher.php" method="post">
-                                <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_search" />
-                            </form>
+                            <?php displaySearchBar(); ?>
                         </label>
                     </div>
                 </div>
@@ -193,12 +191,28 @@
                     </div>
 
                     <!-- displaying current share information between current user and selected artist -->
-                        <?php }?>
+                        <?php 
+                            }
+                            else
+                            {
+                                echo '
+                                        <h3>No results for "'.$_SESSION['selected_artist'].'"</h3>
+                                ';
+                            }
+                        ?>
                 </div>
                 <div class="col-4 my-8 text-center">
-                    <div class="shares-owned">
-                    <h3 class="h3-blue"><a style="color:white"><?php echo $user_shares_owned; ?></a> Shares Owned</h3>
-                    </div>
+                    <?php
+                        if($_SESSION['artist_found'])
+                        {
+                            echo '
+                                <div class="shares-owned">
+                                    <h3 class="h3-blue"><a style="color:white"><?php echo $user_shares_owned; ?></a> Shares Owned</h3>
+                                </div>
+                            ';
+                        }
+                    
+                    ?>
                 <div class="mx-auto my-auto text-center buy_sell_container">
                     <?php
                     if($_SESSION['artist_found'])
@@ -273,7 +287,6 @@
         <div class="container-fluid">
             <div class="row align-items-start">
                 <div class="my-auto text-center col-6">
-                    <div>
                     <?php
                         if($_SESSION['artist_found'])
                         {
@@ -301,12 +314,7 @@
                                 </div>
                             ';
                         }
-                        else
-                        {
-                            echo '<h3>No results for "'.$_SESSION['selected_artist'].'"</h3>';
-                        }
                     ?>
-                    </div>
                 </div>
                 <div class="col-6">
                     <?php
