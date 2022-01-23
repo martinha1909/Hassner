@@ -65,9 +65,7 @@
                 </button>
                 <div class="cursor-pointer user-balance">
                     <i class="fas fa-user-circle"></i>
-                    <?php echo $_SESSION['username']?>
-                    |
-                    $<?php echo$_SESSION['user_balance']?>
+                    <?php echo $_SESSION['username']?> | $<?php echo$_SESSION['user_balance']?>
                 </div>
             </nav>
         </div>
