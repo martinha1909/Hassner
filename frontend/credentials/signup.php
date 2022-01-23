@@ -61,7 +61,7 @@ hassnerInit();
             <a href="login.php"> Already have an account?</a>
           </div>
 
-          <!-- TODO: Disable when testing phase ends -->
+          <!-- TODO: Uncomment this when admin is available -->
           <!-- <div class="col text-center">
             <a href="AdminSignUp.php"> Want to become an admin?</a>
           </div> -->

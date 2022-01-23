@@ -545,6 +545,14 @@ function fiatInit()
         <section id="login" class="py-5";>
             <div class="container">
                 <div class="col-12 mx-auto my-auto text-center">
+    ';
+    if(!($_SESSION['testing_phase']))
+    {
+        $balance = getUserBalance($_SESSION['username']);
+        $msg = "getUserBalance returned ".$balance." as a result";
+        hx_debug(HX::HELPER, $msg);
+
+        echo '
 
                     <div style="float:none;margin:auto;" class="select-dark">
                         <select id="balance_dropdown" class="select-dropdown select-dropdown-dark">
@@ -573,11 +581,21 @@ function fiatInit()
                             </div>
                         </div>
                     </div>
+        ';
+    }
+    else
+    {
+        echo'
+                    <h4>Balance tab is not available during testing phase</h4>
+        ';
+    }
+
+    echo '
                 </div>
             </div>
-        </section>
+        </section>    
     ';
-}
+};
 
 function fetchInjectionHistory($artist_username, &$comments, &$amount_injected, &$date_injected)
 {
