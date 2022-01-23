@@ -1,4 +1,9 @@
 <?php
+    /**
+    * Prints campaigns that a user is currently participating
+    *
+    * @param  	username	    user username to query campaigns to display for
+    */
     function printParticipatingCampaignTable($username)
     {
         $participating_campaigns = fetchInvestedArtistCampaigns($username);
@@ -6,57 +11,59 @@
         if (sizeof($participating_campaigns) > 0) 
         {
             echo '
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Artist</th>
-                            <th scope="col">Offering</th>
-                            <th scope="col">Progess</th>
-                            <th scope="col">⏳</th>
-                            <th scope="col">Minimum Ethos</th>
-                            <th scope="col">Owned Ethos</th>
-                            <th scope="col">Chance of winning</th>
-                            </form>
-                            <th scope="col">Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="row">
             ';
 
-            for ($i = 0; $i < sizeof($participating_campaigns); $i++) {
+            for ($i = 0; $i < sizeof($participating_campaigns); $i++) 
+            {
+                $artist_market_tag = getArtistMarketTag($participating_campaigns[$i]->getArtistUsername());
                 echo '
-                            <tr>
-                                <th>' . $participating_campaigns[$i]->getArtistUsername() . '</th>
-                                <td>' . $participating_campaigns[$i]->getOffering() . '</td>
-                                <td>' . round($participating_campaigns[$i]->getProgress(), 2) . '%</td>
-                                <td>' . $participating_campaigns[$i]->getTimeLeft() . '</td>
-                                <td>' . $participating_campaigns[$i]->getMinEthos() . '</td>
-                                <td>' . $participating_campaigns[$i]->getUserOwnedEthos() . '</td>
+                    <div class="campaign-box-participating col-2.5">
                 ';
-                if ($participating_campaigns[$i]->getWinningChance() != -1) {
+
+                if($participating_campaigns[$i]->getType() == CampaignType::BENCHMARK)
+                {
                     echo '
-                                    <form action="../../backend/listener/IncreaseChanceBackend.php" method="post">
-                                        <td>' . $participating_campaigns[$i]->getWinningChance() . '%<input name = "artist_name[' . $participating_campaigns[$i]->getArtistUsername() . ']" type = "submit" id="abc" class="no-background" role="button" aria-pressed="true" value = " +"></td>
-                                    </form>
+                        <h3 class="h3-blue">'.$artist_market_tag.'
+                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                        </h3>
                     ';
-                } else {
+                }
+                else if($participating_campaigns[$i]->getType() == CampaignType::RAFFLE)
+                {
+                    //Add this to line 32 if we want to include the winning chance
+                    // <b class="font-size-15">('.$participating_campaigns[$i]->getWinningChance().'%)</b>
                     echo '
-                                    <td>N/A</td>
+                        <h3 class="h3-blue">'.$artist_market_tag.'
+                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                        </h3>
                     ';
                 }
 
                 echo '
-                                <td>' . $participating_campaigns[$i]->getType() . '</td>
-                            </tr>
+                        <b class="text-black">🤲 '.$participating_campaigns[$i]->getOffering().'</b>
+                        <p class="text-black text-bold">⌛ '.$participating_campaigns[$i]->getTimeLeft().'</p>
+                        <b class="text-black">⌖ '.$participating_campaigns[$i]->getMinEthos().'</b>
+                    </div>
                 ';
             }
             echo '
-                        </tbody>
-                    </table>
+                </div>
+            ';
+        }
+        else
+        {
+            echo '
+                <h6>No campaign found</h6>
             ';
         }
     }
 
+    /**
+    * Prints campaigns that a user has participated in the past
+    *
+    * @param  	username	    user username to query campaigns to display for
+    */
     function printPastParticipatedCampaignTable($username)
     {
         $participated_campaigns = fetchParticipatedCampaigns($username);
@@ -64,97 +71,123 @@
         if (sizeof($participated_campaigns) > 0) 
         {
             echo '
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Artist</th>
-                                <th scope="col">Offering</th>
-                                <th scope="col">Minimum Ethos</th>
-                                <th scope="col">Winner</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Date Released</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <div class="row">
             ';
 
             for ($i = 0; $i < sizeof($participated_campaigns); $i++) 
             {
-                if ($participated_campaigns[$i]->getWinner() == $username) 
+                $artist_market_tag = getArtistMarketTag($participated_campaigns[$i]->getArtistUsername());
+                echo '
+                    <div class="campaign-box-participated col-2.5">
+                ';
+
+                if($participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
                     echo '
-                                <tr>
-                                    <th class="campaign_winner">' . $participated_campaigns[$i]->getArtistUsername() . '</th>
-                                    <td class="campaign_winner">' . $participated_campaigns[$i]->getOffering() . '</td>
-                                    <td class="campaign_winner">' . $participated_campaigns[$i]->getMinEthos() . '</td>
-                                    <td class="campaign_winner">' . $participated_campaigns[$i]->getWinner() . '</td>
-                                    <td class="campaign_winner">' . $participated_campaigns[$i]->getType() . '</td>
-                                    <td class="campaign_winner">' . $participated_campaigns[$i]->getDatePosted() . '</td>
-                                </tr>
-                    ';
-                } 
-                else 
-                {
-                    echo '
-                                <tr>
-                                    <th>' . $participated_campaigns[$i]->getArtistUsername() . '</th>
-                                    <td>' . $participated_campaigns[$i]->getOffering() . '</td>
-                                    <td>' . $participated_campaigns[$i]->getMinEthos() . '</td>
-                                    <td>' . $participated_campaigns[$i]->getWinner() . '</td>
-                                    <td>' . $participated_campaigns[$i]->getType() . '</td>
-                                    <td>' . $participated_campaigns[$i]->getDatePosted() . '</td>
-                                </tr>
+                        <h3 class="h3-white">'.$artist_market_tag.'
+                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                        </h3>
                     ';
                 }
+                else if($participated_campaigns[$i]->getType() == CampaignType::RAFFLE)
+                {
+                    echo '
+                        <h3 class="h3-white">'.$artist_market_tag.'
+                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                        </h3>
+                    ';
+                }
+
+                echo '
+                        <b class="text-black">🤲 '.$participated_campaigns[$i]->getOffering().'</b>
+                        <p class="text-black">⌛ Expired</p>
+                        <b class="text-black">⌖ '.$participated_campaigns[$i]->getMinEthos().'</b>
+                    </div>
+                ';
             }
             echo '
-                            </tbody>
-                        </table>
+                </div>
             ';
         }
         else 
         {
-            echo '<h5>No campaigns participated</h5>';
+            echo '<h6>No campaigns participated</h6>';
         }
     }
 
+    /**
+    * Prints potential participation campaigns for a user. 
+    * The purpose of this is to encourage listeners to discover artists faster as well as for new users to discover campaigns faster
+    * The sequence of this function is as follows:
+    * If a user has been invested in some artists, then we fetch the artist campaigns that the user has completed 80% or more first
+    * If the above condition returns 0 campaigns, we then fetch all the campaigns that the user could potential participate, which is 0% < x < 80%
+    * If both conditions above return 0, then it means that a user is a new user and has not invested in any artists, we then browse the most trending campaigns to display
+    * Note: a trending campaign is determined by having the most participating users at that given time
+    * Maximum number of campaigns to display is 5
+    *
+    * @param  	username	    user username to query campaigns to display for
+    */
     function printNearParticipationCampaignTable($username)
     {
+        $campaign_display_max = 5;
         $near_parti_campaigns = fetchNearParticipationCampaign($username);
 
-        if (sizeof($near_parti_campaigns) > 0) 
+        if (sizeof($near_parti_campaigns) == 0) 
         {
+            $near_parti_campaigns = fetchPotentialParticipationCampaign($username);
+            if(sizeof($near_parti_campaigns) == 0)
+            {
+                $near_parti_campaigns = fetchTrendingCampaign($username);
+            }
+        }
+
+        if(sizeof($near_parti_campaigns) < 5)
+        {
+            $campaign_display_max = sizeof($near_parti_campaigns);
+        }
+
+        echo '
+            <div class="row">
+        ';
+
+        for ($i = 0; $i < $campaign_display_max; $i++) 
+        {
+            $artist_market_tag = getArtistMarketTag($near_parti_campaigns[$i]->getArtistUsername());
             echo '
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Artist</th>
-                                <th scope="col">Offering</th>
-                                <th scope="col">Progress</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">⏳</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <div class="campaign-box-near col-2.5">
             ';
 
-            for ($i = 0; $i < sizeof($near_parti_campaigns); $i++) 
+            if($near_parti_campaigns[$i]->getType() == CampaignType::BENCHMARK)
             {
                 echo '
-                            <tr>
-                                <th>' . $near_parti_campaigns[$i]->getArtistUsername() . '</th>
-                                <td>' . $near_parti_campaigns[$i]->getOffering() . '</td>
-                                <td>' . $near_parti_campaigns[$i]->getUserOwnedEthos() . '/'. $near_parti_campaigns[$i]->getMinEthos() .' ('.$near_parti_campaigns[$i]->getProgress().')</td>
-                                <td>' . $near_parti_campaigns[$i]->getType() . '</td>
-                                <td>' . $near_parti_campaigns[$i]->getTimeLeft() . '</td>
-                            </tr>
+                    <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
+                        <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
+                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                        </h3>
+                    </form>
                 ';
             }
+            else if($near_parti_campaigns[$i]->getType() == CampaignType::RAFFLE)
+            {
+                echo '
+                    <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
+                        <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
+                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                        </h3>
+                    </form>
+                ';
+            }
+
             echo '
-                            </tbody>
-                        </table>
+                    <b class="text-black">🤲 '.$near_parti_campaigns[$i]->getOffering().'</b>
+                    <p class="text-black text-bold">⌛ '.$near_parti_campaigns[$i]->getTimeLeft().'</p>
+                    <b class="text-black">⌖ '.$near_parti_campaigns[$i]->getUserOwnedEthos().'/'.$near_parti_campaigns[$i]->getMinEthos().'('.$near_parti_campaigns[$i]->getProgress().'%)</b>
+                </div>
             ';
         }
+        echo '
+            </div>
+        ';
     }
 
     function printArtistCurrentCampaignTable($artist_username)
@@ -532,7 +565,7 @@
 
         echo '<h3 class="h3-blue">Inject history</h3>';
 
-        injectionHistoryInit($_SESSION['username']);
+        echo injectionHistoryInit($_SESSION['username']);
     }
 
     function printArtistTradeHistoryTable($artist_username)
@@ -606,5 +639,49 @@
                 </table>
             ';
         }
+    }
+
+    function printUserBuyHistoryTable($user_username): string
+    {
+        $ret = "";
+
+        $sellers = array();
+        $prices = array();
+        $quantities = array();
+        $date_purchase = array();
+
+        buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $user_username);
+        $ret .= '
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Seller</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Date Purchased</th>
+                    </tr>
+                </thead>
+                <tbody>
+        ';
+
+        
+
+        for ($i = 0; $i < sizeof($sellers); $i++) {
+            $ret .= '
+                        <tr>
+                            <td>' . $sellers[$i] . '</td>
+                            <td>' . $prices[$i] . '</td>
+                            <td>' . $quantities[$i] . '</td>
+                            <td>' . $date_purchase[$i] . '</td>
+                        </tr>
+            ';
+        }
+
+        $ret .= '
+                </tbody>
+            </table>   
+        ';
+
+        return $ret;
     }
 ?>

@@ -17,7 +17,7 @@ function deposit()
                 $("#deposit_btn").addClass("btn btn-secondary");
 
                 $("#balance_div").show();
-                $("#deposit_or_withdraw_header").text("Enter Amount in " + currency);
+                $("#deposit_or_withdraw_header").text("Enter Amount in " + $("#balance_dropdown").val());
             }
         },
         error: function(){
@@ -100,10 +100,32 @@ function checkout()
     });
 }
 
+function currencyChange()
+{
+    $.ajax({
+        type: "POST",
+        url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/shared/CurrencyBackend.php",
+        data: {
+            currency: $("#balance_dropdown").val(),
+        },
+        async: false,
+        dataType: "json",
+        success: function(data){
+            console.log(data);
+            $("#after_currency_div").show();
+            $("#deposit_or_withdraw_header").text("Enter Amount in " + data.currency);
+        },
+        error: function(data){
+
+        }
+    });
+}
+
 $( function() {
     $("#deposit_btn").click(deposit);
     $("#withdraw_btn").click(withdraw);
     $("#checkout_btn").click(checkout);
+    $("#balance_dropdown").on("change", currencyChange);
 });
 
 $(document).keypress(function (e) {
