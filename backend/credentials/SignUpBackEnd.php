@@ -2,42 +2,58 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';  
     include '../constants/StatusCodes.php';
+    include '../constants/AccountTypes.php';
 
     $conn = connect();
     $connPDO = connectPDO();
     $username = trim($_POST['username']);
     $password = $_POST['password'];
     $email = trim($_POST['email']);
-    $account_type = $_POST['account_type'];
-    if($account_type == AccountType::Artist)
+    $account_type = AccountType::User;
+
+    $ticker = strtoupper(trim($_POST['ticker']));
+
+    if(!empty($ticker))
     {
-        $ticker = strtoupper(trim($_POST['ticker']));
-    }
-    else
-    {
-        $ticker = NULL;
+        $account_type = AccountType::Artist;
     }
 
-    // Email Verification
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
-    {
-        $msg = $email." is not a supported email";
-        hx_error(HX::SIGNUP, $msg);
+    hx_debug(HX::SIGNUP, "posting data: ".json_encode(array(            
+        "username"=> $username,
+        "password"=> $password,
+        "email"=> $email,
+        "account_type"=> $account_type,
+        "ticker"=> $ticker
+    )));
 
-        $_SESSION['status'] = StatusCodes::ErrEmailFormat;
-        $_SESSION['dependencies'] = "FRONTEND";
-        header("Location: ../../frontend/credentials/signup.php");
-    }
-    else if(!empty($username) && !empty($password) && !empty($email))
+    if(!empty($username) && !empty($password) && !empty($email))
     {
-        if(!ctype_alnum($username))
+        // // Email Verification
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
+        {
+            $msg = $email." is not a supported email";
+            hx_error(HX::SIGNUP, $msg);
+
+            $_SESSION['status'] = StatusCodes::ErrEmailFormat;
+
+            echo(json_encode(array(            
+                "status"=> StatusCodes::ErrEmailFormat,
+                "msg"=> "Email format not supported"
+            )));
+
+            $_SESSION['dependencies'] = "FRONTEND";
+        }
+        else if(!ctype_alnum($username))
         {
             $msg = $username." contains a non-alphanumeric character";
             hx_error(HX::SIGNUP, $msg);
 
-            $_SESSION['status'] = StatusCodes::ErrUsernameFormat;
+            echo(json_encode(array(            
+                "status"=> StatusCodes::ErrUsernameFormat,
+                "msg"=> "Special characters not allowed"
+            )));
+
             $_SESSION['dependencies'] = "FRONTEND";
-            header("Location: ../../frontend/credentials/signup.php");
         }
         else
         {
@@ -53,9 +69,12 @@
                     $msg = $ticker." is already taken";
                     hx_error(HX::SIGNUP, $msg);
 
-                    $_SESSION['status'] = StatusCodes::ErrTickerDuplicate;
+                    echo(json_encode(array(            
+                        "status"=> StatusCodes::ErrTickerDuplicate,
+                        "msg"=> "Ticker already taken"
+                    )));
+
                     $_SESSION['dependencies'] = "FRONTEND";
-                    header("Location: ../../frontend/credentials/signup.php");
                     die;
                 }
                 else if(strlen($ticker) != 4 ||
@@ -67,9 +86,12 @@
                     $msg = $ticker." does not start with 2 digits and end with 2 letters";
                     hx_error(HX::SIGNUP, $msg);
 
-                    $_SESSION['status'] = StatusCodes::ErrTickerFormat;
+                    echo(json_encode(array(            
+                        "status"=> StatusCodes::ErrTickerFormat,
+                        "msg"=> "Invalid ticker format"
+                    )));
+
                     $_SESSION['dependencies'] = "FRONTEND";
-                    header("Location: ../../frontend/credentials/signup.php");
                     die;
                 }
             }
@@ -79,9 +101,12 @@
                 $msg = $username." is already taken";
                 hx_error(HX::SIGNUP, $msg);
 
-                $_SESSION['status'] = StatusCodes::ErrUsername;
+                echo(json_encode(array(            
+                    "status"=> StatusCodes::ErrUsername,
+                    "msg"=> "Username already taken"
+                )));
+
                 $_SESSION['dependencies'] = "FRONTEND";
-                header("Location: ../../frontend/credentials/signup.php");
             }
             else if($email_res->num_rows > 0)
             {
@@ -89,8 +114,12 @@
                 hx_error(HX::SIGNUP, $msg);
 
                 $_SESSION['status'] = StatusCodes::ErrEmailDuplicate;
+                echo(json_encode(array(            
+                    "status"=> StatusCodes::ErrEmailDuplicate,
+                    "msg"=> "Email already taken"
+                )));
+
                 $_SESSION['dependencies'] = "FRONTEND";
-                header("Location: ../../frontend/credentials/signup.php");
             }
             else
             {
@@ -103,17 +132,24 @@
                     $msg = "sign up data: username: ".$username.", password: ".$password.", email: ".$email.", account type: ".$account_type.", ticker: ".$ticker;
                     hx_debug(HX::SIGNUP, $msg);
 
+                    echo(json_encode(array(            
+                        "status"=> StatusCodes::Success,
+                        "msg"=> "Account created successfully"
+                    )));
+
                     $_SESSION['dependencies'] = "FRONTEND";
-                    header("Location: ../../frontend/credentials/login.php");
                 }
                 else
                 {
                     $msg = "Server error";
                     hx_error(HX::SIGNUP, $msg);
 
-                    $_SESSION['status'] = StatusCodes::ErrServer;
+                    echo(json_encode(array(            
+                        "status"=> StatusCodes::ErrServer,
+                        "msg"=> "Server error occured"
+                    )));
+
                     $_SESSION['dependencies'] = "FRONTEND";
-                    header("Location: ../../frontend/credentials/signup.php");
                 }
             }
         }
@@ -123,8 +159,11 @@
         $msg = "Empty input";
         hx_error(HX::SIGNUP, $msg);
 
-        $_SESSION['status'] = StatusCodes::ErrEmpty;
-        $_SESSION['dependencies'] = "FRONTEND";
-        header("Location: ../../frontend/credentials/signup.php");
+        echo(json_encode(array(            
+            "status"=> StatusCodes::ErrEmpty,
+            "msg"=> "Empty input"
+        )));
+
+        $_SESSION['dependencies'] = "FRONTEND";   
     }
 ?>

@@ -45,7 +45,7 @@ include '../../backend/shared/include/PersonalPageHelpers.php';
       <p><?php
           //variable to hold all information of user's account info (i.e all columns of account table in database corresponds to this user)
           $account_info = getAccount($_SESSION['username']);
-          printUserImportantInfo($account_info['email']);
+          echo printUserImportantInfo($account_info['email']);
           ?>
         <!-- Brings to a page that allows user to edit their email address -->
         <a href="../../backend/shared/EditEmailBackend.php" id="icon-btn">&nbsp<i class="fa fa-pen"></i></a>
@@ -83,7 +83,7 @@ include '../../backend/shared/include/PersonalPageHelpers.php';
       <h1 id="h1-sm">Password</h1>
       <p>
         <?php
-        printUserImportantInfo($account_info['password']);
+         echo printUserImportantInfo($account_info['password']);
         ?>
       </p>
       <!-- Brings to a page that allows user to edit their password -->
@@ -105,83 +105,55 @@ include '../../backend/shared/include/PersonalPageHelpers.php';
       ?>
     </section>
 
-    <!-- This section displays payment info (buy siliqas) of personal page -->
+    <?php
+      if(!$_SESSION['testing_phase'])
+      {
+        echo '
+            <section class="middle-card">
+              <h1 id="h1-sm">Payment info</h1>
+              <p><i class="fa fa-user"></i> Name on card: '.$account_info['Full_name'].'</p>
+            </section>
 
-    <!-- Displaying name on card of the user -->
-    <section class="middle-card">
-      <h1 id="h1-sm">Payment info</h1>
-      <p><i class="fa fa-user"></i> Name on card: <?php
-                                                  echo $account_info['Full_name'];
-                                                  ?></p>
-    </section>
+            <section class="middle-card">
+              <p><i class="fas fa-credit-card"></i> Card number: '.printUserImportantInfo($account_info['Card_number']).'</p>
+            </section>
 
-    <!-- Displaying card number of personal page -->
-    <section class="middle-card">
-      <p><i class="far fa-credit-card"></i> Card number: <?php
-                                                          printUserImportantInfo($account_info['Card_number']);
-                                                          ?></p>
-    </section>
+            <section class="middle-card">
+              <p><i class="fas fa-map-marker-alt"></i> Billing Address: '.$account_info['billing_address'].'</p>
+            </section>
 
-    <!-- Displaying billing address of personal page -->
-    <section class="middle-card">
-      <p><i class="fas fa-map-marker-alt"></i> Billing Address: <?php
-                                                                echo $account_info['billing_address'];
-                                                                ?></p>
-    </section>
+            <section class="middle-card">
+              <p><i class="fas fa-location-arrow"></i> City: '.$account_info['City'].'</p>
+            </section>
 
-    <!-- Displaying billing info of personal page -->
+            <section class="middle-card">
+              <p><i class="fas fa-archway"></i> State: '.$account_info['State'].'</p>
+            </section>
 
-    <!-- Displaying city -->
-    <section class="middle-card">
-      <p><i class="fas fa-location-arrow"></i> City: <?php
-                                                      echo $account_info['City'];
-                                                      ?></p>
-    </section>
+            <section class="middle-card">
+              <p><i class="fas fa-align-justify"></i> Zip: '.$account_info['ZIP'].'</p>
+            </section>
 
-    <!-- Displaying state -->
-    <section class="middle-card">
-      <p><i class="fas fa-archway"></i> State: <?php
-                                                echo $account_info['State'];
-                                                ?></p>
-    </section>
+            <section class="middle-card">
+              <h1 id="h1-sm">Deposit info</h1>
+              <p><i class="fas fa-dolly-flatbed"></i> Transit No. : '.$account_info['Transit_no'].'</p>
+            </section>
 
-    <!-- Displaying zip code -->
-    <section class="middle-card">
-      <p><i class="fas fa-align-justify"></i> Zip: <?php
-                                                    echo $account_info['ZIP'];
-                                                    ?></p>
-    </section>
+            <section class="middle-card">
+              <p><i class="fas fa-project-diagram"></i> Institution No. : '.$account_info['Inst_no'].'</p>
+            </section>
 
-    <!-- This section displays deposit info (sell siliqas) of personal page -->
+            <section class="middle-card">
+              <p><i class="fas fa-wallet"></i> Account No. : '.$account_info['Account_no'].'</p>
+            </section>
 
-    <!-- Displaying transit number -->
-    <section class="middle-card">
-      <h1 id="h1-sm">Deposit info</h1>
-      <p><i class="fas fa-dolly-flatbed"></i> Transit No. : <?php
-                                                            echo $account_info['Transit_no'];
-                                                            ?></p>
-    </section>
-
-    <!-- Displaying institution number -->
-    <section class="middle-card">
-      <p><i class="fas fa-project-diagram"></i> Institution No. : <?php
-                                                                  echo $account_info['Inst_no'];
-                                                                  ?></p>
-    </section>
-
-    <!-- Displaying Account number -->
-    <section class="middle-card">
-      <p><i class="fas fa-wallet"></i> Account No. : <?php
-                                                      echo $account_info['Account_no'];
-                                                      ?></p>
-    </section>
-
-    <!-- Displaying swift code -->
-    <section class="middle-card">
-      <p><i class="fas fa-wind"></i> Swift/BIC Code : <?php
-                                                      echo $account_info['Swift'];
-                                                      ?></p>
-    </section>
+            <section class="middle-card">
+              <p><i class="fas fa-wind"></i> Swift/BIC Code : '.$account_info['Swift'].'</p>
+            </section>
+        ';
+      }
+    ?>
+    
     <section class="middle-card py-2"></section>
   </main>
   <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>

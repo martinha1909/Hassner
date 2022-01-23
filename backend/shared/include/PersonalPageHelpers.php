@@ -1,27 +1,29 @@
 <?php
 
     //Prints the indicated info with only first and last characters to be visible, the other characters is replaced with a *
-    function printUserImportantInfo($info)
+    function printUserImportantInfo($info): string
     {
+        $ret = '';
         $chars = str_split($info);
-        echo '<p>';
         $i = 0;
+
         foreach($chars as $char)
         {
             if($i == 0 || $i == sizeof($chars)-1)
             {
-                echo $char;
+                $ret.=$char;
             }
             else if($char == '-')
             {
-                echo $char;
+                $ret.=$char;
             }
             else
             {
-                echo '*';
+                $ret.='*';
             }
             $i++;
         }
-        echo '</p>';
+
+        return $ret;
     }
 ?>
