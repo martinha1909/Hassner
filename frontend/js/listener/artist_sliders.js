@@ -40,7 +40,22 @@ function recalcSliderLimits(new_chosen_min, new_chosen_max)
 
     }
   });
+}
 
+function recalcSellSlider(new_chosen_min, new_chosen_max)
+{
+  if(new_chosen_max < max_limit)
+  {
+    $("#sell_cost").val($("#sell_num").slider("value") * max);
+  }
+  if(new_chosen_min > min_limit)
+  {
+    $("#sell_cost").val($("#sell_num").slider("value") * min);
+  }
+  if((new_chosen_max == max_limit && new_chosen_min == min_limit) || (new_chosen_max < max_limit && new_chosen_min > min_limit))
+  {
+    $("#sell_cost").val($("#sell_num").slider("value") * $("#pps").text());
+  }
 }
 
 $( function() {
@@ -110,17 +125,21 @@ $( function() {
         if(min == min_limit && max == max_limit){
           $("#sell_tip").text("Order will be executed as market price");
           $("#sell_cost").val("$" + $("#sell_num").slider("value")*$("#pps").text());
+          recalcSellSlider(min, max);
         }
         else if (min > min_limit && max == max_limit){
           $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + min);
           $("#sell_cost").val("$" + $("#sell_num").slider("value")*min);
+          recalcSellSlider(min, max);
         }
         else if (min > min_limit && max < max_limit){
           $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + min + " or ≥ " + max);
+          recalcSellSlider(min, max);
         }
         else if (min == min_limit && max < max_limit){
           $("#sell_tip").text("The sell order will be executed as soon as the price is ≥ " + max);
           $("#sell_cost").val("$" + $("#sell_num").slider("value")*max);
+          recalcSellSlider(min, max);
         }
       }
     });
@@ -189,6 +208,10 @@ $( function() {
       slide: function( event, ui ) {
         var min_limit_top = $("#buy_limit").slider("values", 0);
         var max_limit_top = $("#buy_limit").slider("values", 1);
+        console.log(min_limit_top);
+        console.log(min_limit);
+        console.log(max_limit_top);
+        console.log(max_limit);
         if((min_limit_top == min_limit && max_limit_top == max_limit) || (min_limit_top > min_limit && max_limit_top < max_limit))
         {
           $("#sell_num_shares").val(ui.value);
