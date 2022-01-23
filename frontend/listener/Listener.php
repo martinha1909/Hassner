@@ -112,84 +112,94 @@
                                 <thead>
                                     <tr>
                                         <th scope="col" style="color: white;" class="bg-dark">#</th>
-                                        <form action="../../backend/listener/include/SortPortfolioArtistHelpers.php">
-                                            <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
+                                        <th scope="col">Artist</th>
+                                        <th scope="col">Shares bought</th>
+                                        <th scope="col">Price per share</th>
+                                        <th scope="col">Last 24 hours</th>
+                                        <!-- <form action="../../backend/listener/include/SortPortfolioArtistHelpers.php">
+                                            <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();"> -->
                             <?php
-                            //sort Artist ascending alphabetically
-                            if ($_SESSION['sort_type'] == 1) 
-                            {
-                                echo " ↑";
-                            }
-                            //sort Artist descending alphabetically
-                            else if ($_SESSION['sort_type'] == 4) 
-                            {
-                                echo " ↓";
-                            } 
-                            else 
-                            {
-                                echo "";
-                            }
-                            echo '
-                                                </th>
-                                                </form>
-                                                <form action="../../backend/listener/include/SortPortfolioShareHelpers.php">
-                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
-                            //sort Shares bought ascending alphabetically
-                            if ($_SESSION['sort_type'] == 2) 
-                            {
-                                echo ' ↑';
-                            }
-                            //sort Shares bought descending alphabetically
-                            else if ($_SESSION['sort_type'] == 5) 
-                            {
-                                echo " ↓";
-                            } 
-                            else 
-                            {
-                                echo "";
-                            }
-                            echo '
-                                                </th>
-                                                </form>
-                                                <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
-                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share" onclick="window.location.reload();">';
-                            //sort Price per share ascending alphabetically
-                            if ($_SESSION['sort_type'] == 3) 
-                            {
-                                echo ' ↑';
-                            }
-                            //sort Price per share descending alphabetically
-                            else if ($_SESSION['sort_type'] == 6) 
-                            {
-                                echo " ↓";
-                            }
-                            else 
-                            {
-                                echo "";
-                            }
+                            //TODO: reenable after testing phase ends
+                            // // sort Artist ascending alphabetically
+                            // if ($_SESSION['sort_type'] == 1) 
+                            // {
+                            //     echo " ↑";
+                            // }
+                            // //sort Artist descending alphabetically
+                            // else if ($_SESSION['sort_type'] == 4) 
+                            // {
+                            //     echo " ↓";
+                            // } 
+                            // else 
+                            // {
+                            //     echo "";
+                            // }
+                            // echo '
+                            //                     </th>
+                            //                     </form>
+                            //                     <form action="../../backend/listener/include/SortPortfolioShareHelpers.php">
+                            //                         <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
+                            // //sort Shares bought ascending alphabetically
+                            // if ($_SESSION['sort_type'] == 2) 
+                            // {
+                            //     echo ' ↑';
+                            // }
+                            // //sort Shares bought descending alphabetically
+                            // else if ($_SESSION['sort_type'] == 5) 
+                            // {
+                            //     echo " ↓";
+                            // } 
+                            // else 
+                            // {
+                            //     echo "";
+                            // }
+                            // echo '
+                            //                     </th>
+                            //                     </form>
+                            //                     <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
+                            //                         <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share" onclick="window.location.reload();">';
+                            // //sort Price per share ascending alphabetically
+                            // if ($_SESSION['sort_type'] == 3) 
+                            // {
+                            //     echo ' ↑';
+                            // }
+                            // //sort Price per share descending alphabetically
+                            // else if ($_SESSION['sort_type'] == 6) 
+                            // {
+                            //     echo " ↓";
+                            // }
+                            // else 
+                            // {
+                            //     echo "";
+                            // }
 
-                            echo '
-                                                </th>
-                                                </form>
-                                                <form action = "../../backend/listener/include/SortPortfolioRateHelpers.php">
-                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
-                            //sort Rate ascending alphabetically
-                            if ($_SESSION['sort_type'] == 0) {
-                                echo ' ↑';
-                            }
-                            //sort Rate descending alphabetically
-                            else if ($_SESSION['sort_type'] == 7) {
-                                echo " ↓";
-                            } else {
-                                echo "";
-                            }
+                            // echo '
+                            //                     </th>
+                            //                     </form>
+                            //                     <form action = "../../backend/listener/include/SortPortfolioRateHelpers.php">
+                            //                         <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
+                            // //sort Rate ascending alphabetically
+                            // if ($_SESSION['sort_type'] == 0) {
+                            //     echo ' ↑';
+                            // }
+                            // //sort Rate descending alphabetically
+                            // else if ($_SESSION['sort_type'] == 7) {
+                            //     echo " ↓";
+                            // } else {
+                            //     echo "";
+                            // }
 
+                            // echo '
+                            //                     </th>
+                            //                     </form>
+                            //                 </tr>
+                            //             </thead>
+                            //         <tbody>
+                            // ';
                             echo '
-                                                </th>
-                                                </form>
-                                            </tr>
-                                        </thead>
-                                    <tbody>
+                                        </tr>
+                                    </thead>
+                                <tbody>
                             ';
                             $all_rates = array();
                             $all_price_per_share = array();
