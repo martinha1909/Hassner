@@ -37,6 +37,8 @@
             "artist_username" => $_SESSION['username'],
             "quantity" => $new_quantity,
             "asked_price:" => $asked_price,
+            "sell_limit" => -1,
+            "sell_stop" => -1,
             "date_posted: " => $current_date,
             "is_from_injection" => false
         ));
@@ -46,6 +48,8 @@
                                             $_SESSION['username'], 
                                             $new_quantity, 
                                             $asked_price,
+                                            -1,
+                                            -1,
                                             $current_date,
                                             false);
 

@@ -71,13 +71,16 @@
             "artist_username" => $_SESSION['username'],
             "quantity" => $shares_distributing,
             "asked_price" => $initial_pps,
+            "sell_limit" => -1,
+            "sell_stop" => -1,
             "date_posted" => $current_date,
             "is_from_injection" => true
         ));
         hx_debug(HX::SHARES_INJECT, $msg);
 
         //IPO is considered a sell order as well
-        postSellOrder($conn, $_SESSION['username'], $_SESSION['username'], $shares_distributing, $initial_pps, $current_date, true);
+        //IPO sell orders do not contain limit and stop, hence these values are set to -1
+        postSellOrder($conn, $_SESSION['username'], $_SESSION['username'], $shares_distributing, $initial_pps, -1, -1, $current_date, true);
 
         echo(json_encode(array(            
             "status"=> StatusCodes::Success,

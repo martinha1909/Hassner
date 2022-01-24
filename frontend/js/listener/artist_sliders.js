@@ -67,9 +67,9 @@ $( function() {
     method : "GET",
     async: false,
     success : function(data){
-      max_limit = parseFloat((data*2).toFixed(1));
+      max_limit = parseFloat((data*2).toFixed(2));
       //We allow users to set the min limit to be half the current stock price
-      min_limit = parseFloat((data/2).toFixed(1));
+      min_limit = parseFloat((data/2).toFixed(2));
       if(max_limit < 1 || min_limit < 1)
       {
         step_value = 0.05;
@@ -79,7 +79,7 @@ $( function() {
 
     }
   });
-
+  console.log(max_limit);
     // Buy slider init
     $( "#buy_limit" ).slider({
       range: true,
@@ -240,8 +240,10 @@ $( function() {
     });
 
     $("#buy_order").click(function(){
+      console.log($("#buy_limit").slider("values"));
     var min_limit_top = $("#buy_limit").slider("values", 0);
     var max_limit_top = $("#buy_limit").slider("values", 1);
+    // console.log(max_limit_top);
     var url_event = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/BuyAndSellEvent.php";
       $.ajax({
         url : url_event,

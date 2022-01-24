@@ -525,7 +525,7 @@
         {
             $result = 0;
 
-            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, is_from_injection, date_posted FROM sell_order WHERE artist_username = ? ORDER BY date_posted ASC";
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted FROM sell_order WHERE artist_username = ? ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             if($stmt->execute() == true)
@@ -544,7 +544,7 @@
         {
             $result = 0;
 
-            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, is_from_injection, date_posted 
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
                     FROM sell_order 
                     WHERE artist_username = ? AND selling_price <= ? 
                     ORDER BY date_posted ASC";
@@ -1279,14 +1279,14 @@
             return $status;
         }
 
-        function postSellOrder($conn, $user_username, $artist_username, $quantity, $asked_price, $date_posted, $is_from_injection)
+        function postSellOrder($conn, $user_username, $artist_username, $quantity, $asked_price, $sell_limit, $sell_stop, $date_posted, $is_from_injection)
         {
             $status = 0;
 
-            $sql = "INSERT INTO sell_order (user_username, artist_username, selling_price, no_of_share, is_from_injection, date_posted)
-                    VALUES(?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO sell_order (user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted)
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdiis', $user_username, $artist_username, $asked_price, $quantity, $is_from_injection, $date_posted);
+            $stmt->bind_param('ssdiddis', $user_username, $artist_username, $asked_price, $quantity, $sell_limit, $sell_stop, $is_from_injection, $date_posted);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;
@@ -1302,13 +1302,13 @@
             return $status;
         }
 
-        function postBuyOrder($conn, $user_username, $artist_username, $quantity, $request_price, $date_posted)
+        function postBuyOrder($conn, $user_username, $artist_username, $quantity, $request_price, $buy_limit, $buy_stop, $date_posted)
         {
             $status = 0;
-            $sql = "INSERT INTO buy_order (user_username, artist_username, quantity, siliqas_requested, date_posted)
-                    VALUES(?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO buy_order (user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted)
+                    VALUES(?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssids', $user_username, $artist_username, $quantity, $request_price, $date_posted);
+            $stmt->bind_param('ssiddds', $user_username, $artist_username, $quantity, $request_price, $buy_limit, $buy_stop, $date_posted);
             if($stmt->execute() == TRUE)
             {
                 $status = StatusCodes::Success;

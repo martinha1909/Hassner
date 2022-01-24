@@ -22,6 +22,13 @@
     $market_price = $_POST['market_price'];
     $latest_market_price = getArtistPricePerShare($_SESSION['selected_artist']);
 
+    // $json_response = array(
+    //     "chosen_min" => $chosen_min,
+    //     "min_lim" => $min_lim,
+    //     "chosen_max" => $chosen_max,
+    //     "max_lim" => $max_lim
+    // );
+
     //Error checking to see if there is any change between when the user click the buy button vs now 
     if($market_price != $latest_market_price)
     {
@@ -104,11 +111,14 @@
 
                 if($new_quantity > 0)
                 {
+                    //Sell order posted by user with no limit and stop, setting those values to -1
                     postSellOrder($conn, 
                                   $_SESSION['username'],
                                   $_SESSION['selected_artist'], 
                                   $new_quantity, 
                                   $selling_price,
+                                  -1,
+                                  -1,
                                   $current_date,
                                   false);
                 }
