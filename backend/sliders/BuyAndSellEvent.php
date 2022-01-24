@@ -66,7 +66,9 @@
                 $new_quantity = autoPurchaseWithLimitSet($_SESSION['username'],
                                                          $_SESSION['selected_artist'],
                                                          $quantity,
-                                                         $purchase_price);
+                                                         $purchase_price,
+                                                         $latest_market_price,
+                                                         $_SESSION['shares_owned']);
                 //TODO: Code to handle when limit is set
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)

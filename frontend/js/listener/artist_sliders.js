@@ -208,10 +208,6 @@ $( function() {
       slide: function( event, ui ) {
         var min_limit_top = $("#buy_limit").slider("values", 0);
         var max_limit_top = $("#buy_limit").slider("values", 1);
-        console.log(min_limit_top);
-        console.log(min_limit);
-        console.log(max_limit_top);
-        console.log(max_limit);
         if((min_limit_top == min_limit && max_limit_top == max_limit) || (min_limit_top > min_limit && max_limit_top < max_limit))
         {
           $("#sell_num_shares").val(ui.value);
