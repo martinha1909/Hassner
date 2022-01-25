@@ -48,24 +48,29 @@
                                              $_SESSION['username'], 
                                              $_SESSION['selected_artist'], 
                                              $quantity, 
-                                             $purchase_price);
+                                             $purchase_price,
+                                             $latest_market_price,
+                                             $_SESSION['shares_owned']);
 
-                refreshSellOrderTable();
+                // refreshSellOrderTable();
 
-                if($new_quantity > 0)
-                {
-                    postBuyOrder($conn, 
-                                 $_SESSION['username'],
-                                 $_SESSION['selected_artist'], 
-                                 $new_quantity, 
-                                 $purchase_price, 
-                                 $current_date);
-                }
+                // if($new_quantity > 0)
+                // {
+                //     //User posting buy order without limit and stop
+                //     postBuyOrder($conn, 
+                //                  $_SESSION['username'],
+                //                  $_SESSION['selected_artist'], 
+                //                  $new_quantity, 
+                //                  $purchase_price, 
+                //                  -1,
+                //                  -1,
+                //                  $current_date);
+                // }
 
-                refreshBuyOrderTable();
-                $_SESSION['display'] = MenuOption::Portfolio;
-                $_SESSION['dependencies'] = "FRONTEND";
-                $json_response = StatusCodes::Success;
+                // refreshBuyOrderTable();
+                // $_SESSION['display'] = MenuOption::Portfolio;
+                // $_SESSION['dependencies'] = "FRONTEND";
+                // $json_response = StatusCodes::Success;
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
@@ -130,24 +135,49 @@
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
-                $purchase_price = $chosen_min;
-                //TODO: Code to handle when limit is set
+                $selling_price = -1;
+
+                postSellOrder($conn, 
+                                  $_SESSION['username'],
+                                  $_SESSION['selected_artist'], 
+                                  $quantity, 
+                                  -1,
+                                  -1,
+                                  $chosen_min,
+                                  $current_date,
+                                  false);
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
-                $purchase_price = $chosen_max;
-                //TODO: Code to handle when stop is set
+                $selling_price = -1;
+                postSellOrder($conn, 
+                                  $_SESSION['username'],
+                                  $_SESSION['selected_artist'], 
+                                  $quantity, 
+                                  -1,
+                                  $chosen_max,
+                                  -1,
+                                  $current_date,
+                                  false);
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
                 $purchase_price_limit = $chosen_min;
                 $purchase_price_stop = $chosen_max;
-                //TODO: Code to handle when both limit and stop are set
+                postSellOrder($conn, 
+                                  $_SESSION['username'],
+                                  $_SESSION['selected_artist'], 
+                                  $quantity, 
+                                  -1,
+                                  $chosen_max,
+                                  $chosen_min,
+                                  $current_date,
+                                  false);
             }
 
             closeCon($conn);
         }
     }
 
-    print json_encode($json_response);
+    // print json_encode($json_response);
 ?>

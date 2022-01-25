@@ -79,7 +79,7 @@ $( function() {
 
     }
   });
-  console.log(max_limit);
+
     // Buy slider init
     $( "#buy_limit" ).slider({
       range: true,
@@ -240,10 +240,8 @@ $( function() {
     });
 
     $("#buy_order").click(function(){
-      console.log($("#buy_limit").slider("values"));
     var min_limit_top = $("#buy_limit").slider("values", 0);
     var max_limit_top = $("#buy_limit").slider("values", 1);
-    // console.log(max_limit_top);
     var url_event = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/BuyAndSellEvent.php";
       $.ajax({
         url : url_event,
