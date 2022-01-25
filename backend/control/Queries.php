@@ -540,16 +540,16 @@
             return $result;
         }
 
-        function searchMatchingSellOrderNoLimitStop($conn, $artist_username, $market_price)
+        function searchMatchingSellOrderNoLimitStop($conn, $user_username, $artist_username, $market_price)
         {
             $result = 0;
 
             $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
                     FROM sell_order 
-                    WHERE artist_username = ? AND (is_from_injection = 1 OR sell_stop >= ? OR (sell_limit <= ? AND sell_limit > 0) OR selling_price = ?)
+                    WHERE artist_username = ? AND user_username != ? AND (sell_stop >= ? OR (sell_limit <= ? AND sell_limit > 0) OR selling_price = ?)
                     ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sddd', $artist_username, $market_price, $market_price, $market_price);
+            $stmt->bind_param('ssddd', $artist_username, $user_username, $market_price, $market_price, $market_price);
             if($stmt->execute() == true)
             {
                 $result = $stmt->get_result();
