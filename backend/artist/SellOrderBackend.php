@@ -3,6 +3,7 @@
     include '../control/Dependencies.php';
     include '../constants/LoggingModes.php';
     include '../shared/include/MarketplaceHelpers.php';
+    include '../shared/include/StockTradeHelpers.php';
 
     $conn = connect();
 

@@ -562,14 +562,15 @@
             return $result;
         }
 
-        function searchAllSellOrdersNoLimitStop($conn)
+        function searchAllSellOrdersNoLimitStop($conn, $artist_username)
         {
             $result = 0;
 
             $sql = "SELECT id
                     FROM sell_order
-                    WHERE selling_price != -1 AND sell_limit = -1 AND sell_stop = -1";
+                    WHERE artist_username = ? AND selling_price != -1 AND sell_limit = -1 AND sell_stop = -1";
             $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
             if($stmt->execute() == true)
             {
                 $result = $stmt->get_result();
@@ -582,14 +583,15 @@
             return $result;
         }
 
-        function searchAllBuyOrdersNoLimitStop($conn)
+        function searchAllBuyOrdersNoLimitStop($conn, $artist_username)
         {
             $result = 0;
 
             $sql = "SELECT id
                     FROM buy_order
-                    WHERE siliqas_requested != -1 AND buy_limit = -1 AND buy_stop = -1";
+                    WHERE artist_username = ? AND siliqas_requested != -1 AND buy_limit = -1 AND buy_stop = -1";
             $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
             if($stmt->execute() == true)
             {
                 $result = $stmt->get_result();
@@ -1141,7 +1143,7 @@
                 $status = StatusCodes::ErrGeneric;
             }
 
-            updateMarketPriceOrderToPPS($new_pps);
+            updateMarketPriceOrderToPPS($new_pps, $artist);
 
             return $status;
         }
