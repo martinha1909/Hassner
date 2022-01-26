@@ -52,25 +52,25 @@
                                              $latest_market_price,
                                              $_SESSION['shares_owned']);
 
-                // refreshSellOrderTable();
+                refreshSellOrderTable();
 
-                // if($new_quantity > 0)
-                // {
-                //     //User posting buy order without limit and stop
-                //     postBuyOrder($conn, 
-                //                  $_SESSION['username'],
-                //                  $_SESSION['selected_artist'], 
-                //                  $new_quantity, 
-                //                  $purchase_price, 
-                //                  -1,
-                //                  -1,
-                //                  $current_date);
-                // }
+                if($new_quantity > 0)
+                {
+                    //User posting buy order without limit and stop
+                    postBuyOrder($connPDO, 
+                                 $_SESSION['username'],
+                                 $_SESSION['selected_artist'], 
+                                 $new_quantity, 
+                                 $purchase_price, 
+                                 -1,
+                                 -1,
+                                 $current_date);
+                }
 
-                // refreshBuyOrderTable();
-                // $_SESSION['display'] = MenuOption::Portfolio;
-                // $_SESSION['dependencies'] = "FRONTEND";
-                // $json_response = StatusCodes::Success;
+                refreshBuyOrderTable();
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
@@ -112,7 +112,7 @@
                                          $current_date,
                                          false);
 
-                refreshSellOrderTable();
+                // refreshSellOrderTable();
 
                 if($new_quantity > 0)
                 {
@@ -179,5 +179,5 @@
         }
     }
 
-    // print json_encode($json_response);
+    print json_encode($json_response);
 ?>

@@ -143,7 +143,7 @@ $( function() {
         }
       }
     });
-
+    
     $.ajax({
       url : url_max_num_shares,
       method : "POST",
@@ -161,12 +161,14 @@ $( function() {
 
       }
     });
+
     // # Shares to buy slider
     $("#buy_num").slider({
       range: "min",
       min: 1,
       max: max_num_of_shares,
       value: 1,
+      step: 1,
       slide: function( event, ui ) {
         var min_limit_top = $("#buy_limit").slider("values", 0);
         var max_limit_top = $("#buy_limit").slider("values", 1);
@@ -199,12 +201,14 @@ $( function() {
 
       }
     });
+
      // # Shares to sell slider
      $("#sell_num").slider({
       range: "min",
       min: 1,
       max: sellable_shares,
       value: 1,
+      step: 1,
       slide: function( event, ui ) {
         var min_limit_top = $("#buy_limit").slider("values", 0);
         var max_limit_top = $("#buy_limit").slider("values", 1);

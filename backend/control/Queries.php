@@ -562,6 +562,46 @@
             return $result;
         }
 
+        function searchAllSellOrdersNoLimitStop($conn)
+        {
+            $result = 0;
+
+            $sql = "SELECT id
+                    FROM sell_order
+                    WHERE selling_price != -1 AND sell_limit = -1 AND sell_stop = -1";
+            $stmt = $conn->prepare($sql);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
+        function searchAllBuyOrdersNoLimitStop($conn)
+        {
+            $result = 0;
+
+            $sql = "SELECT id
+                    FROM buy_order
+                    WHERE siliqas_requested != -1 AND buy_limit = -1 AND buy_stop = -1";
+            $stmt = $conn->prepare($sql);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
         function searchLimitSellOrderByArtist($conn, $artist_username, $limit_price)
         {
             $result = 0;
@@ -1101,6 +1141,8 @@
                 $status = StatusCodes::ErrGeneric;
             }
 
+            updateMarketPriceOrderToPPS($new_pps);
+
             return $status;
         }
 
@@ -1192,6 +1234,58 @@
                 $conn->rollBack();
                 $msg = "db error occured, reverting operation with error message: ".$e->getMessage();
                 hx_error(HX::DB, $msg);
+
+                $status = StatusCodes::ErrGeneric;
+            }
+
+            return $status;
+        }
+
+        function updateSellOrderPPS($new_pps, $sell_order_id)
+        {
+            $connPDO = connectPDO();
+            $status = StatusCodes::NONE;
+
+            try {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("UPDATE sell_order SET selling_price = ? WHERE id = ?");
+                $stmt->bindValue(1, $new_pps);
+                $stmt->bindValue(2, $sell_order_id);
+                $stmt->execute(array($new_pps, $sell_order_id));
+
+                $connPDO->commit();
+                $status = StatusCodes::Success;
+                hx_info(HX::SELL_ORDER, "sell order id ".$sell_order_id." updated selling price to ".$new_pps);
+            } catch (PDOException $e) {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "Failed: " . $e->getMessage());
+
+                $status = StatusCodes::ErrGeneric;
+            }
+
+            return $status;
+        }
+
+        function updateBuyOrderPPS($new_pps, $buy_order_id)
+        {
+            $connPDO = connectPDO();
+            $status = StatusCodes::NONE;
+
+            try {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("UPDATE buy_order SET siliqas_requested = ? WHERE id = ?");
+                $stmt->bindValue(1, $new_pps);
+                $stmt->bindValue(2, $buy_order_id);
+                $stmt->execute(array($new_pps, $buy_order_id));
+
+                $connPDO->commit();
+                $status = StatusCodes::Success;
+                hx_info(HX::SELL_ORDER, "buy order id ".$buy_order_id." updated requesting price to ".$new_pps);
+            } catch (PDOException $e) {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "Failed: " . $e->getMessage());
 
                 $status = StatusCodes::ErrGeneric;
             }
@@ -1324,19 +1418,31 @@
             return $status;
         }
 
-        function postBuyOrder($conn, $user_username, $artist_username, $quantity, $request_price, $buy_limit, $buy_stop, $date_posted)
+        function postBuyOrder($connPDO, $user_username, $artist_username, $quantity, $request_price, $buy_limit, $buy_stop, $date_posted)
         {
-            $status = 0;
-            $sql = "INSERT INTO buy_order (user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted)
-                    VALUES(?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssiddds', $user_username, $artist_username, $quantity, $request_price, $buy_limit, $buy_stop, $date_posted);
-            if($stmt->execute() == TRUE)
-            {
+            $status = StatusCodes::NONE;
+
+            try {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("INSERT INTO buy_order (user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted)
+                                        VALUES(?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bindValue(1, $user_username);
+                $stmt->bindValue(2, $artist_username);
+                $stmt->bindValue(3, $quantity);
+                $stmt->bindValue(4, $request_price);
+                $stmt->bindValue(5, $buy_limit);
+                $stmt->bindValue(6, $buy_stop);
+                $stmt->bindValue(7, $date_posted);
+                $stmt->execute(array($user_username, $artist_username, $quantity, $request_price, $buy_limit, $buy_stop, $date_posted));
+                
+                $connPDO->commit();
                 $status = StatusCodes::Success;
-            }
-            else
-            {
+                hx_info(HX::BUY_SHARES, "Buy order posted by user ".$user_username);
+            } catch (PDOException $e) {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "Failed: " . $e->getMessage());
+
                 $status = StatusCodes::ErrGeneric;
             }
             return $status;
