@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 26, 2022 at 03:56 AM
+-- Generation Time: Jan 26, 2022 at 03:57 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -460,30 +460,6 @@ CREATE TABLE `error_log` (
   `date_logged` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `error_log`
---
-
-INSERT INTO `error_log` (`id`, `log_type`, `message`, `log_file`, `log_line`, `date_logged`) VALUES
-(1, 'login', 'Credentials not found', 'LoginBackend.php', 30, '2022-01-16 19:35:39'),
-(2, 'signup', ' is not a supported email', 'SignUpBackEnd.php', 33, '2022-01-16 19:55:14'),
-(3, 'signup', ' is not a supported email', 'SignUpBackEnd.php', 33, '2022-01-16 19:55:21'),
-(4, 'signup', ' is not a supported email', 'SignUpBackEnd.php', 33, '2022-01-16 19:55:31'),
-(5, 'signup', 'Empty input', 'SignUpBackEnd.php', 161, '2022-01-16 19:56:26'),
-(6, 'signup', 'Empty input', 'SignUpBackEnd.php', 161, '2022-01-16 19:56:30'),
-(7, 'signup', 'efenuf is not a supported email', 'SignUpBackEnd.php', 35, '2022-01-16 19:56:38'),
-(8, 'signup', 'Empty input', 'SignUpBackEnd.php', 161, '2022-01-16 19:57:31'),
-(9, 'signup', 'Empty input', 'SignUpBackEnd.php', 161, '2022-01-16 19:57:44'),
-(10, 'signup', 'Empty input', 'SignUpBackEnd.php', 161, '2022-01-16 19:58:01'),
-(11, 'signup', 'Empty input', 'SignUpBackEnd.php', 161, '2022-01-17 17:25:50'),
-(12, 'signup', '=-= is not a supported email', 'SignUpBackEnd.php', 35, '2022-01-17 17:25:59'),
-(13, 'signup', 'martin-=- contains a non-alphanumeric character', 'SignUpBackEnd.php', 49, '2022-01-17 17:26:09'),
-(14, 'signup', 'test_user contains a non-alphanumeric character', 'SignUpBackEnd.php', 36, '2022-01-20 16:51:13'),
-(15, 'signup', 'Empty input', 'SignUpBackEnd.php', 160, '2022-01-21 12:40:06'),
-(16, 'signup', 'test user contains a non-alphanumeric character', 'SignUpBackEnd.php', 36, '2022-01-21 15:24:57'),
-(17, 'signup', 'test user contains a non-alphanumeric character', 'SignUpBackEnd.php', 49, '2022-01-21 15:26:46'),
-(18, 'signup', 'noin fenpi contains a non-alphanumeric character', 'SignUpBackEnd.php', 49, '2022-01-21 15:34:58');
-
 -- --------------------------------------------------------
 
 --
@@ -498,75 +474,6 @@ CREATE TABLE `info_log` (
   `log_line` int(11) NOT NULL,
   `date_logged` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `info_log`
---
-
-INSERT INTO `info_log` (`id`, `log_type`, `message`, `log_file`, `log_line`, `date_logged`) VALUES
-(1, 'signup', 'mienf successfully signed up', 'SignUpBackEnd.php', 101, '2022-01-16 18:37:51'),
-(2, 'signup', 'noebf successfully signed up', 'SignUpBackEnd.php', 101, '2022-01-16 19:37:36'),
-(3, 'signup', 'nienfin successfully signed up', 'SignUpBackEnd.php', 130, '2022-01-17 17:29:16'),
-(4, 'signup', 'nifuoenfoi successfully signed up', 'SignUpBackEnd.php', 130, '2022-01-17 17:30:07'),
-(5, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-17 17:55:36'),
-(6, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-17 18:50:42'),
-(7, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-18 15:13:09'),
-(8, 'login', 'Artist 88Glam just logged in', 'LandingPage.php', 17, '2022-01-18 15:35:23'),
-(9, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-18 15:35:38'),
-(10, 'login', 'Artist 88Glam just logged in', 'LandingPage.php', 17, '2022-01-18 16:12:34'),
-(11, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-18 16:13:04'),
-(12, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-18 16:51:52'),
-(13, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 16:38:28'),
-(14, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 16:38:34'),
-(15, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 16:39:04'),
-(16, 'login', 'Artist 88Glam just logged in', 'LandingPage.php', 17, '2022-01-19 17:07:48'),
-(17, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 17:08:27'),
-(18, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 17:46:05'),
-(19, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 17:50:15'),
-(20, 'login', 'User vitor just logged in', 'LandingPage.php', 9, '2022-01-19 17:57:19'),
-(21, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 17:57:51'),
-(22, 'login', 'Artist 88Glam just logged in', 'LandingPage.php', 17, '2022-01-19 17:57:56'),
-(23, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 17:58:21'),
-(24, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 18:01:37'),
-(25, 'login', 'Artist 88Glam just logged in', 'LandingPage.php', 17, '2022-01-19 18:09:01'),
-(26, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 18:09:18'),
-(27, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 18:31:41'),
-(28, 'login', 'User vitor just logged in', 'LandingPage.php', 9, '2022-01-19 18:37:06'),
-(29, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 18:43:59'),
-(30, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-19 18:56:46'),
-(31, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-20 15:39:57'),
-(32, 'login', 'Artist 88Glam just logged in', 'LandingPage.php', 17, '2022-01-20 15:45:25'),
-(33, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-20 15:46:07'),
-(34, 'login', 'Artist NAV just logged in', 'LandingPage.php', 17, '2022-01-20 16:02:23'),
-(35, 'shares_inject', 'Artist NAV went IPO by distributing 500000shares!', 'Queries.php', 737, '2022-01-20 16:02:28'),
-(36, 'sell_shares', 'a sell order to sell shares for artist NAV is posted', 'Queries.php', 1257, '2022-01-20 16:02:29'),
-(37, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-20 16:02:32'),
-(38, 'buy_shares', 'buyer martin purchased 18461 shares from NAV for $2', 'Queries.php', 1037, '2022-01-20 16:03:03'),
-(39, 'sell_shares', 'Auto purchasing sell order id 39, amount $1000000 was transfered between buyer martin and seller NAV', 'MarketplaceHelpers.p', 899, '2022-01-20 16:03:03'),
-(40, 'login', 'Artist NAV just logged in', 'LandingPage.php', 17, '2022-01-20 16:04:11'),
-(41, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-20 16:04:54'),
-(42, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-20 16:05:24'),
-(43, 'login', 'Artist NAV just logged in', 'LandingPage.php', 17, '2022-01-20 16:05:31'),
-(44, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-20 16:05:48'),
-(45, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-21 12:38:23'),
-(46, 'signup', 'bnoiub successfully signed up', 'SignUpBackEnd.php', 130, '2022-01-21 12:39:49'),
-(47, 'signup', 'neon successfully signed up', 'SignUpBackEnd.php', 130, '2022-01-21 15:26:29'),
-(48, 'signup', 'testuser successfully signed up', 'SignUpBackEnd.php', 130, '2022-01-21 15:35:10'),
-(49, 'login', 'User testuser just logged in', 'LandingPage.php', 9, '2022-01-21 15:38:06'),
-(50, 'login', 'Artist Drake just logged in', 'LandingPage.php', 17, '2022-01-21 15:38:42'),
-(51, 'shares_inject', 'Artist Drake went IPO by distributing 20000shares!', 'Queries.php', 752, '2022-01-21 15:38:48'),
-(52, 'sell_shares', 'a sell order to sell shares for artist Drake is posted', 'Queries.php', 1272, '2022-01-21 15:38:49'),
-(53, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-21 15:39:06'),
-(54, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-21 15:51:03'),
-(55, 'login', 'User testuser just logged in', 'LandingPage.php', 9, '2022-01-21 15:51:53'),
-(56, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-21 15:55:58'),
-(57, 'login', 'User testuser just logged in', 'LandingPage.php', 9, '2022-01-21 15:56:12'),
-(58, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-21 16:05:01'),
-(59, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-21 16:10:00'),
-(60, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-21 16:10:14'),
-(61, 'login', 'User martin just logged in', 'LandingPage.php', 9, '2022-01-21 16:12:25'),
-(62, 'login', 'User testuser just logged in', 'LandingPage.php', 9, '2022-01-21 16:13:31'),
-(63, 'login', 'User testuser just logged in', 'LandingPage.php', 9, '2022-01-21 16:16:23');
 
 -- --------------------------------------------------------
 
@@ -753,7 +660,7 @@ ALTER TABLE `error_log`
 -- AUTO_INCREMENT for table `info_log`
 --
 ALTER TABLE `info_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `inject_history`
