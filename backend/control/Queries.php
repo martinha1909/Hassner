@@ -1018,7 +1018,7 @@
             header("Location: ../../frontend/listener/Listener.php");
         }
 
-        function purchaseAskedPriceShare($conn, $buyer, $seller, $buyer_account_type, $seller_account_type, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $shares_owned, $amount, $price, $order_id, $date_purchased, $indicator, $buy_mode)
+        function purchaseAskedPriceShare($conn, $buyer, $seller, $buyer_account_type, $seller_account_type, $artist, $buyer_new_balance, $seller_new_balance, $initial_pps, $new_pps, $buyer_new_share_amount, $seller_new_share_amount, $amount, $price, $order_id, $date_purchased, $indicator, $buy_mode)
         {
             $status = 0;
 
@@ -1419,25 +1419,33 @@
             return $status;
         }
 
-        function postSellOrder($conn, $user_username, $artist_username, $quantity, $asked_price, $sell_limit, $sell_stop, $date_posted, $is_from_injection)
+        function postSellOrder($connPDO, $user_username, $artist_username, $quantity, $asked_price, $sell_limit, $sell_stop, $date_posted, $is_from_injection)
         {
-            $status = 0;
+            $status = StatusCodes::NONE;
 
-            $sql = "INSERT INTO sell_order (user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted)
-                    VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdiddis', $user_username, $artist_username, $asked_price, $quantity, $sell_limit, $sell_stop, $is_from_injection, $date_posted);
-            if($stmt->execute() == TRUE)
-            {
+            try {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("INSERT INTO sell_order (user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted)
+                                           VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bindValue(1, $user_username);
+                $stmt->bindValue(2, $artist_username);
+                $stmt->bindValue(3, $asked_price);
+                $stmt->bindValue(4, $quantity);
+                $stmt->bindValue(5, $sell_limit);
+                $stmt->bindValue(6, $sell_stop);
+                $stmt->bindValue(7, $is_from_injection);
+                $stmt->bindValue(8, $date_posted);
+                $stmt->execute(array($user_username, $artist_username, $asked_price, $quantity, $sell_limit, $sell_stop, $is_from_injection, $date_posted));
+                
+                $connPDO->commit();
                 $status = StatusCodes::Success;
-                $msg = "a sell order to sell shares for artist ".$artist_username." is posted";
-                hx_info(HX::SELL_SHARES, $msg);
-            }
-            else
-            {
+                hx_info(HX::BUY_SHARES, "Sell order posted by user ".$user_username);
+            } catch (PDOException $e) {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "Failed: " . $e->getMessage());
+
                 $status = StatusCodes::ErrGeneric;
-                $msg = "db error occured: ".$conn->mysqli_error($conn);
-                hx_error(HX::DB, $msg);
             }
             return $status;
         }

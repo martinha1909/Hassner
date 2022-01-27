@@ -34,13 +34,13 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
 }
 
 /**
-* Automatically purchases buy orders that have no limits and stops, which means purchasing at market price. 
+* Automatically executes buy orders that have no limits and stops, which means purchasing at market price. 
 * Matching candidates will be:
 * - Sell orders that have no limits and stops (since the price will always be at market price)
 * - Sell orders that are share injections or IPOs
 * - Sell orders that have stop >= market price
 * - Sell orders that have limit <= market price
-* - Sell orders that have limit and stop equal to each other (These orders are matching for every buy order)
+* - Sell orders that have limit and stop equal to each other (These orders will match for all buy orders)
 *
 * @param  	user_username	            username of the buyer who is posting the buy order
 *
@@ -58,8 +58,9 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
 * @return 	request_quantity	       the remaining quantity of the buy order after automatically executed, 
 *                                      remains the same if no matching sell orders found, 0 if the quantity is less than the quantity in matching sell orders
 */
-function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quantity, $request_price, $current_market_price, $user_share_amount)
+function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quantity, $request_price, $current_market_price)
 {
+    hx_debug(HX::BUY_SHARES, "request quantity: ".$request_quantity.", request price: ".$request_price."\n\n");
     $conn = connect();
     $connPDO = connectPDO();
     $current_date = date('Y-m-d H:i:s');
@@ -105,7 +106,7 @@ function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quan
         
         if($request_quantity >= $row['no_of_share'])
         {
-            hx_debug(HX::BUY_SHARES, "request quantity >= sell order number of share case");
+            hx_debug(HX::BUY_SHARES, "request quantity >= sell order's number of share case");
             //Case when a sell order has no limit or stop
             if($row['sell_limit'] == -1 && $row['sell_stop'] == -1)
             {
@@ -125,42 +126,9 @@ function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quan
             //['selling_price'] == -1 indicates that this sell order has a limit or a stop
             else if($row['selling_price'] == -1)
             {
-                //case when both limit and stop are set to equal to each other
-                if($row['sell_limit'] == $row['sell_stop'])
+                if($row['sell_limit'] == $row['sell_stop'] || $row['sell_limit'] <= $request_price || $row['sell_stop'] >= $request_price)
                 {
                     hx_debug(HX::SELL_SHARES, "Matching sell order id: ".$row['id'].", sell order with both limit and stop set to market price, order details: ".json_encode($row));
-
-                    //in this case we will also use standard market price
-                    $seller_new_balance = $seller_account_info['balance'] + ($row['no_of_share'] * $request_price);
-                    $buyer_new_balance = $buyer_account_info['balance'] - ($row['no_of_share'] * $request_price);
-    
-                    $seller_new_share_amount = $seller_account_info['Shares'] - $row['no_of_share'];
-                    $buyer_new_share_amount = $buyer_account_info['Shares'] + $row['no_of_share'];
-    
-                    $new_pps = $request_price;
-
-                    $will_execute = true;
-                }
-                //matching case of a limit set
-                else if($row['sell_limit'] <= $request_price)
-                {
-                    hx_debug(HX::SELL_SHARES, "Matching sell order id: ".$row['id'].", sell order with matching limit, order details: ".json_encode($row));
-
-                    //in this case we will also use standard market price
-                    $seller_new_balance = $seller_account_info['balance'] + ($row['no_of_share'] * $request_price);
-                    $buyer_new_balance = $buyer_account_info['balance'] - ($row['no_of_share'] * $request_price);
-    
-                    $seller_new_share_amount = $seller_account_info['Shares'] - $row['no_of_share'];
-                    $buyer_new_share_amount = $buyer_account_info['Shares'] + $row['no_of_share'];
-    
-                    $new_pps = $request_price;
-
-                    $will_execute = true;
-                }
-                //matching case of a stop set
-                else if($row['sell_stop'] >= $request_price)
-                {
-                    hx_debug(HX::SELL_SHARES, "Matching sell order id: ".$row['id'].", sell order with matching stop, order details: ".json_encode($row));
 
                     //in this case we will also use standard market price
                     $seller_new_balance = $seller_account_info['balance'] + ($row['no_of_share'] * $request_price);
@@ -177,6 +145,22 @@ function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quan
 
             if($will_execute)
             {
+                hx_debug(HX::SELL_SHARES, "Case >=:\n".
+                                         "Executing on sell order id: ".$row['id']."\n".
+                                         "Order quantity: ".$row['no_of_share']."\n".
+                                         "buyer username: ".$row['user_username']."\n".
+                                         "seller username: ".$user_username."\n".
+                                         "seller old balance: ".$seller_account_info['balance']."\n".
+                                         "seller new balance: ".$seller_new_balance."\n".
+                                         "buyer old balance: ".$buyer_account_info['balance']."\n".
+                                         "buyer new balance: ".$buyer_new_balance."\n".
+                                         "seller old share amount: ".$seller_account_info['Shares']."\n".
+                                         "seller new share amount: ".$seller_new_share_amount."\n".
+                                         "buyer old share amount: ".$buyer_account_info['Shares']."\n".
+                                         "buyer new share amount: ".$buyer_new_share_amount."\n".
+                                         "new price per share: ".$new_pps."\n".
+                                         "\n"); 
+
                 hx_debug(HX::SELL_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
                     "buyer" => $user_username, 
                     "seller" => $row['user_username'], 
@@ -188,10 +172,9 @@ function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quan
                     "initial_pps" => $current_market_price, 
                     "new_pps" => $new_pps, 
                     "buyer_new_share_amount" => $buyer_new_share_amount, 
-                    "seller_new_share_amount" => $seller_new_share_amount, 
-                    "shares_owned" => $user_share_amount, 
+                    "seller_new_share_amount" => $seller_new_share_amount,
                     "amount" => $row['no_of_share'], 
-                    "price" => $row['selling_price'], 
+                    "price" => $request_price, 
                     "order_id" => $row['id'], 
                     "date_purchased" => $current_date, 
                     "indicator" => "AUTO_PURCHASE", 
@@ -209,10 +192,9 @@ function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quan
                                         $current_market_price, 
                                         $new_pps, 
                                         $buyer_new_share_amount, 
-                                        $seller_new_share_amount,
-                                        $user_share_amount, 
+                                        $seller_new_share_amount, 
                                         $row['no_of_share'],
-                                        $row['selling_price'],
+                                        $request_price,
                                         $row['id'],
                                         $current_date,
                                         "AUTO_PURCHASE",
@@ -301,6 +283,22 @@ function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quan
 
             if($will_execute)
             {
+                hx_debug(HX::SELL_SHARES, "Case >=:\n".
+                                         "Executing on sell order id: ".$row['id']."\n".
+                                         "Order quantity: ".$row['no_of_share']."\n".
+                                         "buyer username: ".$row['user_username']."\n".
+                                         "seller username: ".$user_username."\n".
+                                         "seller old balance: ".$seller_account_info['balance']."\n".
+                                         "seller new balance: ".$seller_new_balance."\n".
+                                         "buyer old balance: ".$buyer_account_info['balance']."\n".
+                                         "buyer new balance: ".$buyer_new_balance."\n".
+                                         "seller old share amount: ".$seller_account_info['Shares']."\n".
+                                         "seller new share amount: ".$seller_new_share_amount."\n".
+                                         "buyer old share amount: ".$buyer_account_info['Shares']."\n".
+                                         "buyer new share amount: ".$buyer_new_share_amount."\n".
+                                         "new price per share: ".$new_pps."\n".
+                                         "\n"); 
+
                 hx_debug(HX::SELL_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
                     "buyer" => $user_username, 
                     "seller" => $row['user_username'], 
@@ -312,10 +310,9 @@ function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quan
                     "initial_pps" => $current_market_price, 
                     "new_pps" => $new_pps, 
                     "buyer_new_share_amount" => $buyer_new_share_amount, 
-                    "seller_new_share_amount" => $seller_new_share_amount, 
-                    "shares_owned" => $user_share_amount, 
+                    "seller_new_share_amount" => $seller_new_share_amount,
                     "amount" => $request_quantity, 
-                    "price" => $row['selling_price'], 
+                    "price" => $request_price, 
                     "order_id" => $row['id'], 
                     "date_purchased" => $current_date, 
                     "indicator" => "AUTO_PURCHASE", 
@@ -334,9 +331,8 @@ function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quan
                                         $new_pps, 
                                         $buyer_new_share_amount, 
                                         $seller_new_share_amount,
-                                        $user_share_amount, 
                                         $request_quantity,
-                                        $row['selling_price'],
+                                        $request_price,
                                         $row['id'],
                                         $current_date,
                                         "AUTO_PURCHASE",
@@ -351,15 +347,284 @@ function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quan
         }
     }
 
+    hx_debug(HX::BUY_SHARES, "Request quantity before returning: ".$request_quantity."\n");
+
     return $request_quantity;
 }
 
-function autoSellNoLimitStop($user_username, $artist_username, $request_quantity, $request_price, $current_market_price, $user_share_amount, $is_from_injection)
+/**
+* Automatically executes sell orders that have no limits and stops, which means selling at market price. 
+* Matching candidates will be:
+* - Buy orders that have no limits and stops (since the price will always be at market price)
+* - Buy orders that have stop <= market price
+* - Buy orders that have limit >= market price
+* - Buy orders that have limit and stop equal to each other (These orders will match for all sell orders)
+*
+* @param  	user_username	            username of the buyer who is posting the buy order
+*
+* @param  	artist_username	            artist username whose shares are being requested from
+*
+* @param  	request_quantity            amount of shares the buyer is requesting
+*
+* @param  	request_price               requesting price specified by the buyer, this is used to find matching sell orders
+*
+* @param  	current_market_price	    current stock price of the artist's stock
+*
+* @param  	user_share_amount	        amount of shares the user have towards the artist
+*
+*
+* @return 	request_quantity	       the remaining quantity of the buy order after automatically executed, 
+*                                      remains the same if no matching sell orders found, 0 if the quantity is less than the quantity in matching sell orders
+*/
+function autoSellNoLimitStop($user_username, $artist_username, $request_quantity, $request_price, $current_market_price, $is_from_injection)
 {
+    hx_debug(HX::SELL_SHARES, "request quantity: ".$request_quantity.", request price: ".$request_price."\n\n");
     $conn = connect();
+    $connPDO = connectPDO();
+    $current_date = date('Y-m-d H:i:s');
 
     $res = searchMatchingBuyOrderNoLimitStop($conn, $user_username, $artist_username, $current_market_price);
     hx_debug(HX::QUERY, "searchMatchingBuyOrderNoLimitStop returned ".$res->num_rows." entries");
+
+    while($row = $res->fetch_assoc())
+    {
+        //fail safe
+        $will_execute = false;
+
+        $result = searchAccount($conn, $user_username);
+        $seller_account_info = $result->fetch_assoc();
+
+        $res_1 = searchAccount($conn, $row['user_username']);
+        $buyer_account_info = $res_1->fetch_assoc();
+
+        $buyer_account_type = getAccountType($row['user_username']);
+        $seller_account_type = getAccountType($user_username);
+
+        //Assume stock price unchanged
+        $new_pps = $current_market_price;
+
+        $buy_mode = ShareInteraction::BUY;
+        if ($request_quantity <= 0) 
+        {
+            break;
+        }
+
+        if($is_from_injection)
+        {
+            $buy_mode = ShareInteraction::BUY_FROM_INJECTION;
+        }
+
+        hx_debug(HX::BUY_SHARES, "proceeding with buy_mode: ".$buy_mode);
+
+        //If the sell order is selling more shares than the posted buy order
+        if ($request_quantity >= $row['quantity']) 
+        {
+            hx_debug(HX::BUY_SHARES, "request quantity >= buy order's number of share case");
+
+            //Case when a buy order has no limit and stop
+            //This is equivalent to if($row['siliqas_requested'] != -1), but a little bit more safe and a more specific check
+            if($row['buy_limit'] == -1 && $row['buy_stop'] == -1)
+            {
+                $seller_new_balance = $seller_account_info['balance'] + ($row['quantity'] * $row['siliqas_requested']);
+                $buyer_new_balance = $buyer_account_info['balance'] - (($row['quantity'] * $row['siliqas_requested']));
+
+                $seller_new_share_amount = $seller_account_info['Shares'] - $row['quantity'];
+                $buyer_new_share_amount = $buyer_account_info['Shares'] + $row['quantity'];
+                
+                $new_pps = $row['siliqas_requested'];
+
+                $will_execute = true;
+            }
+            //['siliqas_requested'] == -1 indicates that this buy order has a limit or a stop
+            else if($row['siliqas_requested'] == -1)
+            {
+                if($row['buy_limit'] == $row['buy_stop'] || $row['buy_limit'] >= $request_price || ($row['buy_stop'] <= $request_price && $row['buy_stop'] != -1))
+                {
+                    $seller_new_balance = $seller_account_info['balance'] + ($row['quantity'] * $request_price);
+                    $buyer_new_balance = $buyer_account_info['balance'] - (($row['quantity'] * $request_price));
+    
+                    $seller_new_share_amount = $seller_account_info['Shares'] - $row['quantity'];
+                    $buyer_new_share_amount = $buyer_account_info['Shares'] + $row['quantity'];
+                    
+                    $new_pps = $request_price;
+    
+                    $will_execute = true;
+                }
+            }
+
+            if($will_execute)
+            {
+                hx_debug(HX::BUY_SHARES, "Case >=:\n".
+                                         "Executing on buy order id: ".$row['id']."\n".
+                                         "Order quantity: ".$row['quantity']."\n".
+                                         "buyer username: ".$row['user_username']."\n".
+                                         "seller username: ".$user_username."\n".
+                                         "seller old balance: ".$seller_account_info['balance']."\n".
+                                         "seller new balance: ".$seller_new_balance."\n".
+                                         "buyer old balance: ".$buyer_account_info['balance']."\n".
+                                         "buyer new balance: ".$buyer_new_balance."\n".
+                                         "seller old share amount: ".$seller_account_info['Shares']."\n".
+                                         "seller new share amount: ".$seller_new_share_amount."\n".
+                                         "buyer old share amount: ".$buyer_account_info['Shares']."\n".
+                                         "buyer new share amount: ".$buyer_new_share_amount."\n".
+                                         "new price per share: ".$new_pps."\n".
+                                         "\n"); 
+
+                hx_debug(HX::BUY_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
+                    "buyer" => $row['user_username'], 
+                    "seller" => $user_username, 
+                    "buyer_account_type" => $buyer_account_type, 
+                    "seller_account_type" => $seller_account_type, 
+                    "artist" => $artist_username, 
+                    "buyer_new_balance" => $buyer_new_balance, 
+                    "seller_new_balance" => $seller_new_balance, 
+                    "initial_pps" => $current_market_price, 
+                    "new_pps" => $new_pps, 
+                    "buyer_new_share_amount" => $buyer_new_share_amount, 
+                    "seller_new_share_amount" => $seller_new_share_amount,
+                    "amount" => $row['quantity'], 
+                    "price" => $request_price, 
+                    "order_id" => $row['id'], 
+                    "date_purchased" => $current_date, 
+                    "indicator" => "AUTO_SELL", 
+                    "buy_mode"  => $buy_mode
+                )));
+
+                purchaseAskedPriceShare($connPDO,
+                                        $row['user_username'],
+                                        $user_username,
+                                        $buyer_account_type,
+                                        $seller_account_type,
+                                        $artist_username,
+                                        $buyer_new_balance,
+                                        $seller_new_balance,
+                                        $current_market_price,
+                                        $new_pps,
+                                        $buyer_new_share_amount,
+                                        $seller_new_share_amount,
+                                        $row['quantity'],
+                                        $request_price,
+                                        $row['id'],
+                                        $current_date,
+                                        "AUTO_SELL",
+                                        $buy_mode);
+
+                hx_info(HX::BUY_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $request_price)." was transfered between buyer ".$row['user_username']." and seller ".$user_username);
+                updateBuyOrderQuantity($conn, $row['id'], 0);
+
+                //The return value should be the amount of share requested subtracted by the amount that 
+                //is automatically bought
+                $request_quantity = $request_quantity - $row['quantity'];
+                hx_debug(HX::BUY_SHARES, "quantity has been reduced to ".$request_quantity." after auto selling to buy order ".$row['id']);
+            }
+        } 
+        else if ($request_quantity < $row['quantity']) 
+        {
+            hx_debug(HX::BUY_SHARES, "request quantity < buy order's number of share case");
+
+            //Case when a buy order has no limit and stop
+            //This is equivalent to if($row['siliqas_requested'] != -1), but a little bit more safe and a more specific check
+            if($row['buy_limit'] == -1 && $row['buy_stop'] == -1)
+            {
+                $seller_new_balance = $seller_account_info['balance'] + ($request_quantity * $row['siliqas_requested']);
+                $buyer_new_balance = $buyer_account_info['balance'] - (($request_quantity * $row['siliqas_requested']));
+
+                $seller_new_share_amount = $seller_account_info['Shares'] - $request_quantity;
+                $buyer_new_share_amount = $buyer_account_info['Shares'] + $request_quantity;
+
+                $new_pps = $row['siliqas_requested'];
+
+                $will_execute = true;
+            }
+            else if($row['siliqas_requested'] == -1)
+            {
+                //case when both limit and stop are set to market price
+                if($row['buy_limit'] == $row['buy_stop'] || $row['buy_limit'] >= $request_price || ($row['buy_stop'] <= $request_price && $row['buy_stop'] != -1))
+                {
+                    $seller_new_balance = $seller_account_info['balance'] + ($request_quantity * $request_price);
+                    $buyer_new_balance = $buyer_account_info['balance'] - (($request_quantity * $request_price));
+
+                    $seller_new_share_amount = $seller_account_info['Shares'] - $request_quantity;
+                    $buyer_new_share_amount = $buyer_account_info['Shares'] + $request_quantity;
+
+                    $new_pps = $request_price;
+
+                    $will_execute = true;
+                }
+            }
+
+            if($will_execute)
+            {
+                hx_debug(HX::BUY_SHARES, "Case >=:\n".
+                                         "Executing on buy order id: ".$row['id']."\n".
+                                         "Order quantity: ".$row['quantity']."\n".
+                                         "buyer username: ".$row['user_username']."\n".
+                                         "seller username: ".$user_username."\n".
+                                         "seller old balance: ".$seller_account_info['balance']."\n".
+                                         "seller new balance: ".$seller_new_balance."\n".
+                                         "buyer old balance: ".$buyer_account_info['balance']."\n".
+                                         "buyer new balance: ".$buyer_new_balance."\n".
+                                         "seller old share amount: ".$seller_account_info['Shares']."\n".
+                                         "seller new share amount: ".$seller_new_share_amount."\n".
+                                         "buyer old share amount: ".$buyer_account_info['Shares']."\n".
+                                         "buyer new share amount: ".$buyer_new_share_amount."\n".
+                                         "new price per share: ".$new_pps."\n".
+                                         "\n"); 
+
+                hx_debug(HX::BUY_SHARES, "purchaseAskedPriceShare param: ".json_encode(array(
+                    "buyer" => $row['user_username'], 
+                    "seller" => $user_username, 
+                    "buyer_account_type" => $buyer_account_type, 
+                    "seller_account_type" => $seller_account_type, 
+                    "artist" => $artist_username, 
+                    "buyer_new_balance" => $buyer_new_balance, 
+                    "seller_new_balance" => $seller_new_balance, 
+                    "initial_pps" => $current_market_price, 
+                    "new_pps" => $new_pps, 
+                    "buyer_new_share_amount" => $buyer_new_share_amount, 
+                    "seller_new_share_amount" => $seller_new_share_amount,
+                    "amount" => $request_quantity, 
+                    "price" => $request_price, 
+                    "order_id" => $row['id'], 
+                    "date_purchased" => $current_date, 
+                    "indicator" => "AUTO_SELL", 
+                    "buy_mode"  => $buy_mode
+                )));
+
+                purchaseAskedPriceShare($connPDO,
+                                        $row['user_username'],
+                                        $user_username,
+                                        $buyer_account_type,
+                                        $seller_account_type,
+                                        $artist_username,
+                                        $buyer_new_balance,
+                                        $seller_new_balance,
+                                        $current_market_price,
+                                        $new_pps,
+                                        $buyer_new_share_amount,
+                                        $seller_new_share_amount,
+                                        $request_quantity,
+                                        $request_price,
+                                        $row['id'],
+                                        $current_date,
+                                        "AUTO_SELL",
+                                        $buy_mode);
+
+                $new_buy_order_quantity = $row['quantity'] - $request_quantity;
+                hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $request_price)." was transfered between buyer ".$row['user_username']." and seller ".$user_username);
+                updateBuyOrderQuantity($conn, $row['id'], $new_buy_order_quantity);
+                //The return value should be the amount of share requested subtracted by the amount that 
+                //is automatically bought
+                $request_quantity = $request_quantity - $row['quantity'];
+                hx_debug(HX::SELL_SHARES, "quantity has been reduced to ".$request_quantity." after auto selling to buy order ".$row['id']);
+            }
+        }
+    }
+
+    closeCon($conn);
+
+    hx_debug(HX::SELL_SHARES, "Request quantity before returning: ".$request_quantity."\n");
+    return $request_quantity;
 }
 
 /**
@@ -570,13 +835,4 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity, $cu
     }
     return $quantity;
 }
-
-function autoPurchaseWithLimitSet($user_username, $artist_username, $request_quantity, $limit_price, $current_market_price, $user_share_amount)
-{
-    $conn = connect();
-    
-    closeCon($conn);
-}
-
-
 ?>
