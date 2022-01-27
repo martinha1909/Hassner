@@ -6,6 +6,7 @@
     include '../constants/ShareInteraction.php';
 
     $conn = connect();
+    $connPDO = connectPDO();
 
     $_SESSION['logging_mode'] = LogModes::SHARE_DIST;
 
@@ -74,20 +75,20 @@
         $current_pps = getArtistPricePerShare($_SESSION['username']);
         hx_debug(HX::HELPER, "current_pps is ".$current_pps);
 
-        hx_debug(HX::SELL_SHARES, "autoSell param: ".json_encode(array(
+        hx_debug(HX::SELL_SHARES, "autoSellNoLimitStop param: ".json_encode(array(
             "user_username" => $_SESSION['username'],
             "artist_username" => $_SESSION['username'],
-            "asked_price" => $current_pps,
-            "quantity:" => $additional_shares,
-            "current_date: " => $current_date,
+            "request_quantity" => $additional_shares,
+            "request_price:" => $current_pps,
+            "current_market_price" => $current_pps,
             "is_from_injection" => true
         )));
-        $new_quantity = autoSell($_SESSION['username'], 
-                                 $_SESSION['username'], 
-                                 $current_pps, 
-                                 $additional_shares,
-                                 $current_date,
-                                 true);
+        $new_quantity = autoSellNoLimitStop($_SESSION['username'], 
+                                            $_SESSION['username'],
+                                            $additional_shares, 
+                                            $current_pps,
+                                            $current_pps,
+                                            true);
 
         refreshSellOrderTable();
         refreshBuyOrderTable();
@@ -106,7 +107,7 @@
             )));
             //When artist distributes more share, we add it as a sell order as well
             //Share injection sell orders don't have limit and stop, hence, these values are set to -1
-            postSellOrder($conn, $_SESSION['username'], $_SESSION['username'], $new_quantity, $current_pps, -1, -1, $current_date, true);
+            postSellOrder($connPDO, $_SESSION['username'], $_SESSION['username'], $new_quantity, $current_pps, -1, -1, $current_date, true);
         }
 
         echo(json_encode(array(
