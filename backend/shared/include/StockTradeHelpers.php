@@ -42,8 +42,6 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
 * - Sell orders that have limit <= market price
 * - Sell orders that have limit and stop equal to each other (These orders are matching for every buy order)
 *
-* @param  	conn	                    a connection to the db
-*
 * @param  	user_username	            username of the buyer who is posting the buy order
 *
 * @param  	artist_username	            artist username whose shares are being requested from
@@ -60,8 +58,9 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
 * @return 	request_quantity	       the remaining quantity of the buy order after automatically executed, 
 *                                      remains the same if no matching sell orders found, 0 if the quantity is less than the quantity in matching sell orders
 */
-function autoPurchase($conn, $user_username, $artist_username, $request_quantity, $request_price, $current_market_price, $user_share_amount)
+function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quantity, $request_price, $current_market_price, $user_share_amount)
 {
+    $conn = connect();
     $connPDO = connectPDO();
     $current_date = date('Y-m-d H:i:s');
     $res = searchMatchingSellOrderNoLimitStop($conn, $user_username, $artist_username, $current_market_price);
@@ -353,6 +352,14 @@ function autoPurchase($conn, $user_username, $artist_username, $request_quantity
     }
 
     return $request_quantity;
+}
+
+function autoSellNoLimitStop($user_username, $artist_username, $request_quantity, $request_price, $current_market_price, $user_share_amount, $is_from_injection)
+{
+    $conn = connect();
+
+    $res = searchMatchingBuyOrderNoLimitStop($conn, $user_username, $artist_username, $current_market_price);
+    hx_debug(HX::QUERY, "searchMatchingBuyOrderNoLimitStop returned ".$res->num_rows." entries");
 }
 
 /**

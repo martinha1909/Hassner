@@ -2,7 +2,7 @@ var max_limit = 0;
 var min_limit = 0;
 var max_num_of_shares = 0;
 var sellable_shares = 0;
-var step_value = 0.5;
+var step_value = 0.1;
 var url_max_num_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/MaxNumOfShares.php";
 
 function recalcSliderLimits(new_chosen_min, new_chosen_max) 
@@ -67,9 +67,9 @@ $( function() {
     method : "GET",
     async: false,
     success : function(data){
-      max_limit = parseFloat((data*2).toFixed(2));
+      max_limit = parseFloat((data*2).toFixed(1));
       //We allow users to set the min limit to be half the current stock price
-      min_limit = parseFloat((data/2).toFixed(2));
+      min_limit = parseFloat((data/2).toFixed(1));
       if(max_limit < 1 || min_limit < 1)
       {
         step_value = 0.05;
@@ -88,6 +88,10 @@ $( function() {
       values: [ min_limit, max_limit ],
       step: step_value,
       slide: function( event, ui ) {
+        // console.log(max_limit);
+        // console.log(ui.values[1]);
+        console.log(min_limit);
+        console.log(ui.values[0]);
         min = ui.values[0];
         max = ui.values[1];
         if(min == min_limit && max == max_limit){

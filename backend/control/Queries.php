@@ -562,6 +562,28 @@
             return $result;
         }
 
+        function searchMatchingBuyOrderNoLimitStop($conn, $user_username, $artist_username, $market_price)
+        {
+            $result = 0;
+
+            $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                    FROM buy_order 
+                    WHERE artist_username = ? AND user_username != ? AND ((buy_stop <= ? AND buy_stop > 0) OR buy_limit >= ? OR siliqas_requested = ?)
+                    ORDER BY date_posted ASC";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssddd', $artist_username, $user_username, $market_price, $market_price, $market_price);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
         function searchAllSellOrdersNoLimitStop($conn, $artist_username)
         {
             $result = 0;
