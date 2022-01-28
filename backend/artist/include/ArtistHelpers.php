@@ -347,6 +347,7 @@
         if (sizeof($sell_orders) > 0) 
         {
             echo '
+                <p class="div-hidden" id="sell_orders_size">'.sizeof($sell_orders).'</p>
                 <div class="col-6 mx-auto">
                     <table class="table">
                         <thead>
@@ -373,12 +374,13 @@
                 if (hasEnoughBalance($sell_orders[$i]->getSellingPrice(), $_SESSION['user_balance'])) 
                 {
                     echo '
-                                <td><input role="button" type="submit" class="btn btn-primary" value="Buy" id="artist_buy_back_shares_btn">
-                                    <div class="div-hidden" id="artist_buy_back_content">
-                                        <label for="buy_num_shares" class="text-blue text-bold"># Shares:</label>
-                                        <input type="text" class="buy_back_shares_slider_text" id="buy_num_shares">
+                                <td>
+                                    <input role="button" type="submit" class="input-no-background-white" value="buy" id="artist_buy_back_shares_btn_'.$i.'" onclick="buyBackShareClick('.$i.')">
+                                    <div class="div-hidden" id="artist_buy_back_content_'.$i.'">
+                                        <label for="buy_num_shares_'.$i.'" class="text-blue text-bold"># Shares:</label>
+                                        <input type="text" class="buy_back_shares_slider_text" id="buy_num_shares_'.$i.'">
                                         <div class="slider_container">
-                                            <div id="buy_num"></div>
+                                            <div id="buy_num_'.$i.'"></div><input role="button" type="submit" class="input-no-background-white py-2" value="->" onclick="buyBackShare('.$sell_orders[$i]->getID().')">
                                         </div>
                                     </div>
                                     </div>
