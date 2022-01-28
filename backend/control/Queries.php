@@ -588,7 +588,7 @@
         {
             $result = 0;
 
-            $sql = "SELECT id
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted
                     FROM sell_order
                     WHERE artist_username = ? AND selling_price != -1 AND sell_limit = -1 AND sell_stop = -1";
             $stmt = $conn->prepare($sql);

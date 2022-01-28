@@ -184,7 +184,7 @@
         }
     }
 
-    function hasEnoughSiliqas($amount_spending, $balance)
+    function hasEnoughBalance($amount_spending, $balance)
     {
         if ($balance >= $amount_spending)
             return true;

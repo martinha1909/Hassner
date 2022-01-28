@@ -48,6 +48,8 @@
     <link rel="stylesheet" href="../css/date_picker.css" type="text/css">
     <link rel="stylesheet" href="../css/slidebar.css" type="text/css">
     <link rel="stylesheet" href="../css/linegraph.css" id="theme-color">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="../css/slider.css">
 </head>
 
 
@@ -242,7 +244,8 @@
 
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
@@ -255,6 +258,8 @@
     <script src="../js/artist/InjectShares.js"></script>
     <script src="../js/shared/transaction/BuyOrSellShares.js"></script>
     <script src="../js/artist/TradeHistory.js"></script>
+    <script src="../js/artist/BuyBackSlider.js"></script>
+    <!-- <script src="../js/listener/artist_sliders.js"></script> -->
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");

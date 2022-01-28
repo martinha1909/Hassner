@@ -504,7 +504,7 @@
             }
         }
 
-        askedPriceInit($artist_username, $_SESSION['account_type']);
+        buyBackableOrdersInit($artist_username);
 
         if($amount_repurchase_available > 0)
         {

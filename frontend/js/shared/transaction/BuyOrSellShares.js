@@ -1,4 +1,5 @@
 let artist_is_selling_shares = true;
+let artist_is_buying_back = true;
 
 function artistPostSellOrder()
 {
@@ -46,9 +47,25 @@ function artistSellShare()
     }
 }
 
+function buyBackShares()
+{
+    console.log("here");
+    if(artist_is_buying_back)
+    {
+        $("#artist_buy_back_content").show();
+        artist_is_buying_back = false;
+    }
+    else
+    {
+        $("#artist_buy_back_content").hide();
+        artist_is_buying_back = true;
+    }
+}
+
 $( function() {
     $("#artist_sell_share_btn").click(artistSellShare);
     $("#artist_post_sell_order_btn").click(artistPostSellOrder);
+    $("#artist_buy_back_shares_btn").click(buyBackShares);
 });
 
 $(document).keypress(function (e) {

@@ -9,6 +9,8 @@
             private $selling_price;
             private $no_of_share;
             private $date_posted;
+            private $sell_limit;
+            private $sell_stop;
 
             function __construct($id, $user_username, $artist_username, $selling_price, $no_of_share, $date_posted)
             {
@@ -18,6 +20,8 @@
                 $this->selling_price = $selling_price;
                 $this->no_of_share = $no_of_share;
                 $this->date_posted = $date_posted;
+                $this->sell_limit = -1;
+                $this->sell_stop = -1;
             }
 
             function getID()
@@ -50,6 +54,16 @@
                 return $this->date_posted;
             }
 
+            function getSellLimit()
+            {
+                return $this->sell_limit;
+            }
+
+            function getSellStop()
+            {
+                return $this->sell_stop;
+            }
+
             function setID($id)
             {
                 $this->id = $id;
@@ -78,6 +92,16 @@
             function setDatePosted($date_posted)
             {
                 $this->date_posted = $date_posted;
+            }
+
+            function setSellLimit($sell_limit)
+            {
+                $this->sell_limit = $sell_limit;
+            }
+
+            function setSellStop($sell_stop)
+            {
+                $this->sell_stop = $sell_stop;
             }
 
             public static function copy(SellOrder $sell_order): SellOrder
