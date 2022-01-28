@@ -368,8 +368,8 @@
                             <tr>
                                 <th scope="row">' . $sell_orders[$i]->getID() . '</th>
                                 <td>' . $sell_orders[$i]->getUser() . '</td>
-                                <td>' . $sell_orders[$i]->getSellingPrice() . '</td>
-                                <td>' . $sell_orders[$i]->getNoOfShare() . '</td>
+                                <td id="sell_order_price">' . $sell_orders[$i]->getSellingPrice() . '</td>
+                                <td id="sell_order_quantity">' . $sell_orders[$i]->getNoOfShare() . '</td>
                 ';
                 if (hasEnoughBalance($sell_orders[$i]->getSellingPrice(), $_SESSION['user_balance'])) 
                 {
@@ -377,12 +377,11 @@
                                 <td>
                                     <input role="button" type="submit" class="input-no-background-white" value="buy" id="artist_buy_back_shares_btn_'.$i.'" onclick="buyBackShareClick('.$i.')">
                                     <div class="div-hidden" id="artist_buy_back_content_'.$i.'">
-                                        <label for="buy_num_shares_'.$i.'" class="text-blue text-bold"># Shares:</label>
-                                        <input type="text" class="buy_back_shares_slider_text" id="buy_num_shares_'.$i.'">
+                                        <label for="buy_num_shares_'.$i.'" class="text-blue text-bold">Shares:</label>
+                                        <input type="text" class="buy_back_shares_slider_text" value="1" id="buy_num_shares_'.$i.'">
                                         <div class="slider_container">
-                                            <div id="buy_num_'.$i.'"></div><input role="button" type="submit" class="input-no-background-white py-2" value="->" onclick="buyBackShare('.$sell_orders[$i]->getID().')">
+                                            <div id="buy_num_'.$i.'"></div><input role="button" type="submit" class="input-no-background-white py-2" value="->" onclick="buyBackShare('.$sell_orders[$i]->getID().', '.$i.')">
                                         </div>
-                                    </div>
                                     </div>
                                 </td>
                     ';

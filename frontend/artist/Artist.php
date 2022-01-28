@@ -258,8 +258,6 @@
     <script src="../js/artist/InjectShares.js"></script>
     <script src="../js/shared/transaction/BuyOrSellShares.js"></script>
     <script src="../js/artist/TradeHistory.js"></script>
-    <!-- <script src="../js/artist/BuyBackSlider.js"></script> -->
-    <!-- <script src="../js/listener/artist_sliders.js"></script> -->
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");

@@ -87,20 +87,6 @@ function artistSellShare()
     }
 }
 
-function buyBackShares()
-{
-    if(artist_is_buying_back)
-    {
-        $("#artist_buy_back_content").show();
-        artist_is_buying_back = false;
-    }
-    else
-    {
-        $("#artist_buy_back_content").hide();
-        artist_is_buying_back = true;
-    }
-}
-
 function buyBackShareClick(i)
 {
     console.log(sell_order_buttons.getNoOfButtons());
@@ -110,35 +96,45 @@ function buyBackShareClick(i)
     }
     if(sell_order_buttons.getAllButtons()[i].is_active)
     {
+        var slider_max = 1;
         // $("#artist_buy_back_shares_btn_"+i).hide();
         $("#artist_buy_back_shares_btn_"+i).val("-");
         $("#artist_buy_back_content_"+i).show();
+
+        $.ajax({
+            type: "POST",
+            url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/artist/MaxNumOfShares.php",
+            data: {
+                price: $("#sell_order_price").text(),
+                quantity: $("#sell_order_quantity").text()
+            },
+            async: false,
+            dataType: "json",
+            success: function(data){
+                slider_max = data;
+            },
+            error: function(data){
+    
+            }
+        });
         $("#buy_num_"+i).slider({
             range: "min",
-            min: 0,
-            max: 500,
-            value: 0,
+            min: 1,
+            max: slider_max,
+            value: 1,
             slide: function( event, ui ) {
-            $("#buy_num_shares").val(ui.value);
-            $("#buy_cost").val("$" + ui.value*$("#buy_limit").slider("values", 0) + " - $" + ui.value*$("#buy_limit").slider("values", 1));
+                $("#buy_num_shares_"+i).val(ui.value);
             }
         })
 
 
         // Accoridon init
         $( "#buy_accordion").accordion({
-        heightStyle: "content",
-        collapsible: true,
-        active: false
+            heightStyle: "content",
+            collapsible: true,
+            active: false
         });
 
-        $("#buy_order").click(function(){
-        // AJAX
-        })
-
-        $("#sell_order").click(function(){
-        // AJAX
-        })
         sell_order_buttons.getAllButtons()[i].is_active = false;
     }
     else
@@ -147,6 +143,11 @@ function buyBackShareClick(i)
         $("#artist_buy_back_content_"+i).hide();
         sell_order_buttons.getAllButtons()[i].is_active = true;
     }
+}
+
+function buyBackShare(sell_order_id, index)
+{
+    console.log($("#buy_num_shares_"+index).val());
 }
 
 $( function() {
