@@ -12,6 +12,9 @@
   width: 30%;
   background: none;
   overflow-x: visible;
+  border:0; 
+  color: white; 
+  font-weight:bold;
 }
 
 .slider_slider {

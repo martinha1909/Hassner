@@ -375,10 +375,10 @@
                     echo '
                                 <td><input role="button" type="submit" class="btn btn-primary" value="Buy" id="artist_buy_back_shares_btn">
                                     <div class="div-hidden" id="artist_buy_back_content">
-                                        <label for="buy_num_shares"># Shares:</label>
-                                        <input type="text" class="buy_back_shares_slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
+                                        <label for="buy_num_shares" class="text-blue text-bold"># Shares:</label>
+                                        <input type="text" class="buy_back_shares_slider_text" id="buy_num_shares">
                                         <div class="slider_container">
-                                            <div class="slider_slider" id="buy_num"></div>
+                                            <div id="buy_num"></div>
                                         </div>
                                     </div>
                                     </div>
