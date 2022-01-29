@@ -493,18 +493,6 @@
 
         sellOrderInit();
 
-        if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
-        {
-            if($_SESSION['status'] == StatusCodes::Success)
-            {
-                getStatusMessage("", "Shares bought back successfully");
-            }
-            else if($_SESSION['status'] == StatusCodes::ErrGeneric)
-            {
-                getStatusMessage("An unexpected error occured", "");
-            }
-        }
-
         buyBackableOrdersInit($artist_username);
 
         if($amount_repurchase_available > 0)

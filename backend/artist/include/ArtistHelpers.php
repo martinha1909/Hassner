@@ -160,7 +160,8 @@
         $ret = 0;
         $conn = connect();
 
-        $res = searchSellOrderByArtist($conn, $artist_username);
+        //only sell orders at market price are available for repurchase
+        $res = searchAllSellOrdersNoLimitStop($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
             //skipping their own orders
@@ -178,7 +179,7 @@
         $ret = 0;
         $conn = connect();
 
-        $res = searchSellOrderByArtist($conn, $artist_username);
+        $res = searchAllSellOrdersNoLimitStop($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
             //Skipping their own orders
@@ -215,7 +216,7 @@
         $ret = array();
         $conn = connect();
 
-        $res = searchSellOrderByArtist($conn, $artist_username);
+        $res = searchAllSellOrdersNoLimitStop($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
             //Skipping their own orders
@@ -223,12 +224,12 @@
             {
                 //the fields that are being sent as "" means we do not need those fields for this case so they can be empty
                 $sell_order_item_info = new SellOrder($row['id'], 
-                                                    $row['user_username'], 
-                                                    "", 
-                                                    $row['selling_price'], 
-                                                    $row['no_of_share'], 
-                                                    "", 
-                                                    "");
+                                                      $row['user_username'], 
+                                                      "", 
+                                                      $row['selling_price'], 
+                                                      $row['no_of_share'], 
+                                                      "", 
+                                                      "");
                 array_push($ret, $sell_order_item_info);
             }
         }
