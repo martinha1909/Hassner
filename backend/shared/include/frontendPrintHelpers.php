@@ -466,7 +466,6 @@
                                 <label>
                                     <input type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
                                     <p>Quantity: <span id="demo"></span></p>
-                                    <input id="artist_pps_selling" type="text" class="form-control" style="border-color: white;" placeholder="Enter price per share">
                                     <p id="artist_sell_share_status"></p>
                                     <input id="artist_post_sell_order_btn" type="submit" class="btn btn-primary my-2 py-2" role="button" value="Post">
                                 </label> 

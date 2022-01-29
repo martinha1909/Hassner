@@ -48,12 +48,13 @@
         $conn = connect();
         $shares_selling = 0;
 
-        $res = searchSellOrderByArtistAndUser($conn, $artist_username, $artist_username);
+        $res = searchSellOrderFromRepurchase($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
             $shares_selling += $row['no_of_share'];
         }
 
+        closeCon($conn);
         return $shares_selling;
     }
 
@@ -63,7 +64,7 @@
 
         if(artistRepurchaseShares($artist_username) > 0)
         {
-            if(artistShareSelling($artist_username) >= artistRepurchaseShares($artist_username))
+            if(artistShareSelling($artist_username) < artistRepurchaseShares($artist_username))
             {
                 $ret = true;
             }

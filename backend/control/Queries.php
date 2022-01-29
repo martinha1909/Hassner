@@ -626,6 +626,27 @@
             return $result;
         }
 
+        function searchSellOrderFromRepurchase($conn, $artist_username)
+        {
+            $result = 0;
+
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted
+                    FROM sell_order
+                    WHERE user_username = ? AND artist_username = ? AND is_from_injection = 0 AND sell_limit = -1 AND sell_stop = -1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $artist_username, $artist_username);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
         function searchSellOrdersIDFromInjection($conn, $artist_username)
         {
             $result = 0;

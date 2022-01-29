@@ -47,8 +47,7 @@ function artistPostSellOrder()
         type: "POST",
         url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/artist/SellOrderBackend.php",
         data: {
-            asked_price: $("#artist_pps_selling").val(),
-            purchase_quantity: $("#myRange").val()
+            purchase_quantity: $("#myRange").val(),
         },
         async: false,
         dataType: "json",
@@ -184,12 +183,3 @@ $( function() {
     $("#artist_sell_share_btn").click(artistSellShare);
     $("#artist_post_sell_order_btn").click(artistPostSellOrder);
 });
-
-$(document).keypress(function (e) {
-    var key = e.which;
-    if(key == 13)  // the enter key code
-     {
-       $('#artist_post_sell_order_btn').click();
-       return false;  
-     }
-});  
