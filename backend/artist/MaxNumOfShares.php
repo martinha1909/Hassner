@@ -4,8 +4,8 @@
     include '../control/Dependencies.php';
     include '../constants/StatusCodes.php';
 
-    $price = $_POST['price'];
-    $quantity = $_POST['quantity'];
+    $price = intval($_POST['price']);
+    $quantity = intval($_POST['quantity']);
     $json_data = 1;
     $artist_balance = getUserBalance($_SESSION['username']);
     $sub_total = $price * $quantity;

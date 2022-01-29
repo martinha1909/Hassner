@@ -141,7 +141,7 @@
                             <div class="py-4">
                                 <input id="quotes_btn" type = "submit" class="btn btn-secondary" role="button" value = "<?php echo EthosOption::QUOTES; ?>"> 
                                 <input id="buy_back_shares_btn" type = "submit" class="btn btn-secondary" role="button" value = "<?php echo EthosOption::BUY_BACK_SHARES; ?>"> 
-                                <input id="history_btn" type = "submit" class="btn btn-secondary" role="button" value = "<?php echo EthosOption::HISTORY; ?>"> 
+                                <input id="history_btn" type = "submit" class="btn btn-secondary" role="button" value = "<?php echo EthosOption::HISTORY; ?>">
                             </div>
 
                             <div class="div-hidden" id="quotes_content">

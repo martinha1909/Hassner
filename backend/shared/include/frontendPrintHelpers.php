@@ -484,10 +484,11 @@
         $_SESSION['repurchase_sell_orders'] = getAllRepurchaseSellOrdersInfo($artist_username);
 
         echo '
-        <div class="text-center px-4">
-            <h6>Your owned shares: '.$owned_shares.'</h6>
-            <h6>Shares available for repurchase: '.$amount_repurchase_available.'</h6>
-        </div>
+            <div class="text-center px-4">
+                <h6>Your owned shares: '.$owned_shares.'</h6>
+                <h6>Shares available for repurchase: '.$amount_repurchase_available.'</h6>
+                <p id="buy_back_success" class="suc-msg"></p>
+            </div>
         ';
 
         sellOrderInit();

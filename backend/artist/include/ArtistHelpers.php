@@ -339,9 +339,8 @@
         $sell_orders = fetchBuyBackableOrders($artist_username);
 
         echo '
-                <div>
-                    <h3 class="h3-blue py-5 text-center">Available Sell Orders</h3>
-                </div>
+                <h3 class="h3-blue py-5 text-center">Available Sell Orders</h3>
+                <p id="buy_back_status" class="error-msg text-center"></p>
         ';
 
         if (sizeof($sell_orders) > 0) 
@@ -380,7 +379,7 @@
                                         <label for="buy_num_shares_'.$i.'" class="text-blue text-bold">Shares:</label>
                                         <input type="text" class="buy_back_shares_slider_text" value="1" id="buy_num_shares_'.$i.'">
                                         <div class="slider_container">
-                                            <div id="buy_num_'.$i.'"></div><input role="button" type="submit" class="input-no-background-white py-2" value="->" onclick="buyBackShare('.$sell_orders[$i]->getID().', '.$i.')">
+                                            <div id="buy_num_'.$i.'"></div><input role="button" type="submit" class="input-no-background-white py-2" value="->" onclick="buyBackShare('.$sell_orders[$i]->getID().', '.$i.', '.$sell_orders[$i]->getSellingPrice().')">
                                         </div>
                                     </div>
                                 </td>
@@ -415,119 +414,6 @@
                 </div>
             ';
         }
-
-        // if (sizeof($sell_orders) > 0) {
-        //     //displays the buy button when user has not clicked on it
-        //     if ($_SESSION['buy_asked_price'] == 0) {
-        //         echo '
-        //             <div class="col-6 mx-auto">
-        //                 <table class="table">
-        //                     <thead>
-        //                         <tr>
-        //                             <th scope="col">#</th>
-        //                             <th scope="col">Seller username</th>
-        //                             <th scope="col">Price per share(q̶)</th>
-        //                             <th scope="col">Quantity</th>
-        //                             <th scope="col">+</th>
-        //                         </tr>
-        //                     </thead>
-        //                     <tbody>';
-        //         for ($i = 0; $i < sizeof($sell_orders); $i++) {
-        //             echo '
-        //                         <tr>
-        //                             <th scope="row">' . $sell_orders[$i]->getID() . '</th>
-        //                             <td>' . $sell_orders[$i]->getUser() . '</td>
-        //                             <td>' . $sell_orders[$i]->getSellingPrice() . '</td>
-        //                             <td>' . $sell_orders[$i]->getNoOfShare() . '</td>
-        //                             <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-        //                 ';
-        //             if (hasEnoughSiliqas($sell_orders[$i]->getSellingPrice(), $_SESSION['user_balance'])) {
-        //                 echo '
-        //                                     <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
-        //                     ';
-        //             } else {
-        //                 $_SESSION['status'] = "ERROR";
-        //                 echo '
-        //                                     <td>
-        //                     ';
-        //                 getStatusMessage("Not enough siliqas", "");
-        //                 echo '
-        //                                     </td>
-        //                     ';
-        //             }
-        //             echo '
-        //                                 </form>
-        //                             </tr>
-        //                 ';
-        //         }
-        //         echo '
-        //                 </tbody>
-        //             </table>
-        //         </div>
-        //         ';
-        //     }
-        //     //replaces the Buy button with a slide bar ranging from 0 to the quantity that other users are selling
-        //     else {
-        //         echo '
-        //                 <table class="table">
-        //                     <thead>
-        //                         <tr>
-        //                             <th scope="col">#</th>
-        //                             <th scope="col">Seller username</th>
-        //                             <th scope="col">Price per share(q̶)</th>
-        //                             <th scope="col">Quantity</th>
-        //                             <th scope="col"></th>
-        //                             <th scope="col">+</th>
-        //                         </tr>
-        //                     </thead>
-        //                     <tbody>';
-        //         for ($i = 0; $i < sizeof($sell_orders); $i++) {
-        //             echo '
-        //                         <tr>
-        //                             <th scope="row">' . $sell_orders[$i]->getID() . '</th>
-        //                             <td>' . $sell_orders[$i]->getUser() . '</td>
-        //                             <td>' . $sell_orders[$i]->getSellingPrice() . '</td>
-        //                             <td>' . $sell_orders[$i]->getNoOfShare() . '</td>
-        //                             <td>
-        //                 ';
-        //             if ($_SESSION['seller'] == $sell_orders[$i]->getID()) {
-        //                 $_SESSION['purchase_price'] = $sell_orders[$i]->getSellingPrice();
-        //                 $_SESSION['seller_toggle'] = $sell_orders[$i]->getID();
-        //                 echo '
-        //                                 <form action="../../backend/artist/BuySharesBackend.php" method="post">
-        //                                     <input name = "purchase_quantity" type="range" min="1" max=' . $sell_orders[$i]->getNoOfShare() . ' value="1" class="slider" id="myRange">
-        //                                     <p>Quantity: <span id="demo"></span></p>
-        //                                     <input name="asked_price[' . $sell_orders[$i]->getSellingPrice() . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="->" onclick="window.location.reload();">
-        //                                 </form>
-        //                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-        //                                     <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" type="submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value="-" onclick="window.location.reload();"></td>
-        //                                 </form>
-        //                     ';
-        //             } else {
-        //                 echo '
-        //                                 <form action="../../backend/shared/ToggleBuyAskedPriceBackend.php" method="post">
-        //                                 <td><input name="buy_user_selling_price[' . $sell_orders[$i]->getID() . ']" role="button" type="submit" class="btn btn-primary" value="Buy" onclick="window.location.reload();"></td>
-        //                                 </form>
-        //                             </td>
-        //                         </tr>
-        //                     ';
-        //             }
-        //         }
-        //         echo '
-        //                     </tbody>
-        //                 </table>
-        //             ';
-        //     }
-        // }
-        
-        // //If other users are selling shares, displays nothing
-        // else {
-        //     echo '
-        //             <div class="py-4 text-center">
-        //                 <h4>No shares are currently sold by other users</h4>
-        //             </div>
-        //         ';
-        // }
     }
 
     //gets all the users that has lowest price listed with the passed artist_username param

@@ -1148,7 +1148,7 @@
             return $status;
         }
 
-        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $buyer_new_share_amount, $initial_pps, $new_pps, $amount_bought, $sell_order_id, $selling_price, $date_purchased)
+        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $buyer_new_share_amount, $initial_pps, $amount_bought, $sell_order_id, $date_purchased)
         {
             $status = 0;
 
@@ -1168,10 +1168,6 @@
                 $stmt->execute(array($seller_username));
 
                 $stmt = $conn->prepare("UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = ?");
-                $stmt->bindValue(1, $artist_username);
-                $stmt->execute(array($artist_username));
-                
-                $stmt = $conn->prepare("UPDATE account SET price_per_share = '$new_pps' WHERE username = ?");
                 $stmt->bindValue(1, $artist_username);
                 $stmt->execute(array($artist_username));
                 

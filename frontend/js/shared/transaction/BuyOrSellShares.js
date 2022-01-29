@@ -89,7 +89,6 @@ function artistSellShare()
 
 function buyBackShareClick(i)
 {
-    console.log(sell_order_buttons.getNoOfButtons());
     if(sell_order_buttons.getNoOfButtons() <= i)
     {
         sell_order_buttons.newButton(i);
@@ -145,9 +144,39 @@ function buyBackShareClick(i)
     }
 }
 
-function buyBackShare(sell_order_id, index)
+function buyBackShare(sell_order_id, index, buy_back_price)
 {
-    console.log($("#buy_num_shares_"+index).val());
+    var buy_back_quantity = $("#buy_num_shares_"+index).val();
+    // console.log(seller_username);
+    $.ajax({
+        type: "POST",
+        url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/artist/BuyBackSharesBackend.php",
+        data: {
+            buy_back_price: buy_back_price,
+            buy_back_quantity: buy_back_quantity,
+            order_id: sell_order_id
+        },
+        async: false,
+        dataType: "json",
+        success: function(data){
+            if(data == "Price Outdated")
+            {
+                $("#buy_back_status").text("Price outdated, refresh the page and try again");
+                $("#buy_back_status").show();
+            }
+            else if(data == "SUCCESS")
+            {
+                $("#buy_back_status").hide();
+                //TODO: enable buy back shares option after redirecting
+                // $("#buy_back_success").text("Shares bought back successfully");
+                // $("#buy_back_success").show();
+                window.location.href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/artist/Artist.php";
+            }  
+        },
+        error: function(data){
+
+        }
+    });
 }
 
 $( function() {
