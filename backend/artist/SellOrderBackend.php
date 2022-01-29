@@ -18,7 +18,6 @@
                                         $current_market_price,
                                         $current_market_price,
                                         false);
-    // $new_quantity = autoSell($_SESSION['username'], $_SESSION['username'], $asked_price, $quantity, $current_date, false);
 
     $msg = "postSellOrder param: ".json_encode(array(
         "user_username" => $_SESSION['username'],
