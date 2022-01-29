@@ -7,12 +7,11 @@
     include '../constants/ShareInteraction.php';
     include '../constants/StatusCodes.php';
     include '../constants/MenuOption.php';
+    include '../object/SellOrder.php';
 
     date_default_timezone_set(Timezone::MST);
 
     $json_response = StatusCodes::NONE;
-    $purchase_price = 0;
-    $selling_price = 0;
     $current_date = date('Y-m-d H:i:s');
     $user_event = $_POST['user_event'];
     $quantity = $_POST['num_of_shares'];
@@ -65,18 +64,19 @@
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
-                $purchase_price = $chosen_min;
-                //TODO: Code to handle when limit is set
+                
+                $new_quantity = autoPurchaseLimitSet($_SESSION['username'],
+                                                     $_SESSION['selected_artist'],
+                                                     $quantity,
+                                                     $chosen_min,
+                                                     $latest_market_price);
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
-                $purchase_price = $chosen_max;
                 //TODO: Code to handle when stop is set
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
-                $purchase_price_limit = $chosen_min;
-                $purchase_price_stop = $chosen_max;
                 //TODO: Code to handle when both limit and stop are set
             }
         }
@@ -117,19 +117,42 @@
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
-                $selling_price = -1;
+                postSellOrder($connPDO, 
+                                $_SESSION['username'],
+                                $_SESSION['selected_artist'], 
+                                $quantity, 
+                                -1,
+                                -1,
+                                $chosen_min,
+                                $current_date,
+                                false);
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
-                $selling_price = -1;
+                postSellOrder($connPDO, 
+                                $_SESSION['username'],
+                                $_SESSION['selected_artist'], 
+                                $quantity, 
+                                -1,
+                                $chosen_max,
+                                -1,
+                                $current_date,
+                                false);
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
-                $purchase_price_limit = $chosen_min;
-                $purchase_price_stop = $chosen_max;
+                postSellOrder($connPDO, 
+                                $_SESSION['username'],
+                                $_SESSION['selected_artist'], 
+                                $quantity, 
+                                -1,
+                                $chosen_max,
+                                $chosen_min,
+                                $current_date,
+                                false);
             }
         }
     }
 
-    print json_encode($json_response);
+    // print json_encode($json_response);
 ?>
