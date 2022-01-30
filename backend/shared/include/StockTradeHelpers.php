@@ -370,9 +370,6 @@ function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quan
 *
 * @param  	current_market_price	    current stock price of the artist's stock
 *
-* @param  	user_share_amount	        amount of shares the user have towards the artist
-*
-*
 * @return 	request_quantity	       the remaining quantity of the buy order after automatically executed, 
 *                                      remains the same if no matching sell orders found, 0 if the quantity is less than the quantity in matching sell orders
 */
@@ -836,6 +833,25 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity, $cu
     return $quantity;
 }
 
+/**
+* Automatically executes buy orders that have limit set  
+* Matching candidates will be:
+* - Sell orders that are selling at market price and the current market price is lower than the limit
+* - Sell orders that have sell limit set and sell limit <= buy limit 
+*
+* @param  	user_username	            username of the buyer who is posting the buy order
+*
+* @param  	artist_username	            artist username whose shares are being requested from
+*
+* @param  	request_quantity            amount of shares the buyer is requesting
+*
+* @param  	buy_limit                   limit of the buy order
+*
+* @param  	current_market_price	    current stock price of the artist's stock
+*
+* @return 	request_quantity	       the remaining quantity of the buy order after automatically executed, 
+*                                      remains the same if no matching sell orders found, 0 if the quantity is less than the quantity in matching sell orders
+*/
 function autoPurchaseLimitSet($user_username, $artist_username, $request_quantity, $buy_limit, $current_market_price)
 {
     $conn = connect();
