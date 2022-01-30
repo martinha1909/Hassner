@@ -864,7 +864,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
     $res = searchMatchingSellOrderLimit($conn, $user_username, $artist_username, $buy_limit, $current_market_price);
     while($row = $res->fetch_assoc())
     {
-        if($request_quantity < 0)
+        if($request_quantity <= 0)
         {
             break;
         }
