@@ -64,12 +64,10 @@
                 <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span data-feather="grid"></span>
                 </button>
-
-                    <div class="user-balance">
-                        <?php
-                        echo ' &nbsp;($USD): ';
-                        ?>
-                    </div>
+                <div class="cursor-pointer user-balance">
+                    <i class="fas fa-user-circle"></i>
+                    <?php echo $_SESSION['username']?> | $<?php echo$_SESSION['user_balance']?>
+                </div>
             </nav>
         </div>
     </section>
