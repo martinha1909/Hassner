@@ -858,6 +858,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
     $connPDO = connectPDO();
     $buy_mode = ShareInteraction::NONE;
     $current_date = date('Y-m-d H:i:s');
+    $update_pps = false;
     $new_pps = $buy_limit;
 
     $res = searchMatchingSellOrderLimit($conn, $user_username, $artist_username, $buy_limit, $current_market_price);
@@ -916,6 +917,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
             else
             {
                 $new_pps = $buy_limit;
+                $update_pps = true;
                 $will_execute = true;
             }
 
@@ -995,6 +997,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
             else
             {
                 $new_pps = $buy_limit;
+                $update_pps = true;
                 $will_execute = true;
             }
 
@@ -1054,7 +1057,10 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
         }
     }
 
-    updateMarketPriceOrderToPPS($new_pps, $artist_username);
+    if($update_pps)
+    {
+        updateMarketPriceOrderToPPS($new_pps, $artist_username);
+    }
 
     return $request_quantity;
 }
