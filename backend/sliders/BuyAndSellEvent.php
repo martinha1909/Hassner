@@ -83,12 +83,11 @@
                                  $chosen_min,
                                  -1,
                                  $current_date);
-
-                    refreshBuyOrderTable();
-                    $_SESSION['display'] = MenuOption::Portfolio;
-                    $_SESSION['dependencies'] = "FRONTEND";
-                    $json_response = StatusCodes::Success;
                 }
+                refreshBuyOrderTable();
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
