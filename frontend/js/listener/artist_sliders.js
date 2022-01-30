@@ -67,9 +67,9 @@ $( function() {
     method : "GET",
     async: false,
     success : function(data){
-      max_limit = parseFloat((data*2).toFixed(1));
+      max_limit = parseFloat(Math.ceil((data*2).toFixed(1)));
       //We allow users to set the min limit to be half the current stock price
-      min_limit = parseFloat((data/2).toFixed(1));
+      min_limit = parseFloat(Math.floor((data/2).toFixed(1)));
       if(max_limit < 1 || min_limit < 1)
       {
         step_value = 0.05;
@@ -88,12 +88,12 @@ $( function() {
       values: [ min_limit, max_limit ],
       step: step_value,
       slide: function( event, ui ) {
-        // console.log(max_limit);
-        // console.log(ui.values[1]);
-        console.log(min_limit);
-        console.log(ui.values[0]);
         min = ui.values[0];
         max = ui.values[1];
+        // console.log(max);
+        // console.log(max_limit);
+        // console.log(min);
+        // console.log(min_limit);
         if(min == min_limit && max == max_limit){
           $("#buy_tip").text("Order will be executed as market price");
           $("#buy_cost").val("$" + $("#buy_num").slider("value")*$("#pps").text());
@@ -269,7 +269,7 @@ $( function() {
           console.log(data);
           if(data === "Price Outdated")
           {
-            //Error handling for prices don't match here
+            $("#price_outdated").text("Price has changed, please refresh the page and try again");
           }
           else if(data === "SUCCESS")
           {

@@ -208,6 +208,7 @@
                             echo '
                                 <div class="shares-owned">
                                     <h3 class="h3-blue"><a style="color:white"><?php echo $user_shares_owned; ?></a> Shares Owned</h3>
+                                    <p class="error-msg" id="price_outdated"></p>
                                 </div>
                             ';
                         }

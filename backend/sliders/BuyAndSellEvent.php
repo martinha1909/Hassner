@@ -70,6 +70,25 @@
                                                      $quantity,
                                                      $chosen_min,
                                                      $latest_market_price);
+
+                refreshSellOrderTable();
+                if($new_quantity > 0)
+                {
+                    //User posting buy order without limit and stop
+                    postBuyOrder($connPDO, 
+                                 $_SESSION['username'],
+                                 $_SESSION['selected_artist'], 
+                                 $new_quantity, 
+                                 -1, 
+                                 $chosen_min,
+                                 -1,
+                                 $current_date);
+
+                    refreshBuyOrderTable();
+                    $_SESSION['display'] = MenuOption::Portfolio;
+                    $_SESSION['dependencies'] = "FRONTEND";
+                    $json_response = StatusCodes::Success;
+                }
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
@@ -154,5 +173,5 @@
         }
     }
 
-    // print json_encode($json_response);
+    print json_encode($json_response);
 ?>
