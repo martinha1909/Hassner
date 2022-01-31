@@ -100,21 +100,6 @@ function recalcSellSlider(new_chosen_min, new_chosen_max)
 
     }
   });
-
-  $("#sell_num").slider("option", "max", sellable_shares);
-  $("#sell_num_shares").val($("#sell_num").slider("value"));
-  if(new_chosen_max < max_limit)
-  {
-    $("#sell_cost").val($("#sell_num").slider("value") * max);
-  }
-  if(new_chosen_min > min_limit)
-  {
-    $("#sell_cost").val($("#sell_num").slider("value") * min);
-  }
-  if((new_chosen_max == max_limit && new_chosen_min == min_limit) || (new_chosen_max < max_limit && new_chosen_min > min_limit))
-  {
-    $("#sell_cost").val($("#sell_num").slider("value") * $("#pps").text());
-  }
 }
 
 $( function() {
@@ -146,10 +131,6 @@ $( function() {
       values: [ min_limit, max_limit ],
       step: step_value,
       slide: function( event, ui ) {
-        // console.log(max_limit);
-        // console.log(ui.values[1]);
-        // console.log(min_limit);
-        // console.log(ui.values[0]);
         min = ui.values[0];
         max = ui.values[1];
         if(min == min_limit && max == max_limit){
@@ -212,8 +193,8 @@ $( function() {
       data : {
         min_lim: min_limit,
         max_lim: max_limit, 
-        chosen_min: $("#buy_limit").slider("values", 0),
-        chosen_max: $("#buy_limit").slider("values", 1)
+        chosen_min: min_limit,
+        chosen_max: max_limit
       },
       async: false,
       success : function(data) {
@@ -259,8 +240,8 @@ $( function() {
       data: {
         min_lim: min_limit,
         max_lim: max_limit, 
-        chosen_min: $("#sell_limit").slider("values", 0),
-        chosen_max: $("#sell_limit").slider("values", 1)
+        chosen_min: min_limit,
+        chosen_max: max_limit
       },
       async: false,
       success : function(data){
