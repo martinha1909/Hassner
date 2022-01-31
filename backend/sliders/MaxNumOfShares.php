@@ -126,12 +126,22 @@
         $matching_shares_sold = 0;
         $num_of_shares_market_price = 0;
 
+        $res_array_size = searchMaxIDSellOrdersNotFromUser($conn, $_SESSION['username'], $_SESSION['selected_artist']);
+        $max_arr_size = $res_array_size->fetch_assoc();
+        //Using a hashmap for quicker lookup
+        $already_matched_orders = array_fill(0, $max_arr_size['max_sell_order_id'] + 1, false);
+
         $res_sell_limit = searchNumOfSharesLimitSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_min);
         if($res_sell_limit->num_rows > 0)
         {
             while($row = $res_sell_limit->fetch_assoc())
             {
-                $matching_shares_sold += $row['no_of_share'];
+                //We don't want to take into consideration of the same order twice
+                if(!$already_matched_orders[$row['id']])
+                {
+                    $matching_shares_sold += $row['no_of_share'];
+                }
+                $already_matched_orders[$row['id']] = true;
             }
         }
 
@@ -140,7 +150,12 @@
         {
             while($row = $res_sell_stop->fetch_assoc())
             {
-                $matching_shares_sold += $row['no_of_share'];
+                //We don't want to take into consideration of the same order twice
+                if(!$already_matched_orders[$row['id']])
+                {
+                    $matching_shares_sold += $row['no_of_share'];
+                }
+                $already_matched_orders[$row['id']] = true;
             }
         }
 
@@ -151,7 +166,12 @@
             {
                 while($row = $res_market_price->fetch_assoc())
                 {
-                    $num_of_shares_market_price += $row['no_of_share'];
+                    //We don't want to take into consideration of the same order twice
+                    if(!$already_matched_orders[$row['id']])
+                    {
+                        $num_of_shares_market_price += $row['no_of_share'];
+                    }
+                    $already_matched_orders[$row['id']] = true;
                 }
             }
         }

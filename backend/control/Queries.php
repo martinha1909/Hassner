@@ -632,7 +632,7 @@
         {
             $result = 0;
 
-            $sql = "SELECT no_of_share
+            $sql = "SELECT id, no_of_share
                     FROM sell_order 
                     WHERE artist_username = ? AND user_username != ? AND selling_price = ? AND sell_limit = -1 AND sell_stop = -1
                     ORDER BY date_posted ASC";
@@ -676,7 +676,7 @@
         {
             $result = 0;
 
-            $sql = "SELECT no_of_share
+            $sql = "SELECT id, no_of_share
                     FROM sell_order 
                     WHERE artist_username = ? AND user_username != ? AND (selling_price = -1 AND sell_limit <= ? AND sell_limit != -1)
                     ORDER BY date_posted ASC";
@@ -698,7 +698,7 @@
         {
             $result = 0;
 
-            $sql = "SELECT no_of_share
+            $sql = "SELECT id, no_of_share
                     FROM sell_order 
                     WHERE artist_username = ? AND user_username != ? AND (selling_price = -1 AND sell_stop >= ?)
                     ORDER BY date_posted ASC";
@@ -837,6 +837,19 @@
             $result = 0;
 
             $sql = "SELECT MAX(id) AS max_sell_order_id FROM sell_order WHERE artist_username = ? AND user_username != ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $artist_username, $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchMaxIDBuyOrdersNotFromUser($conn, $user_username, $artist_username)
+        {
+            $result = 0;
+
+            $sql = "SELECT MAX(id) AS max_buy_order_id FROM buy_order WHERE artist_username = ? AND user_username != ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ss', $artist_username, $user_username);
             $stmt->execute();

@@ -143,10 +143,10 @@
     {
         $matching_shares_requested = 0;
 
-        $res_array_size = searchMaxIDSellOrdersNotFromUser($conn, $_SESSION['username'], $_SESSION['selected_artist']);
+        $res_array_size = searchMaxIDBuyOrdersNotFromUser($conn, $_SESSION['username'], $_SESSION['selected_artist']);
         $max_arr_size = $res_array_size->fetch_assoc();
         //Using a hashmap for quicker lookup
-        $already_matched_orders = array_fill(0, $max_arr_size['max_sell_order_id'], false);
+        $already_matched_orders = array_fill(0, $max_arr_size['max_buy_order_id'] + 1, false);
 
         //These are the shares from buyers that have their limit match with this sell order's limit
         $res_buy_limit = searchQuantityLimitBuyOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_max);
@@ -154,6 +154,7 @@
         {
             while($row = $res_buy_limit->fetch_assoc())
             {
+                //We don't want to take into consideration of the same order twice
                 if(!$already_matched_orders[$row['id']])
                 {
                     $matching_shares_requested += $row['quantity'];
@@ -168,6 +169,7 @@
         {
             while($row = $res_buy_stop->fetch_assoc())
             {
+                //We don't want to take into consideration of the same order twice
                 if(!$already_matched_orders[$row['id']])
                 {
                     $matching_shares_requested += $row['quantity'];
@@ -181,6 +183,7 @@
             $res = searchQuantityNoLimitStopBuyOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $current_pps);
             while($row = $res->fetch_assoc())
             {
+                //We don't want to take into consideration of the same order twice
                 if(!$already_matched_orders[$row['id']])
                 {
                     $matching_shares_requested += $row['quantity'];
