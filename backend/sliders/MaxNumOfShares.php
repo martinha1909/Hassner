@@ -42,6 +42,7 @@
         $matching_shares_sold = 0;
         $num_of_shares_market_price = 0;
 
+        //These are the shares from sell orders that have their limit match with this current chosen limit
         $res_sell_limit = searchNumOfSharesLimitSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_min);
         if($res_sell_limit->num_rows > 0)
         {
@@ -51,6 +52,7 @@
             }
         }
 
+        //Only fetch available shares at market price if the limit is >= to the market price
         if($chosen_min >= $artist_pps)
         {
             $res_market_price = searchNumOfSharesNoLimitStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $artist_pps);
@@ -154,6 +156,7 @@
             }
         }
 
+        //use the highest value to determine the max amount a user can buy
         $max_amount_can_purchase = $user_balance/$chosen_max;
         $all_available_shares = $matching_shares_sold + $num_of_shares_market_price;
             

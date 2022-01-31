@@ -40,6 +40,7 @@
         $shares_selling_stop = 0;
         $matching_shares_requested = 0;
 
+        //These are the shares from buyers that have their stop match with this sell order's stop
         $res_buy_stop = searchQuantityStopBuyOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_min);
         if($res_buy_stop->num_rows > 0)
         {
@@ -49,6 +50,7 @@
             }
         }
 
+        //These are the shares that this user currently is selling at this chosen stop
         $res_shares_selling_stop = searchStopOrderSharesSelling($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_min);
         if($res_shares_selling_stop->num_rows > 0)
         {
@@ -58,6 +60,7 @@
             }
         }
 
+        //Total amount of shares the user has towards this current artist
         $res_shares_owned = searchSharesInArtistShareHolders($conn, $_SESSION['username'], $_SESSION['selected_artist']);
         if($res_shares_owned->num_rows > 0)
         {
@@ -65,6 +68,7 @@
             $total_shares_owned = $row['shares_owned'];
         }
 
+        //If the user owns some shares, check to see how many of them he/she is selling, limit and stop doesn't matter
         if($total_shares_owned > 0)
         {
             $res_total_shares_selling = searchSharesSelling($conn, $_SESSION['username'], $_SESSION['selected_artist']);
@@ -77,15 +81,20 @@
             }
         }
 
+        //Total number of shares available to sell
         $shares_selling_stop_avai = $total_shares_owned - $total_shares_selling - $shares_selling_stop;
 
-        if($shares_selling_stop_avai > $matching_shares_requested)
+        //We do not let the user create a sell order at this chosen stop unless there is at least 1 matching buy order at this stop
+        if($matching_shares_requested > 0)
         {
-            $sellable_shares = $matching_shares_requested;
-        }
-        else
-        {
-            $sellable_shares = $shares_selling_stop_avai;
+            if($shares_selling_stop_avai > $matching_shares_requested)
+            {
+                $sellable_shares = $matching_shares_requested;
+            }
+            else
+            {
+                $sellable_shares = $shares_selling_stop_avai;
+            }
         }
     }
     else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
@@ -97,7 +106,5 @@
         
     }
 
-    
-
-    // print json_encode($sellable_shares);
+    print json_encode($sellable_shares);
 ?>
