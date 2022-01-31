@@ -849,8 +849,6 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity, $cu
 *
 * @param  	current_market_price	    current stock price of the artist's stock
 *
-* @return 	request_quantity	       the remaining quantity of the buy order after automatically executed, 
-*                                      remains the same if no matching sell orders found, 0 if the quantity is less than the quantity in matching sell orders
 */
 function autoPurchaseLimitSet($user_username, $artist_username, $request_quantity, $buy_limit, $current_market_price)
 {
@@ -859,7 +857,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
     $buy_mode = ShareInteraction::NONE;
     $current_date = date('Y-m-d H:i:s');
     $update_pps = false;
-    $new_pps = $buy_limit;
+    $new_pps = $current_market_price;
 
     $res = searchMatchingSellOrderLimit($conn, $user_username, $artist_username, $buy_limit, $current_market_price);
     while($row = $res->fetch_assoc())
@@ -873,7 +871,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
         $will_execute = false;
 
         //Purchasing price always favors the buyer in the case of limit set, except for the case when a sell order is at market price
-        $purchase_price = $buy_limit;
+        $purchase_price = $row['sell_limit'];
 
         $result = searchAccount($conn, $row['user_username']);
         $seller_account_info = $result->fetch_assoc();
@@ -916,7 +914,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
             }
             else
             {
-                $new_pps = $buy_limit;
+                $new_pps = $row['sell_limit'];
                 $update_pps = true;
                 $will_execute = true;
             }
@@ -996,7 +994,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
             }
             else
             {
-                $new_pps = $buy_limit;
+                $new_pps = $row['sell_limit'];
                 $update_pps = true;
                 $will_execute = true;
             }
@@ -1061,7 +1059,5 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
     {
         updateMarketPriceOrderToPPS($new_pps, $artist_username);
     }
-
-    return $request_quantity;
 }
 ?>
