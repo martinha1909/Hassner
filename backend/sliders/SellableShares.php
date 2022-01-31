@@ -51,6 +51,15 @@
             }
         }
 
+        if($chosen_min >= $current_pps)
+        {
+            $res = searchQuantityNoLimitStopBuyOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $current_pps);
+            while($row = $res->fetch_assoc())
+            {
+                $matching_shares_requested += $row['quantity'];
+            }
+        }
+
         //Total amount of shares the user has towards this current artist
         $res_shares_owned = searchSharesInArtistShareHolders($conn, $_SESSION['username'], $_SESSION['selected_artist']);
         if($res_shares_owned->num_rows > 0)
@@ -97,6 +106,15 @@
         if($res_buy_limit->num_rows > 0)
         {
             while($row = $res_buy_limit->fetch_assoc())
+            {
+                $matching_shares_requested += $row['quantity'];
+            }
+        }
+
+        if($chosen_max <= $current_pps)
+        {
+            $res = searchQuantityNoLimitStopBuyOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $current_pps);
+            while($row = $res->fetch_assoc())
             {
                 $matching_shares_requested += $row['quantity'];
             }
