@@ -562,7 +562,7 @@
             return $result;
         }
 
-        function searchNumOfSharesLimitSellOrders($conn, $user_username, $artist_username, $limit, $market_price)
+        function searchNumOfSharesLimitSellOrders($conn, $user_username, $artist_username, $limit)
         {
             $result = 0;
 
@@ -571,7 +571,29 @@
                     WHERE artist_username = ? AND user_username != ? AND (selling_price = -1 AND sell_limit <= ? AND sell_limit != -1)
                     ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdd', $artist_username, $user_username, $limit, $market_price);
+            $stmt->bind_param('ssd', $artist_username, $user_username, $limit);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
+        function searchNumOfSharesStopSellOrders($conn, $user_username, $artist_username, $stop)
+        {
+            $result = 0;
+
+            $sql = "SELECT no_of_share
+                    FROM sell_order 
+                    WHERE artist_username = ? AND user_username != ? AND (selling_price = -1 AND sell_stop >= ?)
+                    ORDER BY date_posted ASC";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssd', $artist_username, $user_username, $stop);
             if($stmt->execute() == true)
             {
                 $result = $stmt->get_result();

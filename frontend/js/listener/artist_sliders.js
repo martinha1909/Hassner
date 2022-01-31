@@ -18,6 +18,7 @@ function recalcSliderLimits(new_chosen_min, new_chosen_max)
     },
     async: false,
     success : function(data) {
+      console.log(data);
       max_num_of_shares = data;
       $("#buy_num").slider("option", "max", data);
       $("#buy_num_shares").val($("#buy_num").slider("value"));
@@ -32,6 +33,18 @@ function recalcSliderLimits(new_chosen_min, new_chosen_max)
       if((new_chosen_max == max_limit && new_chosen_min == min_limit) || (new_chosen_max < max_limit && new_chosen_min > min_limit))
       {
         $("#buy_cost").val($("#buy_num").slider("value") * $("#pps").text());
+      }
+
+      if(data === 0)
+      {
+        $("#not_available_error").text("No available sell orders found");
+        $("#not_available_error").show();
+        $("#buy_order").hide();
+      }
+      else
+      {
+        $("#buy_order").show();
+        $("#not_available_error").hide();
       }
     },
     error : function(data){
@@ -86,8 +99,8 @@ $( function() {
       values: [ min_limit, max_limit ],
       step: step_value,
       slide: function( event, ui ) {
-        console.log(max_limit);
-        console.log(ui.values[1]);
+        // console.log(max_limit);
+        // console.log(ui.values[1]);
         // console.log(min_limit);
         // console.log(ui.values[0]);
         min = ui.values[0];
@@ -172,6 +185,7 @@ $( function() {
       value: 0,
       step: 1,
       slide: function( event, ui ) {
+        console.log(max_num_of_shares);
         var min_limit_top = $("#buy_limit").slider("values", 0);
         var max_limit_top = $("#buy_limit").slider("values", 1);
         if((min_limit_top == min_limit && max_limit_top == max_limit) || (min_limit_top > min_limit && max_limit_top < max_limit))
