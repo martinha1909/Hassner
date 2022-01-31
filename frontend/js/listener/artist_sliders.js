@@ -4,6 +4,7 @@ var max_num_of_shares = 0;
 var sellable_shares = 0;
 var step_value = 0.1;
 var url_max_num_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/MaxNumOfShares.php";
+var url_sellable_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/SellableShares.php";
 
 function recalcSliderLimits(new_chosen_min, new_chosen_max) 
 {
@@ -37,14 +38,14 @@ function recalcSliderLimits(new_chosen_min, new_chosen_max)
 
       if(data === 0)
       {
-        $("#not_available_error").text("No available sell orders found");
-        $("#not_available_error").show();
+        $("#not_available_error_buy").text("No available sell orders found");
+        $("#not_available_error_buy").show();
         $("#buy_order").hide();
       }
       else
       {
         $("#buy_order").show();
-        $("#not_available_error").hide();
+        $("#not_available_error_buy").hide();
       }
     },
     error : function(data){
@@ -55,23 +56,69 @@ function recalcSliderLimits(new_chosen_min, new_chosen_max)
 
 function recalcSellSlider(new_chosen_min, new_chosen_max)
 {
-  if(new_chosen_max < max_limit)
-  {
-    $("#sell_cost").val($("#sell_num").slider("value") * max);
-  }
-  if(new_chosen_min > min_limit)
-  {
-    $("#sell_cost").val($("#sell_num").slider("value") * min);
-  }
-  if((new_chosen_max == max_limit && new_chosen_min == min_limit) || (new_chosen_max < max_limit && new_chosen_min > min_limit))
-  {
-    $("#sell_cost").val($("#sell_num").slider("value") * $("#pps").text());
-  }
+  // $.ajax({
+  //   url : url_sellable_shares,
+  //   method : "POST",
+  //   data : {
+  //     min_lim: min_limit,
+  //     max_lim: max_limit, 
+  //     chosen_min: new_chosen_min,
+  //     chosen_max: new_chosen_max
+  //   },
+  //   async: false,
+  //   success : function(data) {
+  //     console.log(data);
+  //     max_num_of_shares = data;
+  //     $("#buy_num").slider("option", "max", data);
+  //     $("#buy_num_shares").val($("#buy_num").slider("value"));
+  //     if(new_chosen_max < max_limit)
+  //     {
+  //       $("#buy_cost").val($("#buy_num").slider("value") * max);
+  //     }
+  //     if(new_chosen_min > min_limit)
+  //     {
+  //       $("#buy_cost").val($("#buy_num").slider("value") * min);
+  //     }
+  //     if((new_chosen_max == max_limit && new_chosen_min == min_limit) || (new_chosen_max < max_limit && new_chosen_min > min_limit))
+  //     {
+  //       $("#buy_cost").val($("#buy_num").slider("value") * $("#pps").text());
+  //     }
+
+  //     if(data === 0)
+  //     {
+  //       $("#not_available_error_buy").text("No available sell orders found");
+  //       $("#not_available_error_buy").show();
+  //       $("#buy_order").hide();
+  //     }
+  //     else
+  //     {
+  //       $("#buy_order").show();
+  //       $("#not_available_error_buy").hide();
+  //     }
+  //   },
+  //   error : function(data){
+
+  //   }
+  // });
+  
+  // $("#sell_num").slider("option", "max", sellable_shares);
+  // $("#sell_num_shares").val($("#sell_num").slider("value"));
+  // if(new_chosen_max < max_limit)
+  // {
+  //   $("#sell_cost").val($("#sell_num").slider("value") * max);
+  // }
+  // if(new_chosen_min > min_limit)
+  // {
+  //   $("#sell_cost").val($("#sell_num").slider("value") * min);
+  // }
+  // if((new_chosen_max == max_limit && new_chosen_min == min_limit) || (new_chosen_max < max_limit && new_chosen_min > min_limit))
+  // {
+  //   $("#sell_cost").val($("#sell_num").slider("value") * $("#pps").text());
+  // }
 }
 
 $( function() {
   var url_max_limit = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/StockPrice.php";
-  var url_sellable_shares = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/SellableShares.php";
 
   $.ajax({
     url : url_max_limit,
@@ -208,7 +255,13 @@ $( function() {
 
     $.ajax({
       url : url_sellable_shares,
-      method : "GET",
+      method : "POST",
+      data: {
+        min_lim: min_limit,
+        max_lim: max_limit, 
+        chosen_min: $("#sell_limit").slider("values", 0),
+        chosen_max: $("#sell_limit").slider("values", 1)
+      },
       async: false,
       success : function(data){
         sellable_shares = data;
@@ -221,9 +274,9 @@ $( function() {
      // # Shares to sell slider
      $("#sell_num").slider({
       range: "min",
-      min: 1,
+      min: 0,
       max: sellable_shares,
-      value: 1,
+      value: 0,
       step: 1,
       slide: function( event, ui ) {
         var min_limit_top = $("#buy_limit").slider("values", 0);

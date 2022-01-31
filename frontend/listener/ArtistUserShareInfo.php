@@ -228,7 +228,7 @@
                                             <div class="textbox_container">
                                                 <div class="stocktip">
                                                     <p id="buy_tip">Order will be executed as market price</p>
-                                                    <p id="not_available_error" class="error-msg"></p>
+                                                    <p id="not_available_error_buy" class="error-msg"></p>
                                                 </div>
                                                 <label for="buy_num_shares"># Shares:</label>
                                                 <input type="text" class="slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
