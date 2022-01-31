@@ -18,7 +18,7 @@
     //User should be able to create for a buy order up to the max number of share distributed - total shares bought by him
     $num_of_available_shares = $artist_share_distributed - $num_of_shares_invested;
 
-    if(($chosen_min == $min_lim && $chosen_max == $max_lim) || ($chosen_min > $min_lim && $chosen_max < $max_lim))
+    if($chosen_min == $min_lim && $chosen_max == $max_lim)
     {
         //maximum amount of shares user can buy at current price per share with current amount of balance
         $max_amount_can_purchase = $user_balance/$artist_pps;
@@ -37,20 +37,59 @@
     }
     else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
     {
-        //maximum amount of shares user can buy at chosen stop with current amount of balance
-        $max_amount_can_purchase = $user_balance/$chosen_min;
+        $all_available_shares = 0;
+        $matching_shares_sold = 0;
+        $num_of_shares_market_price = 0;
 
-        //If the maximum amount that user can buy is greater than the amount of available shares, the slider
-        //will be capped at the number of available shares
-        if($max_amount_can_purchase >= $num_of_available_shares)
+        $res_sell_limit = searchNumOfSharesLimitSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_min, $artist_pps);
+        if($res_sell_limit->num_rows > 0)
         {
-            $json_data = $num_of_available_shares;
+            while($row = $res_sell_limit->fetch_assoc())
+            {
+                $matching_shares_sold += $row['no_of_share'];
+            }
         }
-        //otherwise the slider will be capped at the masimum number of shares the user can afford
-        else
+
+        if($chosen_min >= $artist_pps)
+        {
+            $res_market_price = searchNumOfSharesNoLimitStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $artist_pps);
+            if($res_market_price->num_rows > 0)
+            {
+                while($row = $res_market_price->fetch_assoc())
+                {
+                    $num_of_shares_market_price += $row['no_of_share'];
+                }
+            }
+        }
+
+        $max_amount_can_purchase = $user_balance/$chosen_min;
+        $all_available_shares = $matching_shares_sold + $num_of_shares_market_price;
+            
+
+        if($max_amount_can_purchase < $all_available_shares)
         {
             $json_data = $max_amount_can_purchase;
         }
+        else
+        {
+            $json_data = $all_available_shares;
+        }
+
+        
+        // //maximum amount of shares user can buy at chosen stop with current amount of balance
+        // $max_amount_can_purchase = $user_balance/$chosen_min;
+
+        // //If the maximum amount that user can buy is greater than the amount of available shares, the slider
+        // //will be capped at the number of available shares
+        // if($max_amount_can_purchase >= $num_of_available_shares)
+        // {
+        //     $json_data = $num_of_available_shares;
+        // }
+        // //otherwise the slider will be capped at the masimum number of shares the user can afford
+        // else
+        // {
+        //     $json_data = $max_amount_can_purchase;
+        // }
     }
     else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
     {
@@ -68,6 +107,10 @@
         {
             $json_data = $max_amount_can_purchase;
         }
+    }
+    else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
+    {
+        
     }
 
     //Casting to int so it rounds down in case json_data is a float

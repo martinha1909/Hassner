@@ -7,8 +7,6 @@ var url_max_num_shares = window.location.protocol + "//" + window.location.hostn
 
 function recalcSliderLimits(new_chosen_min, new_chosen_max) 
 {
-  var currentBuyNumValue = $("#buy_num_shares").val();
-
   $.ajax({
     url : url_max_num_shares,
     method : "POST",
@@ -88,10 +86,10 @@ $( function() {
       values: [ min_limit, max_limit ],
       step: step_value,
       slide: function( event, ui ) {
-        // console.log(max_limit);
-        // console.log(ui.values[1]);
-        console.log(min_limit);
-        console.log(ui.values[0]);
+        console.log(max_limit);
+        console.log(ui.values[1]);
+        // console.log(min_limit);
+        // console.log(ui.values[0]);
         min = ui.values[0];
         max = ui.values[1];
         if(min == min_limit && max == max_limit){
@@ -169,9 +167,9 @@ $( function() {
     // # Shares to buy slider
     $("#buy_num").slider({
       range: "min",
-      min: 1,
+      min: 0,
       max: max_num_of_shares,
-      value: 1,
+      value: 0,
       step: 1,
       slide: function( event, ui ) {
         var min_limit_top = $("#buy_limit").slider("values", 0);
