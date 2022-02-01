@@ -29,11 +29,18 @@ Notes on the database
     
     b. account type id "artist", then it means the total amount of shares owned by that artist that has been bought throughout all users in the platform. In other words, the amount of share available for purchase of that artist would be equivalent to the "Share_Distributed" column value minus "Shares" column value. (any artist Available Shares = Share_Distributed - Shares)
 
-2. The balance `column` under `account` table in the database indicate a users' account balance, in USD. 
+2. In `sell_order` and `buy_order` tables, the following columns have these meanings:
+- `sell_limit` in `sell_order` will represent the limit of the sell order, which means the order will be automatically sold if the price hits <b>AT LEAST</b> the limit value
+-  `sell_stop` in `sell_order` will represent the stop of the sell order, which means the order will be automatically sold if the price is <b>AT MOST</b> the stop value
+-  `buy_limit` in `buy_order` will represent the limit of the buy order, which means the order will be automatically bought if the price is <b>AT MOST</b> the limit value
+-  `buy_stop` in `buy_order` will represent the stop of the buy order, which means the order will be automatically bought as soon as the price hits <b>AT LEAST</b> the limit value
+- limit and stop of `buy_order` and `sell_order` are switched, this helps execution a little bit easier to understand since only limit buy orders could match with limit sell orders and only stop buy orders could match with stop sell orders.
 
-2. To delete database (for importing purposes): go to web browser and run localhost:80/Hassner/database/        deleteDatabase.php
+3. The balance `column` under `account` table in the database indicate a users' account balance, in USD. 
 
-3. To clean database (resetting values to 0): go to web browser and run localhost:80/Hassner/database/        CleanDatabase.php
+4. To delete database (for importing purposes): go to web browser and run localhost:80/Hassner/database/        deleteDatabase.php
+
+5. To clean database (resetting values to 0): go to web browser and run localhost:80/Hassner/database/        CleanDatabase.php
 
 
 ## Live page
