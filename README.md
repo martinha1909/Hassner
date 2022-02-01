@@ -46,7 +46,11 @@ Notes on the database
 Currently on https://35.89.4.89/ soon to be https://hassner.ca/
 
 To access the server as dev (recommend using putty):
-- under Connection/SSH/auth. add your private key (if you don't have an ssh key, please reach out)
+- under Connection/SSH/auth. add your private key, which can be done by doing the following
+    - in any terminal, do `ssh-keygen -t -ecdsa -b 384` (384 bits encryption key)
+    - Enter location where the keys are saved (can leave empty and use the suggested path (`~/. ssh`))
+    - Enter passphrase when prompted (can be empty)
+    - `cat ~/.ssh/id_rsa` to access private key
 - then under Connection/SSH/tunnels, add the following
     - Source port: 8888
     - Destination: localhost:80
