@@ -2,9 +2,11 @@
 
 Hassner is a service that allows user to invest in their favourite artists and raise capital
 
-backend folder contains logic of all SQL query functions, their blueprints and definitions as well as handling data input and output.
-frontend contains graphics and other display pages this project
-database contains all database content files and scripts
+`/backend` contains logic of all SQL query functions, their blueprints and definitions as well as handling data input and output.
+
+`/frontend` contains graphics and other display pages this project
+
+`/database` contains all database content files and scripts
 
 To run this project:;
 1. Download xampp at (suggested: https://www.apachefriends.org/download.html)
