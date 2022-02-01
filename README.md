@@ -2,12 +2,9 @@
 
 Hassner is a service that allows user to invest in their favourite artists and raise capital
 
-Sources:
-- landing page template (https://webresourcesdepot.com/freebie/knight/#download)
-
-
-in backend folder contains logic of all SQL query functions, their blueprints and definitions as well as handling data input and output.
+backend folder contains logic of all SQL query functions, their blueprints and definitions as well as handling data input and output.
 frontend contains graphics and other display pages this project
+database contains all database content files and scripts
 
 To run this project:;
 1. Download xampp at (suggested: https://www.apachefriends.org/download.html)
@@ -17,7 +14,7 @@ To run this project:;
 5. Run server by opening xampp control at C:/xampp/xampp-control. Once the console pops up, start Apache and MySQL
 6. Start database by going to any web browser and type localhost:80/phpmyadmin
 7. On the left column select "New" option and create a database, name it "hassner"
-8. Click on the newly created hassner database, then click import, select `hassner.sql`then select "Go"
+8. Click on the newly created hassner database, then click import, select `database/hassner.sql`then select "Go"
 9. Run the project, starting the landing page by typing localhost:80/Hassner/frontend/credentials/index.php
 
 The database found in hassner.sql is just an example database, feel free to add or remove any tuples in any tables
