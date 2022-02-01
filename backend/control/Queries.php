@@ -716,6 +716,28 @@
             return $result;
         }
 
+        function searchOlderMarketPriceOrders($conn, $user_username, $artist_username, $market_price, $current_exe_date)
+        {
+            $result = 0;
+
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
+                    FROM sell_order 
+                    WHERE artist_username = ? AND user_username != ? AND selling_price = ? AND date_posted <= ?
+                    ORDER BY date_posted ASC";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssdd', $artist_username, $user_username, $market_price, $current_exe_date);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
         function searchMatchingSellOrderNoLimitStop($conn, $user_username, $artist_username, $market_price)
         {
             $result = 0;
@@ -738,23 +760,43 @@
             return $result;
         }
 
-        function searchMatchingSellOrderLimit($conn, $user_username, $artist_username, $limit, $market_price)
+        function searchMatchingSellOrderLimit($conn, $user_username, $artist_username, $limit, $market_price, $include_market_orders)
         {
             $result = 0;
 
-            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
-                    FROM sell_order 
-                    WHERE artist_username = ? AND user_username != ? AND (selling_price = -1 AND sell_limit <= ? AND sell_limit != -1) OR (selling_price = ? AND sell_limit = -1 AND sell_stop = -1)
-                    ORDER BY date_posted ASC";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdd', $artist_username, $user_username, $limit, $market_price);
-            if($stmt->execute() == true)
+            if($include_market_orders)
             {
-                $result = $stmt->get_result();
+                $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
+                        FROM sell_order 
+                        WHERE artist_username = ? AND user_username != ? AND (selling_price = -1 AND sell_limit <= ? AND sell_limit != -1) OR (selling_price = ? AND sell_limit = -1 AND sell_stop = -1)
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssdd', $artist_username, $user_username, $limit, $market_price);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
             }
             else
             {
-                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
+                        FROM sell_order 
+                        WHERE artist_username = ? AND user_username != ? AND selling_price = -1 AND sell_limit <= ? AND sell_limit != -1
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssdd', $artist_username, $user_username, $limit, $market_price);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
             }
 
             return $result;
@@ -1366,6 +1408,8 @@
 
                 $status = StatusCodes::ErrGeneric;
             }
+
+            updateMarketPriceOrderToPPS($new_pps, $artist);
 
             return $status;
         }
