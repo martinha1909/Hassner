@@ -540,7 +540,7 @@
 
             $progress_calc = round(($total_shares_bought/$row['minimum_ethos']) * 100, 2);
 
-            if($campaign_time_left != "0000-00-00 00:00:00")
+            if($campaign_time_left != "0000-00-00 00:00:00" && $progress_calc < 100)
             {                 
                 $trending_campaign->setArtistUsername($row['artist_username']);
                 $trending_campaign->setOffering($row['offering']);
