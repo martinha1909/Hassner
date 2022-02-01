@@ -233,9 +233,9 @@
             return $result;
         }
 
-        function searchAllSellOrders($conn)
+        function searchAllSellOrdersZeroQuantity($conn)
         {
-            $sql = "SELECT * FROM sell_order";
+            $sql = "SELECT * FROM sell_order WHERE no_of_share <= 0";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -254,9 +254,9 @@
             return $result;
         }
 
-        function searchAllBuyOrders($conn)
+        function searchAllBuyOrdersZeroQuantity($conn)
         {
-            $sql = "SELECT * FROM buy_order";
+            $sql = "SELECT * FROM buy_order WHERE quantity <= 0";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
