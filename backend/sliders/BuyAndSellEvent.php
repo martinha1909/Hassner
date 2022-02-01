@@ -8,6 +8,7 @@
     include '../constants/StatusCodes.php';
     include '../constants/MenuOption.php';
     include '../object/SellOrder.php';
+    include '../object/AutoTransact.php';
 
     date_default_timezone_set(Timezone::MST);
 
