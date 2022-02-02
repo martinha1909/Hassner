@@ -56,50 +56,52 @@ function recalcSliderLimits(new_chosen_min, new_chosen_max)
 
 function recalcSellSlider(new_chosen_min, new_chosen_max)
 {
-  $.ajax({
-    url : url_sellable_shares,
-    method : "POST",
-    data : {
-      min_lim: min_limit,
-      max_lim: max_limit, 
-      chosen_min: new_chosen_min,
-      chosen_max: new_chosen_max
-    },
-    async: false,
-    success : function(data) {
-      sellable_shares = data;
+  // $.ajax({
+  //   url : url_sellable_shares,
+  //   method : "POST",
+  //   data : {
+  //     min_lim: min_limit,
+  //     max_lim: max_limit, 
+  //     chosen_min: new_chosen_min,
+  //     chosen_max: new_chosen_max
+  //   },
+  //   async: false,
+  //   success : function(data) {
+  //     sellable_shares = data;
 
-      $("#sell_num").slider("option", "max", sellable_shares);
-      $("#sell_num_shares").val($("#sell_num").slider("value"));
-      if(new_chosen_max < max_limit)
-      {
-        $("#sell_cost").val($("#sell_num").slider("value") * max);
-      }
-      if(new_chosen_min > min_limit)
-      {
-        $("#sell_cost").val($("#sell_num").slider("value") * min);
-      }
-      if((new_chosen_max == max_limit && new_chosen_min == min_limit) || (new_chosen_max < max_limit && new_chosen_min > min_limit))
-      {
-        $("#sell_cost").val($("#sell_num").slider("value") * $("#pps").text());
-      }
+  //     $("#sell_num").slider("option", "max", sellable_shares);
+  //     $("#sell_num_shares").val($("#sell_num").slider("value"));
+      
 
-      if(data === 0)
-      {
-        $("#not_available_error_sell").text("No available buy orders found");
-        $("#not_available_error_sell").show();
-        $("#sell_order").hide();
-      }
-      else
-      {
-        $("#sell_order").show();
-        $("#not_available_error_sell").hide();
-      }
-    },
-    error : function(data){
+  //     if(data === 0)
+  //     {
+  //       $("#not_available_error_sell").text("No available buy orders found");
+  //       $("#not_available_error_sell").show();
+  //       $("#sell_order").hide();
+  //     }
+  //     else
+  //     {
+  //       $("#sell_order").show();
+  //       $("#not_available_error_sell").hide();
+  //     }
+  //   },
+  //   error : function(data){
 
-    }
-  });
+  //   }
+  // });
+
+  if(new_chosen_max < max_limit)
+  {
+    $("#sell_cost").val($("#sell_num").slider("value") * max);
+  }
+  if(new_chosen_min > min_limit)
+  {
+    $("#sell_cost").val($("#sell_num").slider("value") * min);
+  }
+  if((new_chosen_max == max_limit && new_chosen_min == min_limit) || (new_chosen_max < max_limit && new_chosen_min > min_limit))
+  {
+    $("#sell_cost").val($("#sell_num").slider("value") * $("#pps").text());
+  }
 }
 
 $( function() {
