@@ -25,6 +25,18 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
     $res_buy_order = searchAllBuyOrdersNoLimitStop($conn, $artist_username);
     while($row = $res_buy_order->fetch_assoc())
     {
+        //Need to do this for buy orders at market price since the price has now changed,
+        //the user might not be able to afford buying the same quantity at the new price
+        if($new_pps > $row['siliqas_requested'])
+        {
+            $user_balance = getUserBalance($row['user_username']);
+            $max_num_of_shares = (int)($user_balance/$new_pps);
+            if($max_num_of_shares < $row['quantity'])
+            {
+                updateBuyOrderQuantity($conn, $row['id'], $max_num_of_shares);
+            }
+        }
+
         $update_err_code = updateBuyOrderPPS($new_pps, $row['id']);
         if($update_err_code != StatusCodes::Success)
         {
@@ -1044,7 +1056,6 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
     $connPDO = connectPDO();
     $buy_mode = ShareInteraction::NONE;
     $include_market_orders = false;
-    $new_pps = $current_market_price;
 
     if($buy_limit >= $current_market_price)
     {
@@ -1063,6 +1074,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
 
         //Purchasing price always favors the buyer in the case of limit set, except for the case when a sell order is at market price
         $purchase_price = $row['sell_limit'];
+        $new_pps = $row['sell_limit'];
 
         $transact = autoPurchaseInit($conn, $user_username, $row['user_username'], $artist_username);
 
