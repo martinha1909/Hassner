@@ -99,7 +99,7 @@ function doTransaction($connPDO, $transact, $old_pps, $new_pps, $purchase_price,
 
     purchaseAskedPriceShare($connPDO,
                             $transact->getBuyerInfo()['username'],
-                            $transact->getSellerInfo()['user_username'],
+                            $transact->getSellerInfo()['username'],
                             $transact->getBuyerInfo()['account_type'],
                             $transact->getSellerInfo()['account_type'],
                             $transact->getArtist(),
@@ -142,6 +142,8 @@ function executeMarketPriceBuyOrders($conn, $connPDO, $user_username, $artist_us
 
         if($request_quantity >= $row['quantity'])
         {
+            echo "Case request_quantity >= row['no_of_share'] in executeMarketPriceBuyOrders\n".
+                "Match check on order id: ".$row['id']."\n";
             doTransaction($connPDO,
                           $transact,
                           $market_price,
@@ -154,10 +156,12 @@ function executeMarketPriceBuyOrders($conn, $connPDO, $user_username, $artist_us
 
             hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $row['siliqas_requested'])." was transfered between buyer ".$row['user_username']." and seller ".$user_username);
             
-            removeBuyOrder($conn, $row['id']);
+            // removeBuyOrder($conn, $row['id']);
         }
         else
         {
+            echo "Case request_quantity < row['no_of_share'] in executeMarketPriceBuyOrders\n".
+                "Match check on order id: ".$row['id']."\n";
             doTransaction($connPDO,
                           $transact,
                           $market_price,
@@ -212,7 +216,7 @@ function executeMarketPriceSellOrders($conn, $connPDO, $user_username, $artist_u
 
             hx_info(HX::BUY_SHARES, "Auto purchasing sell order id ".$row['id'].", amount $".($row['no_of_share'] * $row['selling_price'])." was transfered between buyer ".$user_username." and seller ".$row['user_username']);
 
-            removeSellOrder($conn, $row['id']);
+            // removeSellOrder($conn, $row['id']);
         }
         else
         {
@@ -1089,6 +1093,8 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
 
         if($request_quantity >= $row['no_of_share'])
         {
+            echo "Case request_quantity >= row['no_of_share']\n".
+            "Match check on order id: ".$row['id']."\n";
             hx_debug(HX::BUY_SHARES, "Case request_quantity >= row['no_of_share']\n".
                                      "Match check on order id: ".$row['id']."\n");
 
@@ -1105,7 +1111,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
                           ShareInteraction::BUY);
 
             //Remove since all the shares have been sold at this point
-            removeSellOrder($conn, $row['id']);
+            // removeSellOrder($conn, $row['id']);
 
             $current_quantity = $request_quantity - $row['no_of_share'];
 
@@ -1127,6 +1133,8 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
         }
         else
         {
+            echo "Case request_quantity < row['no_of_share']\n".
+            "Match check on order id: ".$row['id']."\n";
             hx_debug(HX::BUY_SHARES, "Case request_quantity < row['no_of_share']\n".
                                      "Match check on order id: ".$row['id']."\n");
 
@@ -1144,10 +1152,10 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
                           $buy_mode,
                           ShareInteraction::BUY);
 
-            //do this so we can exit the loop after
-            $request_quantity = $request_quantity - $row['no_of_share'];
             //This has already been update in the function doTransaction through purchaseAskedPriceShare, but we do this to skip having to renew the query
             $current_sell_order_quantity = $row['no_of_share'] - $request_quantity;
+            //do this so we can exit the loop after
+            $request_quantity = $request_quantity - $row['no_of_share'];
 
             executeMarketPriceBuyOrders($conn,
                                         $connPDO,

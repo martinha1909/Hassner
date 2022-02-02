@@ -871,7 +871,7 @@
         {
             $result = 0;
 
-            $sql = "SELECT id
+            $sql = "SELECT id, user_username, siliqas_requested, quantity, buy_limit, buy_stop
                     FROM buy_order
                     WHERE artist_username = ? AND siliqas_requested != -1 AND buy_limit = -1 AND buy_stop = -1";
             $stmt = $conn->prepare($sql);
@@ -1289,7 +1289,7 @@
             $status = 0;
 
             try {
-                $conn->beginTransaction();
+                // $conn->beginTransaction();
 
                 //p2p trading
                 if($buyer_account_type == AccountType::User && $seller_account_type == AccountType::User)
@@ -1408,6 +1408,7 @@
                 
                 if($indicator == "AUTO_PURCHASE")
                 {
+                    echo $order_id;
                     $stmt = $conn->prepare("UPDATE sell_order SET no_of_share = no_of_share - ? WHERE id = ?");
                     $stmt->bindValue(1, $amount);
                     $stmt->bindValue(2, $order_id);
@@ -1421,12 +1422,13 @@
                     $stmt->execute(array($amount, $order_id));
                 }
 
-                $conn->commit();
+                // $conn->commit();
                 $status = StatusCodes::Success;
                 hx_info(HX::BUY_SHARES, "buyer ".$buyer." purchased ".$amount." shares from ".$seller." for $".$price);
             } catch (PDOException $e) {
                 $conn->rollBack();
                 hx_error(HX::DB, "Failed: " . $e->getMessage());
+                echo "Failed: " . $e->getMessage()."\n";
 
                 $status = StatusCodes::ErrGeneric;
             }

@@ -144,5 +144,5 @@
         }
     }
 
-    print json_encode($json_response);
+    // print json_encode($json_response);
 ?>
