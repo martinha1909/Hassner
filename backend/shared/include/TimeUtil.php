@@ -331,13 +331,13 @@
                             }
                             else
                             {
-                                $ret = $minutes_remaining." m left";
+                                $ret = $minutes_remaining." min left";
                             }
                         }
                         //If years, months, and days are 0, we only include hours and minutes
                         else
                         {
-                            $ret = $hours_remaining." h & ".$minutes_remaining." m left";
+                            $ret = $hours_remaining." h & ".$minutes_remaining." min left";
                         }
                     }
                     //if years and months are 0, we only include days and hours
