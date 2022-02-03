@@ -190,6 +190,8 @@
         }
     }
 
+    $_SESSION['dependencies'] = "FRONTEND";
+
     //Casting to int so it rounds down in case json_data is a float
     print json_encode((int)$json_data);
 

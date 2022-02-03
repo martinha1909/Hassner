@@ -32,7 +32,6 @@
             $artist_new_balance = $artist_account_info['balance'] - ($sell_orders[$i]->getSellingPrice() * $sell_orders[$i]->getNoOfShare());
             $artist_new_share_amount = $artist_account_info['Shares'] - $sell_orders[$i]->getNoOfShare();
             $initial_pps = $artist_account_info['price_per_share'];
-            $new_pps = $sell_orders[$i]->getSellingPrice();
             $amount_bought = $sell_orders[$i]->getNoOfShare();
 
             $msg = "buyBackShares param: ".json_encode(array(
@@ -44,7 +43,6 @@
                 "seller_new_share_amount" => $seller_new_share_amount,
                 "buyer_new_share_amount" => $artist_new_share_amount,
                 "initial_pps" => $initial_pps,
-                "new_pps" => $new_pps,
                 "amount_bought" => $amount_bought,
                 "sell_order_id" => $sell_order_id,
                 "selling_price" => $sell_orders[$i]->getSellingPrice(),
@@ -60,10 +58,8 @@
                                                 $seller_new_share_amount,
                                                 $artist_new_share_amount,
                                                 $initial_pps,
-                                                $new_pps,
                                                 $amount_bought,
                                                 $sell_order_id,
-                                                $sell_orders[$i]->getSellingPrice(),
                                                 $date_purchased);
 
             refreshSellOrderTable();
