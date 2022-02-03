@@ -747,7 +747,7 @@
                     WHERE artist_username = ? AND user_username != ? AND siliqas_requested = ? AND date_posted <= ?
                     ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdd', $artist_username, $user_username, $market_price, $current_exe_date);
+            $stmt->bind_param('ssds', $artist_username, $user_username, $market_price, $current_exe_date);
             if($stmt->execute() == true)
             {
                 $result = $stmt->get_result();
@@ -1289,7 +1289,7 @@
             $status = 0;
 
             try {
-                // $conn->beginTransaction();
+                $conn->beginTransaction();
 
                 //p2p trading
                 if($buyer_account_type == AccountType::User && $seller_account_type == AccountType::User)
@@ -1408,7 +1408,6 @@
                 
                 if($indicator == "AUTO_PURCHASE")
                 {
-                    echo $order_id;
                     $stmt = $conn->prepare("UPDATE sell_order SET no_of_share = no_of_share - ? WHERE id = ?");
                     $stmt->bindValue(1, $amount);
                     $stmt->bindValue(2, $order_id);
@@ -1422,7 +1421,7 @@
                     $stmt->execute(array($amount, $order_id));
                 }
 
-                // $conn->commit();
+                $conn->commit();
                 $status = StatusCodes::Success;
                 hx_info(HX::BUY_SHARES, "buyer ".$buyer." purchased ".$amount." shares from ".$seller." for $".$price);
             } catch (PDOException $e) {
@@ -1433,7 +1432,10 @@
                 $status = StatusCodes::ErrGeneric;
             }
 
-            updateMarketPriceOrderToPPS($new_pps, $artist);
+            if($new_pps != $initial_pps)
+            {
+                updateMarketPriceOrderToPPS($new_pps, $artist);
+            }
 
             return $status;
         }
@@ -1621,14 +1623,36 @@
 
         function updateBuyOrderQuantity($conn, $buy_order_id, $new_quantity)
         {
+            $status = StatusCodes::NONE;
+
             $sql = "UPDATE buy_order SET quantity = '$new_quantity' WHERE id = '$buy_order_id'";
             if($conn->query($sql) == true)
             {
                 hx_info(HX::BUY_ORDER, "Updated quantity to ".$new_quantity." for buy order id ".$buy_order_id);
+                $status = StatusCodes::Success;
             }
             else
             {
                 hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                $status = StatusCodes::ErrServer;
+            }
+
+            return $status;
+        }
+
+        function updateSellOrderNoOfShare($connPDO, $sell_order_id, $new_no_of_share)
+        {
+            $status = StatusCodes::NONE;
+
+            try
+            {
+
+            }
+            catch (PDOException $e)
+            {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "DB error occured: ".$e->getMessage());
+                hx_error(HX::SELL_ORDER, "Failed to update sell order (id:".$sell_order_id.") to new quantity ".$new_no_of_share);
             }
         }
 

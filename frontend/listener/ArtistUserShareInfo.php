@@ -96,14 +96,6 @@
                         <?php
                         if($_SESSION['artist_found'])
                         {
-                            if ($_SESSION['logging_mode'] == LogModes::BUY_SHARE) {
-                                if ($_SESSION['status'] == "SILIQAS_ERR") {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Not enough siliqas", "");
-                                } else {
-                                    getStatusMessage("An unexpected error occured", "Shares bought successfully");
-                                }
-                            }
                         ?>
                         <div>
                         <h2 id="selected_artist" class="h2-blue"><?php echo $_SESSION['selected_artist']; ?></h2>

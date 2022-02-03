@@ -71,8 +71,6 @@
                                      $chosen_min,
                                      $latest_market_price);
 
-                refreshSellOrderTable();
-                refreshBuyOrderTable();
                 $_SESSION['display'] = MenuOption::Portfolio;
                 $_SESSION['dependencies'] = "FRONTEND";
                 $json_response = StatusCodes::Success;
