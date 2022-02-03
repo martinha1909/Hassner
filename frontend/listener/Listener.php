@@ -153,6 +153,7 @@
                             <h3 class="h3-blue">Open Orders</h3>
                             <div class="row">
                                 <div class="portfolio-box-open-order">
+                                    <b class="open-order-cancel">⊘</b>
                                     <div>
                                         <b class="portfolio-artist">00KW</b><b class="portfolio-sellorder">+30.98</b>
                                     </div>
@@ -161,6 +162,7 @@
                                     </div>
                                 </div>
                                 <div class="portfolio-box-open-order">
+                                    <b class="open-order-cancel">⊘</b>
                                     <div>
                                         <b class="portfolio-artist">02MV</b><b class="portfolio-sellorder">+330.98</b>
                                     </div>
@@ -169,6 +171,7 @@
                                     </div>
                                 </div>
                                 <div class="portfolio-box-open-order">
+                                    <b class="open-order-cancel">⊘</b>
                                     <div>
                                         <b class="portfolio-artist">09RC</b><b class="portfolio-sellorder">+400.00</b>
                                     </div>
