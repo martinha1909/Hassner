@@ -25,7 +25,6 @@
         $_SESSION['currency'] = 0;
         $_SESSION['saved'] = 0;
         $_SESSION['buy_sell'] = 0;
-        $_SESSION['buy_asked_price'] = 0;
         $_SESSION['buy_market_price'] = 0;
         $_SESSION['fiat_options'] = BalanceOption::NONE;
         $_SESSION['buy_options'] = 0;
@@ -184,7 +183,7 @@
         }
     }
 
-    function hasEnoughSiliqas($amount_spending, $balance)
+    function hasEnoughBalance($amount_spending, $balance)
     {
         if ($balance >= $amount_spending)
             return true;

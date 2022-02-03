@@ -764,7 +764,7 @@
         {
             $result = 0;
 
-            $sql = "SELECT id
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted
                     FROM sell_order
                     WHERE artist_username = ? AND selling_price != -1 AND sell_limit = -1 AND sell_stop = -1";
             $stmt = $conn->prepare($sql);
@@ -790,6 +790,27 @@
                     WHERE artist_username = ? AND siliqas_requested != -1 AND buy_limit = -1 AND buy_stop = -1";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
+        function searchSellOrderFromRepurchase($conn, $artist_username)
+        {
+            $result = 0;
+
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted
+                    FROM sell_order
+                    WHERE user_username = ? AND artist_username = ? AND is_from_injection = 0 AND sell_limit = -1 AND sell_stop = -1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $artist_username, $artist_username);
             if($stmt->execute() == true)
             {
                 $result = $stmt->get_result();
@@ -1350,7 +1371,7 @@
             return $status;
         }
 
-        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $buyer_new_share_amount, $initial_pps, $new_pps, $amount_bought, $sell_order_id, $selling_price, $date_purchased)
+        function buyBackShares($conn, $artist_username, $seller_username, $buyer_new_balance, $seller_new_balance, $seller_new_share_amount, $buyer_new_share_amount, $initial_pps, $amount_bought, $sell_order_id, $date_purchased)
         {
             $status = 0;
 
@@ -1370,10 +1391,6 @@
                 $stmt->execute(array($seller_username));
 
                 $stmt = $conn->prepare("UPDATE account SET Shares = '$buyer_new_share_amount' WHERE username = ?");
-                $stmt->bindValue(1, $artist_username);
-                $stmt->execute(array($artist_username));
-                
-                $stmt = $conn->prepare("UPDATE account SET price_per_share = '$new_pps' WHERE username = ?");
                 $stmt->bindValue(1, $artist_username);
                 $stmt->execute(array($artist_username));
                 

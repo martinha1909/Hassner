@@ -47,7 +47,7 @@
     }
     else
     {
-        $conn = connect();
+        $connPDO = connectPDO();
         $initial_pps = $siliqas_raising/$shares_distributing;
 
         $msg = "artistShareDistributionInit param: ".json_encode(array(
@@ -80,7 +80,7 @@
 
         //IPO is considered a sell order as well
         //IPO sell orders do not contain limit and stop, hence these values are set to -1
-        postSellOrder($conn, $_SESSION['username'], $_SESSION['username'], $shares_distributing, $initial_pps, -1, -1, $current_date, true);
+        postSellOrder($connPDO, $_SESSION['username'], $_SESSION['username'], $shares_distributing, $initial_pps, -1, -1, $current_date, true);
 
         echo(json_encode(array(            
             "status"=> StatusCodes::Success,
