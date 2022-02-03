@@ -725,7 +725,7 @@
                     WHERE artist_username = ? AND user_username != ? AND selling_price = ? AND date_posted <= ?
                     ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssdd', $artist_username, $user_username, $market_price, $current_exe_date);
+            $stmt->bind_param('ssds', $artist_username, $user_username, $market_price, $current_exe_date);
             if($stmt->execute() == true)
             {
                 $result = $stmt->get_result();
@@ -810,7 +810,7 @@
                         WHERE artist_username = ? AND user_username != ? AND selling_price = -1 AND sell_limit <= ? AND sell_limit != -1
                         ORDER BY date_posted ASC";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param('ssdd', $artist_username, $user_username, $limit, $market_price);
+                $stmt->bind_param('ssd', $artist_username, $user_username, $limit);
                 if($stmt->execute() == true)
                 {
                     $result = $stmt->get_result();
