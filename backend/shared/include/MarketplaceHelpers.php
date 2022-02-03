@@ -514,11 +514,9 @@ function refreshSellOrderTable()
 {
     $conn = connect();
 
-    $res = searchAllSellOrders($conn);
+    $res = searchAllSellOrdersZeroQuantity($conn);
     while ($row = $res->fetch_assoc()) {
-        if ($row['no_of_share'] <= 0) {
-            removeSellOrder($conn, $row['id']);
-        }
+        removeSellOrder($conn, $row['id']);
     }
 }
 
@@ -529,11 +527,9 @@ function refreshBuyOrderTable()
 {
     $conn = connect();
 
-    $res = searchAllBuyOrders($conn);
+    $res = searchAllBuyOrdersZeroQuantity($conn);
     while ($row = $res->fetch_assoc()) {
-        if ($row['quantity'] <= 0) {
-            removeBuyOrder($conn, $row['id']);
-        }
+        removeBuyOrder($conn, $row['id']);
     }
 }
 

@@ -233,9 +233,9 @@
             return $result;
         }
 
-        function searchAllSellOrders($conn)
+        function searchAllSellOrdersZeroQuantity($conn)
         {
-            $sql = "SELECT * FROM sell_order";
+            $sql = "SELECT * FROM sell_order WHERE no_of_share <= 0";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -254,9 +254,9 @@
             return $result;
         }
 
-        function searchAllBuyOrders($conn)
+        function searchAllBuyOrdersZeroQuantity($conn)
         {
-            $sql = "SELECT * FROM buy_order";
+            $sql = "SELECT * FROM buy_order WHERE quantity <= 0";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -716,6 +716,50 @@
             return $result;
         }
 
+        function searchOlderMarketPriceSellOrders($conn, $user_username, $artist_username, $market_price, $current_exe_date)
+        {
+            $result = 0;
+
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
+                    FROM sell_order 
+                    WHERE artist_username = ? AND user_username != ? AND selling_price = ? AND date_posted <= ?
+                    ORDER BY date_posted ASC";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssds', $artist_username, $user_username, $market_price, $current_exe_date);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
+        function searchOlderMarketPriceBuyOrders($conn, $user_username, $artist_username, $market_price, $current_exe_date)
+        {
+            $result = 0;
+
+            $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                    FROM buy_order 
+                    WHERE artist_username = ? AND user_username != ? AND siliqas_requested = ? AND date_posted <= ?
+                    ORDER BY date_posted ASC";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ssds', $artist_username, $user_username, $market_price, $current_exe_date);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
         function searchMatchingSellOrderNoLimitStop($conn, $user_username, $artist_username, $market_price)
         {
             $result = 0;
@@ -733,6 +777,48 @@
             else
             {
                 hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
+        function searchMatchingSellOrderLimit($conn, $user_username, $artist_username, $limit, $market_price, $include_market_orders)
+        {
+            $result = 0;
+
+            if($include_market_orders)
+            {
+                $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
+                        FROM sell_order 
+                        WHERE artist_username = ? AND user_username != ? AND (selling_price = -1 AND sell_limit <= ? AND sell_limit != -1) OR (selling_price = ? AND sell_limit = -1 AND sell_stop = -1)
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssdd', $artist_username, $user_username, $limit, $market_price);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
+            }
+            else
+            {
+                $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
+                        FROM sell_order 
+                        WHERE artist_username = ? AND user_username != ? AND selling_price = -1 AND sell_limit <= ? AND sell_limit != -1
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssd', $artist_username, $user_username, $limit);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
             }
 
             return $result;
@@ -785,7 +871,7 @@
         {
             $result = 0;
 
-            $sql = "SELECT id
+            $sql = "SELECT id, user_username, siliqas_requested, quantity, buy_limit, buy_stop
                     FROM buy_order
                     WHERE artist_username = ? AND siliqas_requested != -1 AND buy_limit = -1 AND buy_stop = -1";
             $stmt = $conn->prepare($sql);
@@ -1362,11 +1448,15 @@
             } catch (PDOException $e) {
                 $conn->rollBack();
                 hx_error(HX::DB, "Failed: " . $e->getMessage());
+                echo "Failed: " . $e->getMessage()."\n";
 
                 $status = StatusCodes::ErrGeneric;
             }
 
-            updateMarketPriceOrderToPPS($new_pps, $artist);
+            if($new_pps != $initial_pps)
+            {
+                updateMarketPriceOrderToPPS($new_pps, $artist);
+            }
 
             return $status;
         }
@@ -1550,14 +1640,36 @@
 
         function updateBuyOrderQuantity($conn, $buy_order_id, $new_quantity)
         {
+            $status = StatusCodes::NONE;
+
             $sql = "UPDATE buy_order SET quantity = '$new_quantity' WHERE id = '$buy_order_id'";
             if($conn->query($sql) == true)
             {
                 hx_info(HX::BUY_ORDER, "Updated quantity to ".$new_quantity." for buy order id ".$buy_order_id);
+                $status = StatusCodes::Success;
             }
             else
             {
                 hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                $status = StatusCodes::ErrServer;
+            }
+
+            return $status;
+        }
+
+        function updateSellOrderNoOfShare($connPDO, $sell_order_id, $new_no_of_share)
+        {
+            $status = StatusCodes::NONE;
+
+            try
+            {
+
+            }
+            catch (PDOException $e)
+            {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "DB error occured: ".$e->getMessage());
+                hx_error(HX::SELL_ORDER, "Failed to update sell order (id:".$sell_order_id.") to new quantity ".$new_no_of_share);
             }
         }
 
