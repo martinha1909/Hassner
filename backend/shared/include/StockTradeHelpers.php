@@ -65,6 +65,20 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
     }
 }
 
+/**
+* Initializes auto purchasing process, which includes:
+* - Determining who the seller is and their information
+* - Determining who the buyer is and their information
+* - Determining who the artist whose stock is being traded is
+*
+* @param  	conn                            db connection
+* @param  	buyer_username                  buyer in this transaction, could be the same as artist_username in the case of a buy back
+* @param  	seller_username                 seller in this transaction
+* @param  	artist_username                 artist whose stock is being traded
+*
+* @param  	ret                             an AutoTransaction object, containing the buyer information, seller information, and the artist username
+*
+*/
 function autoPurchaseInit($conn, $buyer_username, $seller_username, $artist_username)
 {
     $ret = new AutoTransact();
@@ -82,6 +96,25 @@ function autoPurchaseInit($conn, $buyer_username, $seller_username, $artist_user
     return $ret;
 }
 
+/**
+* Performs the transaction between the buyer and the seller. Responsible for:
+* - updating the shares amount of the buyer and seller after the transaction
+* - Update the balance of the buyer and seller after the transaction
+* - Update the artist stock price
+* - Add a row to buy_history table
+* - Update the buy/sell order that was being executed
+* - If stock price changes, update all market price buy and sell orders to the new stock price
+*
+* @param  	connPDO                 db connection
+* @param  	transact                AutoTransact object, containing buyer, seller, and artist info
+* @param  	old_pps                 current stock price
+* @param  	new_pps                 value of the stock after this transaction is done
+* @param  	purchase_price          purchasing price
+* @param  	execute_quantity        stock quantity that is being traded
+* @param  	order_info              buy/sell order information
+* @param  	buy_mode                buying mode (buy from injection, p2p, etc.)
+* @param  	buy_or_sell             a boolean, indicates if the transaction is buying or selling
+*/
 function doTransaction($connPDO, $transact, $old_pps, $new_pps, $purchase_price, $execute_quantity, $order_info, $buy_mode, $buy_or_sell)
 {
     $auto_param = "AUTO_PURCHASE";
@@ -137,6 +170,22 @@ function doTransaction($connPDO, $transact, $old_pps, $new_pps, $purchase_price,
                             $buy_mode);
 }
 
+/**
+* Buys all market price buy order. Will exit if:
+* - request quantity becomes 0 (after executing, if the request amount is less than the amount specified in the order)
+* - no orders found (the current executing order is older than the other market price buy orders)
+*
+* @param  	conn                            db connection
+* @param  	connPDO                         transaction-lock db connection
+* @param  	user_username                   seller
+* @param  	artist_username                 artist whose stock is being traded
+* @param  	request_quantity                quantity that the seller is selling
+* @param  	current_exe_date                current date of the sell order being sold
+* @param  	market_price                    current artist's stock price
+* @param  	is_from_injection               determine if this sell order that is being sold to buy orders is from an injection or not
+*
+* @return   ret                             the remaining quantity of the sell order that was sent to execute market price buy orders
+*/
 function executeMarketPriceBuyOrders($conn, $connPDO, $user_username, $artist_username, $request_quantity, $current_exe_date, $market_price, $is_from_injection)
 {
     hx_debug(HX::SELL_SHARES, "Performing market price buy orders execution...");
@@ -212,6 +261,21 @@ function executeMarketPriceBuyOrders($conn, $connPDO, $user_username, $artist_us
     return $request_quantity;
 }
 
+/**
+* Sells all market price sell order. Will exit if:
+* - request quantity becomes 0 (after executing, if the request amount is less than the amount specified in the order)
+* - no orders found (the current executing order is older than the other market price sell orders)
+*
+* @param  	conn                            db connection
+* @param  	connPDO                         transaction-lock db connection
+* @param  	user_username                   buyer
+* @param  	artist_username                 artist whose stock is being traded
+* @param  	request_quantity                quantity that the buyer is requesting
+* @param  	current_exe_date                current date of the buy order being bought
+* @param  	market_price                    current artist's stock price
+*
+* @return   ret                             the remaining quantity of the buy order that was sent to execute market price sell orders
+*/
 function executeMarketPriceSellOrders($conn, $connPDO, $user_username, $artist_username, $request_quantity, $current_exe_date, $market_price)
 {
     $buy_mode = ShareInteraction::NONE;
@@ -1082,6 +1146,10 @@ function autoSell($user_username, $artist_username, $asked_price, $quantity, $cu
 * Matching candidates will be:
 * - Sell orders that are selling at market price and the current market price is lower than the limit
 * - Sell orders that have sell limit set and sell limit <= buy limit 
+* Note: after an execution of a matching limit sell order, the stock price will become that limit value. 
+* Therefore, before we load up the next sell order, we need to go back and execute any market price orders that was older than the current executing sell order. 
+* Special case: if the requesting quantity is less than the first sell order with limit set that we encounter, the stock price will still change to the new limit value, 
+* hence, that sell order would need to go and find any market-price buy orders that are older than the date_posted of this sell order and execute them.
 *
 * @param  	user_username	            username of the buyer who is posting the buy order
 *
