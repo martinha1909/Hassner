@@ -135,10 +135,6 @@ $( function() {
       slide: function( event, ui ) {
         min = ui.values[0];
         max = ui.values[1];
-        // console.log(max);
-        // console.log(max_limit);
-        // console.log(min);
-        // console.log(min_limit);
         if(min == min_limit && max == max_limit){
           $("#buy_tip").text("Order will be executed as market price");
           $("#buy_cost").val("$" + $("#buy_num").slider("value")*$("#pps").text());
