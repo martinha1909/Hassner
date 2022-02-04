@@ -79,7 +79,18 @@
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
-                //TODO: Code to handle when stop is set
+                autoPurchaseStopSet($_SESSION['username'],
+                                    $_SESSION['selected_artist'],
+                                    $quantity,
+                                    $chosen_max,
+                                    $latest_market_price);
+
+                refreshBuyOrderTable();
+                refreshSellOrderTable();
+                
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
@@ -123,18 +134,42 @@
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
-                
+                postSellOrder($connPDO, 
+                                  $_SESSION['username'],
+                                  $_SESSION['selected_artist'], 
+                                  $quantity, 
+                                  -1,
+                                  -1,
+                                  $chosen_min,
+                                  $current_date,
+                                  false);
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
-
+                postSellOrder($connPDO, 
+                            $_SESSION['username'],
+                            $_SESSION['selected_artist'], 
+                            $quantity, 
+                            -1,
+                            $chosen_max,
+                            -1,
+                            $current_date,
+                            false);
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
-                
+                postSellOrder($connPDO, 
+                                  $_SESSION['username'],
+                                  $_SESSION['selected_artist'], 
+                                  $quantity, 
+                                  -1,
+                                  $chosen_max,
+                                  $chosen_min,
+                                  $current_date,
+                                  false);
             }
         }
     }
 
-    print json_encode($json_response);
+    // print json_encode($json_response);
 ?>
