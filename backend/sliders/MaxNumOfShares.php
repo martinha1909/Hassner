@@ -85,7 +85,7 @@
         $matching_shares_sold = 0;
         $num_of_shares_market_price = 0;
 
-        $res_sell_stop = searchNumOfSharesStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_min);
+        $res_sell_stop = searchNumOfSharesStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_max);
         if($res_sell_stop->num_rows > 0)
         {
             while($row = $res_sell_stop->fetch_assoc())
