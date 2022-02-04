@@ -720,8 +720,6 @@
         {
             $result = 0;
 
-            echo "current_exe_date: ".$current_exe_date."\n";
-
             $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
                     FROM sell_order 
                     WHERE artist_username = ? AND user_username != ? AND date_posted <= ?
