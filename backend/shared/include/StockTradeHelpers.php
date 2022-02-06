@@ -1296,4 +1296,32 @@ function autoPurchaseStopSet($user_username, $artist_username, $request_quantity
     checkForExecutableSellOrders($conn, $connPDO, $artist_username, $current_market_price);
     closeCon($conn);
 }
+
+function autoPurchaseLimitStopSet($user_username, $artist_username, $request_quantity, $buy_limit, $buy_stop, $current_market_price)
+{
+    $conn = connect();
+    $connPDO = connectPDO();
+    $buy_mode = ShareInteraction::NONE;
+    $include_market_orders = false;
+
+    if($buy_limit >= $current_market_price || $buy_stop <= $current_market_price)
+    {
+        $include_market_orders = true;
+    }
+
+    $res = searchMatchingSellOrderLimitStop($conn, 
+                                            $user_username, 
+                                            $artist_username, 
+                                            $buy_limit, 
+                                            $buy_stop, 
+                                            $current_market_price, 
+                                            $include_market_orders);
+                                
+    while($row = $res->fetch_assoc())
+    {
+        echo $row['id']."\n";
+    }
+
+    closeCon($conn);
+}
 ?>
