@@ -449,7 +449,6 @@ function autoPurchaseNoLimitStop($user_username, $artist_username, $request_quan
     $current_date = date('Y-m-d H:i:s');
     $res = searchMatchingSellOrderNoLimitStop($conn, $user_username, $artist_username, $current_market_price);
     hx_debug(HX::QUERY, "searchMatchingSellOrderNoLimitStop returned ".$res->num_rows." entries");
-
     while($row = $res->fetch_assoc())
     {
         //fail safe
@@ -1477,5 +1476,28 @@ function autoPurchaseLimitStopSet($user_username, $artist_username, $request_qua
     hx_debug (HX::SELL_SHARES, "Checking for executable sell orders after stock price has changed...");
     checkForExecutableSellOrders($conn, $connPDO, $artist_username, $current_market_price);
     closeCon($conn);
+}
+
+function autoSellLimitSet($seller_username, $artist_username, $selling_quantity, $sell_limit, $current_market_price, $is_from_injection)
+{
+    hx_debug(HX::SELL_SHARES, "selling quantity: ".$selling_quantity.", sell limit: ".$sell_limit."\n\n");
+
+    $conn = connect();
+    $connPDO = connectPDO();
+    $current_date = date('Y-m-d H:i:s');
+    $include_market_orders = false;
+    //Sell is just another form of buy, just swap the buyer and seller
+    $buy_mode = ShareInteraction::BUY;
+
+    if($sell_limit < $current_market_price)
+    {
+        $include_market_orders = true;
+    }
+
+    $res = searchMatchingBuyOrderLimit($conn, $seller_username, $artist_username, $sell_limit, $current_market_price, $include_market_orders);
+    while($row = $res->fetch_assoc())
+    {
+        echo $row['id']."\n";
+    }
 }
 ?>
