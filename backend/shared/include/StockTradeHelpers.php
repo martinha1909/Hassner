@@ -1306,6 +1306,30 @@ function autoPurchaseStopSet($user_username, $artist_username, $request_quantity
     closeCon($conn);
 }
 
+/**
+* Automatically executes buy orders that have both limit and stop set  
+* Matching candidates will be:
+* - Sell orders that are selling at market price and market price <= buy limit  or market price >= buy stop 
+* - Sell orders that have sell limit <= buy limit
+* - Sell orders that have sell stop >= buy stop
+* Note: after an execution of a matching sell order, the stock price will change (to sell limit if it is a limit transaction and buy stop if it is a stop transaction). 
+* Therefore, before we load up the next sell order, we need to go back and execute any market price orders that was older than the current executing sell order. 
+* Special case: if the requesting quantity is less than the first sell order that we encounter, the stock price will still change, 
+* hence, that sell order would need to go and find any market-price buy orders that are older than the date_posted of this sell order and execute them.
+*
+* @param  	user_username	            username of the buyer who is posting the buy order
+*
+* @param  	artist_username	            artist username whose shares are being requested from
+*
+* @param  	request_quantity            amount of shares the buyer is requesting
+*
+* @param  	buy_limit                   limit of the buy order
+*
+* @param  	buy_stop                    stop of the buy order
+*
+* @param  	current_market_price	    current stock price of the artist's stock
+*
+*/
 function autoPurchaseLimitStopSet($user_username, $artist_username, $request_quantity, $buy_limit, $buy_stop, $current_market_price)
 {
     $conn = connect();
