@@ -100,6 +100,13 @@
                                          $chosen_min,
                                          $chosen_max,
                                          $latest_market_price);
+
+                refreshBuyOrderTable();
+                refreshSellOrderTable();
+                
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
         }
         else if($user_event == ShareInteraction::SELL)

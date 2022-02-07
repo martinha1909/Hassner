@@ -52,8 +52,12 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
                 }
                 else
                 {
-                    hx_info(HX::BUY_ORDER, "Buy order with id ".$row['id']." updated requesting price to ".$new_pps);
+                    hx_info(HX::BUY_ORDER, "Buy order with id ".$row['id']." updated requesting quantity to ".$max_num_of_shares);
                 }
+            }
+            else
+            {
+                hx_debug (HX::BUY_ORDER, "Did not update buy order requesting quantity for buy order ".$row['id']);
             }
         }
 
@@ -83,7 +87,7 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
 * @param  	ret                             an AutoTransaction object, containing the buyer information, seller information, and the artist username
 *
 */
-function autoPurchaseInit($conn, $buyer_username, $seller_username, $artist_username)
+function autoPurchaseInit($conn, $buyer_username, $seller_username, $artist_username): AutoTransact
 {
     $ret = new AutoTransact();
 
@@ -245,7 +249,6 @@ function executeMarketPriceBuyOrders($conn, $connPDO, $user_username, $artist_us
                     hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $row['siliqas_requested'])." was transfered between buyer ".$row['user_username']." and seller ".$user_username);
                     
                     removeBuyOrder($conn, $row['id']);
-                    hx_info(HX::BUY_ORDER, "Buy order (id: ".$row['id'].") has been removed");
                 }
                 else
                 {
@@ -296,13 +299,19 @@ function executeMarketPriceSellOrders($conn, $connPDO, $user_username, $artist_u
     $buy_mode = ShareInteraction::NONE;
 
     $res = searchOlderSellOrders($conn, $user_username, $artist_username, $current_exe_date);
-    hx_debug(HX::BUY_SHARES, "Found ".$res->num_rows." matching market price sell orders");
+    hx_debug(HX::BUY_SHARES, "Found ".$res->num_rows." older sell orders");
     while($row = $res->fetch_assoc())
     {
         $will_execute = false;
+        hx_debug(HX::SELL_SHARES, "execution check on sell order ".$row['id'].": selling_price = ".$row['selling_price'].", market_price = ".$market_price);
         if($row['selling_price'] != -1 && $row['selling_price'] == $market_price)
         {
             $will_execute = true;
+            hx_debug(HX::SELL_SHARES, "Will execute on sell order id ".$row['id']);
+        }
+        else
+        {
+            hx_debug(HX::SELL_SHARES, "Will not execute on sell order id ".$row['id']);
         }
         if($request_quantity <= 0)
         {
@@ -341,7 +350,6 @@ function executeMarketPriceSellOrders($conn, $connPDO, $user_username, $artist_u
 
                 hx_info(HX::BUY_SHARES, "Auto purchasing sell order id ".$row['id'].", amount $".($row['no_of_share'] * $row['selling_price'])." was transfered between buyer ".$user_username." and seller ".$row['user_username']);
                 removeSellOrder($conn, $row['id']);
-                hx_info(HX::SELL_ORDER, "Sell order (id: ".$row['id'].") has been removed");
             }
             else
             {
@@ -384,6 +392,7 @@ function checkForExecutableSellOrders($conn, $connPDO, $artist_username, $market
     $res = searchMarketExeLimitStopSellOrders($conn, $artist_username, $market_price);
     while($row = $res->fetch_assoc())
     {
+        hx_debug(HX::SELL_SHARES, "Executing sell order id ".$row['id']);
         $selling_quantity = $row['no_of_share'];
 
         $selling_quantity = executeMarketPriceBuyOrders($conn,
@@ -1319,9 +1328,130 @@ function autoPurchaseLimitStopSet($user_username, $artist_username, $request_qua
                                 
     while($row = $res->fetch_assoc())
     {
-        echo $row['id']."\n";
-    }
+        $will_execute = false;
+        $purchase_price = 0;
+        $new_pps = 0;
 
+        if($request_quantity <= 0)
+        {
+            break;
+        }
+
+        hx_debug(HX::BUY_SHARES, "request_quantity: ".$request_quantity.", row['no_of_share']: ".$row['no_of_share']."\n");
+        $transact = autoPurchaseInit($conn, $user_username, $row['user_username'], $artist_username);
+
+        if($row['is_from_injection'])
+        {
+            $buy_mode = ShareInteraction::BUY_FROM_INJECTION;
+        }
+        else
+        {
+            $buy_mode = ShareInteraction::BUY;
+        }
+
+        //case of market price, shoult only hit this if block if $include_market_orders is true
+        if($row['selling_price'] != -1 && $row['sell_limit'] == -1 && $row['sell_stop'] == -1)
+        {
+            //price and new stock price will be at market price for this case
+            $purchase_price = $current_market_price;
+            $new_pps = $current_market_price;
+            $will_execute = true;
+        }
+        else if($row['sell_limit'] <= $buy_limit && $row['sell_limit'] != -1)
+        {
+            $purchase_price = $row['sell_limit'];
+            $new_pps = $row['sell_limit'];
+            $will_execute = true;
+        }
+        else if($row['sell_stop'] >= $buy_stop)
+        {
+            $purchase_price = $buy_stop;
+            $new_pps = $buy_stop;
+            $will_execute = true;
+        }
+
+        if($will_execute)
+        {
+            if($request_quantity >= $row['no_of_share'])
+            {
+                hx_debug(HX::BUY_SHARES, "Case request_quantity >= row['no_of_share']\n".
+                                        "Match check on order id: ".$row['id']);
+                hx_info(HX::BUY_SHARES, "Auto purchasing sell order id ".$row['id'].", amount $".($row['no_of_share'] * $purchase_price)."; transferring between buyer ".$user_username." and seller ".$row['user_username']);
+
+                doTransaction($connPDO,
+                            $transact,
+                            $current_market_price,
+                            $new_pps,
+                            $purchase_price,
+                            $row['no_of_share'],
+                            $row,
+                            $buy_mode,
+                            ShareInteraction::BUY);
+
+                removeSellOrder($conn, $row['id']);
+
+                //Update new market price
+                $current_market_price = $new_pps;
+                $current_quantity = $request_quantity - $row['no_of_share'];
+
+                if($current_quantity > 0)
+                {
+                    hx_debug (HX::BUY_SHARES, "Executing market price sell orders....");
+                    $request_quantity = executeMarketPriceSellOrders($conn,
+                                                                    $connPDO,
+                                                                    $user_username,
+                                                                    $artist_username,
+                                                                    $current_quantity,
+                                                                    $row['date_posted'],
+                                                                    $new_pps);
+                }
+                else
+                {
+                    $request_quantity = $current_quantity;
+                }
+            }
+            else
+            {
+                hx_debug(HX::BUY_SHARES, "Case request_quantity < row['no_of_share']\n".
+                                        "Match check on order id: ".$row['id']);
+                hx_info(HX::BUY_SHARES, "Auto purchasing sell order id ".$row['id'].", amount $".($row['no_of_share'] * $purchase_price).", transfering between buyer ".$user_username." and seller ".$row['user_username']);
+
+                doTransaction($connPDO,
+                            $transact,
+                            $current_market_price,
+                            $new_pps,
+                            $purchase_price,
+                            $request_quantity,
+                            $row,
+                            $buy_mode,
+                            ShareInteraction::BUY);
+
+                $current_market_price = $new_pps;
+                $current_sell_order_quantity = $row['no_of_share'] - $request_quantity;
+                hx_debug(HX::BUY_SHARES, "Executing market price buy orders....");
+                $new_sell_order_quantity = executeMarketPriceBuyOrders($conn,
+                                                                       $connPDO,
+                                                                       $row['user_username'],
+                                                                       $artist_username,
+                                                                       $current_sell_order_quantity,
+                                                                       $row['date_posted'],
+                                                                       $new_pps,
+                                                                       $row['is_from_injection']);
+
+                if($new_sell_order_quantity <= 0)
+                {
+                    removeSellOrder($conn, $row['id']);
+                }
+                else
+                {
+                    updateSellOrderNoOfShare($connPDO, $row['id'], $new_sell_order_quantity);
+                }
+                $request_quantity = $request_quantity - $row['no_of_share'];
+            }
+        }
+    }
+    hx_debug (HX::SELL_SHARES, "Checking for executable sell orders after stock price has changed...");
+    checkForExecutableSellOrders($conn, $connPDO, $artist_username, $current_market_price);
     closeCon($conn);
 }
 ?>
