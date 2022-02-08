@@ -33,7 +33,6 @@
         if($user_event == ShareInteraction::BUY)
         {
             $connPDO = connectPDO();
-            echo "chosen_min: ".$chosen_min."\n"."min_lim: ".$min_lim."\n"."chosen_max: ".$chosen_max."\n"."max_lim: ".$max_lim."\n---------------\n";
 
             if($chosen_min == $min_lim && $chosen_max == $max_lim)
             {
@@ -44,25 +43,25 @@
                                                         $purchase_price,
                                                         $latest_market_price);
 
-                // refreshSellOrderTable();
+                refreshSellOrderTable();
 
-                // if($new_quantity > 0)
-                // {
-                //     //User posting buy order without limit and stop
-                //     postBuyOrder($connPDO, 
-                //                  $_SESSION['username'],
-                //                  $_SESSION['selected_artist'], 
-                //                  $new_quantity, 
-                //                  $purchase_price, 
-                //                  -1,
-                //                  -1,
-                //                  $current_date);
-                // }
+                if($new_quantity > 0)
+                {
+                    //User posting buy order without limit and stop
+                    postBuyOrder($connPDO, 
+                                 $_SESSION['username'],
+                                 $_SESSION['selected_artist'], 
+                                 $new_quantity, 
+                                 $purchase_price, 
+                                 -1,
+                                 -1,
+                                 $current_date);
+                }
 
-                // refreshBuyOrderTable();
-                // $_SESSION['display'] = MenuOption::Portfolio;
-                // $_SESSION['dependencies'] = "FRONTEND";
-                // $json_response = StatusCodes::Success;
+                refreshBuyOrderTable();
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
@@ -155,8 +154,26 @@
                                                  $_SESSION['selected_artist'],
                                                  $quantity,
                                                  $chosen_max,
-                                                 $latest_market_price,
-                                                 false);
+                                                 $latest_market_price);
+                // refreshSellOrderTable();
+                // if($new_quantity > 0)
+                // {
+                //     //Sell order posted by user with limit set, setting selling_price to -1
+                //     postSellOrder($connPDO,
+                //                   $_SESSION['username'],
+                //                   $_SESSION['selected_artist'],
+                //                   $new_quantity,
+                //                   -1,
+                //                   $chosen_max,
+                //                   -1,
+                //                   $current_date,
+                //                   false);
+                // }
+
+                // refreshBuyOrderTable();
+                // $_SESSION['display'] = MenuOption::Portfolio;
+                // $_SESSION['dependencies'] = "FRONTEND";
+                // $json_response = StatusCodes::Success;
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
