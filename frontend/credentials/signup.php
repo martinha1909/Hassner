@@ -57,18 +57,10 @@ hassnerInit();
             <a href="index.php"> Return to front page</a>
           </div>
 
-          <?php
-          if(isTestingPhase())
-          {
-          ?>
-
           <div class="col text-center">
             <a href="login.php"> Already have an account?</a>
           </div>
 
-          <?php
-          }
-          ?>
           <!-- TODO: Uncomment this when admin is available -->
           <!-- <div class="col text-center">
             <a href="AdminSignUp.php"> Want to become an admin?</a>

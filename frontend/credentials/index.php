@@ -43,16 +43,9 @@ hassnerInit();
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav ml-auto">
-                        <?php
-                            if(isTestingPhase())
-                            {
-                        ?>
-                                <menu class="nav-item">
-                                    <a class="nav-link-index page-scroll" href="login.php">Log In</a>
-                                </menu>
-                        <?php
-                            }
-                        ?>
+                        <menu class="nav-item">
+                            <a class="nav-link-index page-scroll" href="login.php">Log In</a>
+                        </menu>
                         <menu class="nav-item">
                             <a class="nav-link-index page-scroll" href="signup.php">Sign Up</a>
                         </menu>
@@ -128,26 +121,19 @@ hassnerInit();
         </div>
     </section>
 
-    <?php
-        if(isTestingPhase())
-        {
-    ?>
-        <!--login section-->
-        <section class="py-5 bg-dark top-right bottom-left" id="login">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 col-12 mx-auto text-center py-5">
-                        <h3>Sign in to your account</h3>
-                        <form action="login.php">
-                            <input class="btn btn-primary" role="button" type="submit" aria-pressed="true" value="Log in">
-                        </form>
-                    </div>
+    <!--login section-->
+    <section class="py-5 bg-dark top-right bottom-left" id="login">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-12 mx-auto text-center py-5">
+                    <h3>Sign in to your account</h3>
+                    <form action="login.php">
+                        <input class="btn btn-primary" role="button" type="submit" aria-pressed="true" value="Log in">
+                    </form>
                 </div>
             </div>
-        </section>
-    <?php
-        }
-    ?>
+        </div>
+    </section>
 
     <!--scroll to top-->
     <div class="scroll-top">

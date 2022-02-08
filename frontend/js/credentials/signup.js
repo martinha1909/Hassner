@@ -1,18 +1,3 @@
-function isTestingPhase()
-{
-    var ret = false;
-    var current_date = new Date();
-    var testing_date = new Date(2022,03,01);
-    console.log(current_date.getTime());
-    console.log(testing_date.getTime());
-    if(current_date.getTime() >= testing_date.getTime())
-    {
-        ret = true;
-    }
-
-    return ret;
-}
-
 function signup()
 {
     $.ajax({
@@ -36,16 +21,9 @@ function signup()
             }
             else
             {
-                if(isTestingPhase())
-                {
-                    window.location.href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/credentials/login.php";
-                    $("#sign_up_success").text(data.msg);
-                    $("#sign_up_success").show();
-                }
-                else
-                {
-                    $("#signup_suc").text("Thank you for signing up, testing phase will begin on March 1st, 2022!");
-                }
+                window.location.href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/credentials/login.php";
+                $("#sign_up_success").text(data.msg);
+                $("#sign_up_success").show();
             }
         },
         error: function(data){
