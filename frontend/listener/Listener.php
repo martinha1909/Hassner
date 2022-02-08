@@ -109,75 +109,43 @@
                             <h3 class="h3-blue">Owned Shares</h3>
                             <div class="row">
                                 <div class="portfolio-box-owned-shares">
-                                    <div>
                                         <b class="portfolio-artist">88GM</b><b class="portfolio-percentage-negative">-26.42</b>
-                                    </div>
-                                    <div>
                                         <b class="portfolio-shareamount">120x</b><b class="portfolio-loss">-699.66</b>
-                                    </div>
                                 </div>
                                 <div class="portfolio-box-owned-shares">
-                                    <div>
                                         <b class="portfolio-artist">42WK</b><b class="portfolio-percentage-positive">+5.32</b>
-                                    </div>
-                                    <div>
                                         <b class="portfolio-shareamount">37x</b><b class="portfolio-gain">+2.32</b>
-                                    </div>
                                 </div>
                                 <div class="portfolio-box-owned-shares">
-                                    <div>
                                         <b class="portfolio-artist">20SV</b><b class="portfolio-percentage-negative">-2.42</b>
-                                    </div>
-                                    <div>
                                         <b class="portfolio-shareamount">10x</b><b class="portfolio-loss">-6.66</b>
-                                    </div>
                                 </div>
                                 <div class="portfolio-box-owned-shares">
-                                    <div>
                                         <b class="portfolio-artist">21SV</b><b class="portfolio-percentage-positive">+2.89</b>
-                                    </div>
-                                    <div>
                                         <b class="portfolio-shareamount">55x</b><b class="portfolio-gain">+12.30</b>
-                                    </div>
                                 </div>
                                 <div class="portfolio-box-owned-shares">
-                                    <div>
                                         <b class="portfolio-artist">00KW</b><b class="portfolio-percentage-positive">+2.78</b>
-                                    </div>
-                                    <div>
                                         <b class="portfolio-shareamount">5x</b><b class="portfolio-gain">+212.32</b>
-                                    </div>
                                 </div>
                             </div>
 
                             <h3 class="h3-blue">Open Orders</h3>
                             <div class="row">
                                 <div class="portfolio-box-open-order">
-                                    <b class="open-order-cancel">⊘</b>
-                                    <div>
+                                        <b class="open-order-cancel">⊘</b>
                                         <b class="portfolio-artist">00KW</b><b class="portfolio-sellorder">+30.98</b>
-                                    </div>
-                                    <div>
                                         <b class="portfolio-shareamount-openorder">5x</b><b class="portfolio-limitstop">no Limit / Stop</b>
-                                    </div>
                                 </div>
                                 <div class="portfolio-box-open-order">
-                                    <b class="open-order-cancel">⊘</b>
-                                    <div>
+                                        <b class="open-order-cancel">⊘</b>
                                         <b class="portfolio-artist">02MV</b><b class="portfolio-sellorder">+330.98</b>
-                                    </div>
-                                    <div>
                                         <b class="portfolio-shareamount-openorder">33x</b><b class="portfolio-limitstop">Limit: 0.48</b>
-                                    </div>
                                 </div>
                                 <div class="portfolio-box-open-order">
-                                    <b class="open-order-cancel">⊘</b>
-                                    <div>
+                                        <b class="open-order-cancel">⊘</b>
                                         <b class="portfolio-artist">09RC</b><b class="portfolio-sellorder">+400.00</b>
-                                    </div>
-                                    <div>
                                         <b class="portfolio-shareamount-openorder">10x</b><b class="portfolio-limitstop">Stop: 40</b>
-                                    </div>
                                 </div>
                             </div>
 
