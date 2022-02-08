@@ -348,6 +348,8 @@ select::-ms-expand {
   transform: translate(-50%, -50%);
   z-index:1;
   text-align: center;
+  width: max-content;
+  overflow: hidden;
 }
 
 /* Marquee Replacer & Ticker Classes */
