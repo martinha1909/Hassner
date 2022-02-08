@@ -47,6 +47,18 @@
         $_SESSION['logging_mode'] = LogModes::NONE;
     }
 
+    function isTestingPhase()
+    {
+        $ret = false;
+        $current_date = date('Y-m-d');
+        if($current_date >= "2022-03-01")
+        {
+            $ret = true;
+        }
+
+        return $ret;
+    }
+
     function showJSStatusMsg()
     {
         echo '

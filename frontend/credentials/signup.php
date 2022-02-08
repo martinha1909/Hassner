@@ -57,10 +57,18 @@ hassnerInit();
             <a href="index.php"> Return to front page</a>
           </div>
 
+          <?php
+          if(isTestingPhase())
+          {
+          ?>
+
           <div class="col text-center">
             <a href="login.php"> Already have an account?</a>
           </div>
 
+          <?php
+          }
+          ?>
           <!-- TODO: Uncomment this when admin is available -->
           <!-- <div class="col text-center">
             <a href="AdminSignUp.php"> Want to become an admin?</a>
@@ -98,6 +106,7 @@ hassnerInit();
             <label for="user">Listener</label>
 
             <p id="signup_error" class="error-msg"><p>
+            <p id="signup_suc" class="suc-msg"><p>
 
             <!-- TODO: Disable when testing phase ends -->
             <!-- <input type="radio" name="signup_radio" id="signup_account_type" value="artist">
