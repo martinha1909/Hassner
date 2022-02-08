@@ -15,7 +15,6 @@ function signup()
             console.log(data);
             if(data.status != "SUCCESS")
             {
-                $("#signup_suc").hide();
                 $("#signup_error").text(data.msg);
                 // $("#signup_error").show();
             }

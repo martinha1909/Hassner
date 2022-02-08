@@ -98,7 +98,6 @@ hassnerInit();
             <label for="user">Listener</label>
 
             <p id="signup_error" class="error-msg"><p>
-            <p id="signup_suc" class="suc-msg"><p>
 
             <!-- TODO: Disable when testing phase ends -->
             <!-- <input type="radio" name="signup_radio" id="signup_account_type" value="artist">
