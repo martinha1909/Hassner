@@ -1059,9 +1059,37 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
     //Sell is just another form of buy, just swap the buyer and seller
     $buy_mode = ShareInteraction::BUY;
 
-    if($sell_limit < $current_market_price)
+    if($sell_stop >= $current_market_price)
     {
         $include_market_orders = true;
+    }
+
+    $res = searchMatchingBuyOrderStop($conn, $seller_username, $artist_username, $sell_stop, $current_market_price, $include_market_orders);
+    while($row = $res->fetch_assoc())
+    {
+        if($selling_quantity <= 0)
+        {
+            break;
+        }
+        hx_debug(HX::SELL_SHARES, "Auto selling to buy order ".$row['id']."\n".
+                                  "selling quantity: ".$selling_quantity.", row['quantity']: ".$row['quantity']);
+
+        $selling_price = $row['buy_stop'];
+        $new_pps = $row['buy_stop'];
+        //This check will always fail if $include_market_orders is false
+        if($row['siliqas_requested'] != -1 && $row['buy_limit'] == -1 && $row['buy_stop'] == -1)
+        {
+            //Case of a market price sell order
+            $new_pps = $row['siliqas_requested'];
+            $selling_price = $row['siliqas_requested'];
+        }
+
+        $transact = autoPurchaseInit($conn, $row['user_username'], $seller_username, $artist_username);
+
+        if($selling_quantity >= $row['quantity'])
+        {
+            
+        }
     }
 }
 
