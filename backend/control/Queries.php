@@ -1604,6 +1604,8 @@
                     $stmt->bindValue(1, $amount);
                     $stmt->bindValue(2, $order_id);
                     $stmt->execute(array($amount, $order_id));
+
+                    hx_debug(HX::SELL_ORDER, "Sell order ".$order_id." update no_of_share to ".$amount);
                 }
                 else if($indicator == "AUTO_SELL")
                 {
@@ -1611,6 +1613,8 @@
                     $stmt->bindValue(1, $amount);
                     $stmt->bindValue(2, $order_id);
                     $stmt->execute(array($amount, $order_id));
+
+                    hx_debug(HX::BUY_ORDER, "Buy order ".$order_id." update quantity to ".$amount);
                 }
 
                 $conn->commit();

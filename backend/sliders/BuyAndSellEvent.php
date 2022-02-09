@@ -151,10 +151,10 @@
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
                 $new_quantity = autoSellLimitSet( $_SESSION['username'],
-                                                 $_SESSION['selected_artist'],
-                                                 $quantity,
-                                                 $chosen_max,
-                                                 $latest_market_price);
+                                                  $_SESSION['selected_artist'],
+                                                  $quantity,
+                                                  $chosen_max,
+                                                  $latest_market_price);
                 // refreshSellOrderTable();
                 // if($new_quantity > 0)
                 // {
