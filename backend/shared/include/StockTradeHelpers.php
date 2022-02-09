@@ -1,4 +1,48 @@
 <?php
+
+/**
+* Checks if there is any available sell orders of a given artist
+*
+* @param  	conn                    connection to db
+*
+* @param  	artist_username         given artist to query orders
+*
+* @return   ret                     a boolean, true if no orders found, false otherwise
+*/
+function noSellOrdersFound($conn, $artist_username)
+{
+    $ret = false;
+
+    $res = searchSellOrderByArtist($conn, $artist_username);
+    if($res->num_rows == 0)
+    {
+        $ret = true;
+    }
+
+    return $ret;
+}
+
+/**
+* Checks if there is any available buy orders of a given artist
+*
+* @param  	conn                    connection to db
+*
+* @param  	artist_username         given artist to query orders
+*
+* @return   ret                     a boolean, true if no orders found, false otherwise
+*/
+function noBuyOrdersFound($conn, $artist_username)
+{
+    $ret = false;
+
+    $res = searchBuyOrdersByArtist($conn, $artist_username);
+    if($res->num_rows == 0)
+    {
+        $ret = true;
+    }
+
+    return $ret;
+}
 /**
 * Updates any buy orders or sell orders that have no limit or stop to the current market price 
 *
