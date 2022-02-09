@@ -1051,6 +1051,20 @@ function autoSellNoLimitStop($user_username, $artist_username, $request_quantity
     return $request_quantity;
 }
 
+function autoSellStopSet($seller_username, $artist_username, $selling_quantity, $sell_stop, $current_market_price)
+{
+    $conn = connect();
+    $connPDO = connectPDO();
+    $include_market_orders = false;
+    //Sell is just another form of buy, just swap the buyer and seller
+    $buy_mode = ShareInteraction::BUY;
+
+    if($sell_limit < $current_market_price)
+    {
+        $include_market_orders = true;
+    }
+}
+
 /**
 * Automatically executes buy orders that have limit set  
 * Matching candidates will be:
