@@ -1090,6 +1090,27 @@ function autoSellNoLimitStop($user_username, $artist_username, $request_quantity
     return $request_quantity;
 }
 
+/**
+* Automatically executes sell orders that have limit set  
+* Matching candidates will be:
+* - Buy orders that are buying at market price and the current market price is higher than the limit
+* - Buy orders that have buy limit set where buy limit >= sell limit 
+* Note: after an execution of a matching limit buy order, the stock price will become the sell limit value. 
+* Therefore, before we load up the next buy order, we need to go back and execute any market price orders that was older than the current executing buy order. 
+* Special case: if the selling quantity is less than the first buy order with limit set that we encounter, the stock price will still change to the sell limit value, 
+* hence, that buy order would need to go and find any market-price sell orders that are older than the date_posted of that buy order and execute them.
+*
+* @param  	seller_username	            username of the seller who is posting the sell order
+*
+* @param  	artist_username	            artist username whose shares are being sold from
+*
+* @param  	selling_quantity            amount of shares the seller is selling
+*
+* @param  	sell_limit                  limit of the sell order
+*
+* @param  	current_market_price	    current stock price of the artist's stock
+*
+*/
 function autoSellLimitSet($seller_username, $artist_username, $selling_quantity, $sell_limit, $current_market_price)
 {
     $conn = connect();
