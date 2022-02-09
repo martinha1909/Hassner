@@ -41,7 +41,3 @@ jobs:
         with:
           source: "./*"
           target: "/opt/bitnami/apache/htdocs/Hassner/"
-            
-           
-            
-            
