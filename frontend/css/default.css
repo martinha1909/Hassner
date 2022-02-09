@@ -629,6 +629,9 @@ pre code {
 .container-video {
   position:relative;
   z-index:0;
+  width: max-content;
+  height: max-content;
+  overflow: hidden;
 }
 
 .row {
