@@ -1115,12 +1115,11 @@ function autoSellLimitSet($seller_username, $artist_username, $selling_quantity,
 {
     $conn = connect();
     $connPDO = connectPDO();
-    $current_date = date('Y-m-d H:i:s');
     $include_market_orders = false;
     //Sell is just another form of buy, just swap the buyer and seller
     $buy_mode = ShareInteraction::BUY;
 
-    if($sell_limit < $current_market_price)
+    if($sell_limit <= $current_market_price)
     {
         $include_market_orders = true;
     }
