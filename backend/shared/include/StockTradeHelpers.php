@@ -433,30 +433,38 @@ function executeMarketPriceSellOrders($conn, $connPDO, $user_username, $artist_u
 */
 function checkForExecutableSellOrders($conn, $connPDO, $artist_username, $market_price)
 {
-    $res = searchMarketExeLimitStopSellOrders($conn, $artist_username, $market_price);
-    while($row = $res->fetch_assoc())
+    hx_debug(HX::BUY_SHARES, "Checking for executable sell orders...");
+    if(!noBuyOrdersFound($conn, $artist_username))
     {
-        hx_debug(HX::SELL_SHARES, "Executing sell order id ".$row['id']);
-        $selling_quantity = $row['no_of_share'];
+        $res = searchMarketExeLimitStopSellOrders($conn, $artist_username, $market_price);
+        while($row = $res->fetch_assoc())
+        {
+            $selling_quantity = $row['no_of_share'];
 
-        $selling_quantity = executeMarketPriceBuyOrders($conn,
-                                                        $connPDO,
-                                                        $row['user_username'],
-                                                        $row['artist_username'],
-                                                        $row['no_of_share'],
-                                                        $row['date_posted'],
-                                                        $market_price,
-                                                        $row['is_from_injection']);
-        if($selling_quantity <= 0)
-        {
-            removeSellOrder($conn, $row['id']);
-        }
-        else
-        {
-            updateSellOrderNoOfShare($connPDO, $row['id'], $selling_quantity);
-            //Exit the loop since this sell order has sold to all market price buy orders and still have some left
-            //Meaning the following sell orders won't have anything to sell
-            break;
+            $selling_quantity = executeMarketPriceBuyOrders($conn,
+                                                            $connPDO,
+                                                            $row['user_username'],
+                                                            $row['artist_username'],
+                                                            $row['no_of_share'],
+                                                            $row['date_posted'],
+                                                            $market_price,
+                                                            $row['is_from_injection']);
+            if($selling_quantity <= 0)
+            {
+                removeSellOrder($conn, $row['id']);
+            }
+            else
+            {
+                updateSellOrderNoOfShare($connPDO, $row['id'], $selling_quantity);
+                //check again in case the buyer and the seller are the same person, then we should continue the loop
+                if(noBuyOrdersFound($conn, $artist_username))
+                {
+                    hx_debug (HX::BUY_SHARES, "Exitting, no more market price sell orders to buy anymore...");
+                    //Exit the loop since this buy order has bought all market price sell orders and still have some left
+                    //Meaning the following buy orders won't have anything to buy
+                    break;
+                }
+            }
         }
     }
 }
