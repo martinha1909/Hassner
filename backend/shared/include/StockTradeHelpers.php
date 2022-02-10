@@ -62,10 +62,12 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
         $update_err_code = updateSellOrderPPS($new_pps, $row['id']);
         if($update_err_code != StatusCodes::Success)
         {
+            echo "Could not update selling price for sell order ".$row['id']."\n";
             hx_error(HX::SELL_ORDER, "Could not update selling price for sell order ".$row['id']);
         }
         else
         {
+            echo "Sell order with id ".$row['id']." updated selling price to ".$new_pps."\n";
             hx_info(HX::SELL_ORDER, "Sell order with id ".$row['id']." updated selling price to ".$new_pps);
         }
     }
@@ -80,6 +82,12 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
             $user_balance = getUserBalance($row['user_username']);
             $max_num_of_shares = (int)($user_balance/$new_pps);
 
+            echo "Quantity check on market price buy order (id: ".$row['id']."):\n".
+            "Buyer: ".$row['user_username']."\n".
+            "Buyer current balance: ".$user_balance."\n".
+            "Old sub-total from order before price change: ".($row['quantity'] * $row['siliqas_requested']),"\n".
+            "New sub-total from order after price change: ".($row['quantity'] * $new_pps)."\n";
+
             hx_debug(HX::BUY_ORDER, "Quantity check on market price buy order (id: ".$row['id']."):\n".
                                     "Buyer: ".$row['user_username']."\n".
                                     "Buyer current balance: ".$user_balance."\n".
@@ -92,15 +100,18 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
                 $quantity_err_code = updateBuyOrderQuantity($conn, $row['id'], $max_num_of_shares);
                 if($quantity_err_code != StatusCodes::Success)
                 {
+                    echo "Failed to update quantity for buy order id ".$row['id']."\n";
                     hx_error(HX::BUY_ORDER, "Failed to update quantity for buy order id ".$row['id']);
                 }
                 else
                 {
+                    echo "Buy order with id ".$row['id']." updated requesting quantity to ".$max_num_of_shares."\n";
                     hx_info(HX::BUY_ORDER, "Buy order with id ".$row['id']." updated requesting quantity to ".$max_num_of_shares);
                 }
             }
             else
             {
+                echo "Did not update buy order requesting quantity for buy order ".$row['id']."\n";
                 hx_debug (HX::BUY_ORDER, "Did not update buy order requesting quantity for buy order ".$row['id']);
             }
         }
@@ -108,13 +119,17 @@ function updateMarketPriceOrderToPPS($new_pps, $artist_username)
         $update_err_code = updateBuyOrderPPS($new_pps, $row['id']);
         if($update_err_code != StatusCodes::Success)
         {
+            echo "Could not update requesting price for buy order ".$row['id']."\n";
             hx_error(HX::SELL_ORDER, "Could not update requesting price for buy order ".$row['id']);
         }
         else
         {
+            echo "Buy order with id ".$row['id']." updated requesting price to ".$new_pps."\n";
             hx_info(HX::BUY_ORDER, "Buy order with id ".$row['id']." updated requesting price to ".$new_pps);
         }
     }
+
+    echo "-------------------------\n";
 }
 
 /**
@@ -201,6 +216,24 @@ function doTransaction($connPDO, $transact, $old_pps, $new_pps, $purchase_price,
                              "new_pps: ".$new_pps."\n".
                              "buy_mode: ".$buy_mode."\n".
                              "--------------------------------\n");
+
+    echo "Executing sell order id: ".$order_info['id']."\n".
+    "no_of_share: ".$execute_quantity."\n".
+    "purchase_price: ".$purchase_price."\n".
+    "Buyer: ".$transact->getBuyerInfo()['username']."\n".
+    "Seller: ".$transact->getSellerInfo()['username']."\n".
+    "Buyer old balance: ".$transact->getBuyerInfo()['balance']."\n".
+    "Buyer new balance: ".$buyer_new_balance."\n".
+    "Seller old balance: ".$transact->getSellerInfo()['balance']."\n".
+    "Seller new balance: ".$seller_new_balance."\n".
+    "Buyer old share amount: ".$transact->getBuyerInfo()['Shares']."\n".
+    "Buyer new share amount: ".$buyer_new_share_amount."\n". 
+    "Seller old share amount: ".$transact->getSellerInfo()['Shares']."\n".
+    "Seller new share amount: ".$seller_new_share_amount."\n".
+    "current_market_price: ".$old_pps."\n".
+    "new_pps: ".$new_pps."\n".
+    "buy_mode: ".$buy_mode."\n".
+    "--------------------------------\n";
 
     purchaseAskedPriceShare($connPDO,
                             $transact->getBuyerInfo()['username'],
@@ -1118,6 +1151,8 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
         {
             break;
         }
+        echo "Auto selling to buy order ".$row['id']."\n".
+        "selling quantity: ".$selling_quantity.", row['quantity']: ".$row['quantity']."\n";
         hx_debug(HX::SELL_SHARES, "Auto selling to buy order ".$row['id']."\n".
                                   "selling quantity: ".$selling_quantity.", row['quantity']: ".$row['quantity']);
 
@@ -1135,6 +1170,8 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
 
         if($selling_quantity >= $row['quantity'])
         {
+            echo "Case selling_quantity >= row['quantity']\n".
+            "Match check on order id: ".$row['id']."\n";
             hx_debug(HX::SELL_SHARES, "Case selling_quantity >= row['quantity']\n".
                                       "Match check on order id: ".$row['id']);
             hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $selling_price).", transfering between buyer ".$row['user_username']." and seller ".$seller_username);
@@ -1151,6 +1188,7 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
 
             //Remove since all shares have been bought at this point
             removeBuyOrder($conn, $row['id']);
+            echo "Buy order ".$row['id']." has been removed\n";
 
             //Updates stock price
             $current_market_price = $new_pps;
@@ -1173,6 +1211,8 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
         }
         else
         {
+            echo "Case selling_quantity < row['quantity']\n".
+            "Match check on order id: ".$row['id']."\n";
             hx_debug(HX::SELL_SHARES, "Case selling_quantity < row['quantity']\n".
                                       "Match check on order id: ".$row['id']);
             hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($selling_quantity * $selling_price).", transfering between buyer ".$row['user_username']." and seller ".$seller_username);
@@ -1200,10 +1240,12 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
             if($new_buy_order_quantity <= 0)
             {
                 removeBuyOrder($conn, $row['id']);
+                echo "Buy order ".$row['id']." has been removed\n";
             }
             else
             {
                 updateBuyOrderQuantity($conn, $row['id'], $new_buy_order_quantity);
+                echo "Buy order ".$row['id']." updated quantity to ".$new_buy_order_quantity."\n";
             }
             $selling_quantity = $selling_quantity - $row['quantity'];
         }
@@ -1213,10 +1255,12 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
 
     if($selling_quantity > 0)
     {
+        echo "After performing autoSell, posting a sell order with stop of ".$sell_stop." and quantity ".$selling_quantity."\n";
         hx_debug(HX::SELL_ORDER, "After performing autoSell, posting a sell order with stop of ".$sell_stop." and quantity ".$selling_quantity);
     }
     else
     {
+        echo "After performing autoSell, sell order with limit of ".$sell_stop." and quantity 0 is not posted\n";
         hx_debug(HX::SELL_ORDER, "After performing autoSell, sell order with limit of ".$sell_stop." and quantity 0 is not posted");
     }
     return $selling_quantity;
