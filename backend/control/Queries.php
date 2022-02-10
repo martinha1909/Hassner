@@ -663,7 +663,7 @@
                 $stmt->bindParam(':rate', $rate);
                 $stmt->bindParam(':Shares_Distributed', $share_distributed, PDO::PARAM_INT);
                 $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-                $stmt->bindParam(':billing_address', $username, PDO::PARAM_STR);
+                $stmt->bindParam(':billing_address', $billing_address, PDO::PARAM_STR);
                 $stmt->bindParam(':Full_name', $full_name, PDO::PARAM_STR);
                 $stmt->bindParam(':City', $city, PDO::PARAM_STR);
                 $stmt->bindParam(':State', $state, PDO::PARAM_STR);
