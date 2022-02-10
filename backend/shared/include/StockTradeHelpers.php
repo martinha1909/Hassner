@@ -1088,9 +1088,91 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
 
         if($selling_quantity >= $row['quantity'])
         {
+            hx_debug(HX::SELL_SHARES, "Case selling_quantity >= row['quantity']\n".
+                                      "Match check on order id: ".$row['id']);
+            hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $selling_price).", transfering between buyer ".$row['user_username']." and seller ".$seller_username);
             
+            doTransaction($connPDO,
+                          $transact,
+                          $current_market_price,
+                          $new_pps,
+                          $selling_price,
+                          $row['quantity'],
+                          $row,
+                          $buy_mode,
+                          ShareInteraction::SELL);
+
+            //Remove since all shares have been bought at this point
+            removeBuyOrder($conn, $row['id']);
+
+            //Updates stock price
+            $current_market_price = $new_pps;
+            $current_quantity = $selling_quantity - $row['quantity'];
+            if($current_quantity > 0)
+            {
+                $selling_quantity = executeMarketPriceBuyOrders($conn,
+                                                                $connPDO,
+                                                                $seller_username,
+                                                                $artist_username,
+                                                                $current_quantity,
+                                                                $row['date_posted'],
+                                                                $new_pps,
+                                                                false);
+            }
+            else
+            {
+                $selling_quantity = $current_quantity;
+            }
+        }
+        else
+        {
+            hx_debug(HX::SELL_SHARES, "Case selling_quantity < row['quantity']\n".
+                                      "Match check on order id: ".$row['id']);
+            hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($selling_quantity * $selling_price).", transfering between buyer ".$row['user_username']." and seller ".$seller_username);
+
+            doTransaction($connPDO,
+                          $transact,
+                          $current_market_price,
+                          $new_pps,
+                          $selling_price,
+                          $selling_quantity,
+                          $row,
+                          $buy_mode,
+                          ShareInteraction::SELL);
+
+            //Upates stock price
+            $current_market_price = $new_pps;
+            $current_buy_order_quantity = $row['quantity'] - $selling_quantity;
+            $new_buy_order_quantity = executeMarketPriceSellOrders($conn,
+                                                                   $connPDO,
+                                                                   $row['user_username'],
+                                                                   $artist_username,
+                                                                   $current_buy_order_quantity,
+                                                                   $row['date_posted'],
+                                                                   $new_pps);
+            if($new_buy_order_quantity <= 0)
+            {
+                removeBuyOrder($conn, $row['id']);
+            }
+            else
+            {
+                updateBuyOrderQuantity($conn, $row['id'], $new_buy_order_quantity);
+            }
+            $selling_quantity = $selling_quantity - $row['quantity'];
         }
     }
+    checkForExecutableBuyOrders($conn, $connPDO, $artist_username, $current_market_price);
+    closeCon($conn);
+
+    if($selling_quantity > 0)
+    {
+        hx_debug(HX::SELL_ORDER, "After performing autoSell, posting a sell order with stop of ".$sell_stop." and quantity ".$selling_quantity);
+    }
+    else
+    {
+        hx_debug(HX::SELL_ORDER, "After performing autoSell, sell order with limit of ".$sell_stop." and quantity 0 is not posted");
+    }
+    return $selling_quantity;
 }
 
 /**
