@@ -19,7 +19,6 @@ function recalcSliderLimits(new_chosen_min, new_chosen_max)
     },
     async: false,
     success : function(data) {
-      console.log(data);
       max_num_of_shares = data;
       $("#buy_num").slider("option", "max", data);
       $("#buy_num_shares").val($("#buy_num").slider("value"));
@@ -135,6 +134,11 @@ $( function() {
       slide: function( event, ui ) {
         min = ui.values[0];
         max = ui.values[1];
+        console.log(max_limit);
+        console.log(max);
+
+        console.log(min_limit);
+        console.log(min);
         if(min == min_limit && max == max_limit){
           $("#buy_tip").text("Order will be executed as market price");
           $("#buy_cost").val("$" + $("#buy_num").slider("value")*$("#pps").text());
@@ -215,7 +219,6 @@ $( function() {
       value: 0,
       step: 1,
       slide: function( event, ui ) {
-        console.log(max_num_of_shares);
         var min_limit_top = $("#buy_limit").slider("values", 0);
         var max_limit_top = $("#buy_limit").slider("values", 1);
         if((min_limit_top == min_limit && max_limit_top == max_limit) || (min_limit_top > min_limit && max_limit_top < max_limit))
@@ -298,6 +301,8 @@ $( function() {
     $("#buy_order").click(function(){
     var min_limit_top = $("#buy_limit").slider("values", 0);
     var max_limit_top = $("#buy_limit").slider("values", 1);
+    console.log(min_limit_top);
+    console.log(max_limit_top);
     var url_event = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/BuyAndSellEvent.php";
       $.ajax({
         url : url_event,
