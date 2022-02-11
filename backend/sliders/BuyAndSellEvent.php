@@ -161,8 +161,8 @@
                                   $_SESSION['selected_artist'],
                                   $new_quantity,
                                   -1,
-                                  $chosen_max,
                                   -1,
+                                  $chosen_min,
                                   $current_date,
                                   false);
                 }
