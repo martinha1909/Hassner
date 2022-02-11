@@ -1130,6 +1130,7 @@ function autoSellNoLimitStop($user_username, $artist_username, $request_quantity
 *
 * @param  	current_market_price	    current stock price of the artist's stock
 *
+* @return   selling_quantity            remaining quantity after performing auto sell to post
 */
 function autoSellStopSet($seller_username, $artist_username, $selling_quantity, $sell_stop, $current_market_price)
 {
@@ -1275,6 +1276,7 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
 *
 * @param  	current_market_price	    current stock price of the artist's stock
 *
+* @return   selling_quantity            remaining quantity after performing auto sell to post
 */
 function autoSellLimitSet($seller_username, $artist_username, $selling_quantity, $sell_limit, $current_market_price)
 {
@@ -1401,6 +1403,31 @@ function autoSellLimitSet($seller_username, $artist_username, $selling_quantity,
     return $selling_quantity;
 }
 
+/**
+* Automatically executes sell orders that have both limit and stop set  
+* Matching candidates will be:
+* - Buy orders that are selling at market price and market price >= sell limit  or market price <= sell stop 
+* - Buy orders that have buy limit >= sell limit
+* - Buy orders that have buy stop <= sell stop
+* Note: after an execution of a matching buy order, the stock price will change (to sell limit if it is a limit transaction and buy stop if it is a stop transaction). 
+* Therefore, before we load up the next buy order, we need to go back and execute any market price orders that was older than the current executing buy order. 
+* Special case: if the requesting quantity is less than the first buy order that we encounter, the stock price will still change, 
+* hence, that buy order would need to go and find any market-price sell orders that are older than the date_posted of this buy order and execute them.
+*
+* @param  	seller_username	            username of the seller who is posting the seller order
+*
+* @param  	artist_username	            artist username whose shares are being sold from
+*
+* @param  	selling_quantity            amount of shares the seller is seller
+*
+* @param  	sell_limit                  limit of the sell order
+*
+* @param  	sell_stop                   stop of the sell order
+*
+* @param  	current_market_price	    current stock price of the artist's stock
+*
+* @return   selling_quantity            remaining quantity after performing auto sell to post
+*/
 function autoSellLimitStopSet($seller_username, $artist_username, $selling_quantity, $sell_limit, $sell_stop, $current_market_price)
 {
     hx_debug(HX::SELL_SHARES, "Received sell order with limit ".$sell_limit. " and stop ".$sell_stop."with quantity ".$selling_quantity.", performing auto sell for this order...");
