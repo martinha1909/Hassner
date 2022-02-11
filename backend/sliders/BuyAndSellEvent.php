@@ -201,7 +201,31 @@
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
+                $new_quantity = autoSellLimitStopSet($_SESSION['username'],
+                                                     $_SESSION['selected_artist'],
+                                                     $quantity,
+                                                     $chosen_max,
+                                                     $chosen_min,
+                                                     $latest_market_price);
+                refreshSellOrderTable();
+                if($new_quantity > 0)
+                {
+                    //Sell order posted by user with limit set, setting selling_price to -1
+                    postSellOrder($connPDO,
+                                  $_SESSION['username'],
+                                  $_SESSION['selected_artist'],
+                                  $new_quantity,
+                                  -1,
+                                  $chosen_max,
+                                  -1,
+                                  $current_date,
+                                  false);
+                }
 
+                refreshBuyOrderTable();
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
         }
     }
