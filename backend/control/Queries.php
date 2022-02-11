@@ -869,6 +869,48 @@
             return $result;
         }
 
+        function searchMatchingBuyOrderLimitStop($conn, $seller_username, $artist_username, $sell_limit, $sell_stop, $current_market_price, $include_market_orders)
+        {
+            $result = 0;
+
+            if($include_market_orders)
+            {
+                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                        FROM buy_order 
+                        WHERE artist_username = ? AND user_username != ? AND ((siliqas_requested = ? AND buy_limit = -1 AND buy_stop = -1) OR (siliqas_requested = -1 AND buy_limit >= ?) OR (siliqas_requested = -1 AND buy_stop <= ? AND buy_stop != -1)
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssddd', $artist_username, $seller_username, $current_market_price, $sell_limit, $sell_stop);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
+            }
+            else
+            {
+                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                        FROM buy_order 
+                        WHERE artist_username = ? AND user_username != ? AND ((siliqas_requested = -1 AND buy_limit >= ?) OR (siliqas_requested = -1 AND buy_stop <= ? AND buy_stop != -1))
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssdd', $artist_username, $seller_username, $sell_limit, $sell_stop);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
+            }
+
+            return $result;
+        }
+
         function searchMatchingSellOrderLimit($conn, $user_username, $artist_username, $limit, $market_price, $include_market_orders)
         {
             $result = 0;

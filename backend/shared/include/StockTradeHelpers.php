@@ -1401,6 +1401,156 @@ function autoSellLimitSet($seller_username, $artist_username, $selling_quantity,
     return $selling_quantity;
 }
 
+function autoSellLimitStopSet($seller_username, $artist_username, $selling_quantity, $sell_limit, $sell_stop, $current_market_price)
+{
+    hx_debug(HX::SELL_SHARES, "Received sell order with limit ".$sell_limit. " and stop ".$sell_stop."with quantity ".$selling_quantity.", performing auto sell for this order...");
+    $conn = connect();
+    $connPDO = connectPDO();
+    $buy_mode = ShareInteraction::BUY;
+    $include_market_orders = false;
+
+    if($sell_stop >= $current_market_price || $sell_limit <= $current_market_price)
+    {
+        $include_market_orders = true;
+    }
+
+    $res = searchMatchingBuyOrderLimitStop($conn, $seller_username, $artist_username, $sell_limit, $sell_stop, $current_market_price, $include_market_orders);
+    while($row = $res->fetch_assoc())
+    {
+        //fail safe
+        $will_execute = false;
+        $selling_price = -1;
+        $new_pps = -1;
+        if($selling_quantity <= 0)
+        {
+            break;
+        }
+        hx_debug(HX::SELL_SHARES, "Auto selling to buy order ".$row['id']."\n".
+                                  "selling quantity: ".$selling_quantity.", row['quantity']: ".$row['quantity']);
+        //case of market price, shoult only hit this if block if $include_market_orders is true
+        if($row['siliqas_requested'] != -1 && $row['buy_limit'] == -1 && $row['buy_stop'] == -1)
+        {
+            hx_debug(HX::SELL_SHARES, "market price execution, selling_price and new_pps set to market price value");
+            //price and new stock price will be at market price for this case
+            $selling_price = $row['siliqas_requested'];
+            $new_pps = $row['siliqas_requested'];
+            $will_execute = true;
+            hx_debug(HX::SELL_SHARES, "Will execute buy order id ".$row['id']);
+        }
+        else if($row['buy_limit'] >= $sell_limit)
+        {
+            hx_debug(HX::SELL_SHARES, "limit order execution, selling_price and new_pps set to sell_limit");
+            $selling_price = $sell_limit;
+            $new_pps = $sell_limit;
+            $will_execute = true;
+            hx_debug(HX::SELL_SHARES, "Will execute buy order id ".$row['id']);
+        }
+        else if($row['buy_stop'] <= $sell_stop && $row['buy_stop'] != -1)
+        {
+            hx_debug(HX::SELL_SHARES, "stop order execution, selling_price and new_pps set to row['buy_stop']");
+            $selling_price = $row['buy_stop'];
+            $new_pps = $row['buy_stop'];
+            $will_execute = true;
+            hx_debug(HX::SELL_SHARES, "Will execute buy order id ".$row['id']);
+        }
+
+        if($will_execute)
+        {
+            $transact = autoPurchaseInit($conn, $row['user_username'], $seller_username, $artist_username);
+
+            if($selling_quantity >= $row['quantity'])
+            {
+                hx_debug(HX::SELL_SHARES, "Case selling_quantity >= row['quantity']");
+                hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($row['quantity'] * $selling_price).", transfering between buyer ".$row['user_username']." and seller ".$seller_username);
+
+                doTransaction($connPDO,
+                              $transact,
+                              $current_market_price,
+                              $new_pps,
+                              $selling_price,
+                              $row['quantity'],
+                              $row,
+                              $buy_mode,
+                              ShareInteraction::SELL);
+
+                //Remove since all shares have been bought at this point
+                removeBuyOrder($conn, $row['id']);
+
+                //Updates stock price
+                $current_market_price = $new_pps;
+                $current_quantity = $selling_quantity - $row['quantity'];
+                if($current_quantity > 0)
+                {
+                    $selling_quantity = executeMarketPriceBuyOrders($conn,
+                                                                    $connPDO,
+                                                                    $seller_username,
+                                                                    $artist_username,
+                                                                    $current_quantity,
+                                                                    $row['date_posted'],
+                                                                    $new_pps,
+                                                                    false);
+                }
+                else
+                {
+                    $selling_quantity = $current_quantity;
+                }
+            }
+            else
+            {
+                hx_debug(HX::SELL_SHARES, "Case selling_quantity < row['quantity']\n".
+                                          "Match check on order id: ".$row['id']);
+                hx_info(HX::SELL_SHARES, "Auto selling buy order id ".$row['id'].", amount $".($selling_quantity * $selling_price).", transfering between buyer ".$row['user_username']." and seller ".$seller_username);
+
+                doTransaction($connPDO,
+                              $transact,
+                              $current_market_price,
+                              $new_pps,
+                              $selling_price,
+                              $selling_quantity,
+                              $row,
+                              $buy_mode,
+                              ShareInteraction::SELL);
+
+                //Upates stock price
+                $current_market_price = $new_pps;
+                $current_buy_order_quantity = $row['quantity'] - $selling_quantity;
+                $new_buy_order_quantity = executeMarketPriceSellOrders($conn,
+                                                                       $connPDO,
+                                                                       $row['user_username'],
+                                                                       $artist_username,
+                                                                       $current_buy_order_quantity,
+                                                                       $row['date_posted'],
+                                                                       $new_pps);
+                if($new_buy_order_quantity <= 0)
+                {
+                    removeBuyOrder($conn, $row['id']);
+                }
+                else
+                {
+                    updateBuyOrderQuantity($conn, $row['id'], $new_buy_order_quantity);
+                }
+                $selling_quantity = $selling_quantity - $row['quantity'];
+            }
+        }
+        else
+        {
+            hx_debug(HX::SELL_SHARES, "Will not execute buy order id ".$row['id']);
+        }
+    }
+    checkForExecutableBuyOrders($conn, $connPDO, $artist_username, $current_market_price);
+    closeCon($conn);
+
+    if($selling_quantity > 0)
+    {
+        hx_debug(HX::SELL_ORDER, "After performing autoSell, posting a sell order with limit ".$sell_limit." and stop ".$sell_stop." and quantity ".$selling_quantity);
+    }
+    else
+    {
+        hx_debug(HX::SELL_ORDER, "After performing autoSell, sell order sell order with limit ".$sell_limit." and stop ".$sell_stop." and quantity 0 is not posted");
+    }
+    return $selling_quantity;
+}
+
 /**
 * Automatically executes buy orders that have limit set  
 * Matching candidates will be:
