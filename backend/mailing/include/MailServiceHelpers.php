@@ -1,4 +1,15 @@
 <?php
+    /**
+    * Sends a notification email to us, if succeeds send a notification email to the user
+    *
+    * @param  	username            user sign up username
+    *   
+    * @param  	pwd                 user sign up password
+    *
+    * @param  	user_email	        user sign up email
+    *
+    * @return 	ret	                overall status of sending both notification and user email
+    */
     function sendEmailService($username, $pwd, $user_email)
     {
         $ret = StatusCodes::NONE;
@@ -13,6 +24,17 @@
         return $ret;
     }
 
+    /**
+    * Sends a notification email to us
+    *
+    * @param  	username            user sign up username
+    *   
+    * @param  	pwd                 user sign up password
+    *
+    * @param  	user_email	        user sign up email
+    *
+    * @return 	ret	                status of sending notification email
+    */
     function sendNotificationEmail($username, $pwd, $user_email)
     {
         date_default_timezone_set(Timezone::MST);
@@ -34,6 +56,15 @@
         return $ret;
     }
 
+    /**
+    * Sends a notification email to the user who has signed up
+    *
+    * @param  	username            user sign up username
+    *
+    * @param  	user_email	        user sign up email
+    *
+    * @return 	ret	                status of sending notification email
+    */
     function sendEmailToUser($username, $user_email)
     {
         $ret = StatusCodes::NONE;
