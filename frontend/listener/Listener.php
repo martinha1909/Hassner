@@ -55,21 +55,17 @@
                     <div class="container-searchbar">
                         <label>
                             <span class="screen-reader-text">Search for...</span>
-                            <form class="form-inline" action="../../backend/listener/SearchArtistSwitcher.php" method="post">
-                                <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_search" />
-                            </form>
+                            <?php displaySearchBar(); ?>
                         </label>
                     </div>
                 </div>
                 <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span data-feather="grid"></span>
                 </button>
-
-                    <div class="user-balance">
-                        <?php
-                        echo ' &nbsp;($USD): ';
-                        ?>
-                    </div>
+                <div class="cursor-pointer user-balance">
+                    <i class="fas fa-user-circle"></i>
+                    <?php echo $_SESSION['username']?> | $<?php echo$_SESSION['user_balance']?>
+                </div>
             </nav>
         </div>
     </section>
@@ -108,88 +104,141 @@
                 <div class="container my-auto mx-auto col-6">
                     <ul class="list-group-campaign my-4">
                         <div id="portfolio_content">
+                            <h3 class="h3-blue">Owned Shares</h3>
+                            <div class="row">
+                                <div class="portfolio-box-owned-shares">
+                                        <b class="portfolio-artist">88GM</b><b class="portfolio-percentage-negative">-26.42</b>
+                                        <b class="portfolio-shareamount">120x</b><b class="portfolio-loss">-699.66</b>
+                                </div>
+                                <div class="portfolio-box-owned-shares">
+                                        <b class="portfolio-artist">42WK</b><b class="portfolio-percentage-positive">+5.32</b>
+                                        <b class="portfolio-shareamount">37x</b><b class="portfolio-gain">+2.32</b>
+                                </div>
+                                <div class="portfolio-box-owned-shares">
+                                        <b class="portfolio-artist">20SV</b><b class="portfolio-percentage-negative">-2.42</b>
+                                        <b class="portfolio-shareamount">10x</b><b class="portfolio-loss">-6.66</b>
+                                </div>
+                                <div class="portfolio-box-owned-shares">
+                                        <b class="portfolio-artist">21SV</b><b class="portfolio-percentage-positive">+2.89</b>
+                                        <b class="portfolio-shareamount">55x</b><b class="portfolio-gain">+12.30</b>
+                                </div>
+                                <div class="portfolio-box-owned-shares">
+                                        <b class="portfolio-artist">00KW</b><b class="portfolio-percentage-positive">+2.78</b>
+                                        <b class="portfolio-shareamount">5x</b><b class="portfolio-gain">+212.32</b>
+                                </div>
+                            </div>
+
+                            <h3 class="h3-blue">Open Orders</h3>
+                            <div class="row">
+                                <div class="portfolio-box-open-order">
+                                        <b class="open-order-cancel">⊘</b>
+                                        <b class="portfolio-artist">00KW</b><b class="portfolio-sellorder">+30.98</b>
+                                        <b class="portfolio-shareamount-openorder">5x</b><b class="portfolio-limitstop">no Limit / Stop</b>
+                                </div>
+                                <div class="portfolio-box-open-order">
+                                        <b class="open-order-cancel">⊘</b>
+                                        <b class="portfolio-artist">02MV</b><b class="portfolio-sellorder">+330.98</b>
+                                        <b class="portfolio-shareamount-openorder">33x</b><b class="portfolio-limitstop">Limit: 0.48</b>
+                                </div>
+                                <div class="portfolio-box-open-order">
+                                        <b class="open-order-cancel">⊘</b>
+                                        <b class="portfolio-artist">09RC</b><b class="portfolio-sellorder">+400.00</b>
+                                        <b class="portfolio-shareamount-openorder">10x</b><b class="portfolio-limitstop">Stop: 40</b>
+                                </div>
+                            </div>
+
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th scope="col" style="color: white;" class="bg-dark">#</th>
-                                        <form action="../../backend/listener/include/SortPortfolioArtistHelpers.php">
-                                            <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();">
+                                        <th scope="col">Artist</th>
+                                        <th scope="col">Shares bought</th>
+                                        <th scope="col">Price per share</th>
+                                        <th scope="col">Last 24 hours</th>
+                                        <!-- <form action="../../backend/listener/include/SortPortfolioArtistHelpers.php">
+                                            <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();"> -->
                             <?php
-                            //sort Artist ascending alphabetically
-                            if ($_SESSION['sort_type'] == 1) 
-                            {
-                                echo " ↑";
-                            }
-                            //sort Artist descending alphabetically
-                            else if ($_SESSION['sort_type'] == 4) 
-                            {
-                                echo " ↓";
-                            } 
-                            else 
-                            {
-                                echo "";
-                            }
-                            echo '
-                                                </th>
-                                                </form>
-                                                <form action="../../backend/listener/include/SortPortfolioShareHelpers.php">
-                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
-                            //sort Shares bought ascending alphabetically
-                            if ($_SESSION['sort_type'] == 2) 
-                            {
-                                echo ' ↑';
-                            }
-                            //sort Shares bought descending alphabetically
-                            else if ($_SESSION['sort_type'] == 5) 
-                            {
-                                echo " ↓";
-                            } 
-                            else 
-                            {
-                                echo "";
-                            }
-                            echo '
-                                                </th>
-                                                </form>
-                                                <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
-                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share" onclick="window.location.reload();">';
-                            //sort Price per share ascending alphabetically
-                            if ($_SESSION['sort_type'] == 3) 
-                            {
-                                echo ' ↑';
-                            }
-                            //sort Price per share descending alphabetically
-                            else if ($_SESSION['sort_type'] == 6) 
-                            {
-                                echo " ↓";
-                            }
-                            else 
-                            {
-                                echo "";
-                            }
+                            //TODO: reenable after testing phase ends
+                            // // sort Artist ascending alphabetically
+                            // if ($_SESSION['sort_type'] == 1) 
+                            // {
+                            //     echo " ↑";
+                            // }
+                            // //sort Artist descending alphabetically
+                            // else if ($_SESSION['sort_type'] == 4) 
+                            // {
+                            //     echo " ↓";
+                            // } 
+                            // else 
+                            // {
+                            //     echo "";
+                            // }
+                            // echo '
+                            //                     </th>
+                            //                     </form>
+                            //                     <form action="../../backend/listener/include/SortPortfolioShareHelpers.php">
+                            //                         <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
+                            // //sort Shares bought ascending alphabetically
+                            // if ($_SESSION['sort_type'] == 2) 
+                            // {
+                            //     echo ' ↑';
+                            // }
+                            // //sort Shares bought descending alphabetically
+                            // else if ($_SESSION['sort_type'] == 5) 
+                            // {
+                            //     echo " ↓";
+                            // } 
+                            // else 
+                            // {
+                            //     echo "";
+                            // }
+                            // echo '
+                            //                     </th>
+                            //                     </form>
+                            //                     <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
+                            //                         <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share" onclick="window.location.reload();">';
+                            // //sort Price per share ascending alphabetically
+                            // if ($_SESSION['sort_type'] == 3) 
+                            // {
+                            //     echo ' ↑';
+                            // }
+                            // //sort Price per share descending alphabetically
+                            // else if ($_SESSION['sort_type'] == 6) 
+                            // {
+                            //     echo " ↓";
+                            // }
+                            // else 
+                            // {
+                            //     echo "";
+                            // }
 
-                            echo '
-                                                </th>
-                                                </form>
-                                                <form action = "../../backend/listener/include/SortPortfolioRateHelpers.php">
-                                                    <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
-                            //sort Rate ascending alphabetically
-                            if ($_SESSION['sort_type'] == 0) {
-                                echo ' ↑';
-                            }
-                            //sort Rate descending alphabetically
-                            else if ($_SESSION['sort_type'] == 7) {
-                                echo " ↓";
-                            } else {
-                                echo "";
-                            }
+                            // echo '
+                            //                     </th>
+                            //                     </form>
+                            //                     <form action = "../../backend/listener/include/SortPortfolioRateHelpers.php">
+                            //                         <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
+                            // //sort Rate ascending alphabetically
+                            // if ($_SESSION['sort_type'] == 0) {
+                            //     echo ' ↑';
+                            // }
+                            // //sort Rate descending alphabetically
+                            // else if ($_SESSION['sort_type'] == 7) {
+                            //     echo " ↓";
+                            // } else {
+                            //     echo "";
+                            // }
 
+                            // echo '
+                            //                     </th>
+                            //                     </form>
+                            //                 </tr>
+                            //             </thead>
+                            //         <tbody>
+                            // ';
                             echo '
-                                                </th>
-                                                </form>
-                                            </tr>
-                                        </thead>
-                                    <tbody>
+                                        </tr>
+                                    </thead>
+                                <tbody>
                             ';
                             $all_rates = array();
                             $all_price_per_share = array();
@@ -382,7 +431,7 @@
     </div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
@@ -392,6 +441,7 @@
     <script src="../js/shared/balance/DepositWithdraw.js"></script>
     <script src="../js/listener/MenuItem.js"></script>
     <script src="../js/shared/account/AccountPage.js"></script>
+    <script type="text/javascript" src="../js/shared/search/searchArtist.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");

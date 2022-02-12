@@ -86,7 +86,7 @@
         {
             if($all_shares_bought[$i] != 0)
             {
-                echo '<tr><th scope="row">'.$id.'</th><td><input name = "artist_name" type = "submit" id="abc" style="border:1px transparent; background-color: transparent;" role="button" aria-pressed="true" value = "'.$all_artists[$i].'"></td><td>'.$all_shares_bought[$i].'</td><td>'.$all_price_per_share[$i].'</td>';
+                echo '<tr><th scope="row">'.$id.'</th><td><input name = "artist_name" class="input-no-border" type = "submit" id="abc" role="button" value = "'.$all_artists[$i].'"></td><td>'.$all_shares_bought[$i].'</td><td>'.$all_price_per_share[$i].'</td>';
                 if($all_rates[$i] > 0)
                     echo '<td class="increase">+'.$all_rates[$i].'%</td></tr>';
                 else if($all_rates[$i] == 0)
@@ -540,7 +540,7 @@
 
             $progress_calc = round(($total_shares_bought/$row['minimum_ethos']) * 100, 2);
 
-            if($campaign_time_left != "0000-00-00 00:00:00")
+            if($campaign_time_left != "0000-00-00 00:00:00" && $progress_calc < 100)
             {                 
                 $trending_campaign->setArtistUsername($row['artist_username']);
                 $trending_campaign->setOffering($row['offering']);
@@ -769,7 +769,7 @@
         {
             echo '
                 <p class="p-white">
-                <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$all_artists[$i]->getUsername().'"> ('.$all_artists[$i]->getMarketTag().')
+                <input name = "artist_name" type = "submit" id="abc" class="input-no-border" value ="'.$all_artists[$i]->getUsername().'"> ('.$all_artists[$i]->getMarketTag().')
             ';
             if($all_artists[$i]->getDayChange() > 0)
             {
@@ -830,7 +830,7 @@
         {
             echo '
                 <p>
-                <input name = "artist_name" type = "submit" class="cursor-context" aria-pressed="true" value ="'.$followed_artists[$i]->getUsername().'"> ('.$followed_artists[$i]->getMarketTag().')
+                    <input name = "artist_name" id="abc" type = "submit" class="cursor-context" value ="'.$followed_artists[$i]->getUsername().'"> ('.$followed_artists[$i]->getMarketTag().')
                 </p>
             ';
         }
@@ -850,7 +850,7 @@
         {
             echo '
                 <p class="p-white">
-                <input name = "artist_name" type = "submit" style="border:1px transparent; background-color: transparent; font-weight: bold; color: white;" aria-pressed="true" value ="'.$all_artists[$i]->getUsername().'"> ('.$all_artists[$i]->getMarketTag().') $'.$all_artists[$i]->getMarketCap().'
+                <input name = "artist_name" id="abc" type = "submit" class="input-no-border" value ="'.$all_artists[$i]->getUsername().'"> ('.$all_artists[$i]->getMarketTag().') $'.$all_artists[$i]->getMarketCap().'
                 </p>
             ';
         }

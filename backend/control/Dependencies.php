@@ -32,4 +32,6 @@
         include '../constants/HX.php';
         include '../constants/Timezone.php';
     }
+
+    date_default_timezone_set(Timezone::MST);
 ?>

@@ -8,6 +8,15 @@
   overflow-x: visible;
 }
 
+.buy_back_shares_slider_text {
+  width: 40%;
+  background: none;
+  overflow-x: visible;
+  border:0; 
+  color: white; 
+  font-weight:bold;
+}
+
 .slider_slider {
   margin-top: 5%;
   width: 60%;

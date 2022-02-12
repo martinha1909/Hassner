@@ -25,7 +25,6 @@
         $_SESSION['currency'] = 0;
         $_SESSION['saved'] = 0;
         $_SESSION['buy_sell'] = 0;
-        $_SESSION['buy_asked_price'] = 0;
         $_SESSION['buy_market_price'] = 0;
         $_SESSION['fiat_options'] = BalanceOption::NONE;
         $_SESSION['buy_options'] = 0;
@@ -33,6 +32,16 @@
         $_SESSION['trade_history_to'] = 0;
         $_SESSION['trade_history_type'] = 0;
         $_SESSION['artist_investor_amount_invested_sort'] = 0;
+    }
+
+    function displaySearchBar()
+    {
+        echo '
+            <form id="search_artist" class="form-inline" action="../../backend/listener/SearchArtistSwitcher.php" method="post">
+                <input id="submit_search_form" type="search" class="search-field" placeholder="Search for Artist(s)" name="artist_search"/>
+                <input type="submit" class="div-hidden"/>
+            </form>
+        ';
     }
 
     function getStatusMessage($err_msg, $suc_msg)
@@ -186,7 +195,7 @@
         }
     }
 
-    function hasEnoughSiliqas($amount_spending, $balance)
+    function hasEnoughBalance($amount_spending, $balance)
     {
         if ($balance >= $amount_spending)
             return true;
