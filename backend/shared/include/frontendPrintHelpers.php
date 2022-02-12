@@ -672,4 +672,60 @@
 
         return $ret;
     }
+
+    function printOwnedSharesTable($user_username)
+    {
+        $conn = connect();
+        $res = searchUserInvestedArtists($conn, $user_username);
+        if($res->num_rows > 0)
+        {
+            //Each row will contain 1 artist
+            while($row = $res->fetch_assoc())
+            {
+                $total_amount_gain = 0;
+                $total_amount_spent = 0;
+                //Total percent change with respected to the share price when bought vs the market price now
+                $total_percentage_change = 0;
+                $owned_shares = $row['shares_owned'];
+                $artist_username = $row['artist_username'];
+                $artist_market_price = getArtistPricePerShare($artist_username);
+
+                $res_history = searchSpecificInvestment($conn, $user_username, $artist_username);
+                while($row_history = $res_history->fetch_assoc())
+                {
+                    $total_amount_spent +=  $row_history['price_per_share_when_bought'] * $row_history['no_of_share_bought'];
+                }
+
+                $total_percentage_change = (($artist_market_price * $owned_shares)/$total_amount_spent) * 100;
+                $total_amount_gain = ($artist_market_price * $owned_shares) - $total_amount_spent;
+
+                echo '
+                    <div class="portfolio-box-owned-shares">
+                ';
+                if($total_percentage_change > 0)
+                {
+                    echo '
+                        <b class="portfolio-artist">'.$artist_username.'</b><b class="portfolio-percentage-positive">+'.$total_percentage_change.'%</b><br>
+                        <b class="portfolio-shareamount">'.$owned_shares.'x</b><b class="portfolio-gain">+'.$total_amount_gain.'</b>
+                    ';
+                }
+                else
+                {
+                    echo '
+                        <b class="portfolio-artist">'.$artist_username.'</b><b class="portfolio-percentage-negative">'.$total_percentage_change.'%</b><br>
+                        <b class="portfolio-shareamount">'.$owned_shares.'x</b><b class="portfolio-loss">+'.$total_amount_gain.'</b>
+                    ';
+                }
+                echo '
+                    </div>
+                ';
+            }
+        }
+        else
+        {
+            echo '<h4 class="h4-blue">You have not invested in any artists</h4>';
+        }
+
+        closeCon($conn);
+    }
 ?>

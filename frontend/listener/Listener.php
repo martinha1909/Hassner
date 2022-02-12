@@ -106,26 +106,7 @@
                         <div id="portfolio_content">
                             <h3 class="h3-blue">Owned Shares</h3>
                             <div class="row">
-                                <div class="portfolio-box-owned-shares">
-                                        <b class="portfolio-artist">88GM</b><b class="portfolio-percentage-negative">-26.42</b>
-                                        <b class="portfolio-shareamount">120x</b><b class="portfolio-loss">-699.66</b>
-                                </div>
-                                <div class="portfolio-box-owned-shares">
-                                        <b class="portfolio-artist">42WK</b><b class="portfolio-percentage-positive">+5.32</b>
-                                        <b class="portfolio-shareamount">37x</b><b class="portfolio-gain">+2.32</b>
-                                </div>
-                                <div class="portfolio-box-owned-shares">
-                                        <b class="portfolio-artist">20SV</b><b class="portfolio-percentage-negative">-2.42</b>
-                                        <b class="portfolio-shareamount">10x</b><b class="portfolio-loss">-6.66</b>
-                                </div>
-                                <div class="portfolio-box-owned-shares">
-                                        <b class="portfolio-artist">21SV</b><b class="portfolio-percentage-positive">+2.89</b>
-                                        <b class="portfolio-shareamount">55x</b><b class="portfolio-gain">+12.30</b>
-                                </div>
-                                <div class="portfolio-box-owned-shares">
-                                        <b class="portfolio-artist">00KW</b><b class="portfolio-percentage-positive">+2.78</b>
-                                        <b class="portfolio-shareamount">5x</b><b class="portfolio-gain">+212.32</b>
-                                </div>
+                                <?php printOwnedSharesTable($_SESSION['username']); ?>
                             </div>
 
                             <h3 class="h3-blue">Open Orders</h3>
