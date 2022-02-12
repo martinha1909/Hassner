@@ -766,7 +766,29 @@
 
             $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
                     FROM sell_order 
-                    WHERE artist_username = ? AND sell_stop >= ? OR (sell_limit <= ? AND sell_limit != -1)
+                    WHERE artist_username = ? AND (selling_price = ? OR (selling_price = -1 AND (sell_stop >= ? OR (sell_limit <= ? AND sell_limit != -1))))
+                    ORDER BY date_posted ASC";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('sddd', $artist_username, $market_price, $market_price, $market_price);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
+        function searchMarketExeLimitStopBuyOrders($conn, $artist_username, $market_price)
+        {
+            $result = 0;
+
+            $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                    FROM buy_order 
+                    WHERE artist_username = ? AND (siliqas_requested = ? OR (siliqas_requested = -1 AND ((buy_stop <= ? AND buy_stop != -1) OR buy_limit >= ?)))
                     ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('sdd', $artist_username, $market_price, $market_price);
@@ -847,6 +869,48 @@
             return $result;
         }
 
+        function searchMatchingBuyOrderLimitStop($conn, $seller_username, $artist_username, $sell_limit, $sell_stop, $current_market_price, $include_market_orders)
+        {
+            $result = 0;
+
+            if($include_market_orders)
+            {
+                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                        FROM buy_order 
+                        WHERE artist_username = ? AND user_username != ? AND ((siliqas_requested = ? AND buy_limit = -1 AND buy_stop = -1) OR (siliqas_requested = -1 AND buy_limit >= ?) OR (siliqas_requested = -1 AND buy_stop <= ? AND buy_stop != -1)
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssddd', $artist_username, $seller_username, $current_market_price, $sell_limit, $sell_stop);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
+            }
+            else
+            {
+                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                        FROM buy_order 
+                        WHERE artist_username = ? AND user_username != ? AND ((siliqas_requested = -1 AND buy_limit >= ?) OR (siliqas_requested = -1 AND buy_stop <= ? AND buy_stop != -1))
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssdd', $artist_username, $seller_username, $sell_limit, $sell_stop);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
+            }
+
+            return $result;
+        }
+
         function searchMatchingSellOrderLimit($conn, $user_username, $artist_username, $limit, $market_price, $include_market_orders)
         {
             $result = 0;
@@ -889,6 +953,48 @@
             return $result;
         }
 
+        function searchMatchingBuyOrderLimit($conn, $user_username, $artist_username, $limit, $market_price, $include_market_orders)
+        {
+            $result = 0;
+
+            if($include_market_orders)
+            {
+                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                        FROM buy_order 
+                        WHERE artist_username = ? AND user_username != ? AND ((siliqas_requested = ? AND buy_limit = -1 AND buy_stop = -1) OR (siliqas_requested = -1 AND buy_limit >= ?))
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssdd', $artist_username, $user_username, $market_price, $limit);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
+            }
+            else
+            {
+                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                        FROM buy_order 
+                        WHERE artist_username = ? AND user_username != ? AND siliqas_requested = -1 AND buy_limit >= ?
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssd', $artist_username, $user_username, $limit);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
+            }
+
+            return $result;
+        }
+
         function searchMatchingSellOrderStop($conn, $user_username, $artist_username, $stop, $market_price, $include_market_orders)
         {
             $result = 0;
@@ -915,6 +1021,48 @@
                 $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
                         FROM sell_order 
                         WHERE artist_username = ? AND user_username != ? AND selling_price = -1 AND sell_stop >= ?
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssd', $artist_username, $user_username, $stop);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
+            }
+
+            return $result;
+        }
+
+        function searchMatchingBuyOrderStop($conn, $user_username, $artist_username, $stop, $market_price, $include_market_orders)
+        {
+            $result = 0;
+
+            if($include_market_orders)
+            {
+                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                        FROM buy_order 
+                        WHERE artist_username = ? AND user_username != ? AND ((siliqas_requested = ? AND buy_limit = -1 AND buy_stop = -1) OR (siliqas_requested = -1 AND buy_stop <= ? AND buy_stop != -1))
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssdd', $artist_username, $user_username, $market_price, $stop);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
+            }
+            else
+            {
+                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                        FROM buy_order 
+                        WHERE artist_username = ? AND user_username != ? AND siliqas_requested = -1 AND buy_stop <= ? AND buy_stop != -1
                         ORDER BY date_posted ASC";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('ssd', $artist_username, $user_username, $stop);
@@ -1540,6 +1688,8 @@
                     $stmt->bindValue(1, $amount);
                     $stmt->bindValue(2, $order_id);
                     $stmt->execute(array($amount, $order_id));
+
+                    hx_debug(HX::SELL_ORDER, "Sell order ".$order_id." update no_of_share to ".$amount);
                 }
                 else if($indicator == "AUTO_SELL")
                 {
@@ -1547,6 +1697,8 @@
                     $stmt->bindValue(1, $amount);
                     $stmt->bindValue(2, $order_id);
                     $stmt->execute(array($amount, $order_id));
+
+                    hx_debug(HX::BUY_ORDER, "Buy order ".$order_id." update quantity to ".$amount);
                 }
 
                 $conn->commit();
