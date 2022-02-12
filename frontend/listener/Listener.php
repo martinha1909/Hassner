@@ -104,7 +104,7 @@
                 <div class="container my-auto mx-auto col-6">
                     <ul class="list-group-campaign my-4">
                         <div id="portfolio_content">
-                            <h3 class="h3-blue">Owned Shares</h3>
+                            <h3 data-toggle="tooltip" title="All of your shares!" class="h3-blue tooltip-pointer">Owned Shares</h3>
                             <div class="row">
                                 <div class="portfolio-box-owned-shares">
                                         <b class="portfolio-artist">88GM</b><b class="portfolio-percentage-negative">-26.42</b>
