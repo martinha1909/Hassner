@@ -791,7 +791,7 @@
                     WHERE artist_username = ? AND (siliqas_requested = ? OR (siliqas_requested = -1 AND ((buy_stop <= ? AND buy_stop != -1) OR buy_limit >= ?)))
                     ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sddd', $artist_username, $market_price, $market_price, $market_price);
+            $stmt->bind_param('sdd', $artist_username, $market_price, $market_price);
             if($stmt->execute() == true)
             {
                 $result = $stmt->get_result();

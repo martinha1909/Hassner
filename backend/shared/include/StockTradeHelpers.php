@@ -1388,6 +1388,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
             {
                 updateSellOrderNoOfShare($connPDO, $row['id'], $new_sell_order_quantity);
             }
+
             //do this so we can exit the loop
             $request_quantity = $request_quantity - $row['no_of_share'];
         }
