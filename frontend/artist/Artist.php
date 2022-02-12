@@ -48,6 +48,8 @@
     <link rel="stylesheet" href="../css/date_picker.css" type="text/css">
     <link rel="stylesheet" href="../css/slidebar.css" type="text/css">
     <link rel="stylesheet" href="../css/linegraph.css" id="theme-color">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="../css/slider.css">
 </head>
 
 
@@ -139,7 +141,7 @@
                             <div class="py-4">
                                 <input id="quotes_btn" type = "submit" class="btn btn-secondary" role="button" value = "<?php echo EthosOption::QUOTES; ?>"> 
                                 <input id="buy_back_shares_btn" type = "submit" class="btn btn-secondary" role="button" value = "<?php echo EthosOption::BUY_BACK_SHARES; ?>"> 
-                                <input id="history_btn" type = "submit" class="btn btn-secondary" role="button" value = "<?php echo EthosOption::HISTORY; ?>"> 
+                                <input id="history_btn" type = "submit" class="btn btn-secondary" role="button" value = "<?php echo EthosOption::HISTORY; ?>">
                             </div>
 
                             <div class="div-hidden" id="quotes_content">
@@ -242,7 +244,8 @@
 
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>

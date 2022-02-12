@@ -48,12 +48,13 @@
         $conn = connect();
         $shares_selling = 0;
 
-        $res = searchSellOrderByArtistAndUser($conn, $artist_username, $artist_username);
+        $res = searchSellOrderFromRepurchase($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
             $shares_selling += $row['no_of_share'];
         }
 
+        closeCon($conn);
         return $shares_selling;
     }
 
@@ -63,7 +64,7 @@
 
         if(artistRepurchaseShares($artist_username) > 0)
         {
-            if(artistShareSelling($artist_username) >= artistRepurchaseShares($artist_username))
+            if(artistShareSelling($artist_username) < artistRepurchaseShares($artist_username))
             {
                 $ret = true;
             }
@@ -160,7 +161,8 @@
         $ret = 0;
         $conn = connect();
 
-        $res = searchSellOrderByArtist($conn, $artist_username);
+        //only sell orders at market price are available for repurchase
+        $res = searchAllSellOrdersNoLimitStop($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
             //skipping their own orders
@@ -178,7 +180,7 @@
         $ret = 0;
         $conn = connect();
 
-        $res = searchSellOrderByArtist($conn, $artist_username);
+        $res = searchAllSellOrdersNoLimitStop($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
             //Skipping their own orders
@@ -215,7 +217,7 @@
         $ret = array();
         $conn = connect();
 
-        $res = searchSellOrderByArtist($conn, $artist_username);
+        $res = searchAllSellOrdersNoLimitStop($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
             //Skipping their own orders
@@ -223,12 +225,12 @@
             {
                 //the fields that are being sent as "" means we do not need those fields for this case so they can be empty
                 $sell_order_item_info = new SellOrder($row['id'], 
-                                                    $row['user_username'], 
-                                                    "", 
-                                                    $row['selling_price'], 
-                                                    $row['no_of_share'], 
-                                                    "", 
-                                                    "");
+                                                      $row['user_username'], 
+                                                      "", 
+                                                      $row['selling_price'], 
+                                                      $row['no_of_share'], 
+                                                      "", 
+                                                      "");
                 array_push($ret, $sell_order_item_info);
             }
         }
@@ -331,6 +333,118 @@
         }
 
         closeCon($conn);
+        return $ret;
+    }
+
+    function buyBackableOrdersInit($artist_username)
+    {
+        $sell_orders = fetchBuyBackableOrders($artist_username);
+
+        echo '
+                <h3 class="h3-blue py-5 text-center">Available Sell Orders</h3>
+                <p id="buy_back_status" class="error-msg text-center"></p>
+        ';
+
+        if (sizeof($sell_orders) > 0) 
+        {
+            echo '
+                <p class="div-hidden" id="sell_orders_size">'.sizeof($sell_orders).'</p>
+                <div class="col-6 mx-auto">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Seller username</th>
+                                <th scope="col">Price per share(q̶)</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">+</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            ';
+
+            for ($i = 0; $i < sizeof($sell_orders); $i++) 
+            {
+                echo '
+                            <tr>
+                                <th scope="row">' . $sell_orders[$i]->getID() . '</th>
+                                <td>' . $sell_orders[$i]->getUser() . '</td>
+                                <td id="sell_order_price">' . $sell_orders[$i]->getSellingPrice() . '</td>
+                                <td id="sell_order_quantity">' . $sell_orders[$i]->getNoOfShare() . '</td>
+                ';
+                if (hasEnoughBalance($sell_orders[$i]->getSellingPrice(), $_SESSION['user_balance'])) 
+                {
+                    echo '
+                                <td>
+                                    <input role="button" type="submit" class="input-no-background-white" value="buy" id="artist_buy_back_shares_btn_'.$i.'" onclick="buyBackShareClick('.$i.')">
+                                    <div class="div-hidden" id="artist_buy_back_content_'.$i.'">
+                                        <label for="buy_num_shares_'.$i.'" class="text-blue text-bold">Shares:</label>
+                                        <input type="text" class="buy_back_shares_slider_text" value="1" id="buy_num_shares_'.$i.'">
+                                        <div class="slider_container">
+                                            <div id="buy_num_'.$i.'"></div><input role="button" type="submit" class="input-no-background-white py-2" value="->" onclick="buyBackShare('.$sell_orders[$i]->getID().', '.$i.', '.$sell_orders[$i]->getSellingPrice().')">
+                                        </div>
+                                    </div>
+                                </td>
+                    ';
+                }
+                else 
+                {
+                    $_SESSION['status'] = "ERROR";
+                    echo '
+                                <td>
+                    ';
+                    getStatusMessage("Not enough balance", "");
+                    echo '
+                                </td>
+                    ';
+                }
+                echo '
+                            </tr>
+                    ';
+            }
+            echo '
+                        </tbody>
+                    </table>
+                </div>
+            ';
+        }
+        else 
+        {
+            echo '
+                <div class="py-4 text-center">
+                    <h4>No shares are currently sold by other users</h4>
+                </div>
+            ';
+        }
+    }
+
+    //gets all the users that has lowest price listed with the passed artist_username param
+    function fetchBuyBackableOrders($artist_username)
+    {
+        $debug_index = 0;
+        $ret = array();
+        $conn = connect();
+
+        $result = searchAllSellOrdersNoLimitStop($conn, $artist_username);
+        hx_debug(HX::QUERY, "searchAllSellOrdersNoLimitStop returned ".$result->num_rows." entries");
+        while ($row = $result->fetch_assoc()) 
+        {
+            hx_debug(HX::QUERY, "index ".$debug_index." row data ".json_encode(($row)));
+            if ($row['no_of_share'] > 0 && (strcmp($row['user_username'], $_SESSION['username']) != 0)) 
+            {
+                $sell_order = new SellOrder($row['id'], 
+                                            $row['user_username'], 
+                                            $row['artist_username'], 
+                                            $row['selling_price'], 
+                                            $row['no_of_share'], 
+                                            $row['date_posted']);
+
+                array_push($ret, $sell_order);
+            }
+            $debug_index++;
+        }
+        SellOrder::sort($ret, 0, (sizeof($ret) - 1), "ASCENDING", "PRICE");
+
         return $ret;
     }
 ?>
