@@ -94,7 +94,19 @@
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
-                //TODO: Code to handle when both limit and stop are set
+                autoPurchaseLimitStopSet($_SESSION['username'],
+                                         $_SESSION['selected_artist'],
+                                         $quantity,
+                                         $chosen_min,
+                                         $chosen_max,
+                                         $latest_market_price);
+
+                refreshBuyOrderTable();
+                refreshSellOrderTable();
+                
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
         }
         else if($user_event == ShareInteraction::SELL)

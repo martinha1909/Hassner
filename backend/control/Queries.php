@@ -678,7 +678,7 @@
 
             $sql = "SELECT id, no_of_share
                     FROM sell_order 
-                    WHERE artist_username = ? AND user_username != ? AND (selling_price = -1 AND sell_limit <= ? AND sell_limit != -1)
+                    WHERE artist_username = ? AND user_username != ? AND (selling_price = -1 AND (sell_limit <= ?) AND sell_limit != -1)
                     ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ssd', $artist_username, $user_username, $limit);
@@ -799,6 +799,49 @@
             else
             {
                 hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
+        function searchMatchingSellOrderLimitStop($conn, $user_username, $artist_username, $buy_limit, $buy_stop, $current_market_price, $include_market_orders)
+        {
+            $result = 0;
+            $sql = "";
+
+            if($include_market_orders)
+            {
+                $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
+                        FROM sell_order 
+                        WHERE artist_username = ? AND user_username != ? AND ((selling_price = ? AND sell_limit = -1 AND sell_stop = -1) OR (sell_limit <= ? AND sell_limit != -1) OR (sell_stop >= ?))
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssddd', $artist_username, $user_username, $current_market_price, $buy_limit, $buy_stop);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
+            }
+            else
+            {
+                $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
+                        FROM sell_order 
+                        WHERE (artist_username = ? AND user_username != ?) AND ((selling_price = -1 AND (sell_limit < ? OR sell_limit = ?) AND sell_limit != -1) OR (selling_price = -1 AND (sell_stop > ? OR sell_stop = ?)))
+                        ORDER BY date_posted ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssdddd', $artist_username, $user_username, $buy_limit, $buy_limit, $buy_stop, $buy_stop);
+                if($stmt->execute() == true)
+                {
+                    $result = $stmt->get_result();
+                }
+                else
+                {
+                    hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+                }
             }
 
             return $result;
@@ -1517,10 +1560,7 @@
                 $status = StatusCodes::ErrGeneric;
             }
 
-            if($new_pps != $initial_pps)
-            {
-                updateMarketPriceOrderToPPS($new_pps, $artist);
-            }
+            updateMarketPriceOrderToPPS($new_pps, $artist);
 
             return $status;
         }
@@ -1723,11 +1763,18 @@
 
         function updateSellOrderNoOfShare($connPDO, $sell_order_id, $new_no_of_share)
         {
-            $status = StatusCodes::NONE;
-
             try
             {
+                $connPDO->beginTransaction();
 
+                $stmt = $connPDO->prepare("UPDATE sell_order SET no_of_share = ? WHERE id = ?");
+                $stmt->bindValue(1, $new_no_of_share);
+                $stmt->bindValue(2, $sell_order_id);
+                $stmt->execute(array($new_no_of_share, $sell_order_id));
+
+                $connPDO->commit();
+                hx_info(HX::SELL_ORDER, "sell order (id: ".$sell_order_id.") has updated no_of_share to ".$new_no_of_share."\n".
+                                        "--------------------------------");
             }
             catch (PDOException $e)
             {
@@ -1897,6 +1944,9 @@
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('i', $order_id);
             $stmt->execute();
+
+            hx_info(HX::SELL_ORDER, "sell order (id: ".$order_id.") has been removed\n".
+                                    "--------------------------------");
         }
 
         function removeBuyOrder($conn, $buy_order_id)
@@ -1905,6 +1955,8 @@
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('i', $buy_order_id);
             $stmt->execute();
+
+            hx_info(HX::BUY_ORDER, "Buy order (id: ".$buy_order_id.") has been removed");
         }
 
         function removeUserArtistShareZeroTuples($conn, $user_username, $artist_username, $price_per_share_when_bought, $date_purchased, $time_purchased)
