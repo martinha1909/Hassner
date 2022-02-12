@@ -68,12 +68,13 @@
                     <span data-feather="grid"></span>
                 </button>
 
-                <div class="user-balance">
+                <div class="cursor-pointer user-balance">
+                    <i class="fas fa-user-circle"></i>
                     <?php
-                    echo ' &nbsp;$(USD): ';
+                    echo $_SESSION['username'].'&nbsp|&nbsp$';
                     echo round($account_info['balance'], 2);
                     $unbought = $account_info['Share_Distributed'] - $account_info['Shares'];
-                    echo '<br> &nbsp;Available Shares: ';
+                    echo '<br>Available Shares: ';
                     echo $unbought;
                     ?>
                 </div>

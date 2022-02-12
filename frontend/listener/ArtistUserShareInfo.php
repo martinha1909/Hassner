@@ -50,6 +50,8 @@
     <link rel="stylesheet" href="../css/linegraph.css" id="theme-color">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="../css/slider.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 </head>
 
 <body class="bg-dark">
@@ -72,11 +74,10 @@
                         </label>
                     </div>
                 </div>
-                    <div class="user-balance">
-                        <?php
-                        echo ' &nbsp;($USD): ';
-                        ?>
-                    </div>
+                <div class="cursor-pointer user-balance">
+                    <i class="fas fa-user-circle"></i>
+                    <?php echo $_SESSION['username']?> | $<?php echo$_SESSION['user_balance']?>
+                </div>
             </nav>
         </div>
     </section>
@@ -327,6 +328,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <script
         type="text/javascript" 
         id="artist_user_share_info_script" 

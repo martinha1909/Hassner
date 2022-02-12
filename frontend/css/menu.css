@@ -241,6 +241,16 @@ select::-ms-expand {
   color: #e2cda9ff;
 }
 
+.h6-dark {
+  font-size: 1rem;
+  color: #1c1c1cff;
+}
+
+.h6-blue {
+  font-size: 1rem;
+  color: #0a60d0;
+}
+
 .lead-tan {
   font-size: 1.2rem;
   font-weight: 500;
@@ -253,6 +263,10 @@ select::-ms-expand {
 
 .text-black {
   color: black;
+}
+
+.text-dark {
+  color: #1c1c1cff;
 }
 
 /* Dashboard Classes */
@@ -326,11 +340,25 @@ select::-ms-expand {
 /* User Balance Classes */
 
 .user-balance {
+  border-radius: 8px;
   color: #1c1c1cff;
   font-weight: bold;
   background-color: white;
-  border-left: 4px solid #1c1c1cff;
-  border-right: 4px solid white;
+  border: 2px solid #1c1c1cff;
+  padding: 4px;
+}
+
+.user-balance:hover {
+  border-radius: 8px;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  background-color: white;
+  border: 2px solid #0a60d0;
+  padding: 4px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 /* Video ID */
@@ -411,6 +439,87 @@ select::-ms-expand {
   margin: 20px;
   width: 200px;
   height: 200px;
+}
+
+.portfolio-box-owned-shares {
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 10px;
+  margin: 5px;
+  width: 425px;
+  height: 65px;
+}
+
+.portfolio-box-open-order {
+  border-radius: 8px;
+  border: 1px solid white;
+  background: #1c1c1cff;
+  padding: 10px;
+  margin: 5px;
+  width: 425px;
+  height: 65px;
+}
+
+.portfolio-artist {
+  color: #0a60d0;
+}
+
+.portfolio-percentage-positive {
+  color:green;
+  float: right;
+}
+
+.portfolio-percentage-negative {
+  color:red;
+  float: right;
+}
+
+.portfolio-shareamount {
+  color: #1c1c1cff;
+  font-weight: normal;
+  font-size: small;
+}
+
+.portfolio-gain {
+  color:green;
+  float: right;
+  font-weight: normal;
+  font-size: small;
+}
+
+.portfolio-loss {
+  color:red;
+  float: right;
+  font-weight: normal;
+  font-size: small;
+}
+
+.portfolio-sellorder {
+  color:rgb(255, 255, 255);
+  float: right;
+}
+
+.portfolio-shareamount-openorder {
+  color: rgb(255, 255, 255);
+  font-weight: normal;
+  font-size: small;
+}
+
+.portfolio-limitstop {
+  color:rgb(255, 255, 255);
+  float: right;
+  font-weight: normal;
+  font-size: small;
+}
+
+.open-order-cancel {
+  color:rgb(255, 255, 255);
+  font-weight: normal;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center; 
+  height: 0;
 }
 
 .input-no-border {
