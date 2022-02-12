@@ -60,7 +60,8 @@
     {
         $ret = false;
         $current_date = date('Y-m-d');
-        if($current_date >= "2022-03-01" || $username == "martin" || $username == "kai")
+        $account_type = getAccountType($username);
+        if($current_date >= "2022-03-01" || $username == "martin" || $username == "kai" || $account_type == AccountType::Artist)
         {
             $ret = true;
         }
