@@ -466,7 +466,6 @@
                                 <label>
                                     <input type="range" min="1" max=' . $max . ' value="1" class="slider" id="myRange">
                                     <p>Quantity: <span id="demo"></span></p>
-                                    <input id="artist_pps_selling" type="text" class="form-control" style="border-color: white;" placeholder="Enter price per share">
                                     <p id="artist_sell_share_status"></p>
                                     <input id="artist_post_sell_order_btn" type="submit" class="btn btn-primary my-2 py-2" role="button" value="Post">
                                 </label> 
@@ -484,27 +483,16 @@
         $_SESSION['repurchase_sell_orders'] = getAllRepurchaseSellOrdersInfo($artist_username);
 
         echo '
-        <div class="text-center px-4">
-            <h6>Your owned shares: '.$owned_shares.'</h6>
-            <h6>Shares available for repurchase: '.$amount_repurchase_available.'</h6>
-        </div>
+            <div class="text-center px-4">
+                <h6>Your owned shares: '.$owned_shares.'</h6>
+                <h6>Shares available for repurchase: '.$amount_repurchase_available.'</h6>
+                <p id="buy_back_success" class="suc-msg"></p>
+            </div>
         ';
 
         sellOrderInit();
 
-        if($_SESSION['logging_mode'] == LogModes::BUY_SHARE)
-        {
-            if($_SESSION['status'] == StatusCodes::Success)
-            {
-                getStatusMessage("", "Shares bought back successfully");
-            }
-            else if($_SESSION['status'] == StatusCodes::ErrGeneric)
-            {
-                getStatusMessage("An unexpected error occured", "");
-            }
-        }
-
-        askedPriceInit($artist_username, $_SESSION['account_type']);
+        buyBackableOrdersInit($artist_username);
 
         if($amount_repurchase_available > 0)
         {

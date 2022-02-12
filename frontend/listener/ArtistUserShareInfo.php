@@ -68,9 +68,7 @@
                     <div class="container-searchbar">
                         <label>
                             <span class="screen-reader-text">Search for...</span>
-                            <form class="form-inline" action="../../backend/listener/SearchArtistSwitcher.php" method="post">
-                                <input type="search" class="search-field" placeholder="Search for Artist(s)" value="" name="artist_search" />
-                            </form>
+                            <?php displaySearchBar(); ?>
                         </label>
                     </div>
                 </div>
@@ -99,14 +97,6 @@
                         <?php
                         if($_SESSION['artist_found'])
                         {
-                            if ($_SESSION['logging_mode'] == LogModes::BUY_SHARE) {
-                                if ($_SESSION['status'] == "SILIQAS_ERR") {
-                                    $_SESSION['status'] = StatusCodes::ErrGeneric;
-                                    getStatusMessage("Not enough siliqas", "");
-                                } else {
-                                    getStatusMessage("An unexpected error occured", "Shares bought successfully");
-                                }
-                            }
                         ?>
                         <div>
                         <h2 id="selected_artist" class="h2-blue"><?php echo $_SESSION['selected_artist']; ?></h2>
@@ -194,12 +184,29 @@
                     </div>
 
                     <!-- displaying current share information between current user and selected artist -->
-                        <?php }?>
+                        <?php 
+                            }
+                            else
+                            {
+                                echo '
+                                        <h3>No results for "'.$_SESSION['selected_artist'].'"</h3>
+                                ';
+                            }
+                        ?>
                 </div>
                 <div class="col-4 my-8 text-center">
-                    <div class="shares-owned">
-                    <h3 class="h3-blue"><a style="color:white"><?php echo $user_shares_owned; ?></a> Shares Owned</h3>
-                    </div>
+                    <?php
+                        if($_SESSION['artist_found'])
+                        {
+                            echo '
+                                <div class="shares-owned">
+                                    <h3 class="h3-blue"><a style="color:white"><?php echo $user_shares_owned; ?></a> Shares Owned</h3>
+                                    <p class="error-msg" id="price_outdated"></p>
+                                </div>
+                            ';
+                        }
+                    
+                    ?>
                 <div class="mx-auto my-auto text-center buy_sell_container">
                     <?php
                     if($_SESSION['artist_found'])
@@ -214,7 +221,8 @@
                                         <div class="slider_container">
                                             <div class="textbox_container">
                                                 <div class="stocktip">
-                                                    <p id="buy_tip">Without limits the next available share(s) will be purchased</p>
+                                                    <p id="buy_tip">Order will be executed as market price</p>
+                                                    <p id="not_available_error_buy" class="error-msg"></p>
                                                 </div>
                                                 <label for="buy_num_shares"># Shares:</label>
                                                 <input type="text" class="slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
@@ -246,7 +254,8 @@
                                         <div class="slider_container">
                                             <div class="textbox_container">
                                                 <div class="stocktip">
-                                                    <p id="sell_tip">Without limits your shares will be sold to the next available buyer</p>
+                                                    <p id="sell_tip">Order will be executed as market price</p>
+                                                    <p id="not_available_error_sell" class="error-msg"></p>
                                                 </div>
                                                 <label for="sell_num_shares"># Shares:</label>
                                                 <input type="text" class="slider_text" id="sell_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
@@ -274,7 +283,6 @@
         <div class="container-fluid">
             <div class="row align-items-start">
                 <div class="my-auto text-center col-6">
-                    <div>
                     <?php
                         if($_SESSION['artist_found'])
                         {
@@ -302,12 +310,7 @@
                                 </div>
                             ';
                         }
-                        else
-                        {
-                            echo '<h3>No results for "'.$_SESSION['selected_artist'].'"</h3>';
-                        }
                     ?>
-                    </div>
                 </div>
                 <div class="col-6">
                     <?php

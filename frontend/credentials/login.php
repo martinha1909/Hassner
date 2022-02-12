@@ -74,7 +74,23 @@ hassnerInit();
 
             <div class="form-group">
               <p id="login-error" class="error-msg"></p>
-              <p id="sign_up_success" class="suc-msg"></p>
+              <?php
+                //StatusCodes of success means we both sign up and sent email successfully
+                if($_SESSION['status'] == StatusCodes::Success)
+                {
+                  $_SESSION['status'] = StatusCodes::Success;
+                  getStatusMessage("", "Account created successfully");
+                  echo '<p class="suc-msg">Confirmation email sent successfully</p>';
+                }
+                //StatusCodes of EMAIL_SENT_ERR_RECIPIENT means we sign up successfully but failed to send mail to user
+                //StatusCodes of EMAIL_SENT_ERR_HX means we failed to send notification mail to ourselves, hence wasn't able to send to user
+                else if($_SESSION['status'] == StatusCodes::EMAIL_SENT_ERR_RECIPIENT || $_SESSION['status'] == StatusCodes::EMAIL_SENT_ERR_HX)
+                {
+                  $_SESSION['status'] = StatusCodes::Success;
+                  getStatusMessage("", "Account created successfully");
+                  echo '<p class="error-msg">Failed to send confirmation email, please contact us at hassx.communication@gmail.com</p>';
+                }
+              ?>
             </div>
 
 
@@ -99,7 +115,7 @@ hassnerInit();
   ?>
 
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>

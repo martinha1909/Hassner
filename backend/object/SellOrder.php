@@ -9,6 +9,8 @@
             private $selling_price;
             private $no_of_share;
             private $date_posted;
+            private $sell_limit;
+            private $sell_stop;
 
             function __construct($id, $user_username, $artist_username, $selling_price, $no_of_share, $date_posted)
             {
@@ -18,6 +20,8 @@
                 $this->selling_price = $selling_price;
                 $this->no_of_share = $no_of_share;
                 $this->date_posted = $date_posted;
+                $this->sell_limit = -1;
+                $this->sell_stop = -1;
             }
 
             function getID()
@@ -50,6 +54,16 @@
                 return $this->date_posted;
             }
 
+            function getSellLimit()
+            {
+                return $this->sell_limit;
+            }
+
+            function getSellStop()
+            {
+                return $this->sell_stop;
+            }
+
             function setID($id)
             {
                 $this->id = $id;
@@ -78,6 +92,16 @@
             function setDatePosted($date_posted)
             {
                 $this->date_posted = $date_posted;
+            }
+
+            function setSellLimit($sell_limit)
+            {
+                $this->sell_limit = $sell_limit;
+            }
+
+            function setSellStop($sell_stop)
+            {
+                $this->sell_stop = $sell_stop;
             }
 
             public static function copy(SellOrder $sell_order): SellOrder
@@ -172,6 +196,27 @@
                     SellOrder::sort($sell_order_arr, ($pi + 1), $high, $option, $item);
                 }
             }
+
+            public static function toString($sell_order_arr): string
+            {
+                $ret = "";
+
+                for($i = 0; $i < sizeof($sell_order_arr); $i++)
+                {
+                    $ret .= "Sell order id: ".$sell_order_arr[$i]->getID()."\n".
+                            "Seller: ".$sell_order_arr[$i]->getUser()."\n".
+                            "Artist: ".$sell_order_arr[$i]->getArtist()."\n".
+                            "Selling price: ".$sell_order_arr[$i]->getSellingPrice()."\n".
+                            "No of share: ".$sell_order_arr[$i]->getNoOfShare()."\n".
+                            "Date posted: ".$sell_order_arr[$i]->getDatePosted()."\n".
+                            "Sell limit: ".$sell_order_arr[$i]->getSellLimit()."\n".
+                            "Sell stop: ".$sell_order_arr[$i]->getSellStop()."\n".
+                            "----------------------------------------------\n";
+                }
+
+                return $ret;
+            }
+
         }
 
         define('SELLORDER_LOADED', 1);

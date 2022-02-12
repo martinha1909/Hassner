@@ -21,6 +21,8 @@ if(!defined('STATUSCODES_LOADED')){
         const CampaignTimeErr = "CAMPAIGN_TIME_ERR";
         const PRICE_OUTDATED = "Price Outdated";
         const TIME_ERR = "TIME_ERR";
+        const EMAIL_SENT_ERR_RECIPIENT = "EMAIL_SENT_ERR_RECIPIENT";
+        const EMAIL_SENT_ERR_HX = "EMAIL_SENT_ERR_HX";
     }
     define('STATUSCODES_LOADED', 1);
 }

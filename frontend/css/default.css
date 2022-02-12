@@ -10705,6 +10705,19 @@ a#dashboard-hover:hover {
   font-weight: bold;
 }
 
+.input-no-background-white {
+  border:1px transparent; 
+  background-color: transparent; 
+  font-weight: bold;
+  color: #ffffff;
+  padding: 0px 0px;
+}
+
+.input-no-background-white:hover {
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+}
+
 .div-hidden {
   display: none;
 }

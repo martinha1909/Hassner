@@ -3,15 +3,16 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
     include '../shared/include/MarketplaceHelpers.php';
+    include '../shared/include/StockTradeHelpers.php';
     include '../constants/ShareInteraction.php';
     include '../constants/StatusCodes.php';
     include '../constants/MenuOption.php';
+    include '../object/SellOrder.php';
+    include '../object/AutoTransact.php';
 
     date_default_timezone_set(Timezone::MST);
 
     $json_response = StatusCodes::NONE;
-    $purchase_price = 0;
-    $selling_price = 0;
     $current_date = date('Y-m-d H:i:s');
     $user_event = $_POST['user_event'];
     $quantity = $_POST['num_of_shares'];
@@ -31,27 +32,29 @@
     {
         if($user_event == ShareInteraction::BUY)
         {
-            $conn = connect();
             $connPDO = connectPDO();
 
             if($chosen_min == $min_lim && $chosen_max == $max_lim)
             {
                 $purchase_price = $latest_market_price;
-                $new_quantity = autoPurchase($conn, 
-                                             $_SESSION['username'], 
-                                             $_SESSION['selected_artist'], 
-                                             $quantity, 
-                                             $purchase_price);
+                $new_quantity = autoPurchaseNoLimitStop($_SESSION['username'], 
+                                                        $_SESSION['selected_artist'], 
+                                                        $quantity, 
+                                                        $purchase_price,
+                                                        $latest_market_price);
 
                 refreshSellOrderTable();
 
                 if($new_quantity > 0)
                 {
-                    postBuyOrder($conn, 
+                    //User posting buy order without limit and stop
+                    postBuyOrder($connPDO, 
                                  $_SESSION['username'],
                                  $_SESSION['selected_artist'], 
                                  $new_quantity, 
                                  $purchase_price, 
+                                 -1,
+                                 -1,
                                  $current_date);
                 }
 
@@ -62,47 +65,76 @@
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
-                $purchase_price = $chosen_min;
-                //TODO: Code to handle when limit is set
+                autoPurchaseLimitSet($_SESSION['username'],
+                                     $_SESSION['selected_artist'],
+                                     $quantity,
+                                     $chosen_min,
+                                     $latest_market_price);
+                refreshBuyOrderTable();
+                refreshSellOrderTable();
+                
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
-                $purchase_price = $chosen_max;
-                //TODO: Code to handle when stop is set
+                autoPurchaseStopSet($_SESSION['username'],
+                                    $_SESSION['selected_artist'],
+                                    $quantity,
+                                    $chosen_max,
+                                    $latest_market_price);
+
+                refreshBuyOrderTable();
+                refreshSellOrderTable();
+                
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
-                $purchase_price_limit = $chosen_min;
-                $purchase_price_stop = $chosen_max;
-                //TODO: Code to handle when both limit and stop are set
-            }
+                autoPurchaseLimitStopSet($_SESSION['username'],
+                                         $_SESSION['selected_artist'],
+                                         $quantity,
+                                         $chosen_min,
+                                         $chosen_max,
+                                         $latest_market_price);
 
-            closeCon($conn);
+                refreshBuyOrderTable();
+                refreshSellOrderTable();
+                
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
+            }
         }
         else if($user_event == ShareInteraction::SELL)
         {
-            $conn = connect();
             $connPDO = connectPDO();
 
             if($chosen_min == $min_lim && $chosen_max == $max_lim)
             {
                 $selling_price = $latest_market_price;
-                $new_quantity = autoSell($_SESSION['username'], 
-                                         $_SESSION['selected_artist'], 
-                                         $selling_price, 
-                                         $quantity,
-                                         $current_date,
-                                         false);
+                $new_quantity = autoSellNoLimitStop($_SESSION['username'], 
+                                                    $_SESSION['selected_artist'], 
+                                                    $quantity, 
+                                                    $selling_price,
+                                                    $latest_market_price,
+                                                    false);
 
                 refreshSellOrderTable();
 
                 if($new_quantity > 0)
                 {
-                    postSellOrder($conn, 
+                    //Sell order posted by user with no limit and stop, setting those values to -1
+                    postSellOrder($connPDO, 
                                   $_SESSION['username'],
                                   $_SESSION['selected_artist'], 
                                   $new_quantity, 
                                   $selling_price,
+                                  -1,
+                                  -1,
                                   $current_date,
                                   false);
                 }
@@ -114,22 +146,87 @@
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
-                $purchase_price = $chosen_min;
-                //TODO: Code to handle when limit is set
+                $new_quantity = autoSellStopSet($_SESSION['username'],
+                                                $_SESSION['selected_artist'],
+                                                $quantity,
+                                                $chosen_min,
+                                                $latest_market_price);
+
+                refreshSellOrderTable();
+                if($new_quantity > 0)
+                {
+                    //Sell order posted by user with limit set, setting selling_price to -1
+                    postSellOrder($connPDO,
+                                  $_SESSION['username'],
+                                  $_SESSION['selected_artist'],
+                                  $new_quantity,
+                                  -1,
+                                  -1,
+                                  $chosen_min,
+                                  $current_date,
+                                  false);
+                }
+
+                refreshBuyOrderTable();
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
-                $purchase_price = $chosen_max;
-                //TODO: Code to handle when stop is set
+                $new_quantity = autoSellLimitSet( $_SESSION['username'],
+                                                  $_SESSION['selected_artist'],
+                                                  $quantity,
+                                                  $chosen_max,
+                                                  $latest_market_price);
+                refreshSellOrderTable();
+                if($new_quantity > 0)
+                {
+                    //Sell order posted by user with limit set, setting selling_price to -1
+                    postSellOrder($connPDO,
+                                  $_SESSION['username'],
+                                  $_SESSION['selected_artist'],
+                                  $new_quantity,
+                                  -1,
+                                  $chosen_max,
+                                  -1,
+                                  $current_date,
+                                  false);
+                }
+
+                refreshBuyOrderTable();
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
-                $purchase_price_limit = $chosen_min;
-                $purchase_price_stop = $chosen_max;
-                //TODO: Code to handle when both limit and stop are set
-            }
+                $new_quantity = autoSellLimitStopSet($_SESSION['username'],
+                                                     $_SESSION['selected_artist'],
+                                                     $quantity,
+                                                     $chosen_max,
+                                                     $chosen_min,
+                                                     $latest_market_price);
+                refreshSellOrderTable();
+                if($new_quantity > 0)
+                {
+                    //Sell order posted by user with limit set, setting selling_price to -1
+                    postSellOrder($connPDO,
+                                  $_SESSION['username'],
+                                  $_SESSION['selected_artist'],
+                                  $new_quantity,
+                                  -1,
+                                  $chosen_max,
+                                  $chosen_min,
+                                  $current_date,
+                                  false);
+                }
 
-            closeCon($conn);
+                refreshBuyOrderTable();
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
+            }
         }
     }
 
