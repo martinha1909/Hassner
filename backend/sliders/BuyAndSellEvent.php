@@ -79,7 +79,18 @@
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
-                //TODO: Code to handle when stop is set
+                autoPurchaseStopSet($_SESSION['username'],
+                                    $_SESSION['selected_artist'],
+                                    $quantity,
+                                    $chosen_max,
+                                    $latest_market_price);
+
+                refreshBuyOrderTable();
+                refreshSellOrderTable();
+                
+                $_SESSION['display'] = MenuOption::Portfolio;
+                $_SESSION['dependencies'] = "FRONTEND";
+                $json_response = StatusCodes::Success;
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
@@ -123,7 +134,7 @@
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
-                
+
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
@@ -131,7 +142,7 @@
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
-                
+
             }
         }
     }
