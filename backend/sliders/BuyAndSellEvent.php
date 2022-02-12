@@ -146,39 +146,15 @@
             }
             else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
             {
-                postSellOrder($connPDO, 
-                            $_SESSION['username'],
-                            $_SESSION['selected_artist'], 
-                            $quantity, 
-                            -1,
-                            -1,
-                            $chosen_min,
-                            $current_date,
-                            false);
+
             }
             else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
             {
-                postSellOrder($connPDO, 
-                                $_SESSION['username'],
-                                $_SESSION['selected_artist'], 
-                                $quantity, 
-                                -1,
-                                $chosen_max,
-                                -1,
-                                $current_date,
-                                false);
+
             }
             else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
             {
-                postSellOrder($connPDO, 
-                                $_SESSION['username'],
-                                $_SESSION['selected_artist'], 
-                                $quantity, 
-                                -1,
-                                $chosen_max,
-                                $chosen_min,
-                                $current_date,
-                                false);
+
             }
         }
     }
