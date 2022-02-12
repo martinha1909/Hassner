@@ -18,11 +18,9 @@ function signup()
                 $("#signup_error").text(data.msg);
                 // $("#signup_error").show();
             }
-            else
+            else if(data.status == "SUCCESS")
             {
                 window.location.href = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/credentials/login.php";
-                $("#sign_up_success").text(data.msg);
-                $("#sign_up_success").show();
             }
         },
         error: function(data){

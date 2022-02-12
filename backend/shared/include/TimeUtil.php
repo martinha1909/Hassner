@@ -48,7 +48,7 @@
         $date_parser = explode("-", $date);
         $month = monthToText($date_parser[1]);
 
-        $ret = $month." ".$date_parser[0].", ".$date_parser[2];
+        $ret = $month." ".$date_parser[2].", ".$date_parser[0];
 
         return $ret;
     }
