@@ -517,13 +517,13 @@ select::-ms-expand {
 .open-order-cancel {
   color:rgb(255, 255, 255);
   font-weight: normal;
-  /* display: flex; */
+  display: flex;
   justify-content: center;
   background: transparent;
   border: transparent;
   display: inline;
-  /* flex-direction: column;
-  /* text-align: center;  */
+  flex-direction: column;
+  text-align: center;  
   /* height: 0; */
 }
 

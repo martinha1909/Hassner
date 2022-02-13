@@ -774,6 +774,7 @@
                         <b class="portfolio-artist">'.$artist_market_tag.'</b><b class="portfolio-sellorder">-$'.$amount_spending.'</b><br>
                         <b class="portfolio-shareamount-openorder">'.$row['quantity'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
                     </div>
+                    
                 ';
             }
             echo '</div>';
