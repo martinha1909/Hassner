@@ -1993,6 +1993,14 @@
 
         function postSellOrder($connPDO, $user_username, $artist_username, $quantity, $asked_price, $sell_limit, $sell_stop, $date_posted, $is_from_injection)
         {
+            if($is_from_injection)
+            {
+                $is_from_injection = 1;
+            }
+            else
+            {
+                $is_from_injection = 0;
+            }
             $status = StatusCodes::NONE;
 
             try {
