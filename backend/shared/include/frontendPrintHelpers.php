@@ -736,7 +736,7 @@
         if($res->num_rows > 0)
         {
             echo '
-                <h3 class="h3-blue">Open Buy</h3>
+                <h3 class="h3-blue py-2">Open Buy</h3>
                 <div class="row">
             ';
             while($row = $res->fetch_assoc())
@@ -764,8 +764,6 @@
                         $limit_stop = "Limit: ".$row['buy_limit']."/Stop: ".$row['buy_stop'];
                     }
                 }
-                // <input name="remove_id['.$row['id'].']" type="submit" class="cursor-context open-order-cancel" role="button" value="⊘">
-
                 echo '
                     <div class="portfolio-box-open-order">
                         <form action="../../backend/listener/RemoveBuyOrderBackend.php" method="post">
@@ -774,7 +772,57 @@
                         <b class="portfolio-artist">'.$artist_market_tag.'</b><b class="portfolio-sellorder">-$'.$amount_spending.'</b><br>
                         <b class="portfolio-shareamount-openorder">'.$row['quantity'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
                     </div>
-                    
+                ';
+            }
+            echo '</div>';
+        }
+
+        closeCon($conn);
+    }
+
+    function printOpenSellTable($user_username)
+    {
+        $conn = connect();
+        $res = searchSellOrderByUser($conn, $user_username);
+        if($res->num_rows > 0)
+        {
+            echo '
+                <h3 class="h3-blue py-2">Open Sell</h3>
+                <div class="row">
+            ';
+            while($row = $res->fetch_assoc())
+            {
+                $limit_stop = "no Limit/Stop";
+                $artist_username = $row['artist_username'];
+                $artist_market_price = getArtistPricePerShare($artist_username);
+                $artist_market_tag = getArtistMarketTag($artist_username);
+                $amount_selling = $artist_market_price;
+                
+                if($row['selling_price'] == -1)
+                {
+                    if($row['sell_limit'] == -1)
+                    {
+                        $limit_stop = "Stop: ".$row['sell_stop'];
+                        $amount_selling = $row['sell_stop'];
+                    }
+                    else if($row['sell_stop'] == -1)
+                    {
+                        $limit_stop = "Limit: ".$row['sell_limit'];
+                        $amount_selling = $row['sell_limit'];
+                    }
+                    else if($row['sell_limit'] != -1 && $row['sell_stop'] != -1)
+                    {
+                        $limit_stop = "Limit: ".$row['sell_limit']."/Stop: ".$row['sell_stop'];
+                    }
+                }
+                echo '
+                    <div class="portfolio-box-open-order">
+                        <form action="../../backend/shared/RemoveSellOrderBackend.php" method="post">
+                            <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
+                        </form>
+                        <b class="portfolio-artist">'.$artist_market_tag.'</b><b class="portfolio-sellorder">-$'.$amount_selling.'</b><br>
+                        <b class="portfolio-shareamount-openorder">'.$row['no_of_share'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
+                    </div>
                 ';
             }
             echo '</div>';

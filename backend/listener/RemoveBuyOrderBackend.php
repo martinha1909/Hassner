@@ -3,7 +3,9 @@
     include '../control/Dependencies.php';
 
     $conn = connect();
-    $order_id = $_POST['remove_id'];
+    $order_id = key($_POST['remove_id']);
+
+    echo $order_id;
 
     removeBuyOrder($conn, $order_id);
 
