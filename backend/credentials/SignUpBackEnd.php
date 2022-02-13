@@ -128,8 +128,7 @@
             }
             else
             {
-                $_SESSION['status'] = StatusCodes::Success;
-                // $_SESSION['status'] = signup($connPDO, $username, $password, $account_type, $email, $ticker);
+                $_SESSION['status'] = signup($connPDO, $username, $password, $account_type, $email, $ticker);
                 if($_SESSION['status'] == StatusCodes::Success)
                 {
                     $msg = $username." successfully signed up";
@@ -140,10 +139,10 @@
 
                     $_SESSION['status'] = sendEmailService($username, $password, $email);
 
-                    // echo(json_encode(array(            
-                    //     "status"=> StatusCodes::Success,
-                    //     "msg"=> "Account created successfully"
-                    // )));
+                    echo(json_encode(array(            
+                        "status"=> StatusCodes::Success,
+                        "msg"=> "Account created successfully"
+                    )));
 
                     $_SESSION['dependencies'] = "FRONTEND";
                 }
