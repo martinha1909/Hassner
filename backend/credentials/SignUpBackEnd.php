@@ -1,7 +1,11 @@
 <?php
+
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';  
     include '../mailing/include/MailServiceHelpers.php';
+    include '../mailing/PHPMailer.php';
+    include '../mailing/Exception.php';
+    include '../mailing/SMTP.php';
     include '../constants/StatusCodes.php';
     include '../constants/AccountTypes.php';
 
