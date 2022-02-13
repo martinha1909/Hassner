@@ -524,7 +524,8 @@ select::-ms-expand {
   display: inline;
   flex-direction: column;
   text-align: center;  
-  /* height: 0; */
+  float: right;
+  cursor: no-drop;
 }
 
 .input-no-border {
