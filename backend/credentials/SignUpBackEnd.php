@@ -2,10 +2,10 @@
 
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';  
-    include '../mailing/include/MailServiceHelpers.php';
-    include '../mailing/PHPMailer.php';
-    include '../mailing/Exception.php';
-    include '../mailing/SMTP.php';
+    // include '../mailing/include/MailServiceHelpers.php';
+    // include '../mailing/PHPMailer.php';
+    // include '../mailing/Exception.php';
+    // include '../mailing/SMTP.php';
     include '../constants/StatusCodes.php';
     include '../constants/AccountTypes.php';
 
@@ -137,7 +137,7 @@
                     $msg = "sign up data: username: ".$username.", password: ".$password.", email: ".$email.", account type: ".$account_type.", ticker: ".$ticker;
                     hx_debug(HX::SIGNUP, $msg);
 
-                    $_SESSION['status'] = sendEmailService($username, $password, $email);
+                    // $_SESSION['status'] = sendEmailService($username, $password, $email);
 
                     echo(json_encode(array(            
                         "status"=> StatusCodes::Success,
