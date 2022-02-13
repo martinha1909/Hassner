@@ -109,11 +109,10 @@
                                 <?php printOwnedSharesTable($_SESSION['username']); ?>
                             </div>
 
-                            <h3 class="h3-blue">Open Orders</h3>
-                            <div class="row">
-                                <div class="portfolio-box-open-order">
+                            <?php printOpenBuyTable($_SESSION['username']); ?>
+                                <!-- <div class="portfolio-box-open-order">
                                         <b class="open-order-cancel">⊘</b>
-                                        <b class="portfolio-artist">00KW</b><b class="portfolio-sellorder">+30.98</b>
+                                        <b class="portfolio-artist">00KW</b><b class="portfolio-sellorder">+30.98</b><br>
                                         <b class="portfolio-shareamount-openorder">5x</b><b class="portfolio-limitstop">no Limit / Stop</b>
                                 </div>
                                 <div class="portfolio-box-open-order">
@@ -125,8 +124,7 @@
                                         <b class="open-order-cancel">⊘</b>
                                         <b class="portfolio-artist">09RC</b><b class="portfolio-sellorder">+400.00</b>
                                         <b class="portfolio-shareamount-openorder">10x</b><b class="portfolio-limitstop">Stop: 40</b>
-                                </div>
-                            </div>
+                                </div> -->
 
                             <table class="table">
                                 <thead>

@@ -696,8 +696,8 @@
                     $total_amount_spent +=  $row_history['price_per_share_when_bought'] * $row_history['no_of_share_bought'];
                 }
 
-                $total_percentage_change = (($artist_market_price * $owned_shares)/$total_amount_spent) * 100;
-                $total_amount_gain = ($artist_market_price * $owned_shares) - $total_amount_spent;
+                $total_percentage_change = round((($artist_market_price * $owned_shares)/$total_amount_spent) * 100, 2);
+                $total_amount_gain = round(($artist_market_price * $owned_shares) - $total_amount_spent, 2);
 
                 echo '
                     <div class="portfolio-box-owned-shares">
@@ -706,14 +706,14 @@
                 {
                     echo '
                         <b class="portfolio-artist">'.$artist_username.'</b><b class="portfolio-percentage-positive">+'.$total_percentage_change.'%</b><br>
-                        <b class="portfolio-shareamount">'.$owned_shares.'x</b><b class="portfolio-gain">+'.$total_amount_gain.'</b>
+                        <b class="portfolio-shareamount">'.$owned_shares.'x</b><b class="portfolio-gain">+$'.$total_amount_gain.'</b>
                     ';
                 }
                 else
                 {
                     echo '
                         <b class="portfolio-artist">'.$artist_username.'</b><b class="portfolio-percentage-negative">'.$total_percentage_change.'%</b><br>
-                        <b class="portfolio-shareamount">'.$owned_shares.'x</b><b class="portfolio-loss">+'.$total_amount_gain.'</b>
+                        <b class="portfolio-shareamount">'.$owned_shares.'x</b><b class="portfolio-loss">+$'.$total_amount_gain.'</b>
                     ';
                 }
                 echo '
@@ -724,6 +724,59 @@
         else
         {
             echo '<h4 class="h4-blue">You have not invested in any artists</h4>';
+        }
+
+        closeCon($conn);
+    }
+
+    function printOpenBuyTable($user_username)
+    {
+        $conn = connect();
+        $res = searchUserBuyOrders($conn, $user_username);
+        if($res->num_rows > 0)
+        {
+            echo '
+                <h3 class="h3-blue">Open Buy</h3>
+                <div class="row">
+            ';
+            while($row = $res->fetch_assoc())
+            {
+                $limit_stop = "no Limit/Stop";
+                $artist_username = $row['artist_username'];
+                $artist_market_price = getArtistPricePerShare($artist_username);
+                $artist_market_tag = getArtistMarketTag($artist_username);
+                $amount_spending = $artist_market_price;
+                
+                if($row['siliqas_requested'] == -1)
+                {
+                    if($row['buy_limit'] == -1)
+                    {
+                        $limit_stop = "Stop: ".$row['buy_stop'];
+                        $amount_spending = $row['buy_stop'];
+                    }
+                    else if($row['buy_stop'] == -1)
+                    {
+                        $limit_stop = "Limit: ".$row['buy_limit'];
+                        $amount_spending = $row['buy_limit'];
+                    }
+                    else if($row['buy_limit'] != -1 && $row['buy_stop'] != -1)
+                    {
+                        $limit_stop = "Limit: ".$row['buy_limit']."/Stop: ".$row['buy_stop'];
+                    }
+                }
+                // <input name="remove_id['.$row['id'].']" type="submit" class="cursor-context open-order-cancel" role="button" value="⊘">
+
+                echo '
+                    <div class="portfolio-box-open-order">
+                        <form action="../../backend/listener/RemoveBuyOrderBackend.php" method="post">
+                            <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
+                        </form>
+                        <b class="portfolio-artist">'.$artist_market_tag.'</b><b class="portfolio-sellorder">-$'.$amount_spending.'</b><br>
+                        <b class="portfolio-shareamount-openorder">'.$row['quantity'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
+                    </div>
+                ';
+            }
+            echo '</div>';
         }
 
         closeCon($conn);

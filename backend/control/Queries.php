@@ -266,7 +266,7 @@
 
         function searchUserBuyOrders($conn, $user_username)
         {
-            $sql = "SELECT * FROM buy_order WHERE user_username = ?";
+            $sql = "SELECT * FROM buy_order WHERE user_username = ? ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $user_username);
             $stmt->execute();
