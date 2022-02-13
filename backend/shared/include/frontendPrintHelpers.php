@@ -682,6 +682,7 @@
             //Each row will contain 1 artist
             while($row = $res->fetch_assoc())
             {
+                $buy_history_instances = array();
                 $total_amount_gain = 0;
                 $total_amount_spent = 0;
                 //Total percent change with respected to the share price when bought vs the market price now
@@ -690,13 +691,54 @@
                 $artist_username = $row['artist_username'];
                 $artist_market_price = getArtistPricePerShare($artist_username);
 
-                $res_history = searchSpecificInvestment($conn, $user_username, $artist_username);
-                while($row_history = $res_history->fetch_assoc())
+                $res_buy_history = searchSpecificInvestment($conn, $user_username, $artist_username);
+                while($row_history = $res_buy_history->fetch_assoc())
                 {
+                    $buy_history = new BuyHistory();
+
+                    $buy_history->setID($row_history['id']);
+                    $buy_history->setBuyer($row_history['user_username']);
+                    $buy_history->setSeller($row_history['seller_username']);
+                    $buy_history->setArtist($row_history['artist_username']);
+                    $buy_history->setNoOfShareBought($row_history['no_of_share_bought']);
+                    $buy_history->setPPS($row_history['price_per_share_when_bought']);
+                    $buy_history->setDatePurchased($row_history['date_purchased']);
+
+                    array_push($buy_history_instances, $buy_history);
                     $total_amount_spent +=  $row_history['price_per_share_when_bought'] * $row_history['no_of_share_bought'];
                 }
 
-                $total_percentage_change = round((($artist_market_price * $owned_shares)/$total_amount_spent) * 100, 2);
+                //we want to work our way down from the highest price per share when the user bought, just to show the potential amount increase to be greatest
+                BuyHistory::sort($buy_history_instances, 0, sizeof($buy_history_instances) - 1, "DESCENDING", "PPS");
+
+                $buy_history_index = 0;
+                $res_sell_history = searchSellHistoryByUserAndArtist($conn, $user_username, $artist_username);
+                $row_sell_history = $res_sell_history->fetch_assoc();
+                while(true)
+                {
+                    //We only break out of the loop once we have gone through the sell history table, we do not care about the buy history indices since there are more shares bought than shares sold
+                    if($row_sell_history == null)
+                    {
+                        break;
+                    }
+                    if($buy_history_instances[$buy_history_index]->getNoOfShareBought() > $row_sell_history['amount_sold'])
+                    {
+                        $total_amount_spent = $total_amount_spent - ($row_sell_history['amount_sold'] * $buy_history_instances[$buy_history_index]->getPPS());
+                        $new_buy_history_no_of_share = $buy_history_instances[$buy_history_index]->getNoOfShareBought() - $row_sell_history['amount_sold'];
+                        $buy_history_instances[$buy_history_index]->setNoOfShareBought($new_buy_history_no_of_share);
+                        $row_sell_history = $res_sell_history->fetch_assoc();
+                    }
+                    else
+                    {
+                        $total_amount_spent = $total_amount_spent - ($buy_history_instances[$buy_history_index]->getNoOfShareBought() * $buy_history_instances[$buy_history_index]->getPPS());
+                        $row['amount_sold'] = $row_sell_history['amount_sold'] - $buy_history_instances[$buy_history_index]->getNoOfShareBought();
+                        $buy_history_instances[$buy_history_index]->setNoOfShareBought(0);
+                        $buy_history_index++;
+                    }
+                }
+
+                //Showing the total percentage change from when the user bought shares (price can be different at each times user bought them, so we have to take that into account)
+                $total_percentage_change = round(((($artist_market_price * $owned_shares) - $total_amount_spent)/$total_amount_spent) * 100, 2);
                 $total_amount_gain = round(($artist_market_price * $owned_shares) - $total_amount_spent, 2);
 
                 echo '

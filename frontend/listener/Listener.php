@@ -12,6 +12,7 @@
     include '../../backend/object/Node.php';
     include '../../backend/object/Artist.php';
     include '../../backend/object/TickerInfo.php';
+    include '../../backend/object/BuyHistory.php';
 
     $_SESSION['selected_artist'] = 0;
 

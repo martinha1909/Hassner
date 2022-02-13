@@ -233,6 +233,17 @@
             return $result;
         }
 
+        function searchSellHistoryByUserAndArtist($conn, $seller_username, $artist_username)
+        {
+            $sql = "SELECT id, seller_username, buyer_username, artist_username, amount_sold, price_sold, date_sold FROM sell_history WHERE seller_username = ? AND artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $seller_username, $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchAllSellOrdersZeroQuantity($conn)
         {
             $sql = "SELECT * FROM sell_order WHERE no_of_share <= 0";
@@ -1714,6 +1725,8 @@
 
             updateMarketPriceOrderToPPS($new_pps, $artist);
 
+            addToSellHistory($seller, $buyer, $artist, $amount, $price, $date_purchased);
+
             return $status;
         }
 
@@ -1951,6 +1964,33 @@
             }
 
             return $status;
+        }
+
+        function addToSellHistory($seller_username, $buyer_username, $artist_username, $amount_sold, $price_sold, $date_sold)
+        {
+            $connPDO = connectPDO();
+            try
+            {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("INSERT INTO sell_history (seller_username, buyer_username, artist_username, amount_sold, price_sold, date_sold)
+                                           VALUES(?, ?, ?, ?, ?, ?)");
+                $stmt->bindValue(1, $seller_username);
+                $stmt->bindValue(2, $buyer_username);
+                $stmt->bindValue(3, $artist_username);
+                $stmt->bindValue(4, $amount_sold);
+                $stmt->bindValue(5, $price_sold);
+                $stmt->bindValue(6, $date_sold);
+                $stmt->execute(array($seller_username, $buyer_username, $artist_username, $amount_sold, $price_sold, $date_sold));
+
+                $connPDO->commit();
+            }
+            catch (PDOException $e) 
+            {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "Failed: " . $e->getMessage());
+                echo "Failed: " . $e->getMessage()."\n";
+            }
         }
 
         function addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date)
