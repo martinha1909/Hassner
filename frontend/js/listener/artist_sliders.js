@@ -371,5 +371,4 @@ $( function() {
     $( "#buy_num_shares" ).val($("#buy_num").slider("value"));
     $("#buy_cost").val("$" + $("#buy_num").slider("value")*$("#pps").text());
     $("#sell_cost").val("$" + $("#sell_num").slider("value")*$("#pps").text());
-    recalcSliderLimits();
   } );
