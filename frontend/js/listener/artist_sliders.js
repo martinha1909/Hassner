@@ -265,8 +265,8 @@ $( function() {
       value: 0,
       step: 1,
       slide: function( event, ui ) {
-        var min_limit_top = $("#buy_limit").slider("values", 0);
-        var max_limit_top = $("#buy_limit").slider("values", 1);
+        var min_limit_top = $("#sell_limit").slider("values", 0);
+        var max_limit_top = $("#sell_limit").slider("values", 1);
         if((min_limit_top == min_limit && max_limit_top == max_limit) || (min_limit_top > min_limit && max_limit_top < max_limit))
         {
           $("#sell_num_shares").val(ui.value);
