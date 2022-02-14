@@ -3,9 +3,16 @@
   }
 
 .slider_text {
-  width: 30%;
+  font-size: small;
+  width: 40%;
   background: none;
   overflow-x: visible;
+}
+
+.slider_text_no_border {
+  border:0; 
+  color:#f6931f; 
+  font-weight:bold;
 }
 
 .buy_back_shares_slider_text {
@@ -51,4 +58,12 @@
 
 .order_btn_container{
   margin-top: 5%;
+}
+
+.stocktip-text {
+  font-size: small;
+}
+
+.stocktip-text-15 {
+  font-size: 15px;
 }
