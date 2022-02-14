@@ -102,112 +102,172 @@
     else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
     {
         $conn = connect();
-        $all_available_shares = 0;
-        $matching_shares_sold = 0;
-        $num_of_shares_market_price = 0;
 
-        $res_sell_stop = searchNumOfSharesStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_max);
-        if($res_sell_stop->num_rows > 0)
-        {
-            while($row = $res_sell_stop->fetch_assoc())
-            {
-                $matching_shares_sold += $row['no_of_share'];
-            }
-        }
-
+        //Still allow user to create buy order in this case since the artist could release more shares
         if($chosen_max <= $artist_pps)
         {
-            $res_market_price = searchNumOfSharesNoLimitStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $artist_pps);
-            if($res_market_price->num_rows > 0)
+            $max_amount_can_purchase = $user_balance/$chosen_max;
+
+            //If the maximum amount that user can buy is greater than the amount of available shares, the slider
+            //will be capped at the number of available shares
+            if($max_amount_can_purchase >= $num_of_available_shares)
             {
-                while($row = $res_market_price->fetch_assoc())
-                {
-                    $num_of_shares_market_price += $row['no_of_share'];
-                }
+                $json_data = $num_of_available_shares;
             }
-        }
-
-        $max_amount_can_purchase = $user_balance/$chosen_max;
-        $all_available_shares = $matching_shares_sold + $num_of_shares_market_price;
-            
-
-        if($max_amount_can_purchase < $all_available_shares)
-        {
-            $json_data = $max_amount_can_purchase;
+            //otherwise the slider will be capped at the masimum number of shares the user can afford
+            else
+            {
+                $json_data = $max_amount_can_purchase;
+            }
         }
         else
         {
-            $json_data = $all_available_shares;
+            $all_available_shares = 0;
+            $matching_shares_sold = 0;
+            $num_of_shares_market_price = 0;
+
+            $res_sell_stop = searchNumOfSharesStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_max);
+            if($res_sell_stop->num_rows > 0)
+            {
+                while($row = $res_sell_stop->fetch_assoc())
+                {
+                    $matching_shares_sold += $row['no_of_share'];
+                }
+            }
+
+            if($chosen_max <= $artist_pps)
+            {
+                $res_market_price = searchNumOfSharesNoLimitStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $artist_pps);
+                if($res_market_price->num_rows > 0)
+                {
+                    while($row = $res_market_price->fetch_assoc())
+                    {
+                        $num_of_shares_market_price += $row['no_of_share'];
+                    }
+                }
+            }
+
+            $max_amount_can_purchase = $user_balance/$chosen_max;
+            $all_available_shares = $matching_shares_sold + $num_of_shares_market_price;
+                
+
+            if($max_amount_can_purchase < $all_available_shares)
+            {
+                $json_data = $max_amount_can_purchase;
+            }
+            else
+            {
+                $json_data = $all_available_shares;
+            }
         }
     }
     else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
     {
         $conn = connect();
-        $all_available_shares = 0;
-        $matching_shares_sold = 0;
-        $num_of_shares_market_price = 0;
-
-        $res_array_size = searchMaxIDSellOrdersNotFromUser($conn, $_SESSION['username'], $_SESSION['selected_artist']);
-        $max_arr_size = $res_array_size->fetch_assoc();
-        //Using a hashmap for quicker lookup
-        $already_matched_orders = array_fill(0, $max_arr_size['max_sell_order_id'] + 1, false);
-
-        $res_sell_limit = searchNumOfSharesLimitSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_min);
-        if($res_sell_limit->num_rows > 0)
+        //Only one of this case can be true, they cannot be true at once
+        if($chosen_min >= $artist_pps || $chosen_max <= $artist_pps)
         {
-            while($row = $res_sell_limit->fetch_assoc())
+            if($chosen_min >= $artist_pps)
             {
-                //We don't want to take into consideration of the same order twice
-                if(!$already_matched_orders[$row['id']])
+                $max_amount_can_purchase = $user_balance/$chosen_min;
+
+                //If the maximum amount that user can buy is greater than the amount of available shares, the slider
+                //will be capped at the number of available shares
+                if($max_amount_can_purchase >= $num_of_available_shares)
                 {
-                    $matching_shares_sold += $row['no_of_share'];
+                    $json_data = $num_of_available_shares;
                 }
-                $already_matched_orders[$row['id']] = true;
+                //otherwise the slider will be capped at the masimum number of shares the user can afford
+                else
+                {
+                    $json_data = $max_amount_can_purchase;
+                }
+            }
+            else if($chosen_max <= $artist_pps)
+            {
+                $max_amount_can_purchase = $user_balance/$chosen_max;
+
+                //If the maximum amount that user can buy is greater than the amount of available shares, the slider
+                //will be capped at the number of available shares
+                if($max_amount_can_purchase >= $num_of_available_shares)
+                {
+                    $json_data = $num_of_available_shares;
+                }
+                //otherwise the slider will be capped at the masimum number of shares the user can afford
+                else
+                {
+                    $json_data = $max_amount_can_purchase;
+                }
             }
         }
-
-        $res_sell_stop = searchNumOfSharesStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_max);
-        if($res_sell_stop->num_rows > 0)
+        else
         {
-            while($row = $res_sell_stop->fetch_assoc())
-            {
-                //We don't want to take into consideration of the same order twice
-                if(!$already_matched_orders[$row['id']])
-                {
-                    $matching_shares_sold += $row['no_of_share'];
-                }
-                $already_matched_orders[$row['id']] = true;
-            }
-        }
+            $all_available_shares = 0;
+            $matching_shares_sold = 0;
+            $num_of_shares_market_price = 0;
 
-        if($chosen_max <= $artist_pps || $chosen_min >= $artist_pps)
-        {
-            $res_market_price = searchNumOfSharesNoLimitStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $artist_pps);
-            if($res_market_price->num_rows > 0)
+            $res_array_size = searchMaxIDSellOrdersNotFromUser($conn, $_SESSION['username'], $_SESSION['selected_artist']);
+            $max_arr_size = $res_array_size->fetch_assoc();
+            //Using a hashmap for quicker lookup
+            $already_matched_orders = array_fill(0, $max_arr_size['max_sell_order_id'] + 1, false);
+
+            $res_sell_limit = searchNumOfSharesLimitSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_min);
+            if($res_sell_limit->num_rows > 0)
             {
-                while($row = $res_market_price->fetch_assoc())
+                while($row = $res_sell_limit->fetch_assoc())
                 {
                     //We don't want to take into consideration of the same order twice
                     if(!$already_matched_orders[$row['id']])
                     {
-                        $num_of_shares_market_price += $row['no_of_share'];
+                        $matching_shares_sold += $row['no_of_share'];
                     }
                     $already_matched_orders[$row['id']] = true;
                 }
             }
-        }
 
-        //use the highest value to determine the max amount a user can buy
-        $max_amount_can_purchase = $user_balance/$chosen_max;
-        $all_available_shares = $matching_shares_sold + $num_of_shares_market_price;
-            
-        if($max_amount_can_purchase < $all_available_shares)
-        {
-            $json_data = $max_amount_can_purchase;
-        }
-        else
-        {
-            $json_data = $all_available_shares;
+            $res_sell_stop = searchNumOfSharesStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_max);
+            if($res_sell_stop->num_rows > 0)
+            {
+                while($row = $res_sell_stop->fetch_assoc())
+                {
+                    //We don't want to take into consideration of the same order twice
+                    if(!$already_matched_orders[$row['id']])
+                    {
+                        $matching_shares_sold += $row['no_of_share'];
+                    }
+                    $already_matched_orders[$row['id']] = true;
+                }
+            }
+
+            if($chosen_max <= $artist_pps || $chosen_min >= $artist_pps)
+            {
+                $res_market_price = searchNumOfSharesNoLimitStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $artist_pps);
+                if($res_market_price->num_rows > 0)
+                {
+                    while($row = $res_market_price->fetch_assoc())
+                    {
+                        //We don't want to take into consideration of the same order twice
+                        if(!$already_matched_orders[$row['id']])
+                        {
+                            $num_of_shares_market_price += $row['no_of_share'];
+                        }
+                        $already_matched_orders[$row['id']] = true;
+                    }
+                }
+            }
+
+            //use the highest value to determine the max amount a user can buy
+            $max_amount_can_purchase = $user_balance/$chosen_max;
+            $all_available_shares = $matching_shares_sold + $num_of_shares_market_price;
+                
+            if($max_amount_can_purchase < $all_available_shares)
+            {
+                $json_data = $max_amount_can_purchase;
+            }
+            else
+            {
+                $json_data = $all_available_shares;
+            }
         }
     }
 
