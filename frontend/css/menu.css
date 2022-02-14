@@ -532,3 +532,7 @@ select::-ms-expand {
 .input-no-border:hover {
   cursor: pointer;
 }
+
+.tooltip-pointer {
+  cursor: help;
+}

@@ -588,7 +588,7 @@
         if($_SESSION['artist_found'])
         {
             echo '
-                <h3 class="h3-blue py-5">Current Campaigns</h3>
+                <h3 data-toggle="tooltip" title="Here the artist offers rewards in return for users buying shares." class="h3-blue tooltip-pointer py-5">Current Campaigns</h3>
                 <table class="table">
                     <thead>
                         <tr>
