@@ -9,6 +9,13 @@
   overflow-x: visible;
 }
 
+.slider_text_lim {
+  font-size: small;
+  width: 35%;
+  background: none;
+  overflow-x: visible;
+}
+
 .slider_text_no_border {
   border:0; 
   color:#f6931f; 

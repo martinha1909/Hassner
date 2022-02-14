@@ -229,12 +229,18 @@
 
                                             <div class="slider_slider" id="buy_num"></div>
                                             <div class="slider_slider" id="buy_limit"></div>
-                                            <div class="stocktip">
-                                                <p id="buy_tip" class="stocktip-text">Order will be executed as market price</p>
-                                                <p id="not_available_error_buy" class="error-msg stocktip-text"></p>
+                                            <div class="py-2">
+                                                <input type="text" class="slider_text_lim slider_text_no_border float-left" value="None" id="buy_limit_val">
+                                                <input type="text" class="slider_text_lim slider_text_no_border float-right" value="None" id="buy_stop_val">
                                             </div>
-                                            <div class="order_btn_container">
-                                                <button class="btn btn-primary py-2" id="buy_order">Buy</button>
+                                            <div class="py-2">
+                                                <div class="stocktip">
+                                                    <p id="buy_tip" class="stocktip-text">Order will be executed as market price</p>
+                                                    <p id="not_available_error_buy" class="error-msg stocktip-text"></p>
+                                                </div>
+                                                <div class="order_btn_container">
+                                                    <button class="btn btn-primary py-2" id="buy_order">Buy</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
