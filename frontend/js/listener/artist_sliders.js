@@ -211,6 +211,17 @@ $( function() {
       }
     });
 
+    $(this).find('#buy_num_shares').keypress(function(e) {
+      if(e.which == 13) {
+        if($("#buy_num_shares").val() > max_num_of_shares)
+        {
+          $("#buy_num_shares").val(max_num_of_shares);
+        }
+        $("#buy_num").slider("option", "value", $("#buy_num_shares").val());
+        $("#buy_cost").val("$" + $("#buy_num_shares").val()*$("#pps").text());
+      }
+    });
+
     // # Shares to buy slider
     $("#buy_num").slider({
       range: "min",
@@ -254,6 +265,17 @@ $( function() {
       },
       error : function(data){
 
+      }
+    });
+
+    $(this).find('#sell_num_shares').keypress(function(e) {
+      if(e.which == 13) {
+        if($("#sell_num_shares").val() > sellable_shares)
+        {
+          $("#sell_num_shares").val(sellable_shares);
+        }
+        $("#sell_num").slider("option", "value", $("#sell_num_shares").val());
+        $("#sell_cost").val("$" + $("#sell_num_shares").val()*$("#pps").text());
       }
     });
 
