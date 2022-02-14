@@ -262,7 +262,7 @@
                                                 <label for="sell_num_shares" class="stocktip-text-15">Shares:</label>
                                                 <input type="text" class="slider_text slider_text_no_border" id="sell_num_shares"><br>
 
-                                                <label for="sell_cost" class="stocktip-text-15">$:</label>
+                                                <label for="sell_cost" class="stocktip-text-15">Cost:</label>
                                                 <input type="text" class="slider_text slider_text_no_border" id="sell_cost">
                                             </div>
                                             <div class="slider_slider" id="sell_num"></div>
