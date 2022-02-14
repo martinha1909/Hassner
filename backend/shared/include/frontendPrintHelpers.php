@@ -778,8 +778,8 @@
         if($res->num_rows > 0)
         {
             echo '
-                <h3 class="h3-blue py-2">Open Buy</h3>
-                <div class="row">
+                <div>
+                <h3 class="py-2 mx-2">Buy Order</h3>
             ';
             while($row = $res->fetch_assoc())
             {
@@ -829,8 +829,8 @@
         if($res->num_rows > 0)
         {
             echo '
-                <h3 class="h3-blue py-2">Open Sell</h3>
-                <div class="row">
+                <div>
+                <h3 class="py-2 mx-2">Sell Order</h3>
             ';
             while($row = $res->fetch_assoc())
             {
