@@ -261,20 +261,26 @@
                                             <div class="textbox_container">
                                                 <label for="sell_num_shares" class="stocktip-text-15">Shares:</label>
                                                 <input type="text" class="slider_text slider_text_no_border" id="sell_num_shares"><br>
+
                                                 <label for="sell_cost" class="stocktip-text-15">$:</label>
                                                 <input type="text" class="slider_text slider_text_no_border" id="sell_cost">
                                             </div>
-                                        <div class="slider_slider" id="sell_num"></div>
-                                        <div class="slider_slider" id="sell_limit"></div>
-                                        <div class="stocktip">
-                                            <p id="sell_tip" class="stocktip-text">Order will be executed as market price</p>
-                                            <p id="not_available_error_sell stocktip-text" class="error-msg"></p>
-                                        </div>
-                                        <div class="order_btn_container">
-                                            <button class="btn btn-primary py-2" id="sell_order">Sell</button>
+                                            <div class="slider_slider" id="sell_num"></div>
+                                            <div class="slider_slider" id="sell_limit"></div>
+                                            <div class="py-2">
+                                                <input type="text" class="slider_text_lim slider_text_no_border float-left" value="None" id="sell_stop_val">
+                                                <input type="text" class="slider_text_lim slider_text_no_border float-right" value="None" id="sell_limit_val">
+                                            </div>
+                                            <div class="py-2">
+                                                <div class="stocktip">
+                                                    <p id="sell_tip" class="stocktip-text">Order will be executed as market price</p>
+                                                </div>
+                                                <div class="order_btn_container">
+                                                    <button class="btn btn-primary py-2" id="sell_order">Sell</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             ';
                         }
                     }

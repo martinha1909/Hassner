@@ -93,33 +93,93 @@ $( function() {
 
   $(this).find('#buy_limit_val').keypress(function(e) {
     if(e.which == 13) {
-      if($("#buy_limit_val").val() < min_limit)
+      if($("#buy_limit_val").val())
       {
-        $("#buy_limit_val").val(min_limit);
+        if($("#buy_limit_val").val() < min_limit)
+        {
+          $("#buy_limit_val").val(min_limit);
+        }
+        else if($("#buy_limit_val").val() > $("#buy_limit").slider("values", 1))
+        {
+          $("#buy_limit_val").val($("#buy_limit").slider("values", 1));
+        }
       }
-      else if($("#buy_limit_val").val() > $("#buy_limit").slider("values", 1))
+      else
       {
-        $("#buy_limit_val").val($("#buy_limit").slider("values", 1));
+        $("#buy_limit_val").val("None");
       }
-      $("#buy_limit").slider("values", 0, $("#buy_limit_val").val());
-      $("#buy_tip").text("The buy order will be executed as soon as the price is ≤  " + $("#buy_limit_val").val());
-      recalcSliderLimits($("#buy_limit_val").val(), $("#buy_limit").slider("values", 1));
+      if($("#buy_limit_val").val() != "None")
+      {
+        $("#buy_limit").slider("values", 0, $("#buy_limit_val").val());
+        if($("#buy_limit").slider("values", 1) < max_limit)
+        {
+          $("#buy_tip").text("The buy order will be executed as soon as the price is ≤  " + $("#buy_limit_val").val() + " or ≥ " + $("#buy_limit").slider("values", 1));
+        }
+        else
+        {
+          $("#buy_tip").text("The buy order will be executed as soon as the price is ≤  " + $("#buy_limit_val").val());
+        }
+        recalcSliderLimits($("#buy_limit_val").val(), $("#buy_limit").slider("values", 1));
+      }
+      else
+      {
+        $("#buy_limit").slider("values", 0, min_limit);
+        if($("#buy_limit").slider("values", 1) < max_limit)
+        {
+          $("#buy_tip").text("The buy order will be executed as soon as the price is ≥ " + $("#buy_limit").slider("values", 1));
+        }
+        else
+        {
+          $("#buy_tip").text("Order will be executed as market price");
+        }
+        recalcSliderLimits(min_limit, $("#buy_limit").slider("values", 1));
+      }
     }
   });
 
   $(this).find('#buy_stop_val').keypress(function(e) {
     if(e.which == 13) {
-      if($("#buy_stop_val").val() > max_limit)
+      if($("#buy_stop_val").val())
       {
-        $("#buy_stop_val").val(max_limit);
+        if($("#buy_stop_val").val() > max_limit)
+        {
+          $("#buy_stop_val").val(max_limit);
+        }
+        else if($("#buy_stop_val").val() < $("#buy_limit").slider("values", 0))
+        {
+          $("#buy_stop_val").val($("#buy_limit").slider("values", 0));
+        }
       }
-      else if($("#buy_stop_val").val() < $("#buy_limit").slider("values", 0))
+      else
       {
-        $("#buy_stop_val").val($("#buy_limit").slider("values", 0));
+        $("#buy_stop_val").val("None");
       }
-      $("#buy_limit").slider("values", 1, $("#buy_stop_val").val());
-      $("#buy_tip").text("The buy order will be executed as soon as the price is ≥ " + $("#buy_stop_val").val());
-      recalcSliderLimits($("#buy_limit").slider("values", 0), $("#buy_stop_val").val());
+      if($("#buy_stop_val").val() != "None")
+      {
+        $("#buy_limit").slider("values", 1, $("#buy_stop_val").val());
+        if($("#buy_limit").slider("values", 0) > min_limit)
+        {
+          $("#buy_tip").text("The buy order will be executed as soon as the price is ≤ " + $("#buy_limit").slider("values", 0) + " or ≥ " + $("#buy_stop_val").val());
+        }
+        else
+        {
+          $("#buy_tip").text("The buy order will be executed as soon as the price is ≥ " + $("#buy_stop_val").val());
+        }
+        recalcSliderLimits($("#buy_limit").slider("values", 0), $("#buy_stop_val").val());
+      }
+      else
+      {
+        $("#buy_limit").slider("values", 1, max_limit);
+        if($("#buy_limit").slider("values", 0) > min_limit)
+        {
+          $("#buy_tip").text("The buy order will be executed as soon as the price is ≤ " + $("#buy_limit").slider("values", 0));
+        }
+        else
+        {
+          $("#buy_tip").text("Order will be executed as market price");
+        }
+        recalcSliderLimits($("#buy_limit").slider("values", 0), max_limit);
+      }
     }
   });
 
@@ -212,6 +272,98 @@ $( function() {
       }
     });
 
+    $(this).find('#sell_limit_val').keypress(function(e) {
+      if(e.which == 13) {
+        if($("#sell_limit_val").val())
+        {
+          if($("#sell_limit_val").val() > max_limit)
+          {
+            $("#sell_limit_val").val(max_limit);
+          }
+          else if($("#sell_limit_val").val() < $("#sell_limit").slider("values", 0))
+          {
+            $("#sell_limit_val").val($("#sell_limit").slider("values", 0));
+          }
+        }
+        else
+        {
+          $("#sell_limit_val").val("None");
+        }
+        if($("#sell_limit_val").val() != "None")
+        {
+          $("#sell_limit").slider("values", 1, $("#sell_limit_val").val());
+          if($("#sell_limit").slider("values", 0) > min_limit)
+          {
+            $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + $("#sell_limit").slider("values", 0) + " or ≥ " + $("#sell_limit_val").val());
+          }
+          else
+          {
+            $("#sell_tip").text("The sell order will be executed as soon as the price is ≥ " + $("#sell_limit_val").val());
+          }
+          recalcSellSlider($("#sell_limit").slider("values", 0), $("#sell_limit_val").val());
+        }
+        else
+        {
+          $("#sell_limit").slider("values", 1, max_limit);
+          if($("#sell_limit").slider("values", 0) > min_limit)
+          {
+            $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + $("#sell_limit").slider("values", 0));
+          }
+          else
+          {
+            $("#sell_tip").text("Order will be executed as market price");
+          }
+          recalcSellSlider($("#sell_limit").slider("values", 0), max_limit);
+        }
+      }
+    });
+  
+    $(this).find('#sell_stop_val').keypress(function(e) {
+      if(e.which == 13) {
+        if($("#sell_stop_val").val())
+        {
+          if($("#sell_stop_val").val() < min_limit)
+          {
+            $("#sell_stop_val").val(min_limit);
+          }
+          else if($("#sell_stop_val").val() > $("#sell_limit").slider("values", 1))
+          {
+            $("#sell_stop_val").val($("#sell_limit").slider("values", 1));
+          }
+        }
+        else
+        {
+          $("#sell_stop_val").val("None");
+        }
+        if($("#sell_stop_val").val() != "None")
+        {
+          $("#sell_limit").slider("values", 0, $("#sell_stop_val").val());
+          if($("#sell_limit").slider("values", 1) < max_limit)
+          {
+            $("#sell_tip").text("The sell order will be executed as soon as the price is ≤  " + $("#sell_stop_val").val() + " or ≥ " + $("#sell_limit").slider("values", 1));
+          }
+          else
+          {
+            $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + $("#sell_stop_val").val());
+          }
+          recalcSellSlider($("#sell_stop_val").val(), $("#sell_limit").slider("values", 1));
+        }
+        else
+        {
+          $("#sell_limit").slider("values", 0, min_limit);
+          if($("#sell_limit").slider("values", 1) < max_limit)
+          {
+            $("#sell_tip").text("The sell order will be executed as soon as the price is ≥ " + $("#sell_limit").slider("values", 1));
+          }
+          else
+          {
+            $("#sell_tip").text("Order will be executed as market price");
+          }
+          recalcSellSlider(min_limit, $("#sell_limit").slider("values", 1));
+        }
+      }
+    });
+
     // Sell slider init
     $( "#sell_limit" ).slider({
       range: true,
@@ -264,9 +416,16 @@ $( function() {
 
     $(this).find('#buy_num_shares').keypress(function(e) {
       if(e.which == 13) {
-        if($("#buy_num_shares").val() > max_num_of_shares)
+        if($("#buy_num_shares").val())
         {
-          $("#buy_num_shares").val(max_num_of_shares);
+          if($("#buy_num_shares").val() > max_num_of_shares)
+          {
+            $("#buy_num_shares").val(max_num_of_shares);
+          }
+        }
+        else
+        {
+          $("#buy_num_shares").val(0);
         }
         $("#buy_num").slider("option", "value", $("#buy_num_shares").val());
         $("#buy_cost").val("$" + $("#buy_num_shares").val()*$("#pps").text());
@@ -321,9 +480,16 @@ $( function() {
 
     $(this).find('#sell_num_shares').keypress(function(e) {
       if(e.which == 13) {
-        if($("#sell_num_shares").val() > sellable_shares)
+        if($("#sell_num_shares").val())
         {
-          $("#sell_num_shares").val(sellable_shares);
+          if($("#sell_num_shares").val() > sellable_shares)
+          {
+            $("#sell_num_shares").val(sellable_shares);
+          }
+        }
+        else
+        {
+          $("#sell_num_shares").val(0);
         }
         $("#sell_num").slider("option", "value", $("#sell_num_shares").val());
         $("#sell_cost").val("$" + $("#sell_num_shares").val()*$("#pps").text());
