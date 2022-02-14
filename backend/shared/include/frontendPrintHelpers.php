@@ -811,7 +811,7 @@
                         <form action="../../backend/listener/RemoveBuyOrderBackend.php" method="post">
                             <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
                         </form>
-                        <b class="portfolio-artist">'.$artist_market_tag.'</b><b class="portfolio-sellorder">-$'.$amount_spending.'</b><br>
+                        <b class="portfolio-artist">'.$artist_market_tag.'</b><b class="portfolio-sellorder">-'.$amount_spending.'</b><br>
                         <b class="portfolio-shareamount-openorder">'.$row['quantity'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
                     </div>
                 ';
@@ -862,7 +862,7 @@
                         <form action="../../backend/shared/RemoveSellOrderBackend.php" method="post">
                             <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
                         </form>
-                        <b class="portfolio-artist">'.$artist_market_tag.'</b><b class="portfolio-sellorder">-$'.$amount_selling.'</b><br>
+                        <b class="portfolio-artist">'.$artist_market_tag.'</b><b class="portfolio-sellorder">+'.$amount_selling.'</b><br>
                         <b class="portfolio-shareamount-openorder">'.$row['no_of_share'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
                     </div>
                 ';
