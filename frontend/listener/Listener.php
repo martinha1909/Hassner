@@ -102,7 +102,7 @@
                         <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
                     </li>
                 </ul>
-                <div class="container my-auto mx-auto">
+                <div class="container my-auto mx-auto col-8">
                     <ul class="list-group-campaign my-4">
                         <div id="portfolio_content">
                             <h3 class="h3-blue">Owned Shares</h3>
