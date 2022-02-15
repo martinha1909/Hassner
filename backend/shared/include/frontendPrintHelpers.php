@@ -747,15 +747,19 @@
                 if($total_percentage_change > 0)
                 {
                     echo '
-                        <b class="portfolio-artist">'.$artist_username.'</b><b class="portfolio-percentage-positive">+'.$total_percentage_change.'%</b><br>
+                        <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
+                            <input name = "artist_name" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_username.'"><b class="portfolio-percentage-positive">+'.$total_percentage_change.'%</b><br>
+                        </form>
                         <b class="portfolio-shareamount">'.$owned_shares.'x</b><b class="portfolio-gain">+$'.$total_amount_gain.'</b>
                     ';
                 }
                 else
                 {
                     echo '
-                        <b class="portfolio-artist">'.$artist_username.'</b><b class="portfolio-percentage-negative">'.$total_percentage_change.'%</b><br>
-                        <b class="portfolio-shareamount">'.$owned_shares.'x</b><b class="portfolio-loss">+$'.$total_amount_gain.'</b>
+                        <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
+                            <input name = "artist_name" class="input-no-border text-bold" id ="abc_blue" type = "submit" role="button" value = "'.$artist_username.'"><b class="portfolio-percentage-negative">'.$total_percentage_change.'%</b><br>
+                        </form>
+                        <b class="portfolio-shareamount">'.$owned_shares.'x</b><b class="portfolio-loss">$'.$total_amount_gain.'</b>
                     ';
                 }
                 echo '
@@ -811,7 +815,10 @@
                         <form action="../../backend/listener/RemoveBuyOrderBackend.php" method="post">
                             <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
                         </form>
-                        <b class="portfolio-artist">'.$artist_market_tag.'</b><b class="portfolio-sellorder">-'.$amount_spending.'</b><br>
+                        <form 
+                        <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method="post">
+                            <input name = "artist_ticker" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_market_tag.'"><b class="portfolio-sellorder">-'.$amount_spending.'</b><br>
+                        <form>
                         <b class="portfolio-shareamount-openorder">'.$row['quantity'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
                     </div>
                 ';
@@ -862,7 +869,9 @@
                         <form action="../../backend/shared/RemoveSellOrderBackend.php" method="post">
                             <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
                         </form>
-                        <b class="portfolio-artist">'.$artist_market_tag.'</b><b class="portfolio-sellorder">+'.$amount_selling.'</b><br>
+                        <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method="post">
+                            <input name = "artist_ticker" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_market_tag.'"><b class="portfolio-sellorder">+'.$amount_selling.'</b><br>
+                        <form>
                         <b class="portfolio-shareamount-openorder">'.$row['no_of_share'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
                     </div>
                 ';
