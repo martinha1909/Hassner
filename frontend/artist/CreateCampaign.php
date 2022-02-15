@@ -48,7 +48,7 @@ include '../../backend/shared/include/CampaignHelpers.php';
                     }
                     ?>
                     <h2 class="h2-blue">Your Campaign</h2>
-                    <form action="../../backend/artist/CreateCampaignBackend.php" method="post">
+                    <form action="../../backend/artist/CreateCampaignBackend.php" method="post" id="create_campaign_form">
                         <div>
                             <h4>Offering</h4>
                             <input type="radio" id="tickets" name="offer" value="tickets">
@@ -89,6 +89,7 @@ include '../../backend/shared/include/CampaignHelpers.php';
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
     <script src="../js/artist/campaign/Campaign.js"></script>
+    <script src="../js/shared/button/PreventMultipleClicks.js"></script>
 </body>
 
 </html>
