@@ -13,12 +13,6 @@ class Buttons
 {
     constructor() 
     {
-        // this.buttons = new Array(parseInt($("#sell_orders_size").text()));
-        // if(Object.seal)
-        // {
-        //     this.buttons.fill(undefined);
-        //     Object.seal(this.buttons);
-        // }
         this.buttons = [];
     }
 
@@ -146,7 +140,6 @@ function buyBackShareClick(i)
 function buyBackShare(sell_order_id, index, buy_back_price)
 {
     var buy_back_quantity = $("#buy_num_shares_"+index).val();
-    // console.log(seller_username);
     $.ajax({
         type: "POST",
         url: window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/artist/BuyBackSharesBackend.php",

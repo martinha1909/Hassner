@@ -81,13 +81,14 @@ include '../../backend/shared/include/CampaignHelpers.php';
                             <label for="benchmark">Benchmark</label><br>
                         </div>
                 </div>
-                <input type="submit" class="btn btn-primary col-4" role="button" aria-pressed="true" value="Commence Campaign">
+                <input type="submit" class="btn btn-primary col-4" role="button" id="commence_campaign_btn" aria-pressed="true" value="Commence Campaign">
                 </form>
             </div>
         </div>
     </section>
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
+    <script src="../js/artist/campaign/Campaign.js"></script>
 </body>
 
 </html>

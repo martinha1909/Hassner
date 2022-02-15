@@ -298,74 +298,87 @@ $( function() {
       active: false
     });
 
-    $("#buy_order").click(function(){
-    var min_limit_top = $("#buy_limit").slider("values", 0);
-    var max_limit_top = $("#buy_limit").slider("values", 1);
-    console.log(min_limit_top);
-    console.log(max_limit_top);
-    var url_event = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/BuyAndSellEvent.php";
-      $.ajax({
-        url : url_event,
-        method : "POST",
-        data:{
-          user_event: "BUY",
-          num_of_shares: $("#buy_num_shares").val(),
-          chosen_min: min_limit_top,
-          chosen_max: max_limit_top,
-          min_lim: min_limit,
-          max_lim: max_limit,
-          market_price: $("#pps").text(),
-          num_shares: $("#buy_num_shares").val(),
-          cost: $('#buy_cost').val()
-        },
-        success : function(data){
-          console.log(data);
-          if(data === "Price Outdated")
-          {
-            $("#price_outdated").text("Price has changed, please refresh the page and try again");
-          }
-          else if(data === "SUCCESS")
-          {
-            window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/Listener.php";
-          }
-        },
-        error : function(data){
+    $("#buy_order").click(function(event){
+      if(!event.detail || event.detail == 1)
+      {
+        var min_limit_top = $("#buy_limit").slider("values", 0);
+        var max_limit_top = $("#buy_limit").slider("values", 1);
+        console.log(min_limit_top);
+        console.log(max_limit_top);
+        var url_event = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/BuyAndSellEvent.php";
+          $.ajax({
+            url : url_event,
+            method : "POST",
+            data:{
+              user_event: "BUY",
+              num_of_shares: $("#buy_num_shares").val(),
+              chosen_min: min_limit_top,
+              chosen_max: max_limit_top,
+              min_lim: min_limit,
+              max_lim: max_limit,
+              market_price: $("#pps").text(),
+              num_shares: $("#buy_num_shares").val(),
+              cost: $('#buy_cost').val()
+            },
+            success : function(data){
+              console.log(data);
+              if(data === "Price Outdated")
+              {
+                $("#price_outdated").text("Price has changed, please refresh the page and try again");
+              }
+              else if(data === "SUCCESS")
+              {
+                window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/Listener.php";
+              }
+            },
+            error : function(data){
 
+            }
+          });
         }
-      });
+        else
+        {
+          $("#buy_order").prop('disabled', true);
+        }
     })
 
-    $("#sell_order").click(function(){
-      var min_limit_top = $("#sell_limit").slider("values", 0);
-      var max_limit_top = $("#sell_limit").slider("values", 1);
-      var url_event = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/BuyAndSellEvent.php";
-      $.ajax({
-        url : url_event,
-        method : "POST",
-        data:{
-          user_event: "SELL",
-          num_of_shares: $("#sell_num_shares").val(),
-          chosen_min: min_limit_top,
-          chosen_max: max_limit_top,
-          min_lim: min_limit,
-          max_lim: max_limit,
-          market_price: $("#pps").text()
-        },
-        success : function(data){
-          console.log(data);
-          if(data === "Price Outdated")
-          {
-            //Error handling for prices don't match here
-          }
-          else if(data === "SUCCESS")
-          {
-            window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/Listener.php";
-          }
-        },
-        error : function(data){
+    $("#sell_order").click(function(event){
+      if(!event.detail || event.detail == 1)
+      {
+        var min_limit_top = $("#sell_limit").slider("values", 0);
+        var max_limit_top = $("#sell_limit").slider("values", 1);
+        var url_event = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/sliders/BuyAndSellEvent.php";
+        $.ajax({
+          url : url_event,
+          method : "POST",
+          data:{
+            user_event: "SELL",
+            num_of_shares: $("#sell_num_shares").val(),
+            chosen_min: min_limit_top,
+            chosen_max: max_limit_top,
+            min_lim: min_limit,
+            max_lim: max_limit,
+            market_price: $("#pps").text()
+          },
+          success : function(data){
+            if(data === "Price Outdated")
+            {
+              $("#price_outdated").text("Price has changed, please refresh the page and try again");
+            }
+            else if(data === "SUCCESS")
+            {
+              window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/Listener.php";
+            }
+          },
+          error : function(data){
 
-        }
-      });
+          }
+        });
+      }
+      else
+      {
+        $("#sell_order").prop('disabled', true);
+      }
     })
     $( "#sell_num_shares" ).val($("#sell_num").slider("value"));
     $( "#buy_num_shares" ).val($("#buy_num").slider("value"));

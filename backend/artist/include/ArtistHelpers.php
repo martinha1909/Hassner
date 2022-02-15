@@ -381,7 +381,7 @@
                                         <label for="buy_num_shares_'.$i.'" class="text-blue text-bold">Shares:</label>
                                         <input type="text" class="buy_back_shares_slider_text" value="1" id="buy_num_shares_'.$i.'">
                                         <div class="slider_container">
-                                            <div id="buy_num_'.$i.'"></div><input role="button" type="submit" class="input-no-background-white py-2" value="->" onclick="buyBackShare('.$sell_orders[$i]->getID().', '.$i.', '.$sell_orders[$i]->getSellingPrice().')">
+                                            <div id="buy_num_'.$i.'"></div><input role="button" type="submit" id="prevent_onclick_'.$i.'" class="input-no-background-white py-2" value="->" onclick="buyBackShare('.$sell_orders[$i]->getID().', '.$i.', '.$sell_orders[$i]->getSellingPrice().');">
                                         </div>
                                     </div>
                                 </td>
