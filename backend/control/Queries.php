@@ -1220,6 +1220,33 @@
             return $result;
         }
 
+        function searchMaxCampaignID($conn)
+        {
+            $ret = 0;
+
+            $sql = "SELECT MAX(id) AS max_campaign_id FROM campaign";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $ret = $result->fetch_assoc();
+
+            return $ret['max_campaign_id'];
+        }
+
+        function searchCampaignByID($conn, $id)
+        {
+            $reult = 0;
+
+            $sql = "SELECT * FROM campaign WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchNumberOfShareDistributed($conn, $artist_username)
         {
             $sql = "SELECT Share_Distributed FROM account WHERE username = ?";
@@ -2062,15 +2089,26 @@
                     VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('sssssdis', $artist_username, $offering, $release_date, $expiration_date, $type, $minimum_ethos, $eligible_participant, $winner);
-            if($stmt->execute() == TRUE)
+            if($stmt->execute() == true)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrServer;
             }
+
             return $status;
+        }
+
+        function addToCampaignParticipant($conn, $user_username, $campaign_id)
+        {
+            echo $campaign_id."\n";
+            $sql = "INSERT INTO campaign_participant (user_username, campaign_id)
+                    VALUES(?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('si', $user_username, $campaign_id);
+            $stmt->execute();
         }
 
         function followArtist($conn, $user_username, $artist_username)

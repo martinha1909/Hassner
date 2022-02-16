@@ -42,27 +42,45 @@
             if($offer == "other")
             {
                 $other_offer = $_POST['other_offering'];
-                postCampaign($conn, 
-                             $_SESSION['username'], 
-                             $other_offer, 
-                             $current_date, 
-                             $expiration_date,
-                             $type,
-                             $minimum_ethos);
+                $_SESSION['status'] = postCampaign($conn, 
+                                                   $_SESSION['username'], 
+                                                   $other_offer, 
+                                                   $current_date, 
+                                                   $expiration_date,
+                                                   $type,
+                                                   $minimum_ethos);
             }
             else
             {
-                postCampaign($conn, 
-                             $_SESSION['username'], 
-                             $offer, 
-                             $current_date,
-                             $expiration_date,
-                             $type,
-                             $minimum_ethos);
+                $_SESSION['status'] = postCampaign($conn, 
+                                                   $_SESSION['username'], 
+                                                   $offer, 
+                                                   $current_date,
+                                                   $expiration_date,
+                                                   $type,
+                                                   $minimum_ethos);
             }
 
-            $_SESSION['dependencies'] = "FRONTEND";
-            returnToMainPage();
+            if($_SESSION['status'] == StatusCodes::Success)
+            {
+                $new_campaign_id = searchMaxCampaignID($conn);
+                $res = searchArtistTotalSharesBought($conn, $_SESSION['username']);
+                while($row = $res->fetch_assoc())
+                {
+                    if($row['shares_owned'] >= $minimum_ethos && $row['user_username'] != $_SESSION['username'])
+                    {
+                        echo $row['user_username']."\n";
+                        addToCampaignParticipant($conn, $row['user_username'], $new_campaign_id);
+                    }
+                }
+                $_SESSION['dependencies'] = "FRONTEND";
+                returnToMainPage();
+            }
+            else
+            {
+                $_SESSION['dependencies'] = "FRONTEND";
+                header("Location: ../../frontend/artist/CreateCampaign.php");
+            }
         }
         else
         {
