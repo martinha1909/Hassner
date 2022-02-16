@@ -137,8 +137,15 @@ function buyBackShareClick(i)
     }
 }
 
-function buyBackShare(sell_order_id, index, buy_back_price)
+function buyBackShare(sell_order_id, index, buy_back_price, event)
 {
+    //TODO: this doesn't prevent multiple clicks for this specific case. Do not know why and requires further investigation
+    //Uncomment to investigate
+    // var prevent_multiple_click_btn = document.getElementById('prevent_onclick_'+index);
+    // prevent_multiple_click_btn.addEventListener("submit", function(){
+    //     // Disable the submit button
+    //     prevent_multiple_click_btn.setAttribute('disabled', 'disabled');
+    // }, false);
     var buy_back_quantity = $("#buy_num_shares_"+index).val();
     $.ajax({
         type: "POST",

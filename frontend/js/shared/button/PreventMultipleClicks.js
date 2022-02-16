@@ -1,12 +1,18 @@
+//form group
 var campaign_commence_form = document.getElementById('create_campaign_form');
+
+//button group
 var campaign_commence_btn = document.getElementById('commence_campaign_btn');
 
-campaign_commence_form.addEventListener('submit', function() {
-
+function disableButton(button)
+{
     // Disable the submit button
-    campaign_commence_btn.setAttribute('disabled', 'disabled');
- 
+    button.setAttribute('disabled', 'disabled');
+
     // Change the "Submit" text
-    campaign_commence_btn.value = 'Please wait...';
-             
+    button.value = 'Please wait...';
+}
+
+campaign_commence_form.addEventListener('submit', function() {
+    disableButton(campaign_commence_btn);
  }, false);
