@@ -433,6 +433,15 @@ select::-ms-expand {
   height: 200px;
 }
 
+.campaign-box-participated-winner {
+  border-radius: 25px;
+  background: rgb(119, 119, 119);
+  padding: 15px;
+  margin: 20px;
+  width: 200px;
+  height: 200px;
+}
+
 .campaign-box-near {
   border-radius: 25px;
   /* background: linear-gradient(180deg, #1c1c1cff 10%, rgb(255, 116, 116) 90%); */

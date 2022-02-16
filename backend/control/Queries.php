@@ -397,7 +397,7 @@
 
         function searchArtistCampaigns($conn, $artist_username)
         {
-            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE artist_username = ?";
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active FROM campaign WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -408,13 +408,12 @@
 
         function searchArtistCampaignsByExpDateNotEnough($conn, $artist_username, $user_owned_shares)
         {
-            $expired = "0000-00-00 00:00:00";
             $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner 
                     FROM campaign 
-                    WHERE artist_username = ? AND date_expires != ? AND minimum_ethos > ? 
+                    WHERE artist_username = ? AND date_expires != ? AND minimum_ethos > ? AND is_active = 0
                     ORDER BY minimum_ethos ASC";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssi', $artist_username, $expired, $user_owned_shares);
+            $stmt->bind_param('si', $artist_username, $user_owned_shares);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -423,7 +422,7 @@
 
         function searchTrendingCampaign($conn)
         {
-            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner 
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active
                     FROM campaign
                     ORDER BY eligible_participants DESC";
             $stmt = $conn->prepare($sql);
@@ -479,7 +478,7 @@
 
         function searchCampaignsByType($conn, $campaign_type)
         {
-            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE type = ?";
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active FROM campaign WHERE type = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $campaign_type);
             $stmt->execute();
@@ -2057,11 +2056,12 @@
             $status = 0;
             $eligible_participant = 0;
             $winner = NULL;
+            $is_active = 1;
 
-            $sql = "INSERT INTO campaign (artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner)
-                    VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO campaign (artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active)
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sssssdis', $artist_username, $offering, $release_date, $expiration_date, $type, $minimum_ethos, $eligible_participant, $winner);
+            $stmt->bind_param('sssssdisi', $artist_username, $offering, $release_date, $expiration_date, $type, $minimum_ethos, $eligible_participant, $winner, $is_active);
             if($stmt->execute() == TRUE)
             {
                 $status = "SUCCESS";

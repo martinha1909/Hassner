@@ -253,13 +253,9 @@
         $ret = array();
         $conn = connect();
 
-        $res = searchUsersInvestment($conn, $user_username);
+        $res = searchUserInvestedArtists($conn, $user_username);
         while($row = $res->fetch_assoc()) {
-            if(sizeof($ret) == 0) {
-                array_push($ret, $row['artist_username']);
-            } else if ($row['artist_username'] != $ret[sizeof($ret) - 1]) {
-                array_push($ret, $row['artist_username']);
-            }
+            array_push($ret, $row['artist_username']);
         }
 
         return $ret;
@@ -364,11 +360,11 @@
 
         for($i = 0; $i < sizeof($all_artists); $i++) 
         {
-            $participated_campaign = new Campaign();
             $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
             $res = searchArtistCampaigns($conn, $all_artists[$i]);
             while($row = $res->fetch_assoc()) 
             {
+                $participated_campaign = new Campaign();
                 if($row['date_expires'] == "0000-00-00 00:00:00")
                 {
                     $time_released = dbDateTimeParser($row['date_posted']);
@@ -376,14 +372,45 @@
                     $participated_campaign->setArtistUsername($row['artist_username']);
                     $participated_campaign->setOffering($row['offering']);
                     $participated_campaign->setMinEthos($row['minimum_ethos']);
-                    $participated_campaign->setWinner($row['winner']);
+                    if($row['type'] == CampaignType::RAFFLE)
+                    {
+                        // if($row['winner'] != NULL)
+                        // {
+                        //     $participated_campaign->setWinner($row['winner']);
+                        // }
+                        // else
+                        // {
+                        //     $participated_campaign->setWinner(NULL);
+                        // }
+                        $participated_campaign->setWinner($row['winner']);
+                    }
                     $participated_campaign->setDatePosted($time_released);
                     $participated_campaign->setType($row['type']);
 
                     array_push($ret, $participated_campaign);
                 }
+                // for($i = 0; $i < sizeof($ret); $i++)
+                // {
+                //     if($ret[$i]->getType() == CampaignType::RAFFLE)
+                //     {
+                //         if($ret[$i]->getWinner() == NULL)
+                //         {
+                //             echo "null ";
+                //         }
+                //         else
+                //         {
+                //             echo $ret[$i]->getWinner()." ";
+                //         }
+                //     }
+                // }
+                // echo "<br>";
             }
         }
+
+        // for($i = 0; $i < sizeof($ret); $i++)
+        // {
+        //     echo $ret[$i]->getWinner()." ";
+        // }
 
         return $ret;
     }

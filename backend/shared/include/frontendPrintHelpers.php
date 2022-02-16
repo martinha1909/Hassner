@@ -77,9 +77,18 @@
             for ($i = 0; $i < sizeof($participated_campaigns); $i++) 
             {
                 $artist_market_tag = getArtistMarketTag($participated_campaigns[$i]->getArtistUsername());
-                echo '
-                    <div class="campaign-box-participated col-2.5">
-                ';
+                if($participated_campaigns[$i]->getWinner() == $username)
+                {
+                    echo '
+                        <div class="campaign-box-participated-winner col-2.5">
+                    ';
+                }
+                else
+                {
+                    echo '
+                        <div class="campaign-box-participated col-2.5">
+                    ';
+                }
 
                 if($participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
@@ -101,7 +110,31 @@
                 echo '
                         <b class="text-black">🤲 '.$participated_campaigns[$i]->getOffering().'</b>
                         <p class="text-black">⌛ Expired</p>
-                        <b class="text-black">⌖ '.$participated_campaigns[$i]->getMinEthos().'</b>
+                ';
+
+                if($participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
+                {
+                    echo '
+                        <b class="text-black">Win: N/A</b>
+                    ';
+                }
+                else
+                {
+                    if($participated_campaigns[$i]->getWinner() == $username)
+                    {
+                        echo '
+                            <b class="text-black">Win: Yes</b>
+                        ';
+                    }
+                    else
+                    {
+                        echo '
+                            <b class="text-black">Win: No</b>
+                        ';
+                    }
+                }
+                        
+                echo '
                     </div>
                 ';
             }
