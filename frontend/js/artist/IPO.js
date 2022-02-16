@@ -38,11 +38,11 @@ $( function() {
 
 //Disable for now since multiple submission on enter pressed is not working and requires further investigation
 //Uncomment to investigate
-$(document).keypress(function (e) {
-    var key = e.which;
-    if(key == 13)  // the enter key code
-    {
-        $('#ipo_btn').click();
-        return false;  
-    }
-});  
+// $(document).keypress(function (e) {
+//     var key = e.which;
+//     if(key == 13)  // the enter key code
+//     {
+//         $('#ipo_btn').click();
+//         return false;  
+//     }
+// });  
