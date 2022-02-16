@@ -649,14 +649,6 @@
                         <b class="text-black">⌖ '.$current_campaigns[$i]->getMinEthos().'</b>
                     </div>
                 ';
-                // echo '
-                //         <tr>
-                //             <th scope="row">' . $current_campaigns[$i]->getOffering() . '</th>
-                //             <td>' . $current_campaigns[$i]->getMinEthos() . '</td>
-                //             <td>' . $type .'</td>
-                //             <td>'. dbDateTimeParser($current_campaigns[$i]->getDatePosted()) .'</td>
-                //         </tr>
-                // ';
             }
 
             echo '
