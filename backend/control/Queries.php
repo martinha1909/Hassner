@@ -1362,9 +1362,9 @@
             $conn->query($sql);
         }
 
-        function updateCampaignExpirationDate($conn, $campaign_id, $exp_date)
+        function updateCampaignActiveStatus($conn, $campaign_id, $is_active)
         {
-            $sql = "UPDATE campaign SET date_expires = '$exp_date' WHERE id='$campaign_id'";
+            $sql = "UPDATE campaign SET is_active = '$is_active' WHERE id='$campaign_id'";
             $conn->query($sql);
         }
 

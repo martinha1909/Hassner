@@ -312,7 +312,7 @@
                             $roll_res = getRaffleResult($conn, $row['id'], $artist_share_distributed['Share_Distributed']);
                         }
                         updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
-                        updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
+                        updateCampaignActiveStatus($conn, $row['id'], 0);
                     }
                     if($row['type'] == "raffle")
                     {

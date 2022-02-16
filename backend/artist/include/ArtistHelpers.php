@@ -322,7 +322,7 @@
                             //the campaign promises
                             $campaign->setDeliverProgress(CampaignDeliverProgress::NEGATIVE);
                             $campaign->setActive(0);
-                            $campaign->setDateExpires($row['date_expires']);
+                            $campaign->setDateExpires($row_winning_campaign['date_expires']);
                         }
                         $campaign->setOffering($row_winning_campaign['offering']);
 

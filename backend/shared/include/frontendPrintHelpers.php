@@ -412,7 +412,7 @@
 
                 echo '
                                         <td>' . $campaign_info[$i]->getOffering() . '</td>
-                                        <td>' . $campaign_info[$i]->getDateExpires() . '</td>
+                                        <td>' . dbDateTimeParser($campaign_info[$i]->getDateExpires()) . '</td>
                                     </tr>
                 ';
             }
