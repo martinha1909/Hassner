@@ -311,7 +311,7 @@
                         $investor->setEmail($investor_info['email']);
                         $investor->setAmountInvested($amount_invested);
 
-                        if($row_winning_campaign['date_expires'] != "0000-00-00 00:00:00")
+                        if($row_winning_campaign['is_active'] != 0)
                         {
                             $campaign->setDateExpires(dbDateTimeParser($row_winning_campaign['date_expires']));
                             $campaign->setDeliverProgress(CampaignDeliverProgress::IN_PROGRESS);
@@ -321,7 +321,8 @@
                             //For now assume all campaigns are not delivered, TODO: have a checkbox or something for artist to check when they deliver 
                             //the campaign promises
                             $campaign->setDeliverProgress(CampaignDeliverProgress::NEGATIVE);
-                            $campaign->setDateExpires("Expired");
+                            $campaign->setActive(0);
+                            $campaign->setDateExpires($row_winning_campaign['date_expires']);
                         }
                         $campaign->setOffering($row_winning_campaign['offering']);
 

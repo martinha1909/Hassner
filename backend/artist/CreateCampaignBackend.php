@@ -69,7 +69,6 @@
                 {
                     if($row['shares_owned'] >= $minimum_ethos && $row['user_username'] != $_SESSION['username'])
                     {
-                        echo $row['user_username']."\n";
                         addToCampaignParticipant($conn, $row['user_username'], $new_campaign_id);
                     }
                 }
@@ -78,6 +77,7 @@
             }
             else
             {
+                //$_SESSION['status'] will have a value of errServer here
                 $_SESSION['dependencies'] = "FRONTEND";
                 header("Location: ../../frontend/artist/CreateCampaign.php");
             }
