@@ -408,9 +408,9 @@
 
         function searchArtistCampaignsByExpDateNotEnough($conn, $artist_username, $user_owned_shares)
         {
-            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner 
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active 
                     FROM campaign 
-                    WHERE artist_username = ? AND date_expires != ? AND minimum_ethos > ? AND is_active = 0
+                    WHERE artist_username = ? AND minimum_ethos > ? AND is_active = 0
                     ORDER BY minimum_ethos ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('si', $artist_username, $user_owned_shares);

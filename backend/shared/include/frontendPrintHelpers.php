@@ -109,7 +109,7 @@
 
                 echo '
                         <b class="text-black">🤲 '.$participated_campaigns[$i]->getOffering().'</b>
-                        <p class="text-black">⌛ Expired</p>
+                        <p class="text-black">⌛ '.$participated_campaigns[$i]->getDateExpires().'</p>
                 ';
 
                 if($participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
