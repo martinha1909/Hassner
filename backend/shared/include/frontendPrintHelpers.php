@@ -620,44 +620,47 @@
 
         if($_SESSION['artist_found'])
         {
+            $artist_market_tag = getArtistMarketTag($artist_username);
             echo '
                 <h3 class="h3-blue py-5">Current Campaigns</h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Offering</th>
-                            <th scope="col">Minimum Shares</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Date Commenced</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="row">
             ';
 
             for($i = 0; $i < sizeof($current_campaigns); $i++)
             {
+                echo '
+                    <div class="campaign-box-participating col-2.5">
+                ';
                 $type = "Error in parsing type";
                 if($current_campaigns[$i]->getType() == CampaignType::RAFFLE)
                 {
-                    $type = "♢";
+                    $type = "♣";
                 }
                 else if($current_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
-                    $type = "♧";
+                    $type = "♦";
                 }
                 echo '
-                        <tr>
-                            <th scope="row">' . $current_campaigns[$i]->getOffering() . '</th>
-                            <td>' . $current_campaigns[$i]->getMinEthos() . '</td>
-                            <td>' . $type .'</td>
-                            <td>'. dbDateTimeParser($current_campaigns[$i]->getDatePosted()) .'</td>
-                        </tr>
+                        <h3 class="h3-blue">'.$artist_market_tag.'
+                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.$type.'</b>
+                        </h3>
+                        <b class="text-black">🤲 '.$current_campaigns[$i]->getOffering().'</b>
+                        <p class="text-black text-bold">⌛ '.dbDateTimeParser($current_campaigns[$i]->getDatePosted()).'</p>
+                        <b class="text-black">⌖ '.$current_campaigns[$i]->getMinEthos().'</b>
+                    </div>
                 ';
+                // echo '
+                //         <tr>
+                //             <th scope="row">' . $current_campaigns[$i]->getOffering() . '</th>
+                //             <td>' . $current_campaigns[$i]->getMinEthos() . '</td>
+                //             <td>' . $type .'</td>
+                //             <td>'. dbDateTimeParser($current_campaigns[$i]->getDatePosted()) .'</td>
+                //         </tr>
+                // ';
             }
 
             echo '
-                    </tbody>
-                </table>
+                </div>
             ';
         }
     }
