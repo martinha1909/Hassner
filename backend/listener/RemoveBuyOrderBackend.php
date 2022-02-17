@@ -5,8 +5,6 @@
     $conn = connect();
     $order_id = key($_POST['remove_id']);
 
-    echo $order_id;
-
     removeBuyOrder($conn, $order_id);
 
     $_SESSION['dependencies'] == "FRONTEND";
