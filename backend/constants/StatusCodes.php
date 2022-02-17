@@ -20,6 +20,7 @@ if(!defined('STATUSCODES_LOADED')){
         const CampaignEmpty = "CAMPAIGN_EMPTY_ERR";
         const CampaignTimeErr = "CAMPAIGN_TIME_ERR";
         const PRICE_OUTDATED = "Price Outdated";
+        const SELLABLE_OUTDATED = "SELLABLE_OUTDATED";
         const TIME_ERR = "TIME_ERR";
         const EMAIL_SENT_ERR_RECIPIENT = "EMAIL_SENT_ERR_RECIPIENT";
         const EMAIL_SENT_ERR_HX = "EMAIL_SENT_ERR_HX";

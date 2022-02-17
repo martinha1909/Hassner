@@ -365,6 +365,10 @@ $( function() {
             {
               $("#price_outdated").text("Price has changed, please refresh the page and try again");
             }
+            else if(data == "SELLABLE_OUTDATED")
+            {
+              $("#price_outdated").text("Data outdated, please refresh and try again");
+            }
             else if(data === "SUCCESS")
             {
               window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/Listener.php";
@@ -377,7 +381,7 @@ $( function() {
       }
       else
       {
-        $("#sell_order").prop('disabled', true);
+        // $("#sell_order").prop('disabled', true);
       }
     })
     $( "#sell_num_shares" ).val($("#sell_num").slider("value"));

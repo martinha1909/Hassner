@@ -15,6 +15,7 @@
     include '../../backend/object/SellOrder.php';
     include '../../backend/object/Campaign.php';
 
+    $_SESSION['lock_count'] = -1;
     //only do actions if an artist is found
     if($_SESSION['artist_found'])
     {
