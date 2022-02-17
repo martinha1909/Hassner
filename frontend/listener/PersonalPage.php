@@ -47,22 +47,28 @@ include '../../backend/shared/include/PersonalPageHelpers.php';
           $account_info = getAccount($_SESSION['username']);
           echo printUserImportantInfo($account_info['email']);
           ?>
-        <!-- Brings to a page that allows user to edit their email address -->
-        <a href="../../backend/shared/EditEmailBackend.php" id="icon-btn">&nbsp<i class="fa fa-pen"></i></a>
         <?php
-        //If they click on the edit button, prompt a textfield that allows user to enter new email and save it
-        if ($_SESSION['edit'] == 2) {
-          echo '
-            <form action="../../backend/shared/UpdateEmailBackend.php" method="post">
-              <div class="form-group py-2">
-                <input type="text" name = "email_edit" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new email address">
-              </div>
-              <div class="text-center">
-                <input type = "submit" class="my_btn edit-btn" role="button" aria-pressed="true" name = "button" value = "Save">  
-              </div>
-            </form>
-        ';
-        }
+          if(isTestingPhase(null, null))
+          {
+            //Brings to a page that allows user to edit their email address
+            echo '
+                  <a href="../../backend/shared/EditEmailBackend.php" id="icon-btn">&nbsp<i class="fa fa-pen"></i></a>
+            ';
+            //If they click on the edit button, prompt a textfield that allows user to enter new email and save it
+            if ($_SESSION['edit'] == 2) 
+            {
+              echo '
+                <form action="../../backend/shared/UpdateEmailBackend.php" method="post">
+                  <div class="form-group py-2">
+                    <input type="text" name = "email_edit" class="form-control form-control-sm" id="signupUsername" aria-describedby="signupUsernameHelp" placeholder="Enter new email address">
+                  </div>
+                  <div class="text-center">
+                    <input type = "submit" class="my_btn edit-btn" role="button" aria-pressed="true" name = "button" value = "Save">  
+                  </div>
+                </form>
+              ';
+            }
+          }
         ?>
     </section>
 
