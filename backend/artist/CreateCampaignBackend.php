@@ -63,6 +63,7 @@
 
             if($_SESSION['status'] == StatusCodes::Success)
             {
+                $participant_count = 0;
                 $new_campaign_id = searchMaxCampaignID($conn);
                 $res = searchArtistTotalSharesBought($conn, $_SESSION['username']);
                 while($row = $res->fetch_assoc())
@@ -70,8 +71,11 @@
                     if($row['shares_owned'] >= $minimum_ethos && $row['user_username'] != $_SESSION['username'])
                     {
                         addToCampaignParticipant($conn, $row['user_username'], $new_campaign_id);
+                        $participant_count++;
                     }
                 }
+                updateCampaignEligibleParticipants($conn, $new_campaign_id, $participant_count);
+
                 $_SESSION['dependencies'] = "FRONTEND";
                 returnToMainPage();
             }

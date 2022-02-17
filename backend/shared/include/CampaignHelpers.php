@@ -8,7 +8,7 @@
         $res = getArtistShareHoldersInfo($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
-            if($row['shares_owned'] >= $criteria)
+            if($row['shares_owned'] >= $criteria && $row['user_username'] != $artist_username)
             {
                 $ret++;
             }

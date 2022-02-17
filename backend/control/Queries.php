@@ -406,6 +406,19 @@
             return $result;
         }
 
+        function searchUserParticipatingCampaign($conn, $user_username)
+        {
+            $result = 0;
+
+            $sql = "SELECT campaign_id FROM campaign_participant WHERE user_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchArtistCampaignsByExpDateNotEnough($conn, $artist_username, $user_owned_shares)
         {
             $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active 
@@ -2103,7 +2116,6 @@
 
         function addToCampaignParticipant($conn, $user_username, $campaign_id)
         {
-            echo $campaign_id."\n";
             $sql = "INSERT INTO campaign_participant (user_username, campaign_id)
                     VALUES(?, ?)";
             $stmt = $conn->prepare($sql);
