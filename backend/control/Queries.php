@@ -2146,9 +2146,14 @@
             $sql = "DELETE FROM buy_order WHERE id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('i', $buy_order_id);
-            $stmt->execute();
-
-            hx_info(HX::BUY_ORDER, "Buy order (id: ".$buy_order_id.") has been removed");
+            if($stmt->execute() == true)
+            {
+                hx_info(HX::BUY_ORDER, "Buy order (id: ".$buy_order_id.") has been removed");
+            }
+            else
+            {
+                hx_info(HX::BUY_ORDER, "Failed to remove buy order (id: ".$buy_order_id.")");
+            }
         }
 
         function removeUserArtistShareZeroTuples($conn, $user_username, $artist_username, $price_per_share_when_bought, $date_purchased, $time_purchased)
