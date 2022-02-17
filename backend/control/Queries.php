@@ -1753,6 +1753,8 @@
 
             updateMarketPriceOrderToPPS($new_pps, $artist);
 
+            recalcCampaignParticipants($buyer, $seller, $artist);
+
             return $status;
         }
 

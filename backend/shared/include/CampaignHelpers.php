@@ -1,4 +1,17 @@
 <?php
+    function recalcCampaignParticipants($buyer_username, $seller_username, $artist_username)
+    {
+        $buyer_participating_campaigns = getUserParticipatingCampaign($buyer_username);
+        $seller_participating_campaigns = getUserParticipatingCampaign($seller_username);
+        $buyer_shares_invested = getShareInvestedInArtist($buyer_username, $artist_username);
+        $seller_shares_invested = getShareInvestedInArtist($seller_username, $artist_username);
+
+        if(sizeof($buyer_participating_campaigns) > 0)
+        {
+            
+        }
+    }
+
     function calculateEligibleParticipants($artist_username, $criteria)
     {
         $ret = 0;
@@ -14,6 +27,21 @@
             }
         }
 
+        return $ret;
+    }
+
+    function getUserParticipatingCampaign($user_username): array
+    {
+        $ret = array();
+        $conn = connect();
+        
+        $res = searchUserParticipatingCampaign($conn, $user_username);
+        while($row = $res->fetch_assoc())
+        {
+            array_push($ret, $row['campaign_id']);
+        }
+
+        closeCon($conn);
         return $ret;
     }
 

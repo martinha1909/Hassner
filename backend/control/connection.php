@@ -1,7 +1,7 @@
 <?php
         $host = 'localhost';
-        $user = 'hassner'; // Running locally user: root pw: ""
-        $pwd = 'bingus123';
+        $user = 'root'; // Running locally user: root pw: ""
+        $pwd = '';
         $db = 'hassner';
 
         $conn;
