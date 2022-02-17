@@ -6,10 +6,7 @@
         $buyer_shares_invested = getShareInvestedInArtist($buyer_username, $artist_username);
         $seller_shares_invested = getShareInvestedInArtist($seller_username, $artist_username);
 
-        if(sizeof($buyer_participating_campaigns) > 0)
-        {
-            
-        }
+        
     }
 
     function calculateEligibleParticipants($artist_username, $criteria)
