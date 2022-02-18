@@ -95,9 +95,11 @@ $( function() {
     if(e.which == 13) {
       if($("#buy_limit_val").val())
       {
-        if($("#buy_limit_val").val() < min_limit)
+        //Round to 1 decimal
+        $("#buy_limit_val").val(Math.round($("#buy_limit_val").val() * 10) / 10);
+        if($("#buy_limit_val").val() <= min_limit)
         {
-          $("#buy_limit_val").val(min_limit);
+          $("#buy_limit_val").val("None");
         }
         else if($("#buy_limit_val").val() > $("#buy_limit").slider("values", 1))
         {
@@ -111,6 +113,16 @@ $( function() {
       if($("#buy_limit_val").val() != "None")
       {
         $("#buy_limit").slider("values", 0, $("#buy_limit_val").val());
+        if($("#buy_limit_val").val() < parseFloat($("#pps").text()))
+        {
+          $("#buy_limit_val").removeClass("suc-msg");
+          $("#buy_limit_val").addClass("error-msg");
+        }
+        else
+        {
+          $("#buy_limit_val").removeClass("error-msg");
+          $("#buy_limit_val").addClass("suc-msg");
+        }
         if($("#buy_limit").slider("values", 1) < max_limit)
         {
           $("#buy_tip").text("The buy order will be executed as soon as the price is ≤  " + $("#buy_limit_val").val() + " or ≥ " + $("#buy_limit").slider("values", 1));
@@ -124,6 +136,8 @@ $( function() {
       else
       {
         $("#buy_limit").slider("values", 0, min_limit);
+        $("#buy_limit_val").removeClass("suc-msg");
+        $("#buy_limit_val").removeClass("error-msg");
         if($("#buy_limit").slider("values", 1) < max_limit)
         {
           $("#buy_tip").text("The buy order will be executed as soon as the price is ≥ " + $("#buy_limit").slider("values", 1));
@@ -141,9 +155,11 @@ $( function() {
     if(e.which == 13) {
       if($("#buy_stop_val").val())
       {
-        if($("#buy_stop_val").val() > max_limit)
+        //Round to 1 decimal
+        $("#buy_stop_val").val(Math.round($("#buy_stop_val").val() * 10) / 10);
+        if($("#buy_stop_val").val() >= max_limit)
         {
-          $("#buy_stop_val").val(max_limit);
+          $("#buy_stop_val").val("None");
         }
         else if($("#buy_stop_val").val() < $("#buy_limit").slider("values", 0))
         {
@@ -157,6 +173,16 @@ $( function() {
       if($("#buy_stop_val").val() != "None")
       {
         $("#buy_limit").slider("values", 1, $("#buy_stop_val").val());
+        if($("#buy_stop_val").val() > parseFloat($("#pps").text()))
+        {
+          $("#buy_stop_val").removeClass("suc-msg");
+          $("#buy_stop_val").addClass("error-msg");
+        }
+        else
+        {
+          $("#buy_stop_val").removeClass("error-msg");
+          $("#buy_stop_val").addClass("suc-msg");
+        }
         if($("#buy_limit").slider("values", 0) > min_limit)
         {
           $("#buy_tip").text("The buy order will be executed as soon as the price is ≤ " + $("#buy_limit").slider("values", 0) + " or ≥ " + $("#buy_stop_val").val());
@@ -170,6 +196,8 @@ $( function() {
       else
       {
         $("#buy_limit").slider("values", 1, max_limit);
+        $("#buy_stop_val").removeClass("error-msg");
+          $("#buy_stop_val").removeClass("suc-msg");
         if($("#buy_limit").slider("values", 0) > min_limit)
         {
           $("#buy_tip").text("The buy order will be executed as soon as the price is ≤ " + $("#buy_limit").slider("values", 0));
@@ -276,9 +304,11 @@ $( function() {
       if(e.which == 13) {
         if($("#sell_limit_val").val())
         {
-          if($("#sell_limit_val").val() > max_limit)
+          //Round to 1 decimal
+          $("#sell_limit_val").val(Math.round($("#sell_limit_val").val() * 10) / 10);
+          if($("#sell_limit_val").val() >= max_limit)
           {
-            $("#sell_limit_val").val(max_limit);
+            $("#sell_limit_val").val("None");
           }
           else if($("#sell_limit_val").val() < $("#sell_limit").slider("values", 0))
           {
@@ -292,6 +322,16 @@ $( function() {
         if($("#sell_limit_val").val() != "None")
         {
           $("#sell_limit").slider("values", 1, $("#sell_limit_val").val());
+          if($("#sell_limit_val").val() > parseFloat($("#pps").text()))
+          {
+            $("#sell_limit_val").removeClass("suc-msg");
+            $("#sell_limit_val").addClass("error-msg");
+          }
+          else
+          {
+            $("#sell_limit_val").removeClass("error-msg");
+            $("#sell_limit_val").addClass("suc-msg");
+          }
           if($("#sell_limit").slider("values", 0) > min_limit)
           {
             $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + $("#sell_limit").slider("values", 0) + " or ≥ " + $("#sell_limit_val").val());
@@ -305,6 +345,8 @@ $( function() {
         else
         {
           $("#sell_limit").slider("values", 1, max_limit);
+          $("#sell_limit_val").removeClass("error-msg");
+          $("#sell_limit_val").removeClass("suc-msg");
           if($("#sell_limit").slider("values", 0) > min_limit)
           {
             $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + $("#sell_limit").slider("values", 0));
@@ -322,9 +364,11 @@ $( function() {
       if(e.which == 13) {
         if($("#sell_stop_val").val())
         {
-          if($("#sell_stop_val").val() < min_limit)
+          //Round to 1 decimal
+          $("#sell_stop_val").val(Math.round($("#sell_stop_val").val() * 10) / 10);
+          if($("#sell_stop_val").val() <= min_limit)
           {
-            $("#sell_stop_val").val(min_limit);
+            $("#sell_stop_val").val("None");
           }
           else if($("#sell_stop_val").val() > $("#sell_limit").slider("values", 1))
           {
@@ -338,6 +382,16 @@ $( function() {
         if($("#sell_stop_val").val() != "None")
         {
           $("#sell_limit").slider("values", 0, $("#sell_stop_val").val());
+          if($("#sell_stop_val").val() < parseFloat($("#pps").text()))
+          {
+            $("#sell_stop_val").removeClass("suc-msg");
+            $("#sell_stop_val").addClass("error-msg");
+          }
+          else
+          {
+            $("#sell_stop_val").removeClass("error-msg");
+            $("#sell_stop_val").addClass("suc-msg");
+          }
           if($("#sell_limit").slider("values", 1) < max_limit)
           {
             $("#sell_tip").text("The sell order will be executed as soon as the price is ≤  " + $("#sell_stop_val").val() + " or ≥ " + $("#sell_limit").slider("values", 1));
@@ -351,6 +405,8 @@ $( function() {
         else
         {
           $("#sell_limit").slider("values", 0, min_limit);
+          $("#sell_stop_val").removeClass("error-msg");
+          $("#sell_stop_val").removeClass("suc-msg");
           if($("#sell_limit").slider("values", 1) < max_limit)
           {
             $("#sell_tip").text("The sell order will be executed as soon as the price is ≥ " + $("#sell_limit").slider("values", 1));
@@ -377,20 +433,75 @@ $( function() {
         if(min == min_limit && max == max_limit){
           $("#sell_tip").text("Order will be executed as market price");
           $("#sell_cost").val("$" + $("#sell_num").slider("value")*$("#pps").text());
+          $("#sell_limit_val").removeClass("error-msg");
+          $("#sell_limit_val").removeClass("suc-msg");
+          $("#sell_limit_val").val("None");
+          $("#sell_stop_val").removeClass("error-msg");
+          $("#sell_stop_val").removeClass("suc-msg");
+          $("#sell_stop_val").val("None");
           recalcSellSlider(min, max);
         }
         else if (min > min_limit && max == max_limit){
           $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + min);
           $("#sell_cost").val("$" + $("#sell_num").slider("value")*min);
+          console.log(min);
+          if(min > $("#pps").text())
+          {
+            $("#sell_stop_val").removeClass("error-msg");
+            $("#sell_stop_val").addClass("suc-msg");
+            $("#sell_stop_val").val(min);
+          }
+          else
+          {
+            $("#sell_stop_val").removeClass("suc-msg");
+            $("#sell_stop_val").addClass("error-msg");
+            $("#sell_stop_val").val(min);
+          }
           recalcSellSlider(min, max);
         }
         else if (min > min_limit && max < max_limit){
           $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + min + " or ≥ " + max);
+          if(min > $("#pps").text())
+          {
+            $("#sell_stop_val").removeClass("error-msg");
+            $("#sell_stop_val").addClass("suc-msg");
+            $("#sell_stop_val").val(min);
+          }
+          else
+          {
+            $("#sell_stop_val").removeClass("suc-msg");
+            $("#sell_stop_val").addClass("error-msg");
+            $("#sell_stop_val").val(min);
+          }
+          if(max < $("#pps").text())
+          {
+            $("#sell_limit_val").removeClass("suc-msg");
+            $("#sell_limit_val").addClass("error-msg");
+            $("#sell_limit_val").val(max);
+          }
+          else
+          {
+            $("#sell_limit_val").removeClass("error-msg");
+            $("#sell_limit_val").addClass("suc-msg");
+            $("#sell_limit_val").val(max);
+          }
           recalcSellSlider(min, max);
         }
         else if (min == min_limit && max < max_limit){
           $("#sell_tip").text("The sell order will be executed as soon as the price is ≥ " + max);
           $("#sell_cost").val("$" + $("#sell_num").slider("value")*max);
+          if(max < $("#pps").text())
+          {
+            $("#sell_limit_val").removeClass("suc-msg");
+            $("#sell_limit_val").addClass("error-msg");
+            $("#sell_limit_val").val(max);
+          }
+          else
+          {
+            $("#sell_limit_val").removeClass("error-msg");
+            $("#sell_limit_val").addClass("suc-msg");
+            $("#sell_limit_val").val(max);
+          }
           recalcSellSlider(min, max);
         }
       }

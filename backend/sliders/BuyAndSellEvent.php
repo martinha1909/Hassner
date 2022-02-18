@@ -23,7 +23,7 @@
     $market_price = $_POST['market_price'];
     $latest_market_price = getArtistPricePerShare($_SESSION['selected_artist']);
 
-    Error checking to see if there is any change between when the user click the buy button vs now 
+    // Error checking to see if there is any change between when the user click the buy button vs now 
     if($market_price != $latest_market_price)
     {
         $json_response = StatusCodes::PRICE_OUTDATED;
