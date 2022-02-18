@@ -23,11 +23,6 @@
     $market_price = $_POST['market_price'];
     $latest_market_price = getArtistPricePerShare($_SESSION['selected_artist']);
 
-    echo $chosen_min."\n";
-    echo $chosen_max."\n";
-    echo $min_lim."\n";
-    echo $max_lim."\n";
-
     // Error checking to see if there is any change between when the user click the buy button vs now 
     if($market_price != $latest_market_price)
     {
