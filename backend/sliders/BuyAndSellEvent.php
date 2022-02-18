@@ -86,12 +86,24 @@
                         }
                         else
                         {
-                            autoPurchaseLimitSet($_SESSION['username'],
-                                                    $_SESSION['selected_artist'],
-                                                    $quantity,
-                                                    $chosen_min,
-                                                    $latest_market_price);
+                            $new_quantity = autoPurchaseLimitSet($_SESSION['username'],
+                                                                 $_SESSION['selected_artist'],
+                                                                 $quantity,
+                                                                 $chosen_min,
+                                                                 $latest_market_price);
                             refreshBuyOrderTable();
+                            if($new_quantity > 0)
+                            {
+                                //User posting buy order without limit and stop
+                                postBuyOrder($connPDO, 
+                                            $_SESSION['username'],
+                                            $_SESSION['selected_artist'], 
+                                            $new_quantity, 
+                                            -1, 
+                                            $chosen_min,
+                                            -1,
+                                            $current_date);
+                            }
                             refreshSellOrderTable();
                             
                             $_SESSION['display'] = MenuOption::Portfolio;
@@ -125,12 +137,24 @@
                             }
                             else
                             {
-                                autoPurchaseLimitSet($_SESSION['username'],
-                                                     $_SESSION['selected_artist'],
-                                                     $quantity,
-                                                     $chosen_min,
-                                                     $latest_market_price);
+                                $new_quantity = autoPurchaseLimitSet($_SESSION['username'],
+                                                                     $_SESSION['selected_artist'],
+                                                                     $quantity,
+                                                                     $chosen_min,
+                                                                     $latest_market_price);
                                 refreshBuyOrderTable();
+                                if($new_quantity > 0)
+                                {
+                                    //User posting buy order without limit and stop
+                                    postBuyOrder($connPDO, 
+                                                $_SESSION['username'],
+                                                $_SESSION['selected_artist'], 
+                                                $new_quantity, 
+                                                -1, 
+                                                $chosen_min,
+                                                -1,
+                                                $current_date);
+                                }
                                 refreshSellOrderTable();
                                 
                                 $_SESSION['display'] = MenuOption::Portfolio;
@@ -139,7 +163,6 @@
                             }
                         }
                     }
-                    closeCon($conn);
                 }
                 else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
                 {
@@ -152,13 +175,25 @@
                         }
                         else
                         {
-                            autoPurchaseStopSet($_SESSION['username'],
-                                                $_SESSION['selected_artist'],
-                                                $quantity,
-                                                $chosen_max,
-                                                $latest_market_price);
+                            $new_quantity = autoPurchaseStopSet($_SESSION['username'],
+                                                                $_SESSION['selected_artist'],
+                                                                $quantity,
+                                                                $chosen_max,
+                                                                $latest_market_price);
 
                             refreshBuyOrderTable();
+                            if($new_quantity > 0)
+                            {
+                                //User posting buy order without limit and stop
+                                postBuyOrder($connPDO, 
+                                            $_SESSION['username'],
+                                            $_SESSION['selected_artist'], 
+                                            $new_quantity, 
+                                            -1, 
+                                            -1,
+                                            $chosen_max,
+                                            $current_date);
+                            }
                             refreshSellOrderTable();
                             
                             $_SESSION['display'] = MenuOption::Portfolio;
@@ -191,13 +226,25 @@
                             }
                             else
                             {
-                                autoPurchaseStopSet($_SESSION['username'],
-                                                    $_SESSION['selected_artist'],
-                                                    $quantity,
-                                                    $chosen_max,
-                                                    $latest_market_price);
+                                $new_quantity = autoPurchaseStopSet($_SESSION['username'],
+                                                                    $_SESSION['selected_artist'],
+                                                                    $quantity,
+                                                                    $chosen_max,
+                                                                    $latest_market_price);
 
                                 refreshBuyOrderTable();
+                                if($new_quantity > 0)
+                                {
+                                    //User posting buy order without limit and stop
+                                    postBuyOrder($connPDO, 
+                                                $_SESSION['username'],
+                                                $_SESSION['selected_artist'], 
+                                                $new_quantity, 
+                                                -1, 
+                                                -1,
+                                                $chosen_max,
+                                                $current_date);
+                                }
                                 refreshSellOrderTable();
                                 
                                 $_SESSION['display'] = MenuOption::Portfolio;
@@ -206,7 +253,6 @@
                             }
                         }
                     }
-                    closeCon($conn);
                 }
                 else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
                 {
@@ -220,14 +266,26 @@
                         }
                         else
                         {
-                            autoPurchaseLimitStopSet($_SESSION['username'],
-                                                    $_SESSION['selected_artist'],
-                                                    $quantity,
-                                                    $chosen_min,
-                                                    $chosen_max,
-                                                    $latest_market_price);
+                            $new_quantity = autoPurchaseLimitStopSet($_SESSION['username'],
+                                                                     $_SESSION['selected_artist'],
+                                                                     $quantity,
+                                                                     $chosen_min,
+                                                                     $chosen_max,
+                                                                     $latest_market_price);
 
                             refreshBuyOrderTable();
+                            if($new_quantity > 0)
+                            {
+                                //User posting buy order without limit and stop
+                                postBuyOrder($connPDO, 
+                                            $_SESSION['username'],
+                                            $_SESSION['selected_artist'], 
+                                            $new_quantity, 
+                                            -1, 
+                                            $chosen_min,
+                                            $chosen_max,
+                                            $current_date);
+                            }
                             refreshSellOrderTable();
                             
                             $_SESSION['display'] = MenuOption::Portfolio;
@@ -284,13 +342,26 @@
                             }
                             else
                             {
-                                autoPurchaseStopSet($_SESSION['username'],
-                                                    $_SESSION['selected_artist'],
-                                                    $quantity,
-                                                    $chosen_max,
-                                                    $latest_market_price);
+                                $new_quantity = autoPurchaseLimitStopSet($_SESSION['username'],
+                                                                         $_SESSION['selected_artist'],
+                                                                         $quantity,
+                                                                         $chosen_min,
+                                                                         $chosen_max,
+                                                                         $latest_market_price);
 
                                 refreshBuyOrderTable();
+                                if($new_quantity > 0)
+                                {
+                                    //User posting buy order without limit and stop
+                                    postBuyOrder($connPDO, 
+                                                $_SESSION['username'],
+                                                $_SESSION['selected_artist'], 
+                                                $new_quantity, 
+                                                -1, 
+                                                $chosen_min,
+                                                $chosen_max,
+                                                $current_date);
+                                }
                                 refreshSellOrderTable();
                                 
                                 $_SESSION['display'] = MenuOption::Portfolio;
@@ -300,7 +371,6 @@
                         }
                     }
                 }
-                closeCon($conn);
             }
             else if($user_event == ShareInteraction::SELL)
             {
@@ -454,7 +524,6 @@
                         $json_response = StatusCodes::Success;
                     }
                 }
-                closeCon($conn);
             }
         }
     }

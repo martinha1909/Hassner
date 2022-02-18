@@ -87,8 +87,7 @@
 
             echo(json_encode(array(            
                 "status"=> StatusCodes::Success,
-                "msg"=> "",
-                "lock_count" => $_SESSION['lock_count']
+                "msg"=> ""
             )));
 
             $_SESSION['dependencies'] = "FRONTEND";
