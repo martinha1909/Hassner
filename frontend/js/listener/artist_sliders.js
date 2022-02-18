@@ -326,6 +326,14 @@ $( function() {
               {
                 $("#price_outdated").text("Price has changed, please refresh the page and try again");
               }
+              else if (data === "BALANCE_OUTDATED")
+              {
+                $("#price_outdated").text("Your balance has changed, please refresh and try again");
+              }
+              else if(data === "BUYABLE_OUTDATED")
+              {
+                $("#price_outdated").text("Data has changed, please refresh and try again");
+              }
               else if(data === "SUCCESS")
               {
                 window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/frontend/listener/Listener.php";

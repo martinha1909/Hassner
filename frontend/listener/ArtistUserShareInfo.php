@@ -214,7 +214,7 @@
                     {
                         if(canCreateBuyOrder($_SESSION['username'], $_SESSION['selected_artist']))
                         {
-                            if($balance > 0 && $balance > $_SESSION['current_pps']['price_per_share'])
+                            if($balance > 0 && $balance >= $_SESSION['current_pps']['price_per_share'])
                             {
                                 echo '
                                     <div class="accordion" id="buy_accordion">
