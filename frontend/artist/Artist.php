@@ -22,6 +22,7 @@
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
     $_SESSION['user_balance'] = $account_info['balance'];
+    $_SESSION['lock_count'] = -1;
 
     $artist_market_tag = getArtistMarketTag($_SESSION['selected_artist']);
 

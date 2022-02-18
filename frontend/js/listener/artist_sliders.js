@@ -389,7 +389,7 @@ $( function() {
       }
       else
       {
-        // $("#sell_order").prop('disabled', true);
+        $("#sell_order").prop('disabled', true);
       }
     })
     $( "#sell_num_shares" ).val($("#sell_num").slider("value"));

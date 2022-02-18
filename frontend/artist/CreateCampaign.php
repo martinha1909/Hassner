@@ -1,6 +1,8 @@
 <?php
 include '../../backend/control/Dependencies.php';
 include '../../backend/shared/include/CampaignHelpers.php';
+
+$_SESSION['lock_count'] = -1;
 ?>
 <!DOCTYPE html>
 <html>

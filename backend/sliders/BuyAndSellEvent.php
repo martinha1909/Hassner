@@ -457,15 +457,7 @@
                 closeCon($conn);
             }
         }
-        // Already handling another request made by this user
-        else
-        {
-            $_SESSION['display'] = MenuOption::Portfolio;
-            $_SESSION['dependencies'] = "FRONTEND";
-            $json_response = StatusCodes::Success;
-        }
     }
 
     print json_encode($json_response);
-    $_SESSION['lock_count'] = -1;
 ?>
