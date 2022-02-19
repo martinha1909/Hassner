@@ -95,15 +95,22 @@ $( function() {
     if(e.which == 13) {
       if($("#buy_limit_val").val())
       {
-        //Round to 1 decimal
-        $("#buy_limit_val").val(Math.round($("#buy_limit_val").val() * 10) / 10);
-        if($("#buy_limit_val").val() <= min_limit)
+        if(!isNaN($("#buy_limit_val").val()))
+        {
+          //Round to 1 decimal
+          $("#buy_limit_val").val(Math.round($("#buy_limit_val").val() * 10) / 10);
+          if($("#buy_limit_val").val() <= min_limit)
+          {
+            $("#buy_limit_val").val("None");
+          }
+          else if($("#buy_limit_val").val() > $("#buy_limit").slider("values", 1))
+          {
+            $("#buy_limit_val").val($("#buy_limit").slider("values", 1));
+          }
+        }
+        else
         {
           $("#buy_limit_val").val("None");
-        }
-        else if($("#buy_limit_val").val() > $("#buy_limit").slider("values", 1))
-        {
-          $("#buy_limit_val").val($("#buy_limit").slider("values", 1));
         }
       }
       else
@@ -155,15 +162,22 @@ $( function() {
     if(e.which == 13) {
       if($("#buy_stop_val").val())
       {
-        //Round to 1 decimal
-        $("#buy_stop_val").val(Math.round($("#buy_stop_val").val() * 10) / 10);
-        if($("#buy_stop_val").val() >= max_limit)
+        if(!isNaN($("#buy_stop_val").val()))
+        {
+          //Round to 1 decimal
+          $("#buy_stop_val").val(Math.round($("#buy_stop_val").val() * 10) / 10);
+          if($("#buy_stop_val").val() >= max_limit)
+          {
+            $("#buy_stop_val").val("None");
+          }
+          else if($("#buy_stop_val").val() < $("#buy_limit").slider("values", 0))
+          {
+            $("#buy_stop_val").val($("#buy_limit").slider("values", 0));
+          }
+        }
+        else
         {
           $("#buy_stop_val").val("None");
-        }
-        else if($("#buy_stop_val").val() < $("#buy_limit").slider("values", 0))
-        {
-          $("#buy_stop_val").val($("#buy_limit").slider("values", 0));
         }
       }
       else
@@ -304,15 +318,22 @@ $( function() {
       if(e.which == 13) {
         if($("#sell_limit_val").val())
         {
-          //Round to 1 decimal
-          $("#sell_limit_val").val(Math.round($("#sell_limit_val").val() * 10) / 10);
-          if($("#sell_limit_val").val() >= max_limit)
+          if(!isNaN($("#sell_limit_val").val()))
+          {
+            //Round to 1 decimal
+            $("#sell_limit_val").val(Math.round($("#sell_limit_val").val() * 10) / 10);
+            if($("#sell_limit_val").val() >= max_limit)
+            {
+              $("#sell_limit_val").val("None");
+            }
+            else if($("#sell_limit_val").val() < $("#sell_limit").slider("values", 0))
+            {
+              $("#sell_limit_val").val($("#sell_limit").slider("values", 0));
+            }
+          }
+          else
           {
             $("#sell_limit_val").val("None");
-          }
-          else if($("#sell_limit_val").val() < $("#sell_limit").slider("values", 0))
-          {
-            $("#sell_limit_val").val($("#sell_limit").slider("values", 0));
           }
         }
         else
@@ -364,15 +385,22 @@ $( function() {
       if(e.which == 13) {
         if($("#sell_stop_val").val())
         {
-          //Round to 1 decimal
-          $("#sell_stop_val").val(Math.round($("#sell_stop_val").val() * 10) / 10);
-          if($("#sell_stop_val").val() <= min_limit)
+          if(!isNaN($("#sell_stop_val").val()))
+          {
+            //Round to 1 decimal
+            $("#sell_stop_val").val(Math.round($("#sell_stop_val").val() * 10) / 10);
+            if($("#sell_stop_val").val() <= min_limit)
+            {
+              $("#sell_stop_val").val("None");
+            }
+            else if($("#sell_stop_val").val() > $("#sell_limit").slider("values", 1))
+            {
+              $("#sell_stop_val").val($("#sell_limit").slider("values", 1));
+            }
+          }
+          else
           {
             $("#sell_stop_val").val("None");
-          }
-          else if($("#sell_stop_val").val() > $("#sell_limit").slider("values", 1))
-          {
-            $("#sell_stop_val").val($("#sell_limit").slider("values", 1));
           }
         }
         else
