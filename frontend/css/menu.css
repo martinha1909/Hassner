@@ -265,6 +265,10 @@ select::-ms-expand {
   color: black;
 }
 
+.text-orange {
+  color: orange;
+}
+
 .text-dark {
   color: #1c1c1cff;
 }
@@ -435,7 +439,8 @@ select::-ms-expand {
 
 .campaign-box-participated-winner {
   border-radius: 25px;
-  background: rgb(119, 119, 119);
+  border: 2px solid white; 
+  background: #0a60d0;
   padding: 15px;
   margin: 20px;
   width: 200px;
