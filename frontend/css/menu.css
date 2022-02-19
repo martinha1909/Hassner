@@ -420,7 +420,7 @@ select::-ms-expand {
   background: #fcfcfc;
   font-size: small;
   padding: 15px;
-  margin: 20px;
+  margin: 10px;
   width: 200px;
   height: 200px;
   cursor: default;
@@ -432,7 +432,7 @@ select::-ms-expand {
   background: rgb(119, 119, 119);
   font-size: small;
   padding: 15px;
-  margin: 20px;
+  margin: 10px;
   width: 200px;
   height: 200px;
   cursor: default;
