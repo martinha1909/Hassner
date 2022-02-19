@@ -49,7 +49,6 @@
     <link rel="stylesheet" href="../css/slidebar.css" id="theme-color">
     <link rel="stylesheet" href="../css/menu.css" id="theme-color">
     <link rel="stylesheet" href="../css/linegraph.css" id="theme-color">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="../css/slider.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
@@ -140,7 +139,7 @@
                             $low = getHighestOrLowestPPS($_SESSION['selected_artist'], "MIN");
                             echo '
                                     <h2 id="pps">'.$_SESSION['current_pps']['price_per_share'].'</h2>
-                                ';
+                            ';
                             if($change == 0)
                             {
                                 echo '
@@ -221,21 +220,27 @@
                                         <h3 class="shares_header">Buy Shares</h3>
                                         <div class="slider_container">
                                             <div class="textbox_container">
-                                                <div class="stocktip">
-                                                    <p id="buy_tip">Order will be executed as market price</p>
-                                                    <p id="not_available_error_buy" class="error-msg"></p>
-                                                </div>
-                                                <label for="buy_num_shares"># Shares:</label>
-                                                <input type="text" class="slider_text" id="buy_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
+                                                <label for="buy_num_shares" class="stocktip-text-15">Shares:</label>
+                                                <input type="text" class="slider_text slider_text_no_border" id="buy_num_shares"><br>
 
-                                                <label for="buy_cost">Cost:</label>
-                                                <input type="text" class="slider_text" id="buy_cost" style="border:0; color:#f6931f; font-weight:bold;">
+                                                <label for="buy_cost" class="stocktip-text-15">Cost:</label>
+                                                <input type="text" class="slider_text slider_text_no_border" id="buy_cost">
                                             </div>
 
                                             <div class="slider_slider" id="buy_num"></div>
                                             <div class="slider_slider" id="buy_limit"></div>
-                                            <div class="order_btn_container">
-                                            <button class="btn btn-primary py-2" id="buy_order">Buy</button>
+                                            <div class="py-2">
+                                                <input type="text" class="slider_text_lim slider_text_no_border float-left" value="None" id="buy_limit_val">
+                                                <input type="text" class="slider_text_lim slider_text_no_border float-right" value="None" id="buy_stop_val">
+                                            </div>
+                                            <div class="py-2">
+                                                <div class="stocktip">
+                                                    <p id="buy_tip" class="stocktip-text">Order will be executed as market price</p>
+                                                    <p id="not_available_error_buy" class="error-msg stocktip-text"></p>
+                                                </div>
+                                                <div class="order_btn_container">
+                                                    <button class="btn btn-primary py-2" id="buy_order">Buy</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -254,22 +259,28 @@
                                         <h3 class="shares_header">Sell Shares</h3>
                                         <div class="slider_container">
                                             <div class="textbox_container">
-                                                <div class="stocktip">
-                                                    <p id="sell_tip">Order will be executed as market price</p>
-                                                    <p id="not_available_error_sell" class="error-msg"></p>
-                                                </div>
-                                                <label for="sell_num_shares"># Shares:</label>
-                                                <input type="text" class="slider_text" id="sell_num_shares" style="border:0; color:#f6931f; font-weight:bold;">
-                                                <label for="sell_cost">$:</label>
-                                                <input type="text" class="slider_text" id="sell_cost" style="border:0; color:#f6931f; font-weight:bold;">
+                                                <label for="sell_num_shares" class="stocktip-text-15">Shares:</label>
+                                                <input type="text" class="slider_text slider_text_no_border" id="sell_num_shares"><br>
+
+                                                <label for="sell_cost" class="stocktip-text-15">Cost:</label>
+                                                <input type="text" class="slider_text slider_text_no_border" id="sell_cost">
                                             </div>
-                                        <div class="slider_slider" id="sell_num"></div>
-                                        <div class="slider_slider" id="sell_limit"></div>
-                                        <div class="order_btn_container">
-                                            <button class="btn btn-primary py-2" id="sell_order">Sell</button>
+                                            <div class="slider_slider" id="sell_num"></div>
+                                            <div class="slider_slider" id="sell_limit"></div>
+                                            <div class="py-2">
+                                                <input type="text" class="slider_text_lim slider_text_no_border float-left" value="None" id="sell_stop_val">
+                                                <input type="text" class="slider_text_lim slider_text_no_border float-right" value="None" id="sell_limit_val">
+                                            </div>
+                                            <div class="py-2">
+                                                <div class="stocktip">
+                                                    <p id="sell_tip" class="stocktip-text">Order will be executed as market price</p>
+                                                </div>
+                                                <div class="order_btn_container">
+                                                    <button class="btn btn-primary py-2" id="sell_order">Sell</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                             ';
                         }
                     }
