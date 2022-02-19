@@ -22,6 +22,7 @@
     $_SESSION['selected_artist'] = $_SESSION['username'];
     $account_info = getArtistAccount($_SESSION['username'], "artist");
     $_SESSION['user_balance'] = $account_info['balance'];
+    $_SESSION['lock_count'] = -1;
 
     $artist_market_tag = getArtistMarketTag($_SESSION['selected_artist']);
 
@@ -259,6 +260,7 @@
     <script src="../js/artist/InjectShares.js"></script>
     <script src="../js/shared/transaction/BuyOrSellShares.js"></script>
     <script src="../js/artist/TradeHistory.js"></script>
+    <script src="../js/shared/button/PreventMultipleClicks.js"></script>
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");

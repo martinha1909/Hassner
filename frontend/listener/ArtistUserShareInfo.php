@@ -15,6 +15,7 @@
     include '../../backend/object/SellOrder.php';
     include '../../backend/object/Campaign.php';
 
+    $_SESSION['lock_count'] = -1;
     //only do actions if an artist is found
     if($_SESSION['artist_found'])
     {
@@ -213,7 +214,7 @@
                     {
                         if(canCreateBuyOrder($_SESSION['username'], $_SESSION['selected_artist']))
                         {
-                            if($balance > 0 && $balance > $_SESSION['current_pps']['price_per_share'])
+                            if($balance > 0 && $balance >= $_SESSION['current_pps']['price_per_share'])
                             {
                                 echo '
                                     <div class="accordion" id="buy_accordion">

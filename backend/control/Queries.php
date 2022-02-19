@@ -791,7 +791,7 @@
                     WHERE artist_username = ? AND (siliqas_requested = ? OR (siliqas_requested = -1 AND ((buy_stop <= ? AND buy_stop != -1) OR buy_limit >= ?)))
                     ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sdd', $artist_username, $market_price, $market_price);
+            $stmt->bind_param('sddd', $artist_username, $market_price, $market_price, $market_price);
             if($stmt->execute() == true)
             {
                 $result = $stmt->get_result();
@@ -875,9 +875,9 @@
 
             if($include_market_orders)
             {
-                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted
                         FROM buy_order 
-                        WHERE artist_username = ? AND user_username != ? AND ((siliqas_requested = ? AND buy_limit = -1 AND buy_stop = -1) OR (siliqas_requested = -1 AND buy_limit >= ?) OR (siliqas_requested = -1 AND buy_stop <= ? AND buy_stop != -1)
+                        WHERE artist_username = ? AND user_username != ? AND ((siliqas_requested = ? AND buy_limit = -1 AND buy_stop = -1) OR (siliqas_requested = -1 AND buy_limit >= ?) OR (siliqas_requested = -1 AND buy_stop <= ? AND buy_stop != -1))
                         ORDER BY date_posted ASC";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('ssddd', $artist_username, $seller_username, $current_market_price, $sell_limit, $sell_stop);

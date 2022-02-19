@@ -14,6 +14,7 @@
     include '../../backend/object/TickerInfo.php';
 
     $_SESSION['selected_artist'] = 0;
+    $_SESSION['lock_count'] = -1;
 
     $account = getAccount($_SESSION['username']);
     $_SESSION['user_balance'] = $account['balance'];

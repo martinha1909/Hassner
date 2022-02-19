@@ -1,6 +1,8 @@
 <?php
 include '../../backend/control/Dependencies.php';
 include '../../backend/shared/include/CampaignHelpers.php';
+
+$_SESSION['lock_count'] = -1;
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,7 +50,7 @@ include '../../backend/shared/include/CampaignHelpers.php';
                     }
                     ?>
                     <h2 class="h2-blue">Your Campaign</h2>
-                    <form action="../../backend/artist/CreateCampaignBackend.php" method="post">
+                    <form action="../../backend/artist/CreateCampaignBackend.php" method="post" id="create_campaign_form">
                         <div>
                             <h4>Offering</h4>
                             <input type="radio" id="tickets" name="offer" value="tickets">
@@ -81,13 +83,15 @@ include '../../backend/shared/include/CampaignHelpers.php';
                             <label for="benchmark">Benchmark</label><br>
                         </div>
                 </div>
-                <input type="submit" class="btn btn-primary col-4" role="button" aria-pressed="true" value="Commence Campaign">
+                <input type="submit" class="btn btn-primary col-4" role="button" id="commence_campaign_btn" aria-pressed="true" value="Commence Campaign">
                 </form>
             </div>
         </div>
     </section>
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
+    <script src="../js/artist/campaign/Campaign.js"></script>
+    <script src="../js/shared/button/PreventMultipleClicks.js"></script>
 </body>
 
 </html>
