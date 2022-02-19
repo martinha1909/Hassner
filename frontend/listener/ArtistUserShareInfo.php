@@ -281,14 +281,14 @@
 
     <section class="vh-md-100" id="Marketplace">
         <div class="container-fluid">
-            <div class="row align-items-start">
-                <div class="my-auto text-center col-6">
+            <div class="row">
+                <div class="text-center col-6">
                     <?php
                         if($_SESSION['artist_found'])
                         {
                             echo '
                                 <h3 class="h3-blue py-5">History</h3>
-                                <div class="my-4 mx-auto select-dark">
+                                <div class="mx-auto select-dark">
                                     <select class="select-dropdown select-dropdown-dark text-center" id="user_history_dropdown">
                                         <option selected disabled>'.TradeHistoryType::NONE.'</option>
                                         <option value="'.TradeHistoryType::BUY_HISTORY.'">'.TradeHistoryType::BUY_HISTORY.'</option>
