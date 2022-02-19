@@ -464,22 +464,26 @@ select::-ms-expand {
 
 .portfolio-artist {
   color: #0a60d0;
+  cursor: context-menu;
 }
 
 .portfolio-percentage-positive {
   color:green;
   float: right;
+  cursor: context-menu;
 }
 
 .portfolio-percentage-negative {
   color:red;
   float: right;
+  cursor: context-menu;
 }
 
 .portfolio-shareamount {
   color: #1c1c1cff;
   font-weight: normal;
   font-size: small;
+  cursor: context-menu;
 }
 
 .portfolio-gain {
@@ -487,6 +491,7 @@ select::-ms-expand {
   float: right;
   font-weight: normal;
   font-size: small;
+  cursor: context-menu;
 }
 
 .portfolio-loss {
@@ -494,17 +499,20 @@ select::-ms-expand {
   float: right;
   font-weight: normal;
   font-size: small;
+  cursor: context-menu;
 }
 
 .portfolio-sellorder {
   color:rgb(255, 255, 255);
   float: right;
+  cursor: context-menu;
 }
 
 .portfolio-shareamount-openorder {
   color: rgb(255, 255, 255);
   font-weight: normal;
   font-size: small;
+  cursor: context-menu;
 }
 
 .portfolio-limitstop {
@@ -512,16 +520,23 @@ select::-ms-expand {
   float: right;
   font-weight: normal;
   font-size: small;
+  cursor: context-menu;
 }
 
 .open-order-cancel {
-  color:rgb(255, 255, 255);
-  font-weight: normal;
+  color: red;
+  font-weight: lighter;
+  padding-left: 10px;
+  font-size: 25px;
   display: flex;
   justify-content: center;
+  background: transparent;
+  border: transparent;
+  display: inline;
   flex-direction: column;
-  text-align: center; 
-  height: 0;
+  text-align: center;  
+  float: right;
+  cursor: pointer;
 }
 
 .input-no-border {
@@ -531,4 +546,9 @@ select::-ms-expand {
 
 .input-no-border:hover {
   cursor: pointer;
+}
+
+.vl {
+  border-left: 15px solid #1c1c1cff;
+  height: 0%;
 }

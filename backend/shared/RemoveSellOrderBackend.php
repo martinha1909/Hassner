@@ -4,7 +4,7 @@
 
     $conn = connect();
 
-    $sell_order_id = $_POST['remove_id'];
+    $sell_order_id = key($_POST['remove_id']);
 
     removeSellOrder($conn, $sell_order_id);
 

@@ -7,98 +7,6 @@
         return $result;
     }
 
-    function populateVars($user_username, &$all_artists, &$all_shares_bought, &$all_rates, &$all_price_per_share)
-    {
-        $no_of_shares_bought = 0;
-        $conn = connect();
-
-        //Gets all artists that the user has invested in
-        $res = searchUserInvestedArtists($conn, $user_username);
-        while($row = $res->fetch_assoc())
-        {
-            $res_pps = searchArtistCurrentPricePerShare($conn, $row['artist_username']);
-            $current_pps = $res_pps->fetch_assoc();
-            $change = getArtistDayChange($row['artist_username']);
-
-            array_push($all_artists, $row['artist_username']);
-            array_push($all_shares_bought, $row['shares_owned']);
-            array_push($all_price_per_share, $current_pps['price_per_share']);
-            //This is to calculate the change of artist's stock in the last 24 hours, 
-            //will have a separate PR for this
-            array_push($all_rates, $change);
-        }
-    }
-
-    //sort the columns of My Portfolio chart based on $target and $indicator of ascending or descending order
-    function sortChart(&$all_artists, &$all_shares_bought, &$all_rates, &$all_price_per_share, $target, $indicator)
-    {
-        if($target == "Artist")
-        {
-            if($indicator = "Ascending")
-            {
-                insertionSort($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Ascending");       
-            }
-            else
-            {
-                insertionSort($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Descending");   
-            }
-        }
-        else if($target == "PPS")
-        {
-            if($indicator = "Ascending")
-            {
-                insertionSort($all_price_per_share, $all_artists, $all_rates, $all_shares_bought, "Ascending");           
-            }
-            else
-            {
-                insertionSort($all_price_per_share, $all_artists, $all_rates, $all_shares_bought, "Descending");             
-            }
-        }
-        else if($target == "Share")
-        {
-            if($indicator == "Ascending")
-            {
-                insertionSort($all_shares_bought, $all_artists, $all_rates, $all_price_per_share, "Ascending");         
-            }
-            else
-            {
-                insertionSort($all_shares_bought, $all_artists, $all_rates, $all_price_per_share, "Descending");  
-            }
-        }
-        else if($target == "Rate")
-        {
-            if($indicator == "Ascending")
-            {
-                insertionSort($all_rates, $all_artists, $all_shares_bought, $all_price_per_share, "Ascending");  
-            }
-            else
-            {
-                insertionSort($all_rates, $all_artists, $all_shares_bought, $all_price_per_share, "Descending");
-            }
-        }
-    }
-
-    function printMyPortfolioChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share)
-    {
-        echo '<form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">';
-        $id = 1;
-        for($i=0; $i<sizeof($all_artists); $i++)
-        {
-            if($all_shares_bought[$i] != 0)
-            {
-                echo '<tr><th scope="row">'.$id.'</th><td><input name = "artist_name" class="input-no-border" type = "submit" id="abc" role="button" value = "'.$all_artists[$i].'"></td><td>'.$all_shares_bought[$i].'</td><td>'.$all_price_per_share[$i].'</td>';
-                if($all_rates[$i] > 0)
-                    echo '<td class="increase">+'.$all_rates[$i].'%</td></tr>';
-                else if($all_rates[$i] == 0)
-                    echo '<td>'.$all_rates[$i].'%</td></tr>';
-                else
-                    echo '<td class="decrease">'.$all_rates[$i].'%</td></tr>';
-                $id++;
-            }
-        }
-        echo '</form>';        
-    }
-
     function totalShareDistributed($artist_username)
     {
         $conn = connect();
@@ -109,33 +17,6 @@
         hx_debug(HX::QUERY, "ret data: ".json_encode($ret));
 
         return $ret['Share_Distributed'];
-    }
-
-    function fetchBuyOrders($user_username, &$artist_usernames, &$quantities_requested, &$siliqas_requested, &$date_posted, &$buy_order_ids)
-    {
-        $current_date = getCurrentDate("America/Edmonton");
-        $conn = connect();
-        $res = searchUserBuyOrders($conn, $user_username);
-        while($row = $res->fetch_assoc())
-        {
-            if($row['quantity'] == 0)
-            {
-                removeBuyOrder($conn, 
-                               $row['id']);
-            }
-            else
-            {
-                $relative_time_posted = toRelativeTime($current_date, 
-                                                       explode(" ", $row['date_posted'])[0], 
-                                                       explode(" ", $row['date_posted'])[1]);
-
-                array_push($artist_usernames, $row['artist_username']);
-                array_push($quantities_requested, $row['quantity']);
-                array_push($siliqas_requested, $row['siliqas_requested']);
-                array_push($date_posted, $relative_time_posted);
-                array_push($buy_order_ids, $row['id']);
-            }
-        }
     }
 
     //gets the total amount of share that the user holds corresponds to the $artist_username
