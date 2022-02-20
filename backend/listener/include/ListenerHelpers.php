@@ -134,13 +134,9 @@
         $ret = array();
         $conn = connect();
 
-        $res = searchUsersInvestment($conn, $user_username);
+        $res = searchUserInvestedArtists($conn, $user_username);
         while($row = $res->fetch_assoc()) {
-            if(sizeof($ret) == 0) {
-                array_push($ret, $row['artist_username']);
-            } else if ($row['artist_username'] != $ret[sizeof($ret) - 1]) {
-                array_push($ret, $row['artist_username']);
-            }
+            array_push($ret, $row['artist_username']);
         }
 
         return $ret;
@@ -171,7 +167,7 @@
                 $chance = -1;
                 $res_1 = searchNumberOfShareDistributed($conn, $row['artist_username']);
                 $artist_share_distributed = $res_1->fetch_assoc();
-                if($row['date_expires'] != "0000-00-00 00:00:00")
+                if($row['is_active'] != 0)
                 {
                     if($total_shares_bought >= $row['minimum_ethos']) 
                     {
@@ -197,7 +193,7 @@
                             $roll_res = getRaffleResult($conn, $row['id'], $artist_share_distributed['Share_Distributed']);
                         }
                         updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
-                        updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
+                        updateCampaignActiveStatus($conn, $row['id'], 0);
                     }
                     if($row['type'] == "raffle")
                     {
@@ -245,21 +241,24 @@
 
         for($i = 0; $i < sizeof($all_artists); $i++) 
         {
-            $participated_campaign = new Campaign();
-            $total_shares_bought = calculateTotalNumberOfSharesBought($user_username, $all_artists[$i]);
             $res = searchArtistCampaigns($conn, $all_artists[$i]);
             while($row = $res->fetch_assoc()) 
             {
-                if($row['date_expires'] == "0000-00-00 00:00:00")
+                $participated_campaign = new Campaign();
+                if($row['is_active'] == 0)
                 {
                     $time_released = dbDateTimeParser($row['date_posted']);
 
                     $participated_campaign->setArtistUsername($row['artist_username']);
                     $participated_campaign->setOffering($row['offering']);
                     $participated_campaign->setMinEthos($row['minimum_ethos']);
-                    $participated_campaign->setWinner($row['winner']);
+                    if($row['type'] == CampaignType::RAFFLE)
+                    {
+                        $participated_campaign->setWinner($row['winner']);
+                    }
                     $participated_campaign->setDatePosted($time_released);
                     $participated_campaign->setType($row['type']);
+                    $participated_campaign->setDateExpires(dbDateTimeParser($row['date_expires']));
 
                     array_push($ret, $participated_campaign);
                 }
@@ -295,7 +294,7 @@
                 $near_participation_campaign = new Campaign();
 
                 //Skip inactive campaigns
-                if($row['date_expires'] != "0000-00-00 00:00:00")
+                if($row['is_active'] != 0)
                 {
                     if(!userIsParticipatingInCampaign($user_username, $row['artist_username'], $row['id']) && isNearParticipation($total_shares_bought, $row['minimum_ethos']))
                     {

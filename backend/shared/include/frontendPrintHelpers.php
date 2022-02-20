@@ -25,7 +25,7 @@
                 {
                     echo '
                         <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                            <b class="text-dark float-right">♦</b>
                         </h3>
                     ';
                 }
@@ -35,7 +35,7 @@
                     // <b class="font-size-15">('.$participating_campaigns[$i]->getWinningChance().'%)</b>
                     echo '
                         <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                            <b class="text-dark float-right">♣</b>
                         </h3>
                     ';
                 }
@@ -77,15 +77,24 @@
             for ($i = 0; $i < sizeof($participated_campaigns); $i++) 
             {
                 $artist_market_tag = getArtistMarketTag($participated_campaigns[$i]->getArtistUsername());
-                echo '
-                    <div class="campaign-box-participated col-2.5">
-                ';
+                if($participated_campaigns[$i]->getWinner() == $username)
+                {
+                    echo '
+                        <div class="campaign-box-participated-winner col-2.5">
+                    ';
+                }
+                else
+                {
+                    echo '
+                        <div class="campaign-box-participated col-2.5">
+                    ';
+                }
 
                 if($participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
                     echo '
                         <h3 class="h3-white">'.$artist_market_tag.'
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                            <b class="text-white float-right">♦</b>
                         </h3>
                     ';
                 }
@@ -93,15 +102,39 @@
                 {
                     echo '
                         <h3 class="h3-white">'.$artist_market_tag.'
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                            <b class="text-white float-right">♣</b>
                         </h3>
                     ';
                 }
 
                 echo '
                         <b class="text-black">🤲 '.$participated_campaigns[$i]->getOffering().'</b>
-                        <p class="text-black">⌛ Expired</p>
-                        <b class="text-black">⌖ '.$participated_campaigns[$i]->getMinEthos().'</b>
+                        <p class="text-black">⌛ '.$participated_campaigns[$i]->getDateExpires().'</p>
+                ';
+
+                if($participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
+                {
+                    echo '
+                        <b class="text-black">Win: N/A</b>
+                    ';
+                }
+                else
+                {
+                    if($participated_campaigns[$i]->getWinner() == $username)
+                    {
+                        echo '
+                            <b class="text-orange">Win: Yes</b>
+                        ';
+                    }
+                    else
+                    {
+                        echo '
+                            <b class="text-black">Win: No</b>
+                        ';
+                    }
+                }
+                        
+                echo '
                     </div>
                 ';
             }
@@ -162,7 +195,7 @@
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                         <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                            <b class="text-white float-right">♦</b>
                         </h3>
                     </form>
                 ';
@@ -172,7 +205,7 @@
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                         <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                            <b class="text-white float-right">♣</b>
                         </h3>
                     </form>
                 ';
@@ -379,7 +412,7 @@
 
                 echo '
                                         <td>' . $campaign_info[$i]->getOffering() . '</td>
-                                        <td>' . $campaign_info[$i]->getDateExpires() . '</td>
+                                        <td>' . dbDateTimeParser($campaign_info[$i]->getDateExpires()) . '</td>
                                     </tr>
                 ';
             }
@@ -587,44 +620,39 @@
 
         if($_SESSION['artist_found'])
         {
+            $artist_market_tag = getArtistMarketTag($artist_username);
             echo '
                 <h3 class="h3-blue py-5">Current Campaigns</h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Offering</th>
-                            <th scope="col">Minimum Shares</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Date Commenced</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="row">
             ';
 
             for($i = 0; $i < sizeof($current_campaigns); $i++)
             {
+                echo '
+                    <div class="campaign-box-participating col-2.5">
+                ';
                 $type = "Error in parsing type";
                 if($current_campaigns[$i]->getType() == CampaignType::RAFFLE)
                 {
-                    $type = "♢";
+                    $type = "♣";
                 }
                 else if($current_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
-                    $type = "♧";
+                    $type = "♦";
                 }
                 echo '
-                        <tr>
-                            <th scope="row">' . $current_campaigns[$i]->getOffering() . '</th>
-                            <td>' . $current_campaigns[$i]->getMinEthos() . '</td>
-                            <td>' . $type .'</td>
-                            <td>'. dbDateTimeParser($current_campaigns[$i]->getDatePosted()) .'</td>
-                        </tr>
+                        <h3 class="h3-blue">'.$artist_market_tag.'
+                            <b class="text-dark float-right">'.$type.'</b>
+                        </h3>
+                        <b class="text-black">🤲 '.$current_campaigns[$i]->getOffering().'</b>
+                        <p class="text-black text-bold">⌛ '.dbDateTimeParser($current_campaigns[$i]->getDatePosted()).'</p>
+                        <b class="text-black">⌖ '.$current_campaigns[$i]->getMinEthos().'</b>
+                    </div>
                 ';
             }
 
             echo '
-                    </tbody>
-                </table>
+                </div>
             ';
         }
     }
