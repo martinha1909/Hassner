@@ -10556,6 +10556,15 @@ input#abc:hover {
   color: rgb(255, 255, 255);
 }
 
+input#abc_blue {
+  color: #0a60d0;
+  padding: 0px 0px;
+}
+
+input#abc_blue:hover {
+  cursor: pointer;
+}
+
 input#abc-no-underline {
   color: #e2cda9ff;
   padding: 0px 0px;

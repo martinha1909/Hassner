@@ -233,6 +233,17 @@
             return $result;
         }
 
+        function searchSellHistoryByUserAndArtist($conn, $seller_username, $artist_username)
+        {
+            $sql = "SELECT id, seller_username, buyer_username, artist_username, amount_sold, price_sold, date_sold FROM sell_history WHERE seller_username = ? AND artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $seller_username, $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchAllSellOrdersZeroQuantity($conn)
         {
             $sql = "SELECT * FROM sell_order WHERE no_of_share <= 0";
@@ -266,7 +277,7 @@
 
         function searchUserBuyOrders($conn, $user_username)
         {
-            $sql = "SELECT * FROM buy_order WHERE user_username = ?";
+            $sql = "SELECT * FROM buy_order WHERE user_username = ? ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $user_username);
             $stmt->execute();
@@ -397,7 +408,7 @@
 
         function searchArtistCampaigns($conn, $artist_username)
         {
-            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE artist_username = ?";
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active FROM campaign WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
             $stmt->execute();
@@ -408,13 +419,12 @@
 
         function searchArtistCampaignsByExpDateNotEnough($conn, $artist_username, $user_owned_shares)
         {
-            $expired = "0000-00-00 00:00:00";
-            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner 
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active 
                     FROM campaign 
-                    WHERE artist_username = ? AND date_expires != ? AND minimum_ethos > ? 
+                    WHERE artist_username = ? AND minimum_ethos > ? AND is_active = 0
                     ORDER BY minimum_ethos ASC";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ssi', $artist_username, $expired, $user_owned_shares);
+            $stmt->bind_param('si', $artist_username, $user_owned_shares);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -423,7 +433,7 @@
 
         function searchTrendingCampaign($conn)
         {
-            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner 
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active
                     FROM campaign
                     ORDER BY eligible_participants DESC";
             $stmt = $conn->prepare($sql);
@@ -479,7 +489,7 @@
 
         function searchCampaignsByType($conn, $campaign_type)
         {
-            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner FROM campaign WHERE type = ?";
+            $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active FROM campaign WHERE type = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $campaign_type);
             $stmt->execute();
@@ -875,9 +885,9 @@
 
             if($include_market_orders)
             {
-                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted
                         FROM buy_order 
-                        WHERE artist_username = ? AND user_username != ? AND ((siliqas_requested = ? AND buy_limit = -1 AND buy_stop = -1) OR (siliqas_requested = -1 AND buy_limit >= ?) OR (siliqas_requested = -1 AND buy_stop <= ? AND buy_stop != -1)
+                        WHERE artist_username = ? AND user_username != ? AND ((siliqas_requested = ? AND buy_limit = -1 AND buy_stop = -1) OR (siliqas_requested = -1 AND buy_limit >= ?) OR (siliqas_requested = -1 AND buy_stop <= ? AND buy_stop != -1))
                         ORDER BY date_posted ASC";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param('ssddd', $artist_username, $seller_username, $current_market_price, $sell_limit, $sell_stop);
@@ -1363,9 +1373,9 @@
             $conn->query($sql);
         }
 
-        function updateCampaignExpirationDate($conn, $campaign_id, $exp_date)
+        function updateCampaignActiveStatus($conn, $campaign_id, $is_active)
         {
-            $sql = "UPDATE campaign SET date_expires = '$exp_date' WHERE id='$campaign_id'";
+            $sql = "UPDATE campaign SET is_active = '$is_active' WHERE id='$campaign_id'";
             $conn->query($sql);
         }
 
@@ -1714,6 +1724,8 @@
 
             updateMarketPriceOrderToPPS($new_pps, $artist);
 
+            addToSellHistory($seller, $buyer, $artist, $amount, $price, $date_purchased);
+
             return $status;
         }
 
@@ -1953,6 +1965,33 @@
             return $status;
         }
 
+        function addToSellHistory($seller_username, $buyer_username, $artist_username, $amount_sold, $price_sold, $date_sold)
+        {
+            $connPDO = connectPDO();
+            try
+            {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("INSERT INTO sell_history (seller_username, buyer_username, artist_username, amount_sold, price_sold, date_sold)
+                                           VALUES(?, ?, ?, ?, ?, ?)");
+                $stmt->bindValue(1, $seller_username);
+                $stmt->bindValue(2, $buyer_username);
+                $stmt->bindValue(3, $artist_username);
+                $stmt->bindValue(4, $amount_sold);
+                $stmt->bindValue(5, $price_sold);
+                $stmt->bindValue(6, $date_sold);
+                $stmt->execute(array($seller_username, $buyer_username, $artist_username, $amount_sold, $price_sold, $date_sold));
+
+                $connPDO->commit();
+            }
+            catch (PDOException $e) 
+            {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "Failed: " . $e->getMessage());
+                echo "Failed: " . $e->getMessage()."\n";
+            }
+        }
+
         function addToInjectionHistory($conn, $artist_username, $share_distributing, $comment, $date)
         {
             $status = 0;
@@ -2065,11 +2104,12 @@
             $status = 0;
             $eligible_participant = 0;
             $winner = NULL;
+            $is_active = 1;
 
-            $sql = "INSERT INTO campaign (artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner)
-                    VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO campaign (artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active)
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sssssdis', $artist_username, $offering, $release_date, $expiration_date, $type, $minimum_ethos, $eligible_participant, $winner);
+            $stmt->bind_param('sssssdisi', $artist_username, $offering, $release_date, $expiration_date, $type, $minimum_ethos, $eligible_participant, $winner, $is_active);
             if($stmt->execute() == TRUE)
             {
                 $status = "SUCCESS";
@@ -2114,9 +2154,14 @@
             $sql = "DELETE FROM buy_order WHERE id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('i', $buy_order_id);
-            $stmt->execute();
-
-            hx_info(HX::BUY_ORDER, "Buy order (id: ".$buy_order_id.") has been removed");
+            if($stmt->execute() == true)
+            {
+                hx_info(HX::BUY_ORDER, "Buy order (id: ".$buy_order_id.") has been removed");
+            }
+            else
+            {
+                hx_info(HX::BUY_ORDER, "Failed to remove buy order (id: ".$buy_order_id.")");
+            }
         }
 
         function removeUserArtistShareZeroTuples($conn, $user_username, $artist_username, $price_per_share_when_bought, $date_purchased, $time_purchased)
