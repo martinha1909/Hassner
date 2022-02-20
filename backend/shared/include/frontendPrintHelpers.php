@@ -41,7 +41,7 @@
                 }
 
                 echo '
-                        <b class="text-black">🤲 '.$participating_campaigns[$i]->getOffering().'</b>
+                        <b class="text-black">❖ '.$participating_campaigns[$i]->getOffering().'</b>
                         <p class="text-black text-bold">⌛ '.$participating_campaigns[$i]->getTimeLeft().'</p>
                         <b class="text-black">⌖ '.$participating_campaigns[$i]->getMinEthos().'</b>
                     </div>
@@ -108,7 +108,7 @@
                 }
 
                 echo '
-                        <b class="text-black">🤲 '.$participated_campaigns[$i]->getOffering().'</b>
+                        <b class="text-black">❖ '.$participated_campaigns[$i]->getOffering().'</b>
                         <p class="text-black">⌛ '.$participated_campaigns[$i]->getDateExpires().'</p>
                 ';
 
@@ -212,7 +212,7 @@
             }
 
             echo '
-                    <b class="text-black">🤲 '.$near_parti_campaigns[$i]->getOffering().'</b>
+                    <b class="text-black">❖ '.$near_parti_campaigns[$i]->getOffering().'</b>
                     <p class="text-black text-bold">⌛ '.$near_parti_campaigns[$i]->getTimeLeft().'</p>
                     <b class="text-black">⌖ '.$near_parti_campaigns[$i]->getUserOwnedEthos().'/'.$near_parti_campaigns[$i]->getMinEthos().'('.$near_parti_campaigns[$i]->getProgress().'%)</b>
                 </div>
@@ -622,8 +622,22 @@
         {
             $artist_market_tag = getArtistMarketTag($artist_username);
             echo '
+<<<<<<< HEAD
+                <h3 data-toggle="tooltip" title="Here the artist offers rewards in return for users buying shares." class="h3-blue tooltip-pointer py-5">Current Campaigns</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Offering</th>
+                            <th scope="col">Minimum Shares</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Date Commenced</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+=======
                 <h3 class="h3-blue py-5">Current Campaigns</h3>
                 <div class="row">
+>>>>>>> 7ad6e23b4dfd887443377ba835789f7ef5a9fc1f
             ';
 
             for($i = 0; $i < sizeof($current_campaigns); $i++)
