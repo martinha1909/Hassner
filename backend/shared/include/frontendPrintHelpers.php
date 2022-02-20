@@ -41,7 +41,7 @@
                 }
 
                 echo '
-                        <b class="text-black">🤲 '.$participating_campaigns[$i]->getOffering().'</b>
+                        <b class="text-black">❖ '.$participating_campaigns[$i]->getOffering().'</b>
                         <p class="text-black text-bold">⌛ '.$participating_campaigns[$i]->getTimeLeft().'</p>
                         <b class="text-black">⌖ '.$participating_campaigns[$i]->getMinEthos().'</b>
                     </div>
@@ -99,7 +99,7 @@
                 }
 
                 echo '
-                        <b class="text-black">🤲 '.$participated_campaigns[$i]->getOffering().'</b>
+                        <b class="text-black">❖ '.$participated_campaigns[$i]->getOffering().'</b>
                         <p class="text-black">⌛ Expired</p>
                         <b class="text-black">⌖ '.$participated_campaigns[$i]->getMinEthos().'</b>
                     </div>
@@ -179,7 +179,7 @@
             }
 
             echo '
-                    <b class="text-black">🤲 '.$near_parti_campaigns[$i]->getOffering().'</b>
+                    <b class="text-black">❖ '.$near_parti_campaigns[$i]->getOffering().'</b>
                     <p class="text-black text-bold">⌛ '.$near_parti_campaigns[$i]->getTimeLeft().'</p>
                     <b class="text-black">⌖ '.$near_parti_campaigns[$i]->getUserOwnedEthos().'/'.$near_parti_campaigns[$i]->getMinEthos().'('.$near_parti_campaigns[$i]->getProgress().'%)</b>
                 </div>
