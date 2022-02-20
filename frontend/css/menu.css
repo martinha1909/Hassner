@@ -265,6 +265,10 @@ select::-ms-expand {
   color: black;
 }
 
+.text-orange {
+  color: orange;
+}
+
 .text-dark {
   color: #1c1c1cff;
 }
@@ -440,6 +444,16 @@ select::-ms-expand {
 
 }
 
+.campaign-box-participated-winner {
+  border-radius: 25px;
+  border: 2px solid white; 
+  background: #0a60d0;
+  padding: 15px;
+  margin: 20px;
+  width: 200px;
+  height: 200px;
+}
+
 .campaign-box-near {
   border-radius: 25px;
   /* background: linear-gradient(180deg, #1c1c1cff 10%, rgb(255, 116, 116) 90%); */
@@ -474,22 +488,26 @@ select::-ms-expand {
 
 .portfolio-artist {
   color: #0a60d0;
+  cursor: context-menu;
 }
 
 .portfolio-percentage-positive {
   color:green;
   float: right;
+  cursor: context-menu;
 }
 
 .portfolio-percentage-negative {
   color:red;
   float: right;
+  cursor: context-menu;
 }
 
 .portfolio-shareamount {
   color: #1c1c1cff;
   font-weight: normal;
   font-size: small;
+  cursor: context-menu;
 }
 
 .portfolio-gain {
@@ -497,6 +515,7 @@ select::-ms-expand {
   float: right;
   font-weight: normal;
   font-size: small;
+  cursor: context-menu;
 }
 
 .portfolio-loss {
@@ -504,17 +523,20 @@ select::-ms-expand {
   float: right;
   font-weight: normal;
   font-size: small;
+  cursor: context-menu;
 }
 
 .portfolio-sellorder {
   color:rgb(255, 255, 255);
   float: right;
+  cursor: context-menu;
 }
 
 .portfolio-shareamount-openorder {
   color: rgb(255, 255, 255);
   font-weight: normal;
   font-size: small;
+  cursor: context-menu;
 }
 
 .portfolio-limitstop {
@@ -522,16 +544,23 @@ select::-ms-expand {
   float: right;
   font-weight: normal;
   font-size: small;
+  cursor: context-menu;
 }
 
 .open-order-cancel {
-  color:rgb(255, 255, 255);
-  font-weight: normal;
+  color: red;
+  font-weight: lighter;
+  padding-left: 10px;
+  font-size: 25px;
   display: flex;
   justify-content: center;
+  background: transparent;
+  border: transparent;
+  display: inline;
   flex-direction: column;
-  text-align: center; 
-  height: 0;
+  text-align: center;  
+  float: right;
+  cursor: pointer;
 }
 
 .input-no-border {
@@ -545,4 +574,9 @@ select::-ms-expand {
 
 .tooltip-pointer {
   cursor: help;
+}
+
+.vl {
+  border-left: 15px solid #1c1c1cff;
+  height: 0%;
 }

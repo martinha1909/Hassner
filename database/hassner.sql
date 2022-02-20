@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 12, 2022 at 04:32 AM
+-- Generation Time: Feb 16, 2022 at 08:49 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -60,16 +60,13 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`username`, `password`, `account_type`, `id`, `Shares`, `balance`, `rate`, `Share_Distributed`, `email`, `billing_address`, `Full_name`, `City`, `State`, `ZIP`, `Card_number`, `Transit_no`, `Inst_no`, `Account_no`, `Swift`, `price_per_share`, `Monthly_shareholder`, `Income`, `Market_cap`, `shares_repurchase`) VALUES
 ('21 Savage', 'artist', 'artist', 6, 0, '0.0', '0.0', 0, '21savage@gmail.com', '', '', '', '', '', '', '', '', '', '', '0.0', 0, '0.0', '0.0', 0),
-('88Glam', 'artist', 'artist', 2, 0, '103000.0', '0.0', 0, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', '138.5', 0, '0.0', '10000.0', -4576608),
+('88Glam', 'artist', 'artist', 2, 11154, '1218400.0', '0.0', 24017, '12@gmail.com', '1234', '88 Camino', 'Toronto', 'Ontario', '123456', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', '100.0', 0, '0.0', '1115400.0', 395),
+('Al Lure', 'artist', 'artist', 47, 10, '150.0', '0.0', 10, '12345@gmail.com', '', '', '', '', '', '', '', '', '', '', '10.0', 0, '0.0', '100.0', 0),
 ('daniel', 'user', 'user', 8, 0, '10000000.0', '0.0', 0, 'iosrghn@gmail.com', '', '', '', '', '', '', '', '', '', '', '0.0', 0, '0.0', '0.0', 0),
 ('Drake', 'artist', 'artist', 11, 0, '0.0', '0.0', 0, 'qwerty@gmail.com', 'Drake', '', '', '', '', '', '', '', '', '', '10.0', 0, '0.0', '0.0', 0),
-('kai', 'user', 'user', 4, 0, '8430248.3', '0.0', 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', '0.0', 0, '0.0', '0.0', 0),
-('martin', 'user', 'user', 1, 0, '6448111.8', '0.0', 0, 'minhvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', '0.0', 0, '0.0', '0.0', 0),
-('MartinHa', 'martin1234', 'user', 44, 0, '0.0', '0.0', 0, 'martinvuha1909@gmail.com', 'MartinHa', '', '', '', '', '', '', '', '', '', '0.0', 0, '0.0', '0.0', 0),
-('mifuonio', 'nioef', 'user', 40, 0, '0.0', '0.0', 0, 'martindnwi@gmail.com', 'mifuonio', '', '', '', '', '', '', '', '', '', '0.0', 0, '0.0', '0.0', 0),
-('NAV', 'artist', 'artist', 3, 0, '0.0', '0.0', 0, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', '16.1', 0, '0.0', '0.0', 0),
-('neofneo', 'nioenf', 'user', 42, 0, '0.0', '0.0', 0, 'efef@gmail.com', 'neofneo', '', '', '', '', '', '', '', '', '', '0.0', 0, '0.0', '0.0', 0),
-('neoifn', 'efienf', 'user', 41, 0, '0.0', '0.0', 0, 'moiwn@gmail.com', 'neoifn', '', '', '', '', '', '', '', '', '', '0.0', 0, '0.0', '0.0', 0),
+('kai', 'user', 'user', 4, 8, '7551088.3', '0.0', 0, '123@gmail.com', '', '', '', '', '', '', '', '', '', '', '0.0', 0, '0.0', '0.0', 0),
+('martin', 'user', 'user', 1, -391, '389052.0', '0.0', 0, 'minhvuha1909@gmail.com', '2240', 'Vu Ha (Martin)', 'Calgary', 'AB', 'T2N', '1111-2222-3333-4444', '12345', '123', '12345678', 'AAAABBCC', '0.0', 0, '0.0', '0.0', 0),
+('NAV', 'artist', 'artist', 3, 0, '0.0', '0.0', 1, '4321@gmail.com', '', '', '', '', '', '', '', '', '', '', '10.0', 0, '0.0', '0.0', 0),
 ('riley', 'user', 'user', 7, 0, '7206987.0', '0.0', 0, 'efin@gmail.com', '', '', '', '', '', '', '', '', '', '', '0.0', 0, '0.0', '0.0', 0),
 ('testuser', 'user', 'user', 30, 0, '0.0', '0.0', 0, 'testuser@gmail.com', 'testuser', '', '', '', '', '', '', '', '', '', '0.0', 0, '0.0', '0.0', 0),
 ('vitor', 'user', 'user', 5, 0, '5641130.0', '0.0', 0, '1234@gmail.com', '', '', '', '', '', '', '', '', '', '', '0.0', 0, '0.0', '0.0', 0);
@@ -92,6 +89,7 @@ CREATE TABLE `artist_account_data` (
 INSERT INTO `artist_account_data` (`artist_username`, `ticker`) VALUES
 ('21 Savage', '21SV'),
 ('88Glam', '88GM'),
+('Al Lure', '18AL'),
 ('Drake', '00DR'),
 ('NAV', '11NA');
 
@@ -126,6 +124,17 @@ CREATE TABLE `artist_shareholders` (
   `artist_username` varchar(20) NOT NULL,
   `shares_owned` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `artist_shareholders`
+--
+
+INSERT INTO `artist_shareholders` (`user_username`, `artist_username`, `shares_owned`) VALUES
+('88Glam', '88Glam', 395),
+('kai', '88Glam', 8791),
+('kai', 'Al Lure', 8),
+('martin', '88Glam', 2363),
+('martin', 'Al Lure', 2);
 
 -- --------------------------------------------------------
 
@@ -346,6 +355,18 @@ CREATE TABLE `buy_history` (
   `date_purchased` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `buy_history`
+--
+
+INSERT INTO `buy_history` (`id`, `user_username`, `seller_username`, `artist_username`, `no_of_share_bought`, `price_per_share_when_bought`, `date_purchased`) VALUES
+(16, 'martin', '88Glam', '88Glam', 3923, '100.0', '2022-02-13 13:10:56'),
+(17, 'kai', '88Glam', '88Glam', 6077, '100.0', '2022-02-13 13:11:51'),
+(18, 'kai', 'martin', '88Glam', 1579, '100.0', '2022-02-13 13:11:51'),
+(19, 'kai', 'martin', '88Glam', 1135, '100.0', '2022-02-13 13:17:24'),
+(20, 'martin', '88Glam', '88Glam', 1, '120.0', '2022-02-13 14:18:49'),
+(21, 'martin', '88Glam', '88Glam', 1546, '80.0', '2022-02-13 14:19:01');
+
 -- --------------------------------------------------------
 
 --
@@ -378,25 +399,20 @@ CREATE TABLE `campaign` (
   `type` varchar(10) NOT NULL,
   `minimum_ethos` float NOT NULL,
   `eligible_participants` int(11) NOT NULL,
-  `winner` varchar(20) DEFAULT NULL
+  `winner` varchar(20) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `campaign`
 --
 
-INSERT INTO `campaign` (`id`, `artist_username`, `offering`, `date_posted`, `date_expires`, `type`, `minimum_ethos`, `eligible_participants`, `winner`) VALUES
-(4, '88Glam', 'tickets', '2022-01-19 17:08:03', '0000-00-00 00:00:00', 'raffle', 10, 0, 'riley'),
-(5, '88Glam', 'merchandise', '2022-01-19 17:08:23', '0000-00-00 00:00:00', 'benchmark', 10, 0, NULL),
-(6, '88Glam', 'merchandise', '2022-01-19 17:58:15', '0000-00-00 00:00:00', 'raffle', 23, 0, 'riley'),
-(7, '88Glam', 'tickets', '2022-01-19 18:09:13', '0000-00-00 00:00:00', 'raffle', 1, 4, 'vitor'),
-(8, '88Glam', 'instrument', '2022-01-20 15:46:03', '0000-00-00 00:00:00', 'benchmark', 16, 0, NULL),
-(9, 'NAV', 'backstage', '2022-01-20 16:04:23', '2022-03-02 16:09:00', 'raffle', 27000, 0, NULL),
-(10, 'NAV', 'merchandise', '2022-01-20 16:04:36', '2022-01-31 16:04:00', 'benchmark', 22000, 0, NULL),
-(11, 'NAV', 'merchandise', '2022-01-20 16:04:50', '2022-01-29 16:09:00', 'benchmark', 30000, 0, NULL),
-(12, 'NAV', 'backstage', '2022-01-20 16:05:44', '2022-02-03 16:10:00', 'benchmark', 17000, 0, NULL),
-(13, 'Drake', 'merchandise', '2022-01-21 15:39:02', '2022-04-07 15:42:00', 'raffle', 50, 0, NULL),
-(14, '88Glam', 'tickets', '2022-01-31 20:14:19', '0000-00-00 00:00:00', 'raffle', 1, 2, 'martin');
+INSERT INTO `campaign` (`id`, `artist_username`, `offering`, `date_posted`, `date_expires`, `type`, `minimum_ethos`, `eligible_participants`, `winner`, `is_active`) VALUES
+(47, '88Glam', 'merchandise', '2022-02-15 18:47:02', '2022-02-15 18:48:00', 'raffle', 1, 3, 'martin', 0),
+(48, '88Glam', 'tickets', '2022-02-15 18:47:12', '2022-02-15 18:49:00', 'raffle', 1, 3, 'kai', 0),
+(50, '88Glam', 'merchandise', '2022-02-15 19:04:38', '2022-02-15 19:06:00', 'raffle', 4000, 1, 'kai', 0),
+(51, '88Glam', 'merchandise', '2022-02-16 12:38:17', '2022-02-16 12:41:00', 'benchmark', 1, 3, NULL, 0),
+(52, '88Glam', 'backstage', '2022-02-16 12:40:44', '2022-03-07 12:44:00', 'benchmark', 1, 3, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -457,6 +473,42 @@ CREATE TABLE `inject_history` (
   `date_injected` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `inject_history`
+--
+
+INSERT INTO `inject_history` (`id`, `artist_username`, `amount`, `comment`, `date_injected`) VALUES
+(74, '88Glam', 10000, 'IPO', '2022-02-13 13:08:07'),
+(75, '88Glam', 10000, '', '2022-02-13 14:18:36');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sell_history`
+--
+
+CREATE TABLE `sell_history` (
+  `id` int(11) NOT NULL,
+  `seller_username` varchar(20) NOT NULL,
+  `buyer_username` varchar(20) NOT NULL,
+  `artist_username` varchar(20) NOT NULL,
+  `amount_sold` int(11) NOT NULL,
+  `price_sold` decimal(10,1) NOT NULL,
+  `date_sold` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sell_history`
+--
+
+INSERT INTO `sell_history` (`id`, `seller_username`, `buyer_username`, `artist_username`, `amount_sold`, `price_sold`, `date_sold`) VALUES
+(1, '88Glam', 'martin', '88Glam', 3923, '100.0', '2022-02-13 13:10:56'),
+(2, '88Glam', 'kai', '88Glam', 6077, '100.0', '2022-02-13 13:11:51'),
+(3, 'martin', 'kai', '88Glam', 1579, '100.0', '2022-02-13 13:11:51'),
+(4, 'martin', 'kai', '88Glam', 1135, '100.0', '2022-02-13 13:17:24'),
+(5, '88Glam', 'martin', '88Glam', 1, '100.0', '2022-02-13 14:18:49'),
+(6, '88Glam', 'martin', '88Glam', 1546, '100.0', '2022-02-13 14:19:01');
+
 -- --------------------------------------------------------
 
 --
@@ -474,6 +526,13 @@ CREATE TABLE `sell_order` (
   `is_from_injection` tinyint(1) NOT NULL,
   `date_posted` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sell_order`
+--
+
+INSERT INTO `sell_order` (`id`, `user_username`, `artist_username`, `selling_price`, `no_of_share`, `sell_limit`, `sell_stop`, `is_from_injection`, `date_posted`) VALUES
+(187, '88Glam', '88Glam', '100.0', 8453, '-1.0', '-1.0', 1, '2022-02-13 14:18:36');
 
 --
 -- Indexes for dumped tables
@@ -560,6 +619,15 @@ ALTER TABLE `inject_history`
   ADD KEY `artist_injection_key` (`artist_username`);
 
 --
+-- Indexes for table `sell_history`
+--
+ALTER TABLE `sell_history`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sell_history_seller` (`seller_username`),
+  ADD KEY `sell_history_buyer` (`buyer_username`),
+  ADD KEY `sell_history_artist` (`artist_username`);
+
+--
 -- Indexes for table `sell_order`
 --
 ALTER TABLE `sell_order`
@@ -575,25 +643,25 @@ ALTER TABLE `sell_order`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `buy_history`
 --
 ALTER TABLE `buy_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `buy_order`
 --
 ALTER TABLE `buy_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `campaign`
 --
 ALTER TABLE `campaign`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `debug_log`
@@ -617,13 +685,19 @@ ALTER TABLE `info_log`
 -- AUTO_INCREMENT for table `inject_history`
 --
 ALTER TABLE `inject_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+
+--
+-- AUTO_INCREMENT for table `sell_history`
+--
+ALTER TABLE `sell_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `sell_order`
 --
 ALTER TABLE `sell_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
 
 --
 -- Constraints for dumped tables
@@ -674,6 +748,14 @@ ALTER TABLE `campaign`
 --
 ALTER TABLE `inject_history`
   ADD CONSTRAINT `artist_injection_key` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`);
+
+--
+-- Constraints for table `sell_history`
+--
+ALTER TABLE `sell_history`
+  ADD CONSTRAINT `sell_history_artist` FOREIGN KEY (`artist_username`) REFERENCES `account` (`username`),
+  ADD CONSTRAINT `sell_history_buyer` FOREIGN KEY (`buyer_username`) REFERENCES `account` (`username`),
+  ADD CONSTRAINT `sell_history_seller` FOREIGN KEY (`seller_username`) REFERENCES `account` (`username`);
 
 --
 -- Constraints for table `sell_order`

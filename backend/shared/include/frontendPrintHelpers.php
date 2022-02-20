@@ -25,7 +25,7 @@
                 {
                     echo '
                         <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                            <b class="text-dark float-right">♦</b>
                         </h3>
                     ';
                 }
@@ -35,7 +35,7 @@
                     // <b class="font-size-15">('.$participating_campaigns[$i]->getWinningChance().'%)</b>
                     echo '
                         <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                            <b class="text-dark float-right">♣</b>
                         </h3>
                     ';
                 }
@@ -77,15 +77,24 @@
             for ($i = 0; $i < sizeof($participated_campaigns); $i++) 
             {
                 $artist_market_tag = getArtistMarketTag($participated_campaigns[$i]->getArtistUsername());
-                echo '
-                    <div class="campaign-box-participated col-2.5">
-                ';
+                if($participated_campaigns[$i]->getWinner() == $username)
+                {
+                    echo '
+                        <div class="campaign-box-participated-winner col-2.5">
+                    ';
+                }
+                else
+                {
+                    echo '
+                        <div class="campaign-box-participated col-2.5">
+                    ';
+                }
 
                 if($participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
                     echo '
                         <h3 class="h3-white">'.$artist_market_tag.'
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                            <b class="text-white float-right">♦</b>
                         </h3>
                     ';
                 }
@@ -93,15 +102,39 @@
                 {
                     echo '
                         <h3 class="h3-white">'.$artist_market_tag.'
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                            <b class="text-white float-right">♣</b>
                         </h3>
                     ';
                 }
 
                 echo '
                         <b class="text-black">❖ '.$participated_campaigns[$i]->getOffering().'</b>
-                        <p class="text-black">⌛ Expired</p>
-                        <b class="text-black">⌖ '.$participated_campaigns[$i]->getMinEthos().'</b>
+                        <p class="text-black">⌛ '.$participated_campaigns[$i]->getDateExpires().'</p>
+                ';
+
+                if($participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
+                {
+                    echo '
+                        <b class="text-black">Win: N/A</b>
+                    ';
+                }
+                else
+                {
+                    if($participated_campaigns[$i]->getWinner() == $username)
+                    {
+                        echo '
+                            <b class="text-orange">Win: Yes</b>
+                        ';
+                    }
+                    else
+                    {
+                        echo '
+                            <b class="text-black">Win: No</b>
+                        ';
+                    }
+                }
+                        
+                echo '
                     </div>
                 ';
             }
@@ -162,7 +195,7 @@
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                         <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                            <b class="text-white float-right">♦</b>
                         </h3>
                     </form>
                 ';
@@ -172,7 +205,7 @@
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                         <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                            <b class="text-white float-right">♣</b>
                         </h3>
                     </form>
                 ';
@@ -379,7 +412,7 @@
 
                 echo '
                                         <td>' . $campaign_info[$i]->getOffering() . '</td>
-                                        <td>' . $campaign_info[$i]->getDateExpires() . '</td>
+                                        <td>' . dbDateTimeParser($campaign_info[$i]->getDateExpires()) . '</td>
                                     </tr>
                 ';
             }
@@ -587,7 +620,9 @@
 
         if($_SESSION['artist_found'])
         {
+            $artist_market_tag = getArtistMarketTag($artist_username);
             echo '
+<<<<<<< HEAD
                 <h3 data-toggle="tooltip" title="Here the artist offers rewards in return for users buying shares." class="h3-blue tooltip-pointer py-5">Current Campaigns</h3>
                 <table class="table">
                     <thead>
@@ -599,32 +634,39 @@
                         </tr>
                     </thead>
                     <tbody>
+=======
+                <h3 class="h3-blue py-5">Current Campaigns</h3>
+                <div class="row">
+>>>>>>> 7ad6e23b4dfd887443377ba835789f7ef5a9fc1f
             ';
 
             for($i = 0; $i < sizeof($current_campaigns); $i++)
             {
+                echo '
+                    <div class="campaign-box-participating col-2.5">
+                ';
                 $type = "Error in parsing type";
                 if($current_campaigns[$i]->getType() == CampaignType::RAFFLE)
                 {
-                    $type = "♢";
+                    $type = "♣";
                 }
                 else if($current_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
-                    $type = "♧";
+                    $type = "♦";
                 }
                 echo '
-                        <tr>
-                            <th scope="row">' . $current_campaigns[$i]->getOffering() . '</th>
-                            <td>' . $current_campaigns[$i]->getMinEthos() . '</td>
-                            <td>' . $type .'</td>
-                            <td>'. dbDateTimeParser($current_campaigns[$i]->getDatePosted()) .'</td>
-                        </tr>
+                        <h3 class="h3-blue">'.$artist_market_tag.'
+                            <b class="text-dark float-right">'.$type.'</b>
+                        </h3>
+                        <b class="text-black">🤲 '.$current_campaigns[$i]->getOffering().'</b>
+                        <p class="text-black text-bold">⌛ '.dbDateTimeParser($current_campaigns[$i]->getDatePosted()).'</p>
+                        <b class="text-black">⌖ '.$current_campaigns[$i]->getMinEthos().'</b>
+                    </div>
                 ';
             }
 
             echo '
-                    </tbody>
-                </table>
+                </div>
             ';
         }
     }
@@ -671,5 +713,214 @@
         ';
 
         return $ret;
+    }
+
+    function printOwnedSharesTable($user_username)
+    {
+        $conn = connect();
+        $res = searchUserInvestedArtists($conn, $user_username);
+        if($res->num_rows > 0)
+        {
+            //Each row will contain 1 artist
+            while($row = $res->fetch_assoc())
+            {
+                $buy_history_instances = array();
+                $total_amount_gain = 0;
+                $total_amount_spent = 0;
+                //Total percent change with respected to the share price when bought vs the market price now
+                $total_percentage_change = 0;
+                $owned_shares = $row['shares_owned'];
+                $artist_username = $row['artist_username'];
+                $artist_market_price = getArtistPricePerShare($artist_username);
+
+                $res_buy_history = searchSpecificInvestment($conn, $user_username, $artist_username);
+                while($row_history = $res_buy_history->fetch_assoc())
+                {
+                    $buy_history = new BuyHistory();
+
+                    $buy_history->setID($row_history['id']);
+                    $buy_history->setBuyer($row_history['user_username']);
+                    $buy_history->setSeller($row_history['seller_username']);
+                    $buy_history->setArtist($row_history['artist_username']);
+                    $buy_history->setNoOfShareBought($row_history['no_of_share_bought']);
+                    $buy_history->setPPS($row_history['price_per_share_when_bought']);
+                    $buy_history->setDatePurchased($row_history['date_purchased']);
+
+                    array_push($buy_history_instances, $buy_history);
+                    $total_amount_spent +=  $row_history['price_per_share_when_bought'] * $row_history['no_of_share_bought'];
+                }
+
+                //we want to work our way down from the highest price per share when the user bought, just to show the potential amount increase to be greatest
+                BuyHistory::sort($buy_history_instances, 0, sizeof($buy_history_instances) - 1, "DESCENDING", "PPS");
+
+                $buy_history_index = 0;
+                $res_sell_history = searchSellHistoryByUserAndArtist($conn, $user_username, $artist_username);
+                $row_sell_history = $res_sell_history->fetch_assoc();
+                while(true)
+                {
+                    //We only break out of the loop once we have gone through the sell history table, we do not care about the buy history indices since there are more shares bought than shares sold
+                    if($row_sell_history == null)
+                    {
+                        break;
+                    }
+                    if($buy_history_instances[$buy_history_index]->getNoOfShareBought() > $row_sell_history['amount_sold'])
+                    {
+                        $total_amount_spent = $total_amount_spent - ($row_sell_history['amount_sold'] * $buy_history_instances[$buy_history_index]->getPPS());
+                        $new_buy_history_no_of_share = $buy_history_instances[$buy_history_index]->getNoOfShareBought() - $row_sell_history['amount_sold'];
+                        $buy_history_instances[$buy_history_index]->setNoOfShareBought($new_buy_history_no_of_share);
+                        $row_sell_history = $res_sell_history->fetch_assoc();
+                    }
+                    else
+                    {
+                        $total_amount_spent = $total_amount_spent - ($buy_history_instances[$buy_history_index]->getNoOfShareBought() * $buy_history_instances[$buy_history_index]->getPPS());
+                        $row['amount_sold'] = $row_sell_history['amount_sold'] - $buy_history_instances[$buy_history_index]->getNoOfShareBought();
+                        $buy_history_instances[$buy_history_index]->setNoOfShareBought(0);
+                        $buy_history_index++;
+                    }
+                }
+
+                //Showing the total percentage change from when the user bought shares (price can be different at each times user bought them, so we have to take that into account)
+                $total_percentage_change = round(((($artist_market_price * $owned_shares) - $total_amount_spent)/$total_amount_spent) * 100, 2);
+                $total_amount_gain = round(($artist_market_price * $owned_shares) - $total_amount_spent, 2);
+
+                echo '
+                    <div class="portfolio-box-owned-shares">
+                ';
+                if($total_percentage_change > 0)
+                {
+                    echo '
+                        <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
+                            <input name = "artist_name" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_username.'"><b class="portfolio-percentage-positive">+'.$total_percentage_change.'%</b><br>
+                        </form>
+                        <b class="portfolio-shareamount">'.$owned_shares.'x</b><b class="portfolio-gain">+$'.$total_amount_gain.'</b>
+                    ';
+                }
+                else
+                {
+                    echo '
+                        <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
+                            <input name = "artist_name" class="input-no-border text-bold" id ="abc_blue" type = "submit" role="button" value = "'.$artist_username.'"><b class="portfolio-percentage-negative">'.$total_percentage_change.'%</b><br>
+                        </form>
+                        <b class="portfolio-shareamount">'.$owned_shares.'x</b><b class="portfolio-loss">$'.$total_amount_gain.'</b>
+                    ';
+                }
+                echo '
+                    </div>
+                ';
+            }
+        }
+        else
+        {
+            echo '<h4 class="h4-blue">You have not invested in any artists</h4>';
+        }
+
+        closeCon($conn);
+    }
+
+    function printOpenBuyTable($user_username)
+    {
+        $conn = connect();
+        $res = searchUserBuyOrders($conn, $user_username);
+        if($res->num_rows > 0)
+        {
+            echo '
+                <div>
+                <h3 class="py-2 mx-2">Buy Order</h3>
+            ';
+            while($row = $res->fetch_assoc())
+            {
+                $limit_stop = "no Limit/Stop";
+                $artist_username = $row['artist_username'];
+                $artist_market_price = getArtistPricePerShare($artist_username);
+                $artist_market_tag = getArtistMarketTag($artist_username);
+                $amount_spending = $artist_market_price;
+                
+                if($row['siliqas_requested'] == -1)
+                {
+                    if($row['buy_limit'] == -1)
+                    {
+                        $limit_stop = "Stop: ".$row['buy_stop'];
+                        $amount_spending = $row['buy_stop'];
+                    }
+                    else if($row['buy_stop'] == -1)
+                    {
+                        $limit_stop = "Limit: ".$row['buy_limit'];
+                        $amount_spending = $row['buy_limit'];
+                    }
+                    else if($row['buy_limit'] != -1 && $row['buy_stop'] != -1)
+                    {
+                        $limit_stop = "Limit: ".$row['buy_limit']."/Stop: ".$row['buy_stop'];
+                    }
+                }
+                echo '
+                    <div class="portfolio-box-open-order">
+                        <form action="../../backend/listener/RemoveBuyOrderBackend.php" method="post">
+                            <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
+                        </form>
+                        <form 
+                        <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method="post">
+                            <input name = "artist_ticker" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_market_tag.'"><b class="portfolio-sellorder">-'.$amount_spending.'</b><br>
+                        </form>
+                        <b class="portfolio-shareamount-openorder">'.$row['quantity'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
+                    </div>
+                ';
+            }
+            echo '</div>';
+        }
+
+        closeCon($conn);
+    }
+
+    function printOpenSellTable($user_username)
+    {
+        $conn = connect();
+        $res = searchSellOrderByUser($conn, $user_username);
+        if($res->num_rows > 0)
+        {
+            echo '
+                <div>
+                <h3 class="py-2 mx-2">Sell Order</h3>
+            ';
+            while($row = $res->fetch_assoc())
+            {
+                $limit_stop = "no Limit/Stop";
+                $artist_username = $row['artist_username'];
+                $artist_market_price = getArtistPricePerShare($artist_username);
+                $artist_market_tag = getArtistMarketTag($artist_username);
+                $amount_selling = $artist_market_price;
+                
+                if($row['selling_price'] == -1)
+                {
+                    if($row['sell_limit'] == -1)
+                    {
+                        $limit_stop = "Stop: ".$row['sell_stop'];
+                        $amount_selling = $row['sell_stop'];
+                    }
+                    else if($row['sell_stop'] == -1)
+                    {
+                        $limit_stop = "Limit: ".$row['sell_limit'];
+                        $amount_selling = $row['sell_limit'];
+                    }
+                    else if($row['sell_limit'] != -1 && $row['sell_stop'] != -1)
+                    {
+                        $limit_stop = "Limit: ".$row['sell_limit']."/Stop: ".$row['sell_stop'];
+                    }
+                }
+                echo '
+                    <div class="portfolio-box-open-order">
+                        <form action="../../backend/shared/RemoveSellOrderBackend.php" method="post">
+                            <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
+                        </form>
+                        <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method="post">
+                            <input name = "artist_ticker" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_market_tag.'"><b class="portfolio-sellorder">+'.$amount_selling.'</b><br>
+                        </form>
+                        <b class="portfolio-shareamount-openorder">'.$row['no_of_share'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
+                    </div>
+                ';
+            }
+            echo '</div>';
+        }
+
+        closeCon($conn);
     }
 ?>
