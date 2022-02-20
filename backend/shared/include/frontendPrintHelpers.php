@@ -25,7 +25,7 @@
                 {
                     echo '
                         <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                            <b class="text-dark float-right">♦</b>
                         </h3>
                     ';
                 }
@@ -35,7 +35,7 @@
                     // <b class="font-size-15">('.$participating_campaigns[$i]->getWinningChance().'%)</b>
                     echo '
                         <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                            <b class="text-dark float-right">♣</b>
                         </h3>
                     ';
                 }
@@ -94,7 +94,7 @@
                 {
                     echo '
                         <h3 class="h3-white">'.$artist_market_tag.'
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                            <b class="text-white float-right">♦</b>
                         </h3>
                     ';
                 }
@@ -102,7 +102,7 @@
                 {
                     echo '
                         <h3 class="h3-white">'.$artist_market_tag.'
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                            <b class="text-white float-right">♣</b>
                         </h3>
                     ';
                 }
@@ -123,7 +123,7 @@
                     if($participated_campaigns[$i]->getWinner() == $username)
                     {
                         echo '
-                            <b class="text-black">Win: Yes</b>
+                            <b class="text-orange">Win: Yes</b>
                         ';
                     }
                     else
@@ -195,7 +195,7 @@
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                         <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♦</b>
+                            <b class="text-white float-right">♦</b>
                         </h3>
                     </form>
                 ';
@@ -205,7 +205,7 @@
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                         <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                            <b class="text-white">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp♣</b>
+                            <b class="text-white float-right">♣</b>
                         </h3>
                     </form>
                 ';
@@ -642,7 +642,7 @@
                 }
                 echo '
                         <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b class="text-dark">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.$type.'</b>
+                            <b class="text-dark float-right">'.$type.'</b>
                         </h3>
                         <b class="text-black">🤲 '.$current_campaigns[$i]->getOffering().'</b>
                         <p class="text-black text-bold">⌛ '.dbDateTimeParser($current_campaigns[$i]->getDatePosted()).'</p>
