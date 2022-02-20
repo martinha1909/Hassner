@@ -12,8 +12,10 @@
     include '../../backend/object/Node.php';
     include '../../backend/object/Artist.php';
     include '../../backend/object/TickerInfo.php';
+    include '../../backend/object/BuyHistory.php';
 
     $_SESSION['selected_artist'] = 0;
+    $_SESSION['lock_count'] = -1;
 
     $account = getAccount($_SESSION['username']);
     $_SESSION['user_balance'] = $account['balance'];
@@ -101,253 +103,18 @@
                         <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
                     </li>
                 </ul>
-                <div class="container my-auto mx-auto col-6">
+                <div class="container my-auto mx-auto col-8">
                     <ul class="list-group-campaign my-4">
                         <div id="portfolio_content">
                             <h3 class="h3-blue">Owned Shares</h3>
                             <div class="row">
-                                <div class="portfolio-box-owned-shares">
-                                        <b class="portfolio-artist">88GM</b><b class="portfolio-percentage-negative">-26.42</b>
-                                        <b class="portfolio-shareamount">120x</b><b class="portfolio-loss">-699.66</b>
-                                </div>
-                                <div class="portfolio-box-owned-shares">
-                                        <b class="portfolio-artist">42WK</b><b class="portfolio-percentage-positive">+5.32</b>
-                                        <b class="portfolio-shareamount">37x</b><b class="portfolio-gain">+2.32</b>
-                                </div>
-                                <div class="portfolio-box-owned-shares">
-                                        <b class="portfolio-artist">20SV</b><b class="portfolio-percentage-negative">-2.42</b>
-                                        <b class="portfolio-shareamount">10x</b><b class="portfolio-loss">-6.66</b>
-                                </div>
-                                <div class="portfolio-box-owned-shares">
-                                        <b class="portfolio-artist">21SV</b><b class="portfolio-percentage-positive">+2.89</b>
-                                        <b class="portfolio-shareamount">55x</b><b class="portfolio-gain">+12.30</b>
-                                </div>
-                                <div class="portfolio-box-owned-shares">
-                                        <b class="portfolio-artist">00KW</b><b class="portfolio-percentage-positive">+2.78</b>
-                                        <b class="portfolio-shareamount">5x</b><b class="portfolio-gain">+212.32</b>
-                                </div>
+                                <?php printOwnedSharesTable($_SESSION['username']); ?>
                             </div>
-
-                            <h3 class="h3-blue">Open Orders</h3>
                             <div class="row">
-                                <div class="portfolio-box-open-order">
-                                        <b class="open-order-cancel">⊘</b>
-                                        <b class="portfolio-artist">00KW</b><b class="portfolio-sellorder">+30.98</b>
-                                        <b class="portfolio-shareamount-openorder">5x</b><b class="portfolio-limitstop">no Limit / Stop</b>
-                                </div>
-                                <div class="portfolio-box-open-order">
-                                        <b class="open-order-cancel">⊘</b>
-                                        <b class="portfolio-artist">02MV</b><b class="portfolio-sellorder">+330.98</b>
-                                        <b class="portfolio-shareamount-openorder">33x</b><b class="portfolio-limitstop">Limit: 0.48</b>
-                                </div>
-                                <div class="portfolio-box-open-order">
-                                        <b class="open-order-cancel">⊘</b>
-                                        <b class="portfolio-artist">09RC</b><b class="portfolio-sellorder">+400.00</b>
-                                        <b class="portfolio-shareamount-openorder">10x</b><b class="portfolio-limitstop">Stop: 40</b>
-                                </div>
-                            </div>
-
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" style="color: white;" class="bg-dark">#</th>
-                                        <th scope="col">Artist</th>
-                                        <th scope="col">Shares bought</th>
-                                        <th scope="col">Price per share</th>
-                                        <th scope="col">Last 24 hours</th>
-                                        <!-- <form action="../../backend/listener/include/SortPortfolioArtistHelpers.php">
-                                            <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Artist" onclick="window.location.reload();"> -->
-                            <?php
-                            //TODO: reenable after testing phase ends
-                            // // sort Artist ascending alphabetically
-                            // if ($_SESSION['sort_type'] == 1) 
-                            // {
-                            //     echo " ↑";
-                            // }
-                            // //sort Artist descending alphabetically
-                            // else if ($_SESSION['sort_type'] == 4) 
-                            // {
-                            //     echo " ↓";
-                            // } 
-                            // else 
-                            // {
-                            //     echo "";
-                            // }
-                            // echo '
-                            //                     </th>
-                            //                     </form>
-                            //                     <form action="../../backend/listener/include/SortPortfolioShareHelpers.php">
-                            //                         <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Shares bought" onclick="window.location.reload();">';
-                            // //sort Shares bought ascending alphabetically
-                            // if ($_SESSION['sort_type'] == 2) 
-                            // {
-                            //     echo ' ↑';
-                            // }
-                            // //sort Shares bought descending alphabetically
-                            // else if ($_SESSION['sort_type'] == 5) 
-                            // {
-                            //     echo " ↓";
-                            // } 
-                            // else 
-                            // {
-                            //     echo "";
-                            // }
-                            // echo '
-                            //                     </th>
-                            //                     </form>
-                            //                     <form action = "../../backend/listener/include/SortPortfolioPPSHelpers.php">
-                            //                         <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Price per share" onclick="window.location.reload();">';
-                            // //sort Price per share ascending alphabetically
-                            // if ($_SESSION['sort_type'] == 3) 
-                            // {
-                            //     echo ' ↑';
-                            // }
-                            // //sort Price per share descending alphabetically
-                            // else if ($_SESSION['sort_type'] == 6) 
-                            // {
-                            //     echo " ↓";
-                            // }
-                            // else 
-                            // {
-                            //     echo "";
-                            // }
-
-                            // echo '
-                            //                     </th>
-                            //                     </form>
-                            //                     <form action = "../../backend/listener/include/SortPortfolioRateHelpers.php">
-                            //                         <th scope="col"><input type = "submit" class="th-dark" role="button" aria-pressed="true" value = "Last 24 hours" onclick="window.location.reload();">';
-                            // //sort Rate ascending alphabetically
-                            // if ($_SESSION['sort_type'] == 0) {
-                            //     echo ' ↑';
-                            // }
-                            // //sort Rate descending alphabetically
-                            // else if ($_SESSION['sort_type'] == 7) {
-                            //     echo " ↓";
-                            // } else {
-                            //     echo "";
-                            // }
-
-                            // echo '
-                            //                     </th>
-                            //                     </form>
-                            //                 </tr>
-                            //             </thead>
-                            //         <tbody>
-                            // ';
-                            echo '
-                                        </tr>
-                                    </thead>
-                                <tbody>
-                            ';
-                            $all_rates = array();
-                            $all_price_per_share = array();
-                            $all_shares_bought = array();
-                            $all_artists = array();
-                            $artist_name = "";
-                            $rate = 0;
-                            //retrieving data from the data base to populate arrays that store information of artists that the user has invested in
-                            populateVars($_SESSION['username'], $all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
-
-                            if ($_SESSION['sort_type'] == 0) 
-                            {
-                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Ascending");
-                            } 
-                            else if ($_SESSION['sort_type'] == 1) 
-                            {
-                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Ascending");
-                            } 
-                            else if ($_SESSION['sort_type'] == 2) 
-                            {
-                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Ascending");
-                            } 
-                            else if ($_SESSION['sort_type'] == 3) 
-                            {
-                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Ascending");
-                            } 
-                            else if ($_SESSION['sort_type'] == 4) 
-                            {
-                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Artist", "Descending");
-                            } 
-                            else if ($_SESSION['sort_type'] == 5) 
-                            {
-                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Share", "Descending");
-                            } 
-                            else if ($_SESSION['sort_type'] == 6) 
-                            {
-                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "PPS", "Descending");
-                            } 
-                            else if ($_SESSION['sort_type'] == 7) 
-                            {
-                                sortChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share, "Rate", "Descending");
-                            }
-                            printMyPortfolioChart($all_artists, $all_shares_bought, $all_rates, $all_price_per_share);
-                            echo '
-                                    </tbody>
-                                </table>
-                            ';
-
-                            sellOrderInit();
-
-                            //Displaying buy order section
-
-                            //reusing some variable names since this comes after sell order
-                            $artist_usernames = array();
-                            $quantities_requested = array();
-                            $siliqas_requested = array();
-                            $date_posted = array();
-                            $buy_order_ids = array();
-
-
-                            fetchBuyOrders(
-                                $_SESSION['username'],
-                                $artist_usernames,
-                                $quantities_requested,
-                                $siliqas_requested,
-                                $date_posted,
-                                $buy_order_ids
-                            );
-
-                            if (sizeof($artist_usernames) > 0) {
-                                echo '
-                                        <div class="container py-6 my-auto mx-auto">    
-                                        <h3>Buy orders</h3>
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="th-tan" scope="col">Order ID</th>
-                                                        <th class="th-tan" scope="col">Artist</th>
-                                                        <th class="th-tan" scope="col">Amount Requested</th>
-                                                        <th class="th-tan" scope="col">Quantity</th>
-                                                        <th class="th-tan" scope="col">Date Posted</th>
-                                                        <th class="th-tan" scope="col">Remove Order</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                    ';
-
-                                for ($i = 0; $i < sizeof($artist_usernames); $i++) {
-                                    echo '
-                                                <form action="../../backend/listener/RemoveBuyOrderBackend.php" method="post">
-                                                    <tr>
-                                                        <th scope="row"><input name="remove_id" class="cursor-context" value = "' . $buy_order_ids[$i] . '"></th>
-                                                        <td>' . $artist_usernames[$i] . '</td>
-                                                        <td>' . $siliqas_requested[$i] . '</td>
-                                                        <td>' . $quantities_requested[$i] . '</td>
-                                                        <td>' . $date_posted[$i] . '</td>
-                                                        <td><input type="submit" id="abc" class="cursor-context" role="button" aria-pressed="true" value="☉" onclick="window.location.reload();"></td>
-                                                    </tr>
-                                                </form>
-                                        ';
-                                }
-
-                                echo '
-                                            </tbody>
-                                        </table>
-                                        </div>
-                                ';
-                            }
-                        ?>
+                                <?php printOpenBuyTable($_SESSION['username']); ?>
+                                <div class="vl"></div>
+                                <?php printOpenSellTable($_SESSION['username']); ?>
+                            </div>  
                         </div>
 
                         <div class="div-hidden" id="campaign_content">

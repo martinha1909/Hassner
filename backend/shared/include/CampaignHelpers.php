@@ -63,7 +63,7 @@
                     }
 
                     updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
-                    updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
+                    updateCampaignActiveStatus($conn, $row['id'], 0);
 
                     if($eligible_participant != $row['eligible_participants'])
                     {
@@ -113,7 +113,7 @@
         while($row = $res->fetch_assoc())
         {
             $expired_campaign = new Campaign();
-            if($row['date_expires'] == "0000-00-00 00:00:00")
+            if($row['is_active'] == 0)
             {
                 $time_released = dbDateTimeParser($row['date_posted']);
 
@@ -169,7 +169,7 @@
         while($row = $res->fetch_assoc())
         {
             //Avoid fetching campaigns that are already expired in the past
-            if($row['date_expires'] != "0000-00-00 00:00:00")
+            if($row['is_active'] != 0)
             {
                 $date_expires = explode(" ", $row['date_expires'])[0];
                 $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
@@ -193,7 +193,7 @@
                         updateRaffleCampaignWinner($conn, $row['id'], $roll_res);
                     }
 
-                    updateCampaignExpirationDate($conn, $row['id'], $campaign_time_left);
+                    updateCampaignActiveStatus($conn, $row['id'], 0);
                 }
             }
         }
