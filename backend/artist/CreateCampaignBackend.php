@@ -5,6 +5,8 @@
     include '../constants/LoggingModes.php';
     include '../constants/Timezone.php';
 
+    $_SESSION['lock_count']++;
+
     $_SESSION['logging_mode'] = LogModes::CAMPAIGN;
 
     $conn = connect();
@@ -35,34 +37,41 @@
         $release_time = explode(" ", $current_date)[1];
 
         if(isInTheFuture(explode("-", $exp_day), 
-                         explode("-", $release_day), 
-                         explode(":", $exp_time), 
-                         explode(":", $release_time)))
+                        explode("-", $release_day), 
+                        explode(":", $exp_time), 
+                        explode(":", $release_time)))
         {
-            if($offer == "other")
+            if($_SESSION['lock_count'] == 0)
             {
-                $other_offer = $_POST['other_offering'];
-                postCampaign($conn, 
-                             $_SESSION['username'], 
-                             $other_offer, 
-                             $current_date, 
-                             $expiration_date,
-                             $type,
-                             $minimum_ethos);
+                if($offer == "other")
+                {
+                    $other_offer = $_POST['other_offering'];
+                    postCampaign($conn, 
+                                $_SESSION['username'], 
+                                $other_offer, 
+                                $current_date, 
+                                $expiration_date,
+                                $type,
+                                $minimum_ethos);
+                }
+                else
+                {
+                    postCampaign($conn, 
+                                $_SESSION['username'], 
+                                $offer, 
+                                $current_date,
+                                $expiration_date,
+                                $type,
+                                $minimum_ethos);
+                }
+                $_SESSION['dependencies'] = "FRONTEND";
+                returnToMainPage();
             }
             else
             {
-                postCampaign($conn, 
-                             $_SESSION['username'], 
-                             $offer, 
-                             $current_date,
-                             $expiration_date,
-                             $type,
-                             $minimum_ethos);
+                $_SESSION['dependencies'] = "FRONTEND";
+                returnToMainPage();
             }
-
-            $_SESSION['dependencies'] = "FRONTEND";
-            returnToMainPage();
         }
         else
         {

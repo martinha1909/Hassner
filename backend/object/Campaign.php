@@ -11,6 +11,7 @@
         private $user_owned_ethos;
         private $eligible_participants;
         private $winner;
+        private $is_active;
         //Progress towards the minimum ethos
         private $progress;
         private $winning_chance;
@@ -28,6 +29,8 @@
             $this->min_ethos = 0;
             $this->eligible_participants = 0;
             $this->winner = "";
+            //Assume campaign active
+            $this->is_active = 1;
         }
 
         /**
@@ -244,6 +247,16 @@
         public function getDeliverProgress()
         {
                 return $this->deliver_progress;
+        }
+
+        public function setActive($is_active)
+        {
+            $this->is_active = $is_active; 
+        }
+
+        public function getActive($is_active)
+        {
+            return $this->is_active;
         }
 
         /**

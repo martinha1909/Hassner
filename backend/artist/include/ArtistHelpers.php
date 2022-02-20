@@ -311,7 +311,7 @@
                         $investor->setEmail($investor_info['email']);
                         $investor->setAmountInvested($amount_invested);
 
-                        if($row_winning_campaign['date_expires'] != "0000-00-00 00:00:00")
+                        if($row_winning_campaign['is_active'] != 0)
                         {
                             $campaign->setDateExpires(dbDateTimeParser($row_winning_campaign['date_expires']));
                             $campaign->setDeliverProgress(CampaignDeliverProgress::IN_PROGRESS);
@@ -321,7 +321,8 @@
                             //For now assume all campaigns are not delivered, TODO: have a checkbox or something for artist to check when they deliver 
                             //the campaign promises
                             $campaign->setDeliverProgress(CampaignDeliverProgress::NEGATIVE);
-                            $campaign->setDateExpires("Expired");
+                            $campaign->setActive(0);
+                            $campaign->setDateExpires($row_winning_campaign['date_expires']);
                         }
                         $campaign->setOffering($row_winning_campaign['offering']);
 
@@ -381,7 +382,7 @@
                                         <label for="buy_num_shares_'.$i.'" class="text-blue text-bold">Shares:</label>
                                         <input type="text" class="buy_back_shares_slider_text" value="1" id="buy_num_shares_'.$i.'">
                                         <div class="slider_container">
-                                            <div id="buy_num_'.$i.'"></div><input role="button" type="submit" class="input-no-background-white py-2" value="->" onclick="buyBackShare('.$sell_orders[$i]->getID().', '.$i.', '.$sell_orders[$i]->getSellingPrice().')">
+                                            <div id="buy_num_'.$i.'"></div><input role="button" type="submit" id="prevent_onclick_'.$i.'" class="input-no-background-white py-2" value="->" onclick="buyBackShare('.$sell_orders[$i]->getID().', '.$i.', '.$sell_orders[$i]->getSellingPrice().');">
                                         </div>
                                     </div>
                                 </td>

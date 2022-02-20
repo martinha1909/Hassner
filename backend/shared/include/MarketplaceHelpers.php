@@ -833,7 +833,7 @@ function refreshBuyOrderTable()
         $res = searchArtistCampaigns($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
-            if($row['date_expires'] != "0000-00-00 00:00:00")
+            if($row['is_active'] != 0)
             {
                 $campaign = new Campaign();
                 $campaign->setOffering($row['offering']);
