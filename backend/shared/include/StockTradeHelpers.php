@@ -1729,6 +1729,8 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
     }
     checkForExecutableSellOrders($conn, $connPDO, $artist_username, $current_market_price);
     closeCon($conn);
+
+    return $request_quantity;
 }
 
 /**
@@ -1876,6 +1878,8 @@ function autoPurchaseStopSet($user_username, $artist_username, $request_quantity
 
     checkForExecutableSellOrders($conn, $connPDO, $artist_username, $current_market_price);
     closeCon($conn);
+
+    return $request_quantity;
 }
 
 /**
@@ -2049,5 +2053,7 @@ function autoPurchaseLimitStopSet($user_username, $artist_username, $request_qua
     hx_debug (HX::SELL_SHARES, "Checking for executable sell orders after stock price has changed...");
     checkForExecutableSellOrders($conn, $connPDO, $artist_username, $current_market_price);
     closeCon($conn);
+
+    return $request_quantity;
 }
 ?>
