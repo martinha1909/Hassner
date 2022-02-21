@@ -707,9 +707,15 @@
         $res = searchUserInvestedArtists($conn, $user_username);
         if($res->num_rows > 0)
         {
+            $artist_count = 0;
             //Each row will contain 1 artist
             while($row = $res->fetch_assoc())
             {
+                if($row['shares_owned'] <= 0)
+                {
+                    continue;
+                }
+                $artist_count++;
                 $buy_history_instances = array();
                 $total_amount_gain = 0;
                 $total_amount_spent = 0;
@@ -744,8 +750,7 @@
                 $row_sell_history = $res_sell_history->fetch_assoc();
                 while(true)
                 {
-                    //We only break out of the loop once we have gone through the sell history table, we do not care about the buy history indices since there are more shares bought than shares sold
-                    if($row_sell_history == null)
+                    if($row_sell_history == null || $buy_history_index >= sizeof($buy_history_instances))
                     {
                         break;
                     }
@@ -793,6 +798,10 @@
                 echo '
                     </div>
                 ';
+            }
+            if($artist_count == 0)
+            {
+                echo '<h4 class="h4-blue">No invested artist found</h4>';
             }
         }
         else
