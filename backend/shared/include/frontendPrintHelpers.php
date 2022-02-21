@@ -898,7 +898,7 @@
                             <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
                         </form>
                         <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method="post">
-                            <input name = "artist_ticker" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_market_tag.'"><b class="portfolio-sellorder">+'.$amount_selling.'</b><br>
+                            <input name = "artist_ticker" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_market_tag.'"><b class="portfolio-sellorder">'.$amount_selling.'</b><br>
                         </form>
                         <b class="portfolio-shareamount-openorder">'.$row['no_of_share'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
                     </div>
