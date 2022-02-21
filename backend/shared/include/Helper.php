@@ -12,7 +12,7 @@
     {
         date_default_timezone_set(Timezone::MST);
         //Set these to true to trigger logging, default to false as this makes log files very noisy
-        $_SESSION['debug'] = true;
+        $_SESSION['debug'] = false;
         $_SESSION['error'] = false;
         $_SESSION['info'] = false;
         //Set this to false to enable functionalities that are not available during testing phase
