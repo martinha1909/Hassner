@@ -1,4 +1,13 @@
 <?php
+    /**
+    * Recalculate eligible participants of all campaigns of a given artist. This function is called after an artist stock has been traded
+    *
+    * @param  	buyer_username	        Buyer of the artist stock, can be the artist themselves or a normal user
+    * @param  	seller_username	        Seller of the artist stock, can be the artist themselves or a normal user
+    * @param  	buyer_account_type	    Account type of buyer, can be user or artist
+    * @param  	seller_account_type	    Account type of seller, can be user or artist
+    * @param  	artist_username	        artist's stock that is being traded
+    */
     function recalcCampaignParticipants($buyer_username, $seller_username, $buyer_account_type, $seller_account_type, $artist_username)
     {
         $remove_err_code = StatusCodes::NONE;
