@@ -30,7 +30,7 @@ jobs:
           username: github
           key: ${{ secrets.PRIVATE_KEY}}
           port: 22
-          script: rm -rf /opt/bitnami/apache/htdocs/Hassner/*
+          script: rm -rf /opt/bitnami/apache/htdocs/*
           
       - name: Upload Files
         uses: appleboy/scp-action@master
@@ -40,4 +40,4 @@ jobs:
           KEY: ${{ secrets.PRIVATE_KEY }}
         with:
           source: "./*"
-          target: "/opt/bitnami/apache/htdocs/Hassner/"
+          target: "/opt/bitnami/apache/htdocs/"
