@@ -446,8 +446,9 @@ select::-ms-expand {
   border-radius: 25px;
   border: 2px solid white; 
   background: #0a60d0;
+  font-size: small;
   padding: 15px;
-  margin: 20px;
+  margin: 10px;
   width: 200px;
   height: 200px;
 }

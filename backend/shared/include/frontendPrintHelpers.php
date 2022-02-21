@@ -644,7 +644,7 @@
                         <h3 class="h3-blue">'.$artist_market_tag.'
                             <b class="text-dark float-right">'.$type.'</b>
                         </h3>
-                        <b class="text-black">🤲 '.$current_campaigns[$i]->getOffering().'</b>
+                        <b class="text-black">❖ '.$current_campaigns[$i]->getOffering().'</b>
                         <p class="text-black text-bold">⌛ '.dbDateTimeParser($current_campaigns[$i]->getDatePosted()).'</p>
                         <b class="text-black">⌖ '.$current_campaigns[$i]->getMinEthos().'</b>
                     </div>
