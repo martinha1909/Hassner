@@ -5,6 +5,8 @@
     include '../constants/LoggingModes.php';
     include '../constants/Timezone.php';
 
+    $_SESSION['lock_count']++;
+
     $_SESSION['logging_mode'] = LogModes::CAMPAIGN;
 
     $conn = connect();
@@ -35,11 +37,11 @@
         $release_time = explode(" ", $current_date)[1];
 
         if(isInTheFuture(explode("-", $exp_day), 
-                         explode("-", $release_day), 
-                         explode(":", $exp_time), 
-                         explode(":", $release_time)))
+                        explode("-", $release_day), 
+                        explode(":", $exp_time), 
+                        explode(":", $release_time)))
         {
-            if($offer == "other")
+            if($_SESSION['lock_count'] == 0)
             {
                 $other_offer = $_POST['other_offering'];
                 $_SESSION['status'] = postCampaign($conn, 

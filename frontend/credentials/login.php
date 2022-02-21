@@ -2,6 +2,7 @@
 include '../../backend/control/Dependencies.php';
 
 hassnerInit();
+
 ?>
 
 
@@ -76,20 +77,20 @@ hassnerInit();
               <p id="login-error" class="error-msg"></p>
               <?php
                 //StatusCodes of success means we both sign up and sent email successfully
-                if($_SESSION['status'] == StatusCodes::Success)
-                {
-                  $_SESSION['status'] = StatusCodes::Success;
-                  getStatusMessage("", "Account created successfully");
-                  echo '<p class="suc-msg">Confirmation email sent successfully</p>';
-                }
-                //StatusCodes of EMAIL_SENT_ERR_RECIPIENT means we sign up successfully but failed to send mail to user
-                //StatusCodes of EMAIL_SENT_ERR_HX means we failed to send notification mail to ourselves, hence wasn't able to send to user
-                else if($_SESSION['status'] == StatusCodes::EMAIL_SENT_ERR_RECIPIENT || $_SESSION['status'] == StatusCodes::EMAIL_SENT_ERR_HX)
-                {
-                  $_SESSION['status'] = StatusCodes::Success;
-                  getStatusMessage("", "Account created successfully");
-                  echo '<p class="error-msg">Failed to send confirmation email, please contact us at hassx.communication@gmail.com</p>';
-                }
+                // if($_SESSION['status'] == StatusCodes::Success)
+                // {
+                //   $_SESSION['status'] = StatusCodes::Success;
+                //   getStatusMessage("", "Account created successfully");
+                //   echo '<p class="suc-msg">Confirmation email sent successfully</p>';
+                // }
+                // //StatusCodes of EMAIL_SENT_ERR_RECIPIENT means we sign up successfully but failed to send mail to user
+                // //StatusCodes of EMAIL_SENT_ERR_HX means we failed to send notification mail to ourselves, hence wasn't able to send to user
+                // else if($_SESSION['status'] == StatusCodes::EMAIL_SENT_ERR_RECIPIENT || $_SESSION['status'] == StatusCodes::EMAIL_SENT_ERR_HX)
+                // {
+                //   $_SESSION['status'] = StatusCodes::Success;
+                //   getStatusMessage("", "Account created successfully");
+                //   echo '<p class="error-msg">Failed to send confirmation email, please contact us at hassx.communication@gmail.com</p>';
+                // }
               ?>
             </div>
 

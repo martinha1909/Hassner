@@ -629,9 +629,6 @@ pre code {
 .container-video {
   position:relative;
   z-index:0;
-  width: max-content;
-  height: max-content;
-  overflow: hidden;
 }
 
 .row {
@@ -10557,6 +10554,15 @@ input#abc {
 input#abc:hover {
   cursor: pointer;
   color: rgb(255, 255, 255);
+}
+
+input#abc_blue {
+  color: #0a60d0;
+  padding: 0px 0px;
+}
+
+input#abc_blue:hover {
+  cursor: pointer;
 }
 
 input#abc-no-underline {
