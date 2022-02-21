@@ -500,33 +500,6 @@
     }
 
     /**
-    * Gets the amount of shares a user has invested in an artist  
-    *
-    * @param  	user_username      targetted user to receive amount of shares from
-    *
-    * @param  	artist_username    targetted artist that the user has invested in
-    *
-    * @return 	ret	               number of shares that the user has invested in the artist
-    */
-    function getShareInvestedInArtist($user_username, $artist_username)
-    {
-        $ret = 0;
-        $conn = connect();
-
-        $res = searchSharesInArtistShareHolders($conn, $user_username, $artist_username);
-        hx_debug(HX::QUERY, "searchSharesInArtistShareHolders returned ".$res->num_rows." entries");
-        if($res->num_rows > 0)
-        {
-            $shares_owned = $res->fetch_assoc();
-            hx_debug(HX::QUERY, "shares_owned data: ".json_encode($shares_owned));
-            $ret = $shares_owned['shares_owned'];
-        }
-
-        closeCon($conn);
-        return $ret;
-    }
-
-    /**
     * Determines if a user can create a buy order or not.  
     *
     * @param  	user_username      user that is trying to create a buy order

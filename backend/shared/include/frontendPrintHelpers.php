@@ -747,29 +747,43 @@
 
                 $buy_history_index = 0;
                 $res_sell_history = searchSellHistoryByUserAndArtist($conn, $user_username, $artist_username);
-                $row_sell_history = $res_sell_history->fetch_assoc();
-                while(true)
+                // $row_sell_history = $res_sell_history->fetch_assoc();
+                while($row_sell_history = $res_sell_history->fetch_assoc())
                 {
-                    if($row_sell_history == null || $buy_history_index >= sizeof($buy_history_instances))
-                    {
-                        break;
-                    }
-                    if($buy_history_instances[$buy_history_index]->getNoOfShareBought() > $row_sell_history['amount_sold'])
-                    {
-                        $total_amount_spent = $total_amount_spent - ($row_sell_history['amount_sold'] * $buy_history_instances[$buy_history_index]->getPPS());
-                        $new_buy_history_no_of_share = $buy_history_instances[$buy_history_index]->getNoOfShareBought() - $row_sell_history['amount_sold'];
-                        $buy_history_instances[$buy_history_index]->setNoOfShareBought($new_buy_history_no_of_share);
-                        $row_sell_history = $res_sell_history->fetch_assoc();
-                    }
-                    else
-                    {
-                        $total_amount_spent = $total_amount_spent - ($buy_history_instances[$buy_history_index]->getNoOfShareBought() * $buy_history_instances[$buy_history_index]->getPPS());
-                        $row['amount_sold'] = $row_sell_history['amount_sold'] - $buy_history_instances[$buy_history_index]->getNoOfShareBought();
-                        $buy_history_instances[$buy_history_index]->setNoOfShareBought(0);
-                        $buy_history_index++;
-                    }
+                    $total_amount_spent -= $row_sell_history['amount_sold'] * $row_sell_history['price_sold'];
                 }
 
+                //TODO: uncomment this when another algorithm that is more stable is found
+                // while(true)
+                // {
+                //     if($row_sell_history == null || $buy_history_index >= sizeof($buy_history_instances))
+                //     {
+                //         break;
+                //     }
+                //     if($buy_history_instances[$buy_history_index]->getNoOfShareBought() > $row_sell_history['amount_sold'])
+                //     {
+                //         echo "Before1: ".$total_amount_spent."<br>";
+                //         $total_amount_spent = $total_amount_spent - ($row_sell_history['amount_sold'] * $buy_history_instances[$buy_history_index]->getPPS());
+                //         echo "After1: ".$total_amount_spent."<br>";
+                //         $new_buy_history_no_of_share = $buy_history_instances[$buy_history_index]->getNoOfShareBought() - $row_sell_history['amount_sold'];
+                //         $buy_history_instances[$buy_history_index]->setNoOfShareBought($new_buy_history_no_of_share);
+                //         $row_sell_history = $res_sell_history->fetch_assoc();
+                //     }
+                //     else
+                //     {
+                //         echo "Before2: ".$total_amount_spent."<br>";
+                //         $total_amount_spent = $total_amount_spent - ($buy_history_instances[$buy_history_index]->getNoOfShareBought() * $buy_history_instances[$buy_history_index]->getPPS());
+                //         echo "After2: ".$total_amount_spent."<br>";
+                //         $row['amount_sold'] = $row_sell_history['amount_sold'] - $buy_history_instances[$buy_history_index]->getNoOfShareBought();
+                //         $buy_history_instances[$buy_history_index]->setNoOfShareBought(0);
+                //         $buy_history_index++;
+                //     }
+                // }
+
+                // if($total_amount_spent == 0)
+                // {
+                //     $total_amount_spent = 1;
+                // }
                 //Showing the total percentage change from when the user bought shares (price can be different at each times user bought them, so we have to take that into account)
                 $total_percentage_change = round(((($artist_market_price * $owned_shares) - $total_amount_spent)/$total_amount_spent) * 100, 2);
                 $total_amount_gain = round(($artist_market_price * $owned_shares) - $total_amount_spent, 2);

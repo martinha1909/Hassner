@@ -1910,7 +1910,6 @@
 
                 $current_share_amount_seller = $res_seller->fetch_assoc();
                 $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount_bought;
-                $new_share_amount = $current_share_amount['shares_owned'] + $amount_bought;
                 $stmt = $conn->prepare("UPDATE artist_shareholders SET shares_owned = '$new_share_amount_seller' WHERE user_username = ? AND artist_username = ?");
                 $stmt->bindValue(1, $seller_username);
                 $stmt->bindValue(2, $artist_username);
@@ -1933,6 +1932,8 @@
 
                 $status = StatusCodes::ErrGeneric;
             }
+
+            recalcCampaignParticipants($artist_username, $seller_username, AccountType::Artist, AccountType::User, $artist_username);
 
             return $status;
         }

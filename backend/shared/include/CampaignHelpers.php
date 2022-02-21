@@ -1,22 +1,22 @@
 <?php
     function recalcCampaignParticipants($buyer_username, $seller_username, $buyer_account_type, $seller_account_type, $artist_username)
     {
+        $remove_err_code = StatusCodes::NONE;
+        $add_err_code = StatusCodes::NONE;
+        $reduce_err_code = StatusCodes::NONE;
+        $increase_err_code = StatusCodes::NONE;
         $conn = connect();
         $connPDO = connectPDO();
         $artist_active_campaigns = getArtistActiveCampaigns($conn, $artist_username);
         //p2p trading
         if($seller_account_type != AccountType::Artist && $buyer_account_type != AccountType::Artist)
         {
-            $remove_err_code = StatusCodes::NONE;
-            $add_err_code = StatusCodes::NONE;
-            $reduce_err_code = StatusCodes::NONE;
-            $increase_err_code = StatusCodes::NONE;
             $seller_participating_campaigns = getUserParticipatingCampaign($seller_username);
             hx_debug(HX::CAMPAIGN, "Seller ".$seller_username." participating campaigns: ".json_encode($seller_participating_campaigns));
             $buyer_shares_invested = getShareInvestedInArtist($buyer_username, $artist_username);
             hx_debug(HX::QUERY, "Buyer ".$buyer_username." owns ".$buyer_shares_invested." shares of artist ".$artist_username);
             $seller_shares_invested = getShareInvestedInArtist($seller_username, $artist_username);
-            hx_debug(HX::QUERY, "Seller ".$seller_username." owns ".$buyer_shares_invested." shares of artist ".$artist_username);
+            hx_debug(HX::QUERY, "Seller ".$seller_username." owns ".$seller_shares_invested." shares of artist ".$artist_username);
 
             for($i = 0; $i < sizeof($seller_participating_campaigns); $i++)
             {
@@ -50,20 +50,20 @@
                 //If the user has already participated in this campaign, just skip
                 if(!userIsParticipatingInCampaign($buyer_username, $artist_username, $artist_active_campaigns[$i]))
                 {
-                    if($buyer_shares_invested > getCampaignMinimumEthos($artist_active_campaigns[$i]))
+                    if($buyer_shares_invested >= getCampaignMinimumEthos($artist_active_campaigns[$i]))
                     {
                         $add_err_code = addToCampaignParticipant($conn, $buyer_username, $artist_active_campaigns[$i]);
                         if($add_err_code == StatusCodes::Success)
                         {
                             hx_info(HX::CAMPAIGN, $buyer_username." just participated in campaign id ".$artist_active_campaigns[$i]);
                             $increase_err_code = increaseCampaignEligibleParticipant($connPDO, $artist_active_campaigns[$i], 1);
-                            if($reduce_err_code == StatusCodes::Success)
+                            if($increase_err_code == StatusCodes::Success)
                             {
-                                hx_debug(HX::CAMPAIGN, "Campaign (id: ".$seller_participating_campaigns[$i].") increased eligible participants by 1");
+                                hx_debug(HX::CAMPAIGN, "Campaign (id: ".$artist_active_campaigns[$i].") increased eligible participants by 1");
                             }
                             else
                             {
-                                hx_error(HX::CAMPAIGN, "Failed to increase eligible participant for campaign id ".$seller_participating_campaigns[$i]);
+                                hx_error(HX::CAMPAIGN, "Failed to increase eligible participant for campaign id ".$artist_active_campaigns[$i]);
                             }
                         }
                         else
@@ -74,8 +74,74 @@
                 }
             }
         }
-
-        
+        //Buy from shares injection or from artist's sell order who bought back their own shares
+        else if($seller_account_type == AccountType::Artist && $buyer_account_type != AccountType::Artist)
+        {
+            $buyer_shares_invested = getShareInvestedInArtist($buyer_username, $artist_username);
+            hx_debug(HX::QUERY, "Buyer ".$buyer_username." owns ".$buyer_shares_invested." shares of artist ".$artist_username);
+            for($i = 0; $i < sizeof($artist_active_campaigns); $i++)
+            {
+                //If the user has already participated in this campaign, just skip
+                if(!userIsParticipatingInCampaign($buyer_username, $artist_username, $artist_active_campaigns[$i]))
+                {
+                    if($buyer_shares_invested >= getCampaignMinimumEthos($artist_active_campaigns[$i]))
+                    {
+                        $add_err_code = addToCampaignParticipant($conn, $buyer_username, $artist_active_campaigns[$i]);
+                        if($add_err_code == StatusCodes::Success)
+                        {
+                            hx_info(HX::CAMPAIGN, $buyer_username." just participated in campaign id ".$artist_active_campaigns[$i]);
+                            $increase_err_code = increaseCampaignEligibleParticipant($connPDO, $artist_active_campaigns[$i], 1);
+                            if($increase_err_code == StatusCodes::Success)
+                            {
+                                hx_debug(HX::CAMPAIGN, "Campaign (id: ".$artist_active_campaigns[$i].") increased eligible participants by 1");
+                            }
+                            else
+                            {
+                                hx_error(HX::CAMPAIGN, "Failed to increase eligible participant for campaign id ".$artist_active_campaigns[$i]);
+                            }
+                        }
+                        else
+                        {
+                            hx_error(HX::CAMPAIGN, "Failed to add user ".$buyer_username." to participate in campaign id ".$artist_active_campaigns[$i]);
+                        }
+                    }
+                }
+            }
+        }
+        //case when artist buys back shares
+        else if($seller_account_type != AccountType::Artist && $buyer_account_type == AccountType::Artist)
+        {
+            $seller_participating_campaigns = getUserParticipatingCampaign($seller_username);
+            hx_debug(HX::CAMPAIGN, "Seller ".$seller_username." participating campaigns: ".json_encode($seller_participating_campaigns));
+            $seller_shares_invested = getShareInvestedInArtist($seller_username, $artist_username);
+            hx_debug(HX::QUERY, "Seller ".$seller_username." owns ".$seller_shares_invested." shares of artist ".$artist_username);
+            for($i = 0; $i < sizeof($seller_participating_campaigns); $i++)
+            {
+                $res = searchCampaignMinimumEthos($conn, $seller_participating_campaigns[$i]);
+                $campaign_info = $res->fetch_assoc();
+                if($seller_shares_invested < $campaign_info['minimum_ethos'])
+                {
+                    $remove_err_code = removeCampaignParticipant($conn, $seller_username, $seller_participating_campaigns[$i]);
+                    if($remove_err_code == StatusCodes::Success)
+                    {
+                        hx_info(HX::CAMPAIGN, $seller_username." no longer participate in campaign id ".$seller_participating_campaigns[$i]);
+                        $reduce_err_code = decreaseCampaignEligibleParticipant($connPDO, $seller_participating_campaigns[$i], 1);
+                        if($reduce_err_code == StatusCodes::Success)
+                        {
+                            hx_debug(HX::CAMPAIGN, "Campaign (id: ".$seller_participating_campaigns[$i].") reduced eligible participants by 1");
+                        }
+                        else
+                        {
+                            hx_error(HX::CAMPAIGN, "Failed to reduce eligible participant for campaign id ".$seller_participating_campaigns[$i]);
+                        }
+                    }
+                    else
+                    {
+                        hx_error(HX::CAMPAIGN, "Failed to remove user ".$seller_username." from participating in campaign id ".$seller_participating_campaigns[$i]);
+                    }
+                }
+            }
+        }
     }
 
     function getCampaignMinimumEthos($campaign_id)

@@ -3,7 +3,9 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
     include '../constants/StatusCodes.php';
+    include '../constants/AccountTypes.php';
     include '../shared/include/MarketplaceHelpers.php';
+    include '../shared/include/CampaignHelpers.php';
 
     $conn = connect();
     $connPDO = connectPDO();
