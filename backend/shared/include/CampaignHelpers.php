@@ -1,12 +1,103 @@
 <?php
-    function recalcCampaignParticipants($buyer_username, $seller_username, $artist_username)
+    function recalcCampaignParticipants($buyer_username, $seller_username, $buyer_account_type, $seller_account_type, $artist_username)
     {
-        $buyer_participating_campaigns = getUserParticipatingCampaign($buyer_username);
-        $seller_participating_campaigns = getUserParticipatingCampaign($seller_username);
-        $buyer_shares_invested = getShareInvestedInArtist($buyer_username, $artist_username);
-        $seller_shares_invested = getShareInvestedInArtist($seller_username, $artist_username);
+        $conn = connect();
+        $connPDO = connectPDO();
+        $artist_active_campaigns = getArtistActiveCampaigns($conn, $artist_username);
+        //p2p trading
+        if($seller_account_type != AccountType::Artist && $buyer_account_type != AccountType::Artist)
+        {
+            $remove_err_code = StatusCodes::NONE;
+            $add_err_code = StatusCodes::NONE;
+            $reduce_err_code = StatusCodes::NONE;
+            $increase_err_code = StatusCodes::NONE;
+            $seller_participating_campaigns = getUserParticipatingCampaign($seller_username);
+            hx_debug(HX::CAMPAIGN, "Seller ".$seller_username." participating campaigns: ".json_encode($seller_participating_campaigns));
+            $buyer_shares_invested = getShareInvestedInArtist($buyer_username, $artist_username);
+            hx_debug(HX::QUERY, "Buyer ".$buyer_username." owns ".$buyer_shares_invested." shares of artist ".$artist_username);
+            $seller_shares_invested = getShareInvestedInArtist($seller_username, $artist_username);
+            hx_debug(HX::QUERY, "Seller ".$seller_username." owns ".$buyer_shares_invested." shares of artist ".$artist_username);
+
+            for($i = 0; $i < sizeof($seller_participating_campaigns); $i++)
+            {
+                $res = searchCampaignMinimumEthos($conn, $seller_participating_campaigns[$i]);
+                $campaign_info = $res->fetch_assoc();
+                if($seller_shares_invested < $campaign_info['minimum_ethos'])
+                {
+                    $remove_err_code = removeCampaignParticipant($conn, $seller_username, $seller_participating_campaigns[$i]);
+                    if($remove_err_code == StatusCodes::Success)
+                    {
+                        hx_info(HX::CAMPAIGN, $seller_username." no longer participate in campaign id ".$seller_participating_campaigns[$i]);
+                        $reduce_err_code = decreaseCampaignEligibleParticipant($connPDO, $seller_participating_campaigns[$i], 1);
+                        if($reduce_err_code == StatusCodes::Success)
+                        {
+                            hx_debug(HX::CAMPAIGN, "Campaign (id: ".$seller_participating_campaigns[$i].") reduced eligible participants by 1");
+                        }
+                        else
+                        {
+                            hx_error(HX::CAMPAIGN, "Failed to reduce eligible participant for campaign id ".$seller_participating_campaigns[$i]);
+                        }
+                    }
+                    else
+                    {
+                        hx_error(HX::CAMPAIGN, "Failed to remove user ".$seller_username." from participating in campaign id ".$seller_participating_campaigns[$i]);
+                    }
+                }
+            }
+
+            for($i = 0; $i < sizeof($artist_active_campaigns); $i++)
+            {
+                //If the user has already participated in this campaign, just skip
+                if(!userIsParticipatingInCampaign($buyer_username, $artist_username, $artist_active_campaigns[$i]))
+                {
+                    if($buyer_shares_invested > getCampaignMinimumEthos($artist_active_campaigns[$i]))
+                    {
+                        $add_err_code = addToCampaignParticipant($conn, $buyer_username, $artist_active_campaigns[$i]);
+                        if($add_err_code == StatusCodes::Success)
+                        {
+                            hx_info(HX::CAMPAIGN, $buyer_username." just participated in campaign id ".$artist_active_campaigns[$i]);
+                            $increase_err_code = increaseCampaignEligibleParticipant($connPDO, $artist_active_campaigns[$i], 1);
+                            if($reduce_err_code == StatusCodes::Success)
+                            {
+                                hx_debug(HX::CAMPAIGN, "Campaign (id: ".$seller_participating_campaigns[$i].") increased eligible participants by 1");
+                            }
+                            else
+                            {
+                                hx_error(HX::CAMPAIGN, "Failed to increase eligible participant for campaign id ".$seller_participating_campaigns[$i]);
+                            }
+                        }
+                        else
+                        {
+                            hx_error(HX::CAMPAIGN, "Failed to add user ".$buyer_username." to participate in campaign id ".$artist_active_campaigns[$i]);
+                        }
+                    }
+                }
+            }
+        }
 
         
+    }
+
+    function getCampaignMinimumEthos($campaign_id)
+    {
+        $conn = connect();
+
+        $res = searchCampaignMinimumEthos($conn, $campaign_id);
+        $min_ethos = $res->fetch_assoc();
+
+        return $min_ethos['minimum_ethos'];
+    }
+
+    function getArtistActiveCampaigns($conn, $artist_username)
+    {
+        $ret = array();
+        $res = searchArtistActiveCampaignsID($conn, $artist_username);
+        while($row = $res->fetch_assoc())
+        {
+            array_push($ret, $row['id']);
+        }
+
+        return $ret;
     }
 
     function calculateEligibleParticipants($artist_username, $criteria)
@@ -61,7 +152,7 @@
         {
             $current_campaign = new Campaign();
             //Avoid fetching campaigns that are already expired in the past
-            if($row['date_expires'] != "0000-00-00 00:00:00")
+            if($row['is_active'] != 0)
             {
                 $date_expires = explode(" ", $row['date_expires'])[0];
                 $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
@@ -363,24 +454,13 @@
     * @param  	campaign_id	            campaign id to be determined
     * @return 	ret	                    true if the user is eligible to participate in the given campaign, false otherwise
     */
-    function userIsParticipatingInCampaign($user_username, $artist_username, $campaign_id)
+    function userIsParticipatingInCampaign($user_username, $artist_username, $campaign_id): bool
     {
         $conn = connect();
         $ret = false;
-        $user_shares = 0;
 
-        $res_min_ethos = searchCampaignMinimumEthos($conn, $campaign_id);
-        $row_min_ethos = $res_min_ethos->fetch_assoc();
-        $campaign_min_ethos = $row_min_ethos['minimum_ethos'];
-
-        $res_user_shares = searchSharesInArtistShareHolders($conn, $user_username, $artist_username);
-        if($res_user_shares->num_rows > 0)
-        {
-            $row_user_shares = $res_user_shares->fetch_assoc();
-            $user_shares = $row_user_shares['shares_owned'];
-        }
-
-        if($user_shares > $campaign_min_ethos)
+        $res = searchUserSpecificParticipatingCampaign($conn, $user_username, $campaign_id);
+        if($res->num_rows > 0)
         {
             $ret = true;
         }

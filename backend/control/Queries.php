@@ -417,6 +417,17 @@
             return $result;
         }
 
+        function searchArtistActiveCampaignsID($conn, $artist_username)
+        {
+            $sql = "SELECT id FROM campaign WHERE artist_username = ? AND is_active = 1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        } 
+
         function searchUserParticipatingCampaign($conn, $user_username)
         {
             $result = 0;
@@ -424,6 +435,19 @@
             $sql = "SELECT campaign_id FROM campaign_participant WHERE user_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchUserSpecificParticipatingCampaign($conn, $user_username, $campaign_id)
+        {
+            $result = 0;
+
+            $sql = "SELECT campaign_id FROM campaign_participant WHERE user_username = ? AND campaign_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('si', $user_username, $campaign_id);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -1401,6 +1425,58 @@
             return $status;
         }
 
+        function decreaseCampaignEligibleParticipant($connPDO, $campaign_id, $reduce_number)
+        {
+            $status = StatusCodes::NONE;
+
+            try
+            {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("UPDATE campaign SET eligible_participants = eligible_participants - ? WHERE id = ?");
+                $stmt->bindValue(1, $reduce_number);
+                $stmt->bindValue(2, $campaign_id);
+                $stmt->execute(array($reduce_number, $campaign_id));
+
+                $connPDO->commit();
+                $status = StatusCodes::Success;
+            }
+            catch (PDOException $e) 
+            {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "DB error occured: " . $e->getMessage());
+                $status = StatusCodes::ErrGeneric;
+            }
+
+            return $status;
+        }
+
+        function increaseCampaignEligibleParticipant($connPDO, $campaign_id, $increase_number)
+        {
+            $status = StatusCodes::NONE;
+
+            try
+            {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("UPDATE campaign SET eligible_participants = eligible_participants + ? WHERE id = ?");
+                $stmt->bindValue(1, $increase_number);
+                $stmt->bindValue(2, $campaign_id);
+                $stmt->execute(array($increase_number, $campaign_id));
+
+                $connPDO->commit();
+                $status = StatusCodes::Success;
+            }
+            catch (PDOException $e) 
+            {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "DB error occured: " . $e->getMessage());
+                $status = StatusCodes::ErrGeneric;
+            }
+
+            return $status;
+        }
+
         function updateCampaignEligibleParticipants($conn, $campaign_id, $eligible_participant)
         {
             $sql = "UPDATE campaign SET eligible_participants = '$eligible_participant' WHERE id='$campaign_id'";
@@ -1764,7 +1840,7 @@
 
             updateMarketPriceOrderToPPS($new_pps, $artist);
 
-            recalcCampaignParticipants($buyer, $seller, $artist);
+            recalcCampaignParticipants($buyer, $seller, $buyer_account_type, $seller_account_type, $artist);
             addToSellHistory($seller, $buyer, $artist, $amount, $price, $date_purchased);
 
             return $status;
@@ -2165,11 +2241,24 @@
 
         function addToCampaignParticipant($conn, $user_username, $campaign_id)
         {
+            $status = StatusCodes::NONE;
+
             $sql = "INSERT INTO campaign_participant (user_username, campaign_id)
                     VALUES(?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('si', $user_username, $campaign_id);
-            $stmt->execute();
+            if($stmt->execute() == true)
+            {
+                $status = StatusCodes::Success;
+            }
+            else
+            {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
+                $status = StatusCodes::ErrGeneric;
+            }
+
+            return $status;
         }
 
         function followArtist($conn, $user_username, $artist_username)
@@ -2221,5 +2310,26 @@
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ssdss', $user_username, $artist_username, $price_per_share_when_bought, $date_purchased, $time_purchased);
             $stmt->execute();
+        }
+
+        function removeCampaignParticipant($conn, $user_username, $campaign_id)
+        {
+            $status = 0;
+
+            $sql = "DELETE FROM campaign_participant WHERE user_username = ? AND campaign_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('si', $user_username, $campaign_id);
+            if($stmt->execute() == true)
+            {
+                $status = StatusCodes::Success;
+            }
+            else
+            {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
+                $status = StatusCodes::ErrGeneric;
+            }
+
+            return $status;
         }
 ?>
