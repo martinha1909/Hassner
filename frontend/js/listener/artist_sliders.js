@@ -567,7 +567,22 @@ $( function() {
           $("#buy_num_shares").val(0);
         }
         $("#buy_num").slider("option", "value", $("#buy_num_shares").val());
-        $("#buy_cost").val("$" + $("#buy_num_shares").val()*$("#pps").text());
+        if($("#buy_limit").slider("values", 0) > min_limit && $("#buy_limit").slider("values", 1) == max_limit)
+        {
+          $("#buy_cost").val("$" + $("#buy_num_shares").val()*$("#buy_limit").slider("values", 0));
+        }
+        else if($("#buy_limit").slider("values", 0) == min_limit && $("#buy_limit").slider("values", 1) == max_limit)
+        {
+          $("#buy_cost").val("$" + $("#buy_num_shares").val()*$("#pps").text());
+        }
+        else if($("#buy_limit").slider("values", 0) > min_limit && $("#buy_limit").slider("values", 1) < max_limit)
+        {
+          $("#buy_cost").val("$" + $("#buy_num_shares").val()*$("#buy_limit").slider("values", 1));
+        }
+        else if($("#buy_limit").slider("values", 0) == min_limit && $("#buy_limit").slider("values", 1) < max_limit)
+        {
+          $("#buy_cost").val("$" + $("#buy_num_shares").val()*$("#buy_limit").slider("values", 1));
+        }
       }
     });
 
@@ -631,7 +646,22 @@ $( function() {
           $("#sell_num_shares").val(0);
         }
         $("#sell_num").slider("option", "value", $("#sell_num_shares").val());
-        $("#sell_cost").val("$" + $("#sell_num_shares").val()*$("#pps").text());
+        if($("#sell_limit").slider("values", 0) > min_limit && $("#sell_limit").slider("values", 1) == max_limit)
+        {
+          $("#sell_cost").val("$" + $("#sell_num_shares").val()*$("#sell_limit").slider("values", 0));
+        }
+        else if($("#sell_limit").slider("values", 0) == min_limit && $("#sell_limit").slider("values", 1) == max_limit)
+        {
+          $("#sell_cost").val("$" + $("#sell_num_shares").val()*$("#pps").text());
+        }
+        else if($("#sell_limit").slider("values", 0) > min_limit && $("#sell_limit").slider("values", 1) < max_limit)
+        {
+          $("#sell_cost").val("$" + $("#sell_num_shares").val()*$("#sell_limit").slider("values", 1));
+        }
+        else if($("#sell_limit").slider("values", 0) == min_limit && $("#sell_limit").slider("values", 1) < max_limit)
+        {
+          $("#sell_cost").val("$" + $("#sell_num_shares").val()*$("#sell_limit").slider("values", 1));
+        }
       }
     });
 
