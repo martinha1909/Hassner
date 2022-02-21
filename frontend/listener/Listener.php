@@ -64,10 +64,12 @@
                 <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span data-feather="grid"></span>
                 </button>
-                <div class="cursor-pointer user-balance">
-                    <i class="fas fa-user-circle"></i>
-                    <?php echo $_SESSION['username']?> | $<?php echo$_SESSION['user_balance']?>
-                </div>
+                <a id="account_btn">
+                    <div class="cursor-pointer user-balance">
+                        <i class="fas fa-user-circle"></i>
+                        <?php echo $_SESSION['username']?> | $<?php echo$_SESSION['user_balance']?>
+                    </div>
+                </a>
             </nav>
         </div>
     </section>
@@ -97,10 +99,6 @@
 
                     <li class="list-group-item-no-hover" id="li_artists">
                         <input name="display_type" type="submit" id="artists_btn" class="menu-text menu-no-underline" value="Artists">
-                    </li>
-
-                    <li class="list-group-item-no-hover" id="li_account">
-                        <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
                     </li>
                 </ul>
                 <div class="container my-auto mx-auto col-8">
