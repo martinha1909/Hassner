@@ -5,14 +5,29 @@
         
         //logs in with provided user info and password, then use SQL query to query database 
         //after qurerying return the result
-        function login($conn, $username, $pwd) // done2
+        function login($conn, $username, $pwd, &$account_info) // done2
         {
-            $sql = "SELECT * FROM account WHERE username = ? AND password = ?";
+            $ret = false;
+
+            $sql = "SELECT * FROM account WHERE username = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ss', $username, $pwd);
+            $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
-            return $result;
+
+            if($result->num_rows > 0)
+            {
+                $info = $result->fetch_assoc();
+                $pwd_hash_str = $info['password'];
+                if(password_verify($pwd, $pwd_hash_str))
+                {
+                    usleep ( rand(10,100000));
+                    $ret = true;
+                    $account_info = $info;
+                }
+            }
+
+            return $ret;
         }
 
         function searchAccount($conn, $username)
@@ -411,6 +426,43 @@
             $sql = "SELECT id, artist_username, offering, date_posted, date_expires, type, minimum_ethos, eligible_participants, winner, is_active FROM campaign WHERE artist_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchArtistActiveCampaignsID($conn, $artist_username)
+        {
+            $sql = "SELECT id FROM campaign WHERE artist_username = ? AND is_active = 1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        } 
+
+        function searchUserParticipatingCampaign($conn, $user_username)
+        {
+            $result = 0;
+
+            $sql = "SELECT campaign_id FROM campaign_participant WHERE user_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchUserSpecificParticipatingCampaign($conn, $user_username, $campaign_id)
+        {
+            $result = 0;
+
+            $sql = "SELECT campaign_id FROM campaign_participant WHERE user_username = ? AND campaign_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('si', $user_username, $campaign_id);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -1230,6 +1282,33 @@
             return $result;
         }
 
+        function searchMaxCampaignID($conn)
+        {
+            $ret = 0;
+
+            $sql = "SELECT MAX(id) AS max_campaign_id FROM campaign";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $ret = $result->fetch_assoc();
+
+            return $ret['max_campaign_id'];
+        }
+
+        function searchCampaignByID($conn, $id)
+        {
+            $reult = 0;
+
+            $sql = "SELECT * FROM campaign WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchNumberOfShareDistributed($conn, $artist_username)
         {
             $sql = "SELECT Share_Distributed FROM account WHERE username = ?";
@@ -1276,6 +1355,7 @@
 
         function signup($connPDO, $username, $password, $type, $email, $ticker)
         {
+            $password = password_hash($password, PASSWORD_BCRYPT);
             $original_share= "";
             $transit_no = "";
             $inst_no = "";
@@ -1355,6 +1435,58 @@
             {
                 $connPDO->rollBack();
                 echo "SQL query failed: " . $e->getMessage();
+                $status = StatusCodes::ErrGeneric;
+            }
+
+            return $status;
+        }
+
+        function decreaseCampaignEligibleParticipant($connPDO, $campaign_id, $reduce_number)
+        {
+            $status = StatusCodes::NONE;
+
+            try
+            {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("UPDATE campaign SET eligible_participants = eligible_participants - ? WHERE id = ?");
+                $stmt->bindValue(1, $reduce_number);
+                $stmt->bindValue(2, $campaign_id);
+                $stmt->execute(array($reduce_number, $campaign_id));
+
+                $connPDO->commit();
+                $status = StatusCodes::Success;
+            }
+            catch (PDOException $e) 
+            {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "DB error occured: " . $e->getMessage());
+                $status = StatusCodes::ErrGeneric;
+            }
+
+            return $status;
+        }
+
+        function increaseCampaignEligibleParticipant($connPDO, $campaign_id, $increase_number)
+        {
+            $status = StatusCodes::NONE;
+
+            try
+            {
+                $connPDO->beginTransaction();
+
+                $stmt = $connPDO->prepare("UPDATE campaign SET eligible_participants = eligible_participants + ? WHERE id = ?");
+                $stmt->bindValue(1, $increase_number);
+                $stmt->bindValue(2, $campaign_id);
+                $stmt->execute(array($increase_number, $campaign_id));
+
+                $connPDO->commit();
+                $status = StatusCodes::Success;
+            }
+            catch (PDOException $e) 
+            {
+                $connPDO->rollBack();
+                hx_error(HX::DB, "DB error occured: " . $e->getMessage());
                 $status = StatusCodes::ErrGeneric;
             }
 
@@ -1559,6 +1691,7 @@
 
         function editPassword($conn, $user_username, $new_pwd)
         {
+            $new_pwd = password_hash($new_pwd, PASSWORD_BCRYPT);
             $sql = "UPDATE account SET password = ? WHERE username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ss', $new_pwd, $user_username);
@@ -1724,6 +1857,7 @@
 
             updateMarketPriceOrderToPPS($new_pps, $artist);
 
+            recalcCampaignParticipants($buyer, $seller, $buyer_account_type, $seller_account_type, $artist);
             addToSellHistory($seller, $buyer, $artist, $amount, $price, $date_purchased);
 
             return $status;
@@ -1793,7 +1927,6 @@
 
                 $current_share_amount_seller = $res_seller->fetch_assoc();
                 $new_share_amount_seller = $current_share_amount_seller['shares_owned'] - $amount_bought;
-                $new_share_amount = $current_share_amount['shares_owned'] + $amount_bought;
                 $stmt = $conn->prepare("UPDATE artist_shareholders SET shares_owned = '$new_share_amount_seller' WHERE user_username = ? AND artist_username = ?");
                 $stmt->bindValue(1, $seller_username);
                 $stmt->bindValue(2, $artist_username);
@@ -1816,6 +1949,8 @@
 
                 $status = StatusCodes::ErrGeneric;
             }
+
+            recalcCampaignParticipants($artist_username, $seller_username, AccountType::Artist, AccountType::User, $artist_username);
 
             return $status;
         }
@@ -2112,12 +2247,35 @@
             $stmt->bind_param('sssssdisi', $artist_username, $offering, $release_date, $expiration_date, $type, $minimum_ethos, $eligible_participant, $winner, $is_active);
             if($stmt->execute() == TRUE)
             {
-                $status = "SUCCESS";
+                $status = StatusCodes::Success;
             }
             else
             {
-                $status = "ERROR";
+                $status = StatusCodes::ErrServer;
             }
+
+            return $status;
+        }
+
+        function addToCampaignParticipant($conn, $user_username, $campaign_id)
+        {
+            $status = StatusCodes::NONE;
+
+            $sql = "INSERT INTO campaign_participant (user_username, campaign_id)
+                    VALUES(?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('si', $user_username, $campaign_id);
+            if($stmt->execute() == true)
+            {
+                $status = StatusCodes::Success;
+            }
+            else
+            {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
+                $status = StatusCodes::ErrGeneric;
+            }
+
             return $status;
         }
 
@@ -2170,5 +2328,26 @@
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ssdss', $user_username, $artist_username, $price_per_share_when_bought, $date_purchased, $time_purchased);
             $stmt->execute();
+        }
+
+        function removeCampaignParticipant($conn, $user_username, $campaign_id)
+        {
+            $status = 0;
+
+            $sql = "DELETE FROM campaign_participant WHERE user_username = ? AND campaign_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('si', $user_username, $campaign_id);
+            if($stmt->execute() == true)
+            {
+                $status = StatusCodes::Success;
+            }
+            else
+            {
+                $msg = "db error occured: ".$conn->mysqli_error($conn);
+                hx_error(HX::DB, $msg);
+                $status = StatusCodes::ErrGeneric;
+            }
+
+            return $status;
         }
 ?>

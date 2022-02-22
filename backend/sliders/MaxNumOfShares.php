@@ -169,7 +169,7 @@
         {
             if($chosen_min >= $artist_pps)
             {
-                $max_amount_can_purchase = $user_balance/$chosen_min;
+                $max_amount_can_purchase = $user_balance/$chosen_max;
 
                 //If the maximum amount that user can buy is greater than the amount of available shares, the slider
                 //will be capped at the number of available shares
@@ -185,7 +185,7 @@
             }
             else if($chosen_max <= $artist_pps)
             {
-                $max_amount_can_purchase = $user_balance/$artist_pps;
+                $max_amount_can_purchase = $user_balance/$chosen_max;
 
                 //If the maximum amount that user can buy is greater than the amount of available shares, the slider
                 //will be capped at the number of available shares
