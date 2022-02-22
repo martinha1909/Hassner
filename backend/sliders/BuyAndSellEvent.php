@@ -4,6 +4,7 @@
     include '../control/Dependencies.php';
     include '../shared/include/MarketplaceHelpers.php';
     include '../shared/include/StockTradeHelpers.php';
+    include '../shared/include/CampaignHelpers.php';
     include '../constants/ShareInteraction.php';
     include '../constants/StatusCodes.php';
     include '../constants/MenuOption.php';
