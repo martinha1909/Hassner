@@ -19,21 +19,24 @@ function recalcSliderLimits(new_chosen_min, new_chosen_max)
     },
     async: false,
     success : function(data) {
-      console.log(data);
       max_num_of_shares = data;
       $("#buy_num").slider("option", "max", data);
       $("#buy_num_shares").val($("#buy_num").slider("value"));
-      if(new_chosen_max < max_limit)
+      if(new_chosen_min == min_limit && new_chosen_max < max_limit)
       {
         $("#buy_cost").val($("#buy_num").slider("value") * new_chosen_max);
       }
-      if(new_chosen_min > min_limit)
+      if(new_chosen_min > min_limit && new_chosen_max == max_limit)
       {
         $("#buy_cost").val($("#buy_num").slider("value") * new_chosen_min);
       }
-      if((new_chosen_max == max_limit && new_chosen_min == min_limit) || (new_chosen_max < max_limit && new_chosen_min > min_limit))
+      if((new_chosen_max == max_limit && new_chosen_min == min_limit))
       {
         $("#buy_cost").val($("#buy_num").slider("value") * $("#pps").text());
+      }
+      if(new_chosen_max < max_limit && new_chosen_min > min_limit)
+      {
+        $("#buy_cost").val($("#buy_num").slider("value") * new_chosen_max);
       }
 
       if(data === 0)
@@ -56,17 +59,21 @@ function recalcSliderLimits(new_chosen_min, new_chosen_max)
 
 function recalcSellSlider(new_chosen_min, new_chosen_max)
 {
-  if(new_chosen_max < max_limit)
+  if(new_chosen_min == min_limit && new_chosen_max < max_limit)
   {
     $("#sell_cost").val($("#sell_num").slider("value") * max);
   }
-  if(new_chosen_min > min_limit)
+  if(new_chosen_min > min_limit && new_chosen_max == max_limit)
   {
     $("#sell_cost").val($("#sell_num").slider("value") * min);
   }
-  if((new_chosen_max == max_limit && new_chosen_min == min_limit) || (new_chosen_max < max_limit && new_chosen_min > min_limit))
+  if((new_chosen_max == max_limit && new_chosen_min == min_limit))
   {
     $("#sell_cost").val($("#sell_num").slider("value") * $("#pps").text());
+  }
+  if(new_chosen_max < max_limit && new_chosen_min > min_limit)
+  {
+    $("#sell_cost").val($("#sell_num").slider("value") * max);
   }
 }
 
@@ -266,6 +273,7 @@ $( function() {
         }
         else if (min > min_limit && max < max_limit){
           $("#buy_tip").text("The buy order will be executed as soon as the price is ≤  " + min + " or ≥ " + max);
+          $("#buy_cost").val("$" + $("#buy_num").slider("value")*max);
           if(min > $("#pps").text())
           {
             $("#buy_limit_val").removeClass("error-msg");
@@ -343,6 +351,7 @@ $( function() {
         if($("#sell_limit_val").val() != "None")
         {
           $("#sell_limit").slider("values", 1, $("#sell_limit_val").val());
+          $("#sell_cost").val($("#sell_limit_val").val() * $("#sell_num").slider("value"));
           if($("#sell_limit_val").val() > parseFloat($("#pps").text()))
           {
             $("#sell_limit_val").removeClass("suc-msg");
@@ -365,6 +374,14 @@ $( function() {
         }
         else
         {
+          if($("#sell_limit").slider("values", 0) != min_limit)
+          {
+            $("#sell_cost").val($("#sell_num").slider("value") * $("#sell_limit").slider("values", 0));
+          }
+          else
+          {
+            $("#sell_cost").val($("#sell_num").slider("value") * $("#pps").text());
+          }
           $("#sell_limit").slider("values", 1, max_limit);
           $("#sell_limit_val").removeClass("error-msg");
           $("#sell_limit_val").removeClass("suc-msg");
@@ -410,6 +427,14 @@ $( function() {
         if($("#sell_stop_val").val() != "None")
         {
           $("#sell_limit").slider("values", 0, $("#sell_stop_val").val());
+          if($("#sell_limit").slider("values", 1) != max_limit)
+          {
+            $("#sell_cost").val($("#sell_num").slider("value") * $("#sell_limit").slider("values", 1));
+          }
+          else
+          {
+            $("#sell_cost").val($("#sell_num").slider("value") * $("#sell_stop_val").val());
+          }
           if($("#sell_stop_val").val() < parseFloat($("#pps").text()))
           {
             $("#sell_stop_val").removeClass("suc-msg");
@@ -432,6 +457,14 @@ $( function() {
         }
         else
         {
+          if($("#sell_limit").slider("values", 1) != max_limit)
+          {
+            $("#sell_cost").val($("#sell_num").slider("value") * $("#sell_limit").slider("values", 1));
+          }
+          else
+          {
+            $("#sell_cost").val($("#sell_num").slider("value") * $("#pps").text());
+          }
           $("#sell_limit").slider("values", 0, min_limit);
           $("#sell_stop_val").removeClass("error-msg");
           $("#sell_stop_val").removeClass("suc-msg");
