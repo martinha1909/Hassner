@@ -61,11 +61,11 @@ function recalcSellSlider(new_chosen_min, new_chosen_max)
 {
   if(new_chosen_min == min_limit && new_chosen_max < max_limit)
   {
-    $("#sell_cost").val($("#sell_num").slider("value") * max);
+    $("#sell_cost").val($("#sell_num").slider("value") * new_chosen_max);
   }
   if(new_chosen_min > min_limit && new_chosen_max == max_limit)
   {
-    $("#sell_cost").val($("#sell_num").slider("value") * min);
+    $("#sell_cost").val($("#sell_num").slider("value") * new_chosen_min);
   }
   if((new_chosen_max == max_limit && new_chosen_min == min_limit))
   {
@@ -73,7 +73,7 @@ function recalcSellSlider(new_chosen_min, new_chosen_max)
   }
   if(new_chosen_max < max_limit && new_chosen_min > min_limit)
   {
-    $("#sell_cost").val($("#sell_num").slider("value") * max);
+    $("#sell_cost").val($("#sell_num").slider("value") * new_chosen_max);
   }
 }
 
@@ -503,9 +503,11 @@ $( function() {
           recalcSellSlider(min, max);
         }
         else if (min > min_limit && max == max_limit){
+          $("#sell_limit_val").removeClass("error-msg");
+          $("#sell_limit_val").removeClass("suc-msg");
+          $("#sell_limit_val").val("None");
           $("#sell_tip").text("The sell order will be executed as soon as the price is ≤ " + min);
           $("#sell_cost").val("$" + $("#sell_num").slider("value")*min);
-          console.log(min);
           if(min > $("#pps").text())
           {
             $("#sell_stop_val").removeClass("error-msg");
@@ -549,6 +551,9 @@ $( function() {
           recalcSellSlider(min, max);
         }
         else if (min == min_limit && max < max_limit){
+          $("#sell_stop_val").removeClass("error-msg");
+          $("#sell_stop_val").removeClass("suc-msg");
+          $("#sell_stop_val").val("None");
           $("#sell_tip").text("The sell order will be executed as soon as the price is ≥ " + max);
           $("#sell_cost").val("$" + $("#sell_num").slider("value")*max);
           if(max < $("#pps").text())
