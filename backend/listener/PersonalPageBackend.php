@@ -8,9 +8,9 @@
     $_SESSION['logging_mode'] = LogModes::PERSONAL;
     $conn = connect();
     $pwd = $_POST['verify_password'];
-    $result = login($conn, $_SESSION['username'], $pwd);
+    $result = null;
     
-    if($result->num_rows > 0)
+    if(login($conn, $_SESSION['username'], $pwd, $result))
     {
         echo(json_encode(array(            
             "status"=> StatusCodes::Success,

@@ -46,7 +46,7 @@ include '../../backend/constants/LoggingModes.php';
               <h1 id="h1-sm">Email Address</h1>
               <p>
         ';
-    printUserImportantInfo($account_info['email']);
+    echo $account_info['email'];
     echo '<a href="../../backend/shared/EditEmailBackend.php" id="icon-btn">&nbsp<i class="fa fa-pen"></i></a>';
     if ($_SESSION['edit'] == 2) {
       echo '
@@ -74,7 +74,6 @@ include '../../backend/constants/LoggingModes.php';
             <h1 id="h1-sm">Password</h1>
             <p>
         ';
-    printUserImportantInfo($account_info['password']);
     echo '<a href="../../backend/shared/EditPasswordBackend.php" id="icon-btn">&nbsp<i class="fa fa-pen"></i></a>';
     if ($_SESSION['edit'] == 1) {
       echo '
