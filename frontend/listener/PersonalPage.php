@@ -45,7 +45,7 @@ include '../../backend/shared/include/PersonalPageHelpers.php';
       <p><?php
           //variable to hold all information of user's account info (i.e all columns of account table in database corresponds to this user)
           $account_info = getAccount($_SESSION['username']);
-          echo printUserImportantInfo($account_info['email']);
+          echo $account_info['email'];
           ?>
         <?php
           if(isTestingPhase(null, null))
@@ -89,7 +89,7 @@ include '../../backend/shared/include/PersonalPageHelpers.php';
       <h1 id="h1-sm">Password</h1>
       <p>
         <?php
-         echo printUserImportantInfo($account_info['password']);
+        //  echo printUserImportantInfo($account_info['password']);
         ?>
       </p>
       <!-- Brings to a page that allows user to edit their password -->

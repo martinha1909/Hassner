@@ -5,14 +5,29 @@
         
         //logs in with provided user info and password, then use SQL query to query database 
         //after qurerying return the result
-        function login($conn, $username, $pwd) // done2
+        function login($conn, $username, $pwd, &$account_info) // done2
         {
-            $sql = "SELECT * FROM account WHERE username = ? AND password = ?";
+            $ret = false;
+
+            $pwd = hash("sha256", $pwd, false);
+            $sql = "SELECT * FROM account WHERE username = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('ss', $username, $pwd);
+            $stmt->bind_param('s', $username);
             $stmt->execute();
             $result = $stmt->get_result();
-            return $result;
+
+            if($result->num_rows > 0)
+            {
+                $info = $result->fetch_assoc();
+                $pwd_hash_str = $info['password'];
+                if(hash_equals($pwd_hash_str, $pwd))
+                {
+                    $ret = true;
+                    $account_info = $info;
+                }
+            }
+
+            return $ret;
         }
 
         function searchAccount($conn, $username)
@@ -1276,6 +1291,7 @@
 
         function signup($connPDO, $username, $password, $type, $email, $ticker)
         {
+            $password = hash("sha256", $password, false);
             $original_share= "";
             $transit_no = "";
             $inst_no = "";
@@ -1559,6 +1575,7 @@
 
         function editPassword($conn, $user_username, $new_pwd)
         {
+            $new_pwd = hash("sha256", $new_pwd, false);
             $sql = "UPDATE account SET password = ? WHERE username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ss', $new_pwd, $user_username);
