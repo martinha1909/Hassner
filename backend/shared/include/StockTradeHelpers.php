@@ -1652,8 +1652,8 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
 
             doTransaction($connPDO, 
                           $transact, 
-                          $current_market_price, 
-                          $row['sell_limit'], 
+                          $current_market_price,
+                          $new_pps, 
                           $purchase_price, 
                           $row['no_of_share'], 
                           $row, 
@@ -1695,7 +1695,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
             doTransaction($connPDO,
                           $transact,
                           $current_market_price,
-                          $row['sell_limit'],
+                          $new_pps,
                           $purchase_price,
                           $execute_quantity,
                           $row,
@@ -1723,7 +1723,7 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
                 updateSellOrderNoOfShare($connPDO, $row['id'], $new_sell_order_quantity);
             }
 
-            //do this so we can exit the loop
+            // do this so we can exit the loop
             $request_quantity = $request_quantity - $row['no_of_share'];
         }
     }

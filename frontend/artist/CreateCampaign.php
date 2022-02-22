@@ -39,13 +39,22 @@ $_SESSION['lock_count'] = -1;
             <div class="mx-auto text-center">
                 <div class="col-8 mx-auto py-4">
                     <?php
-                    if ($_SESSION['logging_mode'] == LogModes::CAMPAIGN) {
-                        if ($_SESSION['status'] == StatusCodes::CampaignEmpty) {
+                    if ($_SESSION['logging_mode'] == LogModes::CAMPAIGN) 
+                    {
+                        if ($_SESSION['status'] == StatusCodes::CampaignEmpty) 
+                        {
                             $_SESSION['status'] = StatusCodes::ErrGeneric;
                             getStatusMessage("Please fill out all fields", "");
-                        } else if ($_SESSION['status'] == StatusCodes::CampaignTimeErr) {
+                        } 
+                        else if ($_SESSION['status'] == StatusCodes::CampaignTimeErr) 
+                        {
                             $_SESSION['status'] = StatusCodes::ErrGeneric;
                             getStatusMessage("Expiration date has to be in the future", "");
+                        } 
+                        else if($_SESSION['status'] == StatusCodes::ErrServer)
+                        {
+                            $_SESSION['status'] = StatusCodes::ErrGeneric;
+                            getStatusMessage("An error has occured, please try again", "");
                         }
                     }
                     ?>

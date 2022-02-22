@@ -2,6 +2,7 @@
 include '../../backend/control/Dependencies.php';
 
 hassnerInit();
+
 ?>
 
 
