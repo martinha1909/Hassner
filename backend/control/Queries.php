@@ -9,7 +9,6 @@
         {
             $ret = false;
 
-            $pwd = hash("sha256", $pwd, false);
             $sql = "SELECT * FROM account WHERE username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $username);
@@ -20,8 +19,9 @@
             {
                 $info = $result->fetch_assoc();
                 $pwd_hash_str = $info['password'];
-                if(hash_equals($pwd_hash_str, $pwd))
+                if(password_verify($pwd, $pwd_hash_str))
                 {
+                    usleep ( rand(10,100000));
                     $ret = true;
                     $account_info = $info;
                 }
@@ -1291,7 +1291,7 @@
 
         function signup($connPDO, $username, $password, $type, $email, $ticker)
         {
-            $password = hash("sha256", $password, false);
+            $password = password_hash($password, PASSWORD_BCRYPT);
             $original_share= "";
             $transit_no = "";
             $inst_no = "";
@@ -1575,7 +1575,7 @@
 
         function editPassword($conn, $user_username, $new_pwd)
         {
-            $new_pwd = hash("sha256", $new_pwd, false);
+            $new_pwd = password_hash($new_pwd, PASSWORD_BCRYPT);
             $sql = "UPDATE account SET password = ? WHERE username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ss', $new_pwd, $user_username);
