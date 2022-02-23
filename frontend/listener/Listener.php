@@ -112,7 +112,7 @@
                             </div>
                             <div class="row">
                                 <?php printOpenBuyTable($_SESSION['username']); ?>
-                                <div class="vl"></div>
+                                <div></div>
                                 <?php printOpenSellTable($_SESSION['username']); ?>
                             </div>  
                         </div>

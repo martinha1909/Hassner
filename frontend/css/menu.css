@@ -574,8 +574,3 @@ select::-ms-expand {
 .tooltip-pointer {
   cursor: help;
 }
-
-.vl {
-  border-left: 15px solid #1c1c1cff;
-  height: 0%;
-}
