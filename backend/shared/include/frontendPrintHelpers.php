@@ -77,7 +77,7 @@
             for ($i = 0; $i < sizeof($participated_campaigns); $i++) 
             {
                 $artist_market_tag = getArtistMarketTag($participated_campaigns[$i]->getArtistUsername());
-                if($participated_campaigns[$i]->getWinner() == $username)
+                if(($participated_campaigns[$i]->getType() == CampaignType::RAFFLE && $participated_campaigns[$i]->getWinner() == $username) || $participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
                     echo '
                         <div class="campaign-box-participated-winner col-2.5">
@@ -112,26 +112,17 @@
                         <p class="text-black">⌛ '.$participated_campaigns[$i]->getDateExpires().'</p>
                 ';
 
-                if($participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
+                if(($participated_campaigns[$i]->getType() == CampaignType::RAFFLE && $participated_campaigns[$i]->getWinner() == $username) || $participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
                     echo '
-                        <b class="text-black">Win: N/A</b>
+                        <b class="text-orange">Win: Yes</b>
                     ';
                 }
                 else
                 {
-                    if($participated_campaigns[$i]->getWinner() == $username)
-                    {
-                        echo '
-                            <b class="text-orange">Win: Yes</b>
-                        ';
-                    }
-                    else
-                    {
-                        echo '
-                            <b class="text-black">Win: No</b>
-                        ';
-                    }
+                    echo '
+                        <b class="text-black">Win: No</b>
+                    ';
                 }
                         
                 echo '
