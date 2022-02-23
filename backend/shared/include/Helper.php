@@ -19,19 +19,16 @@
         $_SESSION['testing_phase'] = true;
         $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['display'] = MenuOption::None;
-        $_SESSION['sort_type'] = 0;
         $_SESSION['usd'] = 0;
         $_SESSION['edit'] = 0;
         $_SESSION['currency'] = 0;
         $_SESSION['saved'] = 0;
-        $_SESSION['buy_sell'] = 0;
-        $_SESSION['buy_market_price'] = 0;
         $_SESSION['fiat_options'] = BalanceOption::NONE;
-        $_SESSION['buy_options'] = 0;
         $_SESSION['trade_history_from'] = 0;
         $_SESSION['trade_history_to'] = 0;
         $_SESSION['trade_history_type'] = 0;
         $_SESSION['artist_investor_amount_invested_sort'] = 0;
+        $_SESSION['is_logged_in'] = false;
     }
 
     function displaySearchBar()

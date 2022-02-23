@@ -1,5 +1,15 @@
 <?php
     session_start();
+
+    if(!isset($_SESSION['is_logged_in']))
+    {
+        $_SESSION['is_logged_in'] = false;
+    }
+    if(!$_SESSION['is_logged_in'])
+    {
+        header("Location: ../credentials/index.php");
+        die;
+    }
     
     // Chance these are missing
     if(!array_key_exists('dependencies', $_SESSION))
