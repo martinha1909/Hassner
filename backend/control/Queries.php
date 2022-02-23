@@ -1309,6 +1309,19 @@
             return $result;
         }
 
+        function searchCampaignActiveStatus($conn, $campaign_id)
+        {
+            $reult = 0;
+
+            $sql = "SELECT is_active FROM campaign WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $campaign_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchNumberOfShareDistributed($conn, $artist_username)
         {
             $sql = "SELECT Share_Distributed FROM account WHERE username = ?";
