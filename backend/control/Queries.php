@@ -1746,6 +1746,11 @@
                         $stmt->bindValue(2, $seller);
                         $stmt->execute(array($amount, $seller));
 
+                        $stmt = $conn->prepare("UPDATE artist_shareholders SET shares_owned = shares_owned - ? WHERE user_username = ?");
+                        $stmt->bindValue(1, $amount);
+                        $stmt->bindValue(2, $seller);
+                        $stmt->execute(array($amount, $seller));
+
                         //Increase the total number of shares bought of that artist accross all users since the artist no longer holds shares of himself
                         $stmt = $conn->prepare("UPDATE account SET Shares = Shares + ? WHERE username = ?");
                         $stmt->bindValue(1, $amount);
