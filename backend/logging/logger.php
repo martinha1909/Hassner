@@ -3,41 +3,7 @@
     {
         if($_SESSION['error'])
         {
-            date_default_timezone_set(Timezone::MST);
-            $error_trace = debug_backtrace();
-            //We only care about the last stack trace
-            $error_file = pathinfo($error_trace[0]['file'])['basename'];
-            $error_line = $error_trace[0]['line'];
-            $date_logged = date('Y-m-d H:i:s');
-            $path = 0;
-            $log_file = 0;
-            if($_SESSION['dependencies'] == "FRONTEND")
-            {
-                $path = ErrorLogPath::FRONTEND;
-            }
-            else if($_SESSION['dependencies'] == "BACKEND")
-            {
-                $path = ErrorLogPath::BACKEND;
-            }
-
-            $conn = connect();
-
-            $log_msg = '['.$type.']-['.$error_file.'@'.$error_line.']'.$msg."\r\n";
-            if($path != 0)
-            {
-                $log_file = $path.'/error.log';
-            }
-
-            if($log_file != 0)
-            {
-                $sql = "INSERT INTO error_log (log_type, message, log_file, log_line, date_logged)
-                        VALUES(?, ?, ?, ?, ?)";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param('sssis', $type, $msg, $error_file, $error_line, $date_logged);
-                $stmt->execute();
-
-                error_log('['.date("F j, Y, g:i a e O").']'.$log_msg, 3,  $log_file);
-            }
+            
         }
     }
 
@@ -66,7 +32,7 @@
             $log_msg = '['.$type.']-['.$error_file.'@'.$error_line.']'.$msg."\r\n";
             if($path != 0)
             {
-                $log_file = $path.'/info.log';
+                $log_file = $path.'/hx.log';
             }
 
             if($log_file != 0)
@@ -107,7 +73,7 @@
             $log_msg = '['.$type.']-['.$error_file.'@'.$error_line.']'.$msg."\r\n";
             if($path != 0)
             {
-                $log_file = $path.'/debug.log';
+                $log_file = $path.'/hx.log';
             }
 
             if($log_file != 0)
@@ -120,6 +86,45 @@
 
                 error_log('['.date("F j, Y, g:i a e O").']'.$log_msg, 3,  $log_file);
             }
+        }
+    }
+
+    function concat_log($log_level, $log_type, $log_msg)
+    {
+        date_default_timezone_set(Timezone::MST);
+        $error_trace = debug_backtrace();
+        //We only care about the last stack trace
+        $error_file = pathinfo($error_trace[0]['file'])['basename'];
+        $error_line = $error_trace[0]['line'];
+        $date_logged = date('Y-m-d H:i:s');
+        $path = 0;
+        $log_file = 0;
+        if($_SESSION['dependencies'] == "FRONTEND")
+        {
+            $path = ErrorLogPath::FRONTEND;
+        }
+        else if($_SESSION['dependencies'] == "BACKEND")
+        {
+            $path = ErrorLogPath::BACKEND;
+        }
+
+        $conn = connect();
+
+        $log_msg = '['.$log_level.']-['.$log_type.']-['.$error_file.'@'.$error_line.']'.$log_msg."\r\n";
+        if($path != 0)
+        {
+            $log_file = $path.'/hx.log';
+        }
+
+        if($log_file != 0)
+        {
+            $sql = "INSERT INTO error_log (log_type, message, log_file, log_line, date_logged)
+                    VALUES(?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('sssis', $type, $msg, $error_file, $error_line, $date_logged);
+            $stmt->execute();
+
+            error_log('['.date("F j, Y, g:i a e O").']'.$log_msg, 3,  $log_file);
         }
     }
 ?>
