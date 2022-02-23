@@ -836,6 +836,8 @@ function refreshBuyOrderTable()
             if($row['is_active'] != 0)
             {
                 $campaign = new Campaign();
+                $campaign->setID($row['id']);
+                $campaign->setEligibleParticipants($row['eligible_participants']);
                 $campaign->setOffering($row['offering']);
                 $campaign->setMinEthos($row['minimum_ethos']);
                 $campaign->setType($row['type']);

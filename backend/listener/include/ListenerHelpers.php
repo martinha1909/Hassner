@@ -214,6 +214,8 @@
 
                     if(userIsParticipatingInCampaign($user_username, $campaign_info['artist_username'], $campaign_info['id']))
                     {
+                        $participating_campaign->setID($campaign_info['id']);
+                        $participating_campaign->setEligibleParticipants($campaign_info['eligible_participants']);
                         $participating_campaign->setArtistUsername($campaign_info['artist_username']);
                         $participating_campaign->setOffering($campaign_info['offering']);
                         $participating_campaign->setProgress($progress_calc);
@@ -254,6 +256,7 @@
             {
                 $time_released = dbDateTimeParser($campaign_info['date_posted']);
 
+                $participated_campaign->setId($campaign_info['id']);
                 $participated_campaign->setArtistUsername($campaign_info['artist_username']);
                 $participated_campaign->setOffering($campaign_info['offering']);
                 $participated_campaign->setMinEthos($campaign_info['minimum_ethos']);
@@ -264,6 +267,7 @@
                 $participated_campaign->setDatePosted($time_released);
                 $participated_campaign->setType($campaign_info['type']);
                 $participated_campaign->setDateExpires(dbDateTimeParser($campaign_info['date_expires']));
+                $participated_campaign->setEligibleParticipants($campaign_info['eligible_participants']);
 
                 array_push($ret, $participated_campaign);
             }
@@ -312,7 +316,9 @@
                         $progress_calc = round(($total_shares_bought/$row['minimum_ethos']) * 100, 2);
 
                         if($campaign_time_left != "0000-00-00 00:00:00")
-                        {                 
+                        {
+                            $near_participation_campaign->setId($row['id']);
+                            $near_participation_campaign->setEligibleParticipants($row['eligible_participants']);
                             $near_participation_campaign->setArtistUsername($row['artist_username']);
                             $near_participation_campaign->setOffering($row['offering']);
                             $near_participation_campaign->setProgress($progress_calc);
@@ -371,7 +377,9 @@
 
                 //Just a safe check
                 if($campaign_time_left != "0000-00-00 00:00:00")
-                {                 
+                {
+                    $near_participation_campaign->setId($row['id']);
+                    $near_participation_campaign->setEligibleParticipants($row['eligible_participants']);
                     $near_participation_campaign->setArtistUsername($row['artist_username']);
                     $near_participation_campaign->setOffering($row['offering']);
                     $near_participation_campaign->setProgress($progress_calc);
@@ -425,7 +433,9 @@
             $progress_calc = round(($total_shares_bought/$row['minimum_ethos']) * 100, 2);
 
             if($campaign_time_left != "0000-00-00 00:00:00" && $progress_calc < 100)
-            {                 
+            {
+                $trending_campaign->setId($row['id']);
+                $trending_campaign->setEligibleParticipants($row['eligible_participants']);
                 $trending_campaign->setArtistUsername($row['artist_username']);
                 $trending_campaign->setOffering($row['offering']);
                 $trending_campaign->setProgress($progress_calc);

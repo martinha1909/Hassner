@@ -5,6 +5,7 @@
     include '../constants/ShareInteraction.php';
     include '../shared/include/MarketplaceHelpers.php';
     include '../shared/include/StockTradeHelpers.php';
+    include '../shared/include/CampaignHelpers.php';
 
     $connPDO = connectPDO();
     $current_date = date('Y-m-d H:i:s');

@@ -10,6 +10,7 @@
 
         if (sizeof($participating_campaigns) > 0) 
         {
+            
             echo '
                 <div class="row">
             ';
@@ -24,19 +25,29 @@
                 if($participating_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
                     echo '
-                        <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b class="text-dark float-right">♦</b>
-                        </h3>
+                        <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
+                            <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
+                                <b data-toggle="tooltip" 
+                                title="id: '.$participating_campaigns[$i]->getID().'&#013;type: benchmark&#013;participants: '.$participating_campaigns[$i]->getEligibleParticipants().'" 
+                                class="text-dark float-right tooltip-pointer">
+                                ♦
+                                </b>
+                            </h3>
+                        </form>
                     ';
                 }
                 else if($participating_campaigns[$i]->getType() == CampaignType::RAFFLE)
                 {
-                    //Add this to line 32 if we want to include the winning chance
-                    // <b class="font-size-15">('.$participating_campaigns[$i]->getWinningChance().'%)</b>
                     echo '
-                        <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b class="text-dark float-right">♣</b>
-                        </h3>
+                        <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
+                            <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
+                                <b data-toggle="tooltip" 
+                                    title="id: '.$participating_campaigns[$i]->getID().'&#013;type: raffle&#013;participants: '.$participating_campaigns[$i]->getEligibleParticipants().'&#013;chance: '.$participating_campaigns[$i]->getWinningChance().'%" 
+                                    class="text-dark float-right tooltip-pointer">
+                                    ♣
+                                </b>
+                            </h3>
+                        </form>
                     ';
                 }
 
@@ -77,7 +88,7 @@
             for ($i = 0; $i < sizeof($participated_campaigns); $i++) 
             {
                 $artist_market_tag = getArtistMarketTag($participated_campaigns[$i]->getArtistUsername());
-                if($participated_campaigns[$i]->getWinner() == $username)
+                if(($participated_campaigns[$i]->getType() == CampaignType::RAFFLE && $participated_campaigns[$i]->getWinner() == $username) || $participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
                     echo '
                         <div class="campaign-box-participated-winner col-2.5">
@@ -93,17 +104,29 @@
                 if($participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
                     echo '
-                        <h3 class="h3-white">'.$artist_market_tag.'
-                            <b class="text-white float-right">♦</b>
-                        </h3>
+                        <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
+                            <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
+                                <b data-toggle="tooltip" 
+                                    title="id: '.$participated_campaigns[$i]->getID().'&#013;type: benchmark&#013;participants: '.$participated_campaigns[$i]->getEligibleParticipants().'" 
+                                    class="text-dark float-right tooltip-pointer">
+                                    ♦
+                                </b>
+                            </h3>
+                        </form>
                     ';
                 }
                 else if($participated_campaigns[$i]->getType() == CampaignType::RAFFLE)
                 {
                     echo '
-                        <h3 class="h3-white">'.$artist_market_tag.'
-                            <b class="text-white float-right">♣</b>
-                        </h3>
+                        <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
+                            <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
+                                <b data-toggle="tooltip" 
+                                    title="id: '.$participated_campaigns[$i]->getID().'&#013;type: raffle&#013;participants: '.$participated_campaigns[$i]->getEligibleParticipants().'" 
+                                    class="text-dark float-right tooltip-pointer">
+                                    ♣
+                                </b>
+                            </h3>
+                        </form>
                     ';
                 }
 
@@ -112,26 +135,17 @@
                         <p class="text-black">⌛ '.$participated_campaigns[$i]->getDateExpires().'</p>
                 ';
 
-                if($participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
+                if(($participated_campaigns[$i]->getType() == CampaignType::RAFFLE && $participated_campaigns[$i]->getWinner() == $username) || $participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
                 {
                     echo '
-                        <b class="text-black">Win: N/A</b>
+                        <b class="text-white">Win: Yes</b>
                     ';
                 }
                 else
                 {
-                    if($participated_campaigns[$i]->getWinner() == $username)
-                    {
-                        echo '
-                            <b class="text-orange">Win: Yes</b>
-                        ';
-                    }
-                    else
-                    {
-                        echo '
-                            <b class="text-black">Win: No</b>
-                        ';
-                    }
+                    echo '
+                        <b class="text-black">Win: No</b>
+                    ';
                 }
                         
                 echo '
@@ -195,7 +209,11 @@
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                         <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                            <b class="text-white float-right">♦</b>
+                            <b data-toggle="tooltip" 
+                                title="id: '.$near_parti_campaigns[$i]->getID().'&#013;type: benchmark&#013;participants: '.$near_parti_campaigns[$i]->getEligibleParticipants().'" 
+                                class="text-dark float-right tooltip-pointer">
+                                ♦
+                            </b>
                         </h3>
                     </form>
                 ';
@@ -205,7 +223,11 @@
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                         <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                            <b class="text-white float-right">♣</b>
+                            <b data-toggle="tooltip" 
+                                title="id: '.$near_parti_campaigns[$i]->getID().'&#013;type: raffle&#013;participants: '.$near_parti_campaigns[$i]->getEligibleParticipants().'&#013;chance: 0%" 
+                                class="text-dark float-right tooltip-pointer">
+                                ♣
+                            </b>
                         </h3>
                     </form>
                 ';
@@ -642,7 +664,11 @@
                 }
                 echo '
                         <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b class="text-dark float-right">'.$type.'</b>
+                            <b data-toggle="tooltip" 
+                                title="id: '.$current_campaigns[$i]->getID().'&#013;type: '.$current_campaigns[$i]->getType().'&#013;participants: '.$current_campaigns[$i]->getEligibleParticipants().'" 
+                                class="text-dark float-right tooltip-pointer">
+                                '.$type.'
+                            </b>
                         </h3>
                         <b class="text-black">🤲 '.$current_campaigns[$i]->getOffering().'</b>
                         <p class="text-black text-bold">⌛ '.dbDateTimeParser($current_campaigns[$i]->getDatePosted()).'</p>

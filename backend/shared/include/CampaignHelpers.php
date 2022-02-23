@@ -31,25 +31,28 @@
             {
                 $res = searchCampaignMinimumEthos($conn, $seller_participating_campaigns[$i]);
                 $campaign_info = $res->fetch_assoc();
-                if($seller_shares_invested < $campaign_info['minimum_ethos'])
+                if(campaignIsActive($seller_participating_campaigns[$i]))
                 {
-                    $remove_err_code = removeCampaignParticipant($conn, $seller_username, $seller_participating_campaigns[$i]);
-                    if($remove_err_code == StatusCodes::Success)
+                    if($seller_shares_invested < $campaign_info['minimum_ethos'])
                     {
-                        hx_info(HX::CAMPAIGN, $seller_username." no longer participate in campaign id ".$seller_participating_campaigns[$i]);
-                        $reduce_err_code = decreaseCampaignEligibleParticipant($connPDO, $seller_participating_campaigns[$i], 1);
-                        if($reduce_err_code == StatusCodes::Success)
+                        $remove_err_code = removeCampaignParticipant($conn, $seller_username, $seller_participating_campaigns[$i]);
+                        if($remove_err_code == StatusCodes::Success)
                         {
-                            hx_debug(HX::CAMPAIGN, "Campaign (id: ".$seller_participating_campaigns[$i].") reduced eligible participants by 1");
+                            hx_info(HX::CAMPAIGN, $seller_username." no longer participate in campaign id ".$seller_participating_campaigns[$i]);
+                            $reduce_err_code = decreaseCampaignEligibleParticipant($connPDO, $seller_participating_campaigns[$i], 1);
+                            if($reduce_err_code == StatusCodes::Success)
+                            {
+                                hx_debug(HX::CAMPAIGN, "Campaign (id: ".$seller_participating_campaigns[$i].") reduced eligible participants by 1");
+                            }
+                            else
+                            {
+                                hx_error(HX::CAMPAIGN, "Failed to reduce eligible participant for campaign id ".$seller_participating_campaigns[$i]);
+                            }
                         }
                         else
                         {
-                            hx_error(HX::CAMPAIGN, "Failed to reduce eligible participant for campaign id ".$seller_participating_campaigns[$i]);
+                            hx_error(HX::CAMPAIGN, "Failed to remove user ".$seller_username." from participating in campaign id ".$seller_participating_campaigns[$i]);
                         }
-                    }
-                    else
-                    {
-                        hx_error(HX::CAMPAIGN, "Failed to remove user ".$seller_username." from participating in campaign id ".$seller_participating_campaigns[$i]);
                     }
                 }
             }
@@ -128,29 +131,47 @@
             {
                 $res = searchCampaignMinimumEthos($conn, $seller_participating_campaigns[$i]);
                 $campaign_info = $res->fetch_assoc();
-                if($seller_shares_invested < $campaign_info['minimum_ethos'])
+                if(campaignIsActive($seller_participating_campaigns[$i]))
                 {
-                    $remove_err_code = removeCampaignParticipant($conn, $seller_username, $seller_participating_campaigns[$i]);
-                    if($remove_err_code == StatusCodes::Success)
+                    if($seller_shares_invested < $campaign_info['minimum_ethos'])
                     {
-                        hx_info(HX::CAMPAIGN, $seller_username." no longer participate in campaign id ".$seller_participating_campaigns[$i]);
-                        $reduce_err_code = decreaseCampaignEligibleParticipant($connPDO, $seller_participating_campaigns[$i], 1);
-                        if($reduce_err_code == StatusCodes::Success)
+                        $remove_err_code = removeCampaignParticipant($conn, $seller_username, $seller_participating_campaigns[$i]);
+                        if($remove_err_code == StatusCodes::Success)
                         {
-                            hx_debug(HX::CAMPAIGN, "Campaign (id: ".$seller_participating_campaigns[$i].") reduced eligible participants by 1");
+                            hx_info(HX::CAMPAIGN, $seller_username." no longer participate in campaign id ".$seller_participating_campaigns[$i]);
+                            $reduce_err_code = decreaseCampaignEligibleParticipant($connPDO, $seller_participating_campaigns[$i], 1);
+                            if($reduce_err_code == StatusCodes::Success)
+                            {
+                                hx_debug(HX::CAMPAIGN, "Campaign (id: ".$seller_participating_campaigns[$i].") reduced eligible participants by 1");
+                            }
+                            else
+                            {
+                                hx_error(HX::CAMPAIGN, "Failed to reduce eligible participant for campaign id ".$seller_participating_campaigns[$i]);
+                            }
                         }
                         else
                         {
-                            hx_error(HX::CAMPAIGN, "Failed to reduce eligible participant for campaign id ".$seller_participating_campaigns[$i]);
+                            hx_error(HX::CAMPAIGN, "Failed to remove user ".$seller_username." from participating in campaign id ".$seller_participating_campaigns[$i]);
                         }
-                    }
-                    else
-                    {
-                        hx_error(HX::CAMPAIGN, "Failed to remove user ".$seller_username." from participating in campaign id ".$seller_participating_campaigns[$i]);
                     }
                 }
             }
         }
+    }
+
+    function campaignIsActive($campaign_id): bool
+    {
+        $ret = false;
+        $conn = connect();
+
+        $res = searchCampaignActiveStatus($conn, $campaign_id);
+        $campaign_active_stat = $res->fetch_assoc();
+        if($campaign_active_stat['is_active'])
+        {
+            $ret = true;
+        }
+
+        return $ret;
     }
 
     function getCampaignMinimumEthos($campaign_id)
