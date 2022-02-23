@@ -119,21 +119,21 @@
 
                         <div class="div-hidden" id="campaign_content">
                             <div class="py-4">
-                                <h4 class="h4-blue">Participating</h4>
+                                <h4 data-toggle="tooltip" title="Campaigns that you are eligible for and participating in." class="h4-blue tooltip-pointer">Participating</h4>
                                 <?php
                                     printParticipatingCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
                             <div class="py-4">
-                                <h4 class="h4-blue">Potential Participation</h4>
+                                <h4 data-toggle="tooltip" title="Campaigns that you are not yet eligible for (need to reach the campaign's target share amount ⌖)." class="h4-blue tooltip-pointer">Potential Participation</h4>
                                 <?php
                                     printNearParticipationCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
                             <div class="py-4">
-                                <h4 class="h4-blue">Past Participation</h4>
+                                <h4 data-toggle="tooltip" title="Campaigns that you were eligible for and that have now expired." class="h4-blue tooltip-pointer">Past Participation</h4>
                                 <?php
                                     printPastParticipatedCampaignTable($_SESSION['username']);
                                 ?>

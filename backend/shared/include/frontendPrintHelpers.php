@@ -622,7 +622,7 @@
         {
             $artist_market_tag = getArtistMarketTag($artist_username);
             echo '
-                <h3 data-toggle="tooltip" title="Here the artist offers rewards in return for users buying shares." class="h3-blue tooltip-pointer py-5">Current Campaigns</h3>
+                <h3 data-toggle="tooltip" title="Here the artist offers rewards in return for users buying shares." class="h3-blue tooltip-pointer col-4 py-5">Current Campaigns</h3>
                 <div class="row">
             ';
 
@@ -811,7 +811,7 @@
         {
             echo '
                 <div>
-                <h3 class="py-2 mx-2">Buy Order</h3>
+                <h3 data-toggle="tooltip" title="Order in queue to purchase shares." class="tooltip-pointer py-2 mx-2">Buy Order</h3>
             ';
             while($row = $res->fetch_assoc())
             {
@@ -865,7 +865,7 @@
         {
             echo '
                 <div>
-                <h3 class="py-2 mx-2">Sell Order</h3>
+                <h3 data-toggle="tooltip" title="Order in queue to sell shares." class="tooltip-pointer py-2 mx-2">Sell Order</h3>
             ';
             while($row = $res->fetch_assoc())
             {

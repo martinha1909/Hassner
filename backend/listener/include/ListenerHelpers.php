@@ -641,7 +641,7 @@
         Artist::sort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Day Change");
 
         echo '
-            <h3 class="h3-blue">Tops And Flops</h3>
+            <h3 data-toggle="tooltip" title="The best and worst performing ethos of the day." class="h3-blue tooltip-pointer">Tops And Flops</h3>
             <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
         ';
 
@@ -702,7 +702,7 @@
         }
 
         echo '
-            <h3 class="h3-blue">Followed</h3>
+            <h3 data-toggle="tooltip" title="List of artists you are following." class="h3-blue tooltip-pointer">Followed</h3>
             <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
         ';
 
@@ -722,7 +722,7 @@
     {
         Artist::sort($all_artists, 0, (sizeof($all_artists)-1), "Descending", "Market Cap");
         echo '
-            <h3 class="h3-blue">Apex (Market Cap)</h3>
+            <h3 data-toggle="tooltip" title="Artists with the highest market cap on the platform." class="h3-blue tooltip-pointer">Apex</h3>
             <form action="../../backend/artist/ArtistShareInfoBackend.php" method="post">
         ';
 
@@ -742,7 +742,7 @@
     {
         //Nothing to do now, leave this for future implementation
         echo '
-            <h3 class="h3-blue">Local artist</h3>
+            <h3 data-toggle="tooltip" title="Nearby artists (not available during testing phase)." class="h3-blue tooltip-pointer">Local artist</h3>
         ';
     }
 ?>

@@ -299,7 +299,7 @@
                         if($_SESSION['artist_found'])
                         {
                             echo '
-                                <h3 class="h3-blue py-5">History</h3>
+                                <h3 data-toggle="tooltip" title="Buy History records the trades made with your account.&#013;Trade History records the trades made by all shareholders.&#013;Inject History tracks the amount of shares distributed by the artist." class="h3-blue tooltip-pointer my-5">History</h3>
                                 <div class="mx-auto select-dark">
                                     <select class="select-dropdown select-dropdown-dark text-center" id="user_history_dropdown">
                                         <option selected disabled>'.TradeHistoryType::NONE.'</option>
