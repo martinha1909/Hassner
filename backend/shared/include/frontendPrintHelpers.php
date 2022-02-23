@@ -28,9 +28,9 @@
                         <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                             <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
                                 <b data-toggle="tooltip" 
-                                title="id: '.$participating_campaigns[$i]->getID().'&#013;type: benchmark&#013;participants: '.$participating_campaigns[$i]->getEligibleParticipants().'" 
-                                class="text-dark float-right tooltip-pointer">
-                                ♦
+                                    title="id: '.$participating_campaigns[$i]->getID().'&#013;type: benchmark&#013;participants: '.$participating_campaigns[$i]->getEligibleParticipants().'" 
+                                    class="text-dark float-right tooltip-pointer">
+                                    ♦
                                 </b>
                             </h3>
                         </form>
