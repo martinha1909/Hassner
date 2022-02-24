@@ -18,6 +18,7 @@
         include '../../backend/shared/include/Helper.php';
         include '../../backend/shared/include/TimeUtil.php';
         include '../../backend/constants/ErrorLogPath.php';
+        include '../../backend/constants/LogLevel.php';
         include '../../backend/constants/HX.php';
         include '../../backend/constants/Timezone.php';
     }
@@ -29,6 +30,7 @@
         include '../shared/include/Helper.php';
         include '../shared/include/TimeUtil.php';
         include '../constants/ErrorLogPath.php';
+        include '../constants/LogLevel.php';
         include '../constants/HX.php';
         include '../constants/Timezone.php';
     }
