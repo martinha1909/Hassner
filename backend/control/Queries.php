@@ -1804,9 +1804,9 @@
                 $stmt->bindValue(2, $seller);
                 $stmt->bindValue(3, $artist);
                 $stmt->bindValue(4, $amount);
-                $stmt->bindValue(5, $initial_pps);
+                $stmt->bindValue(5, $new_pps);
                 $stmt->bindValue(6, $date_purchased);
-                $stmt->execute(array($buyer, $seller, $artist, $amount, $initial_pps, $date_purchased));
+                $stmt->execute(array($buyer, $seller, $artist, $amount, $new_pps, $date_purchased));
 
                 $search_conn = connect();
                 $res_buyer = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);
