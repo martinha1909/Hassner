@@ -100,6 +100,9 @@
                     <li class="list-group-item-no-hover" id="li_artists">
                         <input name="display_type" type="submit" id="artists_btn" class="menu-text menu-no-underline" value="Artists">
                     </li>
+                    <li class="list-group-item-no-hover" id="li_help">
+                        <input name="display_type" type="submit" id="help_btn" class="menu-text menu-no-underline" value="Help">
+                    </li>
                 </ul>
                 <div class="container my-auto mx-auto col-8">
                     <ul class="list-group-campaign my-4">
@@ -178,6 +181,24 @@
                                         <div class="text-center">
                                             <input id="listener_personal_btn" type = "submit" class="btn btn-primary" role="button" value = "Verify">
                                         </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="div-hidden" id="help_content">
+                            <section id="login">
+                                <div class="container">
+                                    <div class="text-center">
+                                        <a href="https://docs.google.com/forms/d/1e_Nv82-0yxVVb_0VduWpYyiMH2oxXhXDKO0XYmubcUo/viewform?edit_requested=true" 
+                                           class="btn btn-hassner" 
+                                           target="_blank">
+                                           Report Bugs
+                                        </a>
+                                        <h3 class="py-4">Instructions Manual</h3>
+                                        <img src="../Images/comment.jpg">
+                                        <h6 class="py-4">Other questions or concerns?</h6>
+                                        <h6 class="py-4">Please reach out to hassx.communication@gmail.com</h6>
                                     </div>
                                 </div>
                             </section>
