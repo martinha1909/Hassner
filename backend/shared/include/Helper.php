@@ -15,6 +15,7 @@
         $_SESSION['debug'] = false;
         $_SESSION['error'] = false;
         $_SESSION['info'] = false;
+        $_SESSION['username'] = 0;
         //Set this to false to enable functionalities that are not available during testing phase
         $_SESSION['testing_phase'] = true;
         $_SESSION['dependencies'] = "FRONTEND";
@@ -28,7 +29,6 @@
         $_SESSION['trade_history_to'] = 0;
         $_SESSION['trade_history_type'] = 0;
         $_SESSION['artist_investor_amount_invested_sort'] = 0;
-        $_SESSION['is_logged_in'] = false;
     }
 
     function displaySearchBar()

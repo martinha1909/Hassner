@@ -1,11 +1,7 @@
 <?php
     session_start();
 
-    if(!isset($_SESSION['is_logged_in']))
-    {
-        $_SESSION['is_logged_in'] = false;
-    }
-    if(!$_SESSION['is_logged_in'])
+    if(!isset($_SESSION['username']) || $_SESSION['username'] == 0)
     {
         header("Location: ../credentials/index.php");
         die;

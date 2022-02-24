@@ -21,7 +21,6 @@
         {
             $_SESSION['account_type'] = $result['account_type'];
             $_SESSION['username'] = $result['username'];
-            $_SESSION['is_logged_in'] = true;
             $_SESSION['dependencies'] = "FRONTEND";
             echo(json_encode(array(            
                 "status"=> 1,
