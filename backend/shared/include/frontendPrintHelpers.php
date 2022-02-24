@@ -868,19 +868,19 @@
                 $artist_username = $row['artist_username'];
                 $artist_market_price = getArtistPricePerShare($artist_username);
                 $artist_market_tag = getArtistMarketTag($artist_username);
-                $amount_spending = $artist_market_price;
+                $amount_spending = $artist_market_price * $row['quantity'];
                 
                 if($row['siliqas_requested'] == -1)
                 {
                     if($row['buy_limit'] == -1)
                     {
                         $limit_stop = "Stop: ".$row['buy_stop'];
-                        $amount_spending = $row['buy_stop'];
+                        $amount_spending = $row['buy_stop'] * $row['quantity'];
                     }
                     else if($row['buy_stop'] == -1)
                     {
                         $limit_stop = "Limit: ".$row['buy_limit'];
-                        $amount_spending = $row['buy_limit'];
+                        $amount_spending = $row['buy_limit'] * $row['quantity'];
                     }
                     else if($row['buy_limit'] != -1 && $row['buy_stop'] != -1)
                     {
@@ -922,19 +922,19 @@
                 $artist_username = $row['artist_username'];
                 $artist_market_price = getArtistPricePerShare($artist_username);
                 $artist_market_tag = getArtistMarketTag($artist_username);
-                $amount_selling = $artist_market_price;
+                $amount_selling = $artist_market_price * $row['no_of_share'];
                 
                 if($row['selling_price'] == -1)
                 {
                     if($row['sell_limit'] == -1)
                     {
                         $limit_stop = "Stop: ".$row['sell_stop'];
-                        $amount_selling = $row['sell_stop'];
+                        $amount_selling = $row['sell_stop'] * $row['no_of_share'];
                     }
                     else if($row['sell_stop'] == -1)
                     {
                         $limit_stop = "Limit: ".$row['sell_limit'];
-                        $amount_selling = $row['sell_limit'];
+                        $amount_selling = $row['sell_limit'] * $row['no_of_share'];
                     }
                     else if($row['sell_limit'] != -1 && $row['sell_stop'] != -1)
                     {
