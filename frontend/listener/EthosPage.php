@@ -133,10 +133,6 @@
                         <?php
                             $change = getArtistDayChange($_SESSION['selected_artist']);
                             $market_cap = calculateMarketCap($_SESSION['selected_artist']);
-                            $volume = getArtistShareVolume($_SESSION['selected_artist']);
-                            $open = getArtistPricePerShare($_SESSION['selected_artist']);
-                            $high = getHighestOrLowestPPS($_SESSION['selected_artist'], "MAX");
-                            $low = getHighestOrLowestPPS($_SESSION['selected_artist'], "MIN");
                             echo '
                                     <h2 data-toggle="tooltip" title="Share Price" class="tooltip-pointer" id="pps">'.$_SESSION['current_pps']['price_per_share'].'</h2>
                             ';
@@ -173,11 +169,7 @@
                             echo '
                                 <canvas id="stock_graph"></canvas>
                                 <div class="text-center">
-                                    <a>Mkt Cap: '.$market_cap.' | </a>
-                                    <a>Volume: '.$volume.' | </a>
-                                    <a>Open: '.$open.' | </a>
-                                    <a>High: '.$high.' | </a>
-                                    <a>Low: '.$low.'</a>
+                                    <b class="text-large">Market Cap: '.$market_cap.'</b>
                                 </div>
                             ';
                         ?>
