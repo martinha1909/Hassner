@@ -1309,6 +1309,19 @@
             return $result;
         }
 
+        function searchCampaignActiveStatus($conn, $campaign_id)
+        {
+            $reult = 0;
+
+            $sql = "SELECT is_active FROM campaign WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $campaign_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchNumberOfShareDistributed($conn, $artist_username)
         {
             $sql = "SELECT Share_Distributed FROM account WHERE username = ?";
@@ -1746,6 +1759,11 @@
                         $stmt->bindValue(2, $seller);
                         $stmt->execute(array($amount, $seller));
 
+                        $stmt = $conn->prepare("UPDATE artist_shareholders SET shares_owned = shares_owned - ? WHERE user_username = ?");
+                        $stmt->bindValue(1, $amount);
+                        $stmt->bindValue(2, $seller);
+                        $stmt->execute(array($amount, $seller));
+
                         //Increase the total number of shares bought of that artist accross all users since the artist no longer holds shares of himself
                         $stmt = $conn->prepare("UPDATE account SET Shares = Shares + ? WHERE username = ?");
                         $stmt->bindValue(1, $amount);
@@ -1786,9 +1804,9 @@
                 $stmt->bindValue(2, $seller);
                 $stmt->bindValue(3, $artist);
                 $stmt->bindValue(4, $amount);
-                $stmt->bindValue(5, $initial_pps);
+                $stmt->bindValue(5, $new_pps);
                 $stmt->bindValue(6, $date_purchased);
-                $stmt->execute(array($buyer, $seller, $artist, $amount, $initial_pps, $date_purchased));
+                $stmt->execute(array($buyer, $seller, $artist, $amount, $new_pps, $date_purchased));
 
                 $search_conn = connect();
                 $res_buyer = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);

@@ -1,5 +1,5 @@
 <?php
-include '../../backend/control/Dependencies.php';
+include '../../backend/shared/include/Helper.php';
 
 hassnerInit();
 

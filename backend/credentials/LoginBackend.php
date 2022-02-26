@@ -1,8 +1,13 @@
 <?php
+    session_start();
     $_SESSION['dependencies'] = "BACKEND";
-    include '../control/Dependencies.php'; 
+    include '../shared/include/Helper.php';
+    include '../control/Queries.php';
+    include '../control/connection.php';
+    include '../logging/logger.php';
     include '../constants/AccountTypes.php';
     include '../constants/StatusCodes.php';
+    include '../constants/HX.php';
 
     $conn = connect();
     $username = $_POST['username'];
@@ -16,7 +21,6 @@
         {
             $_SESSION['account_type'] = $result['account_type'];
             $_SESSION['username'] = $result['username'];
-            $_SESSION['id'] = $result['id'];
             $_SESSION['dependencies'] = "FRONTEND";
             echo(json_encode(array(            
                 "status"=> 1,
