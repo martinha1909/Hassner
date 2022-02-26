@@ -1,10 +1,10 @@
 <?php
-    include 'DatabaseHelpers.php';
-    include '../backend/control/connection.php';
-    include '../backend/constants/StatusCodes.php';
+    include 'include/DatabaseHelpers.php';
+    include '../../backend/control/connection.php';
+    include '../../backend/constants/StatusCodes.php';
 
     $conn = connect();
-    $balance = 100000;
+    $balance = 100;
     $ret = populateUserBalance($conn, $balance);
     
     if($ret = StatusCodes::Success)
@@ -15,6 +15,8 @@
     {
         echo '<h3 class="error-msg">Failed</h3>';
     }
+
+    echo '<a href="scriptsMain.php">Return to scripts main page</a>';
 
     closeCon($conn);
 ?>
