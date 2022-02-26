@@ -1,7 +1,7 @@
 <?php
     session_start();
     $type = $_POST['display_type'];
-    if(in_array($type, ["Artists", "Portfolio", "Balance", "Account", "Campaign"]))
+    if(in_array($type, ["Artists", "Portfolio", "Balance", "Account", "Campaign", "Help"]))
     {
         $_SESSION['display'] = strtoupper($type);
         echo(json_encode(array(

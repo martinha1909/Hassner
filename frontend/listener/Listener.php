@@ -100,6 +100,9 @@
                     <li class="list-group-item-no-hover" id="li_artists">
                         <input name="display_type" type="submit" id="artists_btn" class="menu-text menu-no-underline" value="Artists">
                     </li>
+                    <li class="list-group-item-no-hover" id="li_help">
+                        <input name="display_type" type="submit" id="help_btn" class="menu-text menu-no-underline" value="Help">
+                    </li>
                 </ul>
                 <div class="container my-auto mx-auto col-8">
                     <ul class="list-group-campaign my-4">
@@ -179,6 +182,26 @@
                                             <input id="listener_personal_btn" type = "submit" class="btn btn-primary" role="button" value = "Verify">
                                         </div>
                                     </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="div-hidden" id="help_content">
+                            <section id="login">
+                                <div class="container my-5">
+                                    <div class="text-center">
+                                        <a href="https://docs.google.com/forms/d/1e_Nv82-0yxVVb_0VduWpYyiMH2oxXhXDKO0XYmubcUo/viewform?edit_requested=true" 
+                                           class="btn btn-hassner" 
+                                           target="_blank">
+                                           Report Bugs
+                                        </a>
+                                        <h3 class="my-5">Instructions Manual</h3>
+                                        <a href="https://drive.google.com/file/d/1fS4nupvHMCs3WP4AmTNfPhLb2h5Y-e79/view?usp=sharing" target="_blank">View the manual</a>
+                                    </div>
+                                </div>
+                                <div class="container mx-auto text-center">
+                                    <h6>Other questions or concerns?</h6>
+                                    <h6>Please reach out to hassx.communication@gmail.com</h6>
                                 </div>
                             </section>
                         </div>
