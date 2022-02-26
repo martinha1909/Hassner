@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    if($_SESSION['username'] === 0)
+    if(!isset($_SESSION['username']) || $_SESSION['username'] === 0)
     {
         header("Location: ../credentials/index.php");
         die;
