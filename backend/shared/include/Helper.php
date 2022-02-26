@@ -15,19 +15,16 @@
         $_SESSION['debug'] = false;
         $_SESSION['error'] = false;
         $_SESSION['info'] = false;
+        $_SESSION['username'] = 0;
         //Set this to false to enable functionalities that are not available during testing phase
         $_SESSION['testing_phase'] = true;
         $_SESSION['dependencies'] = "FRONTEND";
         $_SESSION['display'] = MenuOption::None;
-        $_SESSION['sort_type'] = 0;
         $_SESSION['usd'] = 0;
         $_SESSION['edit'] = 0;
         $_SESSION['currency'] = 0;
         $_SESSION['saved'] = 0;
-        $_SESSION['buy_sell'] = 0;
-        $_SESSION['buy_market_price'] = 0;
         $_SESSION['fiat_options'] = BalanceOption::NONE;
-        $_SESSION['buy_options'] = 0;
         $_SESSION['trade_history_from'] = 0;
         $_SESSION['trade_history_to'] = 0;
         $_SESSION['trade_history_type'] = 0;
