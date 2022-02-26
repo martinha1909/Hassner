@@ -43,7 +43,7 @@
     {
         if($_SESSION['error'])
         {
-            _concat_log(LogLevel::DEBUG, $type, $msg);
+            _concat_log(LogLevel::ERROR, $type, $msg);
         }
     }
 
