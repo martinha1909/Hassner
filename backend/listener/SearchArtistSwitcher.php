@@ -14,7 +14,7 @@
             $row = $result->fetch_assoc();
             $_SESSION['selected_artist'] = $row['artist_username'];
             $_SESSION['artist_found'] = TRUE;
-            header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+            header("Location: ../../frontend/listener/EthosPage.php");
             die;
         }
     }
@@ -33,5 +33,5 @@
 
     $_SESSION['dependencies'] = "FRONTEND";
      
-    header("Location: ../../frontend/listener/ArtistUserShareInfo.php");
+    header("Location: ../../frontend/listener/EthosPage.php");
 ?>
