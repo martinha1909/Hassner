@@ -107,34 +107,33 @@
                 <div class="container my-auto mx-auto col-8">
                     <ul class="list-group-campaign my-4">
                         <div id="portfolio_content">
-                            <h3 data-toggle="tooltip" title="All of your shares!" class="h3-blue tooltip-pointer">Owned Shares</h3>
+                            <h3 class="h3-blue">Owned Shares</h3>
                             <div class="row">
                                 <?php printOwnedSharesTable($_SESSION['username']); ?>
                             </div>
                             <div class="row">
                                 <?php printOpenBuyTable($_SESSION['username']); ?>
-                                <div class="vl"></div>
                                 <?php printOpenSellTable($_SESSION['username']); ?>
                             </div>  
                         </div>
 
                         <div class="div-hidden" id="campaign_content">
                             <div class="py-4">
-                                <h4 class="h4-blue">Participating</h4>
+                                <h4 data-toggle="tooltip" title="Campaigns that you are eligible for and participating in." class="h4-blue tooltip-pointer">Participating</h4>
                                 <?php
                                     printParticipatingCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
                             <div class="py-4">
-                                <h4 class="h4-blue">Potential Participation</h4>
+                                <h4 data-toggle="tooltip" title="Campaigns that you are not yet eligible for (need to reach the campaign's target share amount ⌖)." class="h4-blue tooltip-pointer">Potential Participation</h4>
                                 <?php
                                     printNearParticipationCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
                             <div class="py-4">
-                                <h4 class="h4-blue">Past Participation</h4>
+                                <h4 data-toggle="tooltip" title="Campaigns that you were eligible for and that have now expired." class="h4-blue tooltip-pointer">Past Participation</h4>
                                 <?php
                                     printPastParticipatedCampaignTable($_SESSION['username']);
                                 ?>
