@@ -14,8 +14,9 @@
     include '../../backend/object/TickerInfo.php';
     include '../../backend/object/BuyHistory.php';
 
-    $_SESSION['selected_artist'] = 0;
     $_SESSION['lock_count'] = -1;
+    $_SESSION['selected_artist'] = 0;
+    $_SESSION['artist_found'] = false;
 
     $account = getAccount($_SESSION['username']);
     $_SESSION['user_balance'] = $account['balance'];
