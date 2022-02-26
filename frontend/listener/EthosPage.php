@@ -15,6 +15,13 @@
     include '../../backend/object/SellOrder.php';
     include '../../backend/object/Campaign.php';
 
+    //Both string case and number case
+    if($_SESSION['selected_artist'] === 0)
+    {
+        header("Location: Listener.php");
+        die;
+    }
+
     $_SESSION['lock_count'] = -1;
     //only do actions if an artist is found
     if($_SESSION['artist_found'])
