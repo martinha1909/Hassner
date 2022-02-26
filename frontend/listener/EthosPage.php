@@ -133,12 +133,8 @@
                         <?php
                             $change = getArtistDayChange($_SESSION['selected_artist']);
                             $market_cap = calculateMarketCap($_SESSION['selected_artist']);
-                            $volume = getArtistShareVolume($_SESSION['selected_artist']);
-                            $open = getArtistPricePerShare($_SESSION['selected_artist']);
-                            $high = getHighestOrLowestPPS($_SESSION['selected_artist'], "MAX");
-                            $low = getHighestOrLowestPPS($_SESSION['selected_artist'], "MIN");
                             echo '
-                                    <h2 id="pps">'.$_SESSION['current_pps']['price_per_share'].'</h2>
+                                    <h2 data-toggle="tooltip" title="Share Price" class="tooltip-pointer" id="pps">'.$_SESSION['current_pps']['price_per_share'].'</h2>
                             ';
                             if($change == 0)
                             {
@@ -173,11 +169,7 @@
                             echo '
                                 <canvas id="stock_graph"></canvas>
                                 <div class="text-center">
-                                    <a>Mkt Cap: '.$market_cap.' | </a>
-                                    <a>Volume: '.$volume.' | </a>
-                                    <a>Open: '.$open.' | </a>
-                                    <a>High: '.$high.' | </a>
-                                    <a>Low: '.$low.'</a>
+                                    <b class="text-large">Market Cap: '.$market_cap.'</b>
                                 </div>
                             ';
                         ?>
@@ -299,7 +291,7 @@
                         if($_SESSION['artist_found'])
                         {
                             echo '
-                                <h3 class="h3-blue py-5">History</h3>
+                                <h3 data-toggle="tooltip" title="Buy History records the trades made with your account.&#013;Trade History records the trades made by all shareholders.&#013;Inject History tracks the amount of shares distributed by the artist." class="h3-blue tooltip-pointer my-5">History</h3>
                                 <div class="mx-auto select-dark">
                                     <select class="select-dropdown select-dropdown-dark text-center" id="user_history_dropdown">
                                         <option selected disabled>'.TradeHistoryType::NONE.'</option>

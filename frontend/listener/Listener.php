@@ -64,10 +64,12 @@
                 <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span data-feather="grid"></span>
                 </button>
-                <div class="cursor-pointer user-balance">
-                    <i class="fas fa-user-circle"></i>
-                    <?php echo $_SESSION['username']?> | $<?php echo$_SESSION['user_balance']?>
-                </div>
+                <a id="account_btn">
+                    <div class="cursor-pointer user-balance">
+                        <i class="fas fa-user-circle"></i>
+                        <?php echo $_SESSION['username']?> | $<?php echo$_SESSION['user_balance']?>
+                    </div>
+                </a>
             </nav>
         </div>
     </section>
@@ -98,42 +100,40 @@
                     <li class="list-group-item-no-hover" id="li_artists">
                         <input name="display_type" type="submit" id="artists_btn" class="menu-text menu-no-underline" value="Artists">
                     </li>
-
-                    <li class="list-group-item-no-hover" id="li_account">
-                        <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
+                    <li class="list-group-item-no-hover" id="li_help">
+                        <input name="display_type" type="submit" id="help_btn" class="menu-text menu-no-underline" value="Help">
                     </li>
                 </ul>
                 <div class="container my-auto mx-auto col-8">
                     <ul class="list-group-campaign my-4">
                         <div id="portfolio_content">
-                            <h3 data-toggle="tooltip" title="All of your shares!" class="h3-blue tooltip-pointer">Owned Shares</h3>
+                            <h3 class="h3-blue">Owned Shares</h3>
                             <div class="row">
                                 <?php printOwnedSharesTable($_SESSION['username']); ?>
                             </div>
                             <div class="row">
                                 <?php printOpenBuyTable($_SESSION['username']); ?>
-                                <div class="vl"></div>
                                 <?php printOpenSellTable($_SESSION['username']); ?>
                             </div>  
                         </div>
 
                         <div class="div-hidden" id="campaign_content">
                             <div class="py-4">
-                                <h4 class="h4-blue">Participating</h4>
+                                <h4 data-toggle="tooltip" title="Campaigns that you are eligible for and participating in." class="h4-blue tooltip-pointer">Participating</h4>
                                 <?php
                                     printParticipatingCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
                             <div class="py-4">
-                                <h4 class="h4-blue">Potential Participation</h4>
+                                <h4 data-toggle="tooltip" title="Campaigns that you are not yet eligible for (need to reach the campaign's target share amount ⌖)." class="h4-blue tooltip-pointer">Potential Participation</h4>
                                 <?php
                                     printNearParticipationCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
                             <div class="py-4">
-                                <h4 class="h4-blue">Past Participation</h4>
+                                <h4 data-toggle="tooltip" title="Campaigns that you were eligible for and that have now expired." class="h4-blue tooltip-pointer">Past Participation</h4>
                                 <?php
                                     printPastParticipatedCampaignTable($_SESSION['username']);
                                 ?>
@@ -181,6 +181,26 @@
                                             <input id="listener_personal_btn" type = "submit" class="btn btn-primary" role="button" value = "Verify">
                                         </div>
                                     </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="div-hidden" id="help_content">
+                            <section id="login">
+                                <div class="container my-5">
+                                    <div class="text-center">
+                                        <a href="https://docs.google.com/forms/d/1e_Nv82-0yxVVb_0VduWpYyiMH2oxXhXDKO0XYmubcUo/viewform?edit_requested=true" 
+                                           class="btn btn-hassner" 
+                                           target="_blank">
+                                           Report Bugs
+                                        </a>
+                                        <h3 class="my-5">Instructions Manual</h3>
+                                        <a href="https://drive.google.com/file/d/1fS4nupvHMCs3WP4AmTNfPhLb2h5Y-e79/view?usp=sharing" target="_blank">View the manual</a>
+                                    </div>
+                                </div>
+                                <div class="container mx-auto text-center">
+                                    <h6>Other questions or concerns?</h6>
+                                    <h6>Please reach out to hassx.communication@gmail.com</h6>
                                 </div>
                             </section>
                         </div>

@@ -2479,6 +2479,21 @@ fieldset:disabled a.btn {
   pointer-events: none;
 }
 
+.btn-hassner {
+  background: #0a60d0;
+  color: #ffffff;
+}
+
+.btn-hassner:hover,
+.btn-hassner:focus,
+.btn-hassner:active,
+.btn-hassner.active,
+.open > .dropdown-toggle.btn-hassner {
+  background: #1c1c1cff;
+  color: #ffffff;
+  box-shadow: none !important;
+}
+
 .btn-primary {
   background: #ffffff;
   color: #000000;
@@ -9698,6 +9713,10 @@ button.bg-dark:focus {
 
 .text-capitalize {
   text-transform: capitalize !important;
+}
+
+.text-large {
+  font-size: large;
 }
 
 .font-weight-light {

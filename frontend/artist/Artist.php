@@ -71,16 +71,16 @@
                     <span data-feather="grid"></span>
                 </button>
 
-                <div class="cursor-pointer user-balance">
-                    <i class="fas fa-user-circle"></i>
-                    <?php
-                    echo $_SESSION['username'].'&nbsp|&nbsp$';
-                    echo round($account_info['balance'], 2);
-                    $unbought = $account_info['Share_Distributed'] - $account_info['Shares'];
-                    echo '<br>Available Shares: ';
-                    echo $unbought;
-                    ?>
-                </div>
+                <a id="account_btn">
+                    <div class="cursor-pointer user-balance">
+                        <i class="fas fa-user-circle"></i>
+                        <?php
+                            echo $_SESSION['username'].'&nbsp|&nbsp$'.round($account_info['balance'], 2);
+                            $unbought = $account_info['Share_Distributed'] - $account_info['Shares'];
+                            echo '<br>Available Shares: '.$unbought;
+                        ?>
+                    </div>
+                </a>
             </nav>
         </div>
     </section>
@@ -107,10 +107,6 @@
 
                     <li class="list-group-item-no-hover" id="li_investors">
                         <input name="display_type" type="submit" id="investors_btn" class="menu-text menu-no-underline" value="Investors">
-                    </li>
-
-                    <li class="list-group-item-no-hover" id="li_account">
-                        <input name="display_type" type="submit" id="account_btn" class="menu-text menu-no-underline" value="Account">
                     </li>
                 </ul>
 
