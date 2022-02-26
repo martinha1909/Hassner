@@ -196,7 +196,7 @@
                                            Report Bugs
                                         </a>
                                         <h3 class="py-4">Instructions Manual</h3>
-                                        <a href="https://docs.google.com/document/d/1FPqHX5WX-5trWqWyFTUp06CtrmDeKV7wrswJSSZ47fE/edit?usp=sharing" target="_blank">View the manual</a>
+                                        <a href="https://drive.google.com/file/d/1fS4nupvHMCs3WP4AmTNfPhLb2h5Y-e79/view?usp=sharing" target="_blank">View the manual</a>
                                         <!-- <img src="../Images/comment.jpg"> -->
                                         <h6 class="py-4">Other questions or concerns?</h6>
                                         <h6 class="py-4">Please reach out to hassx.communication@gmail.com</h6>
