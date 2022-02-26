@@ -15,5 +15,5 @@
 
     $_SESSION['dependencies'] = "FRONTEND";
 
-    header("Location: ../../frontend/listener/ArtistUserShareInfo.php")
+    header("Location: ../../frontend/listener/EthosPage.php")
 ?>
