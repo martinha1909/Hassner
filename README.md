@@ -58,3 +58,7 @@ To access the server as dev (recommend using putty):
 - Click open then a log in window will appear, type bitnami. 
 - Navigate to your browser, then put http://127.0.0.1:8888/phpmyadmin 
 - Contact me for server's credentials after navigating to that link
+
+## Unit test
+Currently `PHPUnit` is used to run the unit tests on this project. `PHPUnit` parameters and test runners are specified in `phpunit.xml`
+To run the unit tests, do `./vendor/bin/phpunit`
