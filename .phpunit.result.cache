@@ -1,0 +1,1 @@
+{"version":1,"defects":{"TransactionTest::testBalanceCorrectAfterInjectionTransaction":5},"times":{"TransactionTest::testTrue":0.005,"TransactionTest::testBalanceCorrectAfterInjectionTransaction":0.011}}

@@ -1,7 +1,10 @@
 <?php
-        include '../../backend/constants/StatusCodes.php';
-        include '../../backend/constants/AccountTypes.php';
-        include '../../backend/constants/GraphOption.php';
+        if($_SESSION['dependencies'] != "TEST")
+        {
+            include '../../backend/constants/StatusCodes.php';
+            include '../../backend/constants/AccountTypes.php';
+            include '../../backend/constants/GraphOption.php';
+        }
         
         //logs in with provided user info and password, then use SQL query to query database 
         //after qurerying return the result
@@ -32,6 +35,7 @@
 
         function searchAccount($conn, $username)
         {
+            echo "Username is: ".$username."\n";
             $sql = "SELECT * FROM account WHERE username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $username);
@@ -1975,7 +1979,7 @@
 
         function updateSellOrderPPS($new_pps, $sell_order_id)
         {
-            $connPDO = connectPDO();
+            $connPDO = connectPDOTest();
             $status = StatusCodes::NONE;
 
             try {
@@ -1988,9 +1992,11 @@
 
                 $connPDO->commit();
                 $status = StatusCodes::Success;
+                echo "sell order id ".$sell_order_id." updated selling price to ".$new_pps;
                 hx_info(HX::SELL_ORDER, "sell order id ".$sell_order_id." updated selling price to ".$new_pps);
             } catch (PDOException $e) {
                 $connPDO->rollBack();
+                echo "Failed: " . $e->getMessage();
                 hx_error(HX::DB, "Failed: " . $e->getMessage());
 
                 $status = StatusCodes::ErrGeneric;
