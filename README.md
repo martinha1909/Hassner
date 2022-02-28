@@ -61,4 +61,5 @@ To access the server as dev (recommend using putty):
 
 ## Unit test
 Currently `PHPUnit` is used to run the unit tests on this project. `PHPUnit` parameters and test runners are specified in `phpunit.xml`
+</br>
 To run the unit tests, do `./vendor/bin/phpunit`
