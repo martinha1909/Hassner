@@ -35,7 +35,6 @@
 
         function searchAccount($conn, $username)
         {
-            echo "Username is: ".$username."\n";
             $sql = "SELECT * FROM account WHERE username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $username);
@@ -1779,7 +1778,15 @@
                 //We want to update the selling price of sell orders that are from injection to the current purchasing price
                 if($buy_mode != ShareInteraction::BUY_FROM_INJECTION)
                 {
-                    $search_conn = connect();
+                    $search_conn = 0;
+                    if($_SESSION['dependencies'] == "TEST")
+                    {
+                        $search_conn = connectTest();
+                    }
+                    else
+                    {
+                        $search_conn = connect();
+                    }
                     $res_from_injection = searchSellOrdersIDFromInjection($search_conn, $artist);
                     while($row = $res_from_injection->fetch_assoc())
                     {
@@ -1812,7 +1819,15 @@
                 $stmt->bindValue(6, $date_purchased);
                 $stmt->execute(array($buyer, $seller, $artist, $amount, $new_pps, $date_purchased));
 
-                $search_conn = connect();
+                $search_conn = 0;
+                if($_SESSION['dependencies'] == "TEST")
+                {
+                    $search_conn = connectTest();
+                }
+                else
+                {
+                    $search_conn = connect();
+                }
                 $res_buyer = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);
                 $res_seller = searchSharesInArtistShareHolders($search_conn, $seller, $artist);
                 //if the buyer has not invested in the artist, add a row
@@ -2126,7 +2141,15 @@
 
         function addToSellHistory($seller_username, $buyer_username, $artist_username, $amount_sold, $price_sold, $date_sold)
         {
-            $connPDO = connectPDO();
+            $connPDO = 0;
+            if($_SESSION['dependencies'] == "TEST")
+            {
+                $connPDO = connectPDOTest();
+            }
+            else
+            {
+                $connPDO = connectPDO();
+            }
             try
             {
                 $connPDO->beginTransaction();
