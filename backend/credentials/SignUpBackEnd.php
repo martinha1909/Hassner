@@ -1,7 +1,10 @@
 <?php
-
+    session_start();
     $_SESSION['dependencies'] = "BACKEND";
-    include '../control/Dependencies.php';  
+    include '../../backend/logging/logger.php';
+    include '../../backend/control/Queries.php';
+    include '../../backend/control/connection.php';
+    include '../../backend/constants/HX.php';
     // include '../mailing/include/MailServiceHelpers.php';
     // include '../mailing/PHPMailer.php';
     // include '../mailing/Exception.php';
