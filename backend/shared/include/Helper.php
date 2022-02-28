@@ -1,14 +1,17 @@
 <?php
-    if($_SESSION['dependencies'] != "TEST")
+    if(isset($_SESSION['dependencies']))
     {
-        include '../../backend/constants/StatusCodes.php';
-        include '../../backend/constants/Currency.php';
-        include '../../backend/constants/LoggingModes.php';
-        include '../../backend/constants/MenuOption.php';
-        include '../../backend/constants/BalanceOption.php';
-        include '../../backend/constants/EthosOption.php';
-        include '../../backend/constants/GraphOption.php';
-        include '../../backend/constants/Timezone.php';
+        if($_SESSION['dependencies'] != "TEST")
+        {
+            include '../../backend/constants/StatusCodes.php';
+            include '../../backend/constants/Currency.php';
+            include '../../backend/constants/LoggingModes.php';
+            include '../../backend/constants/MenuOption.php';
+            include '../../backend/constants/BalanceOption.php';
+            include '../../backend/constants/EthosOption.php';
+            include '../../backend/constants/GraphOption.php';
+            include '../../backend/constants/Timezone.php';
+        }
     }
 
     function hassnerInit()
