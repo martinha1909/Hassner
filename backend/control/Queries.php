@@ -1994,7 +1994,15 @@
 
         function updateSellOrderPPS($new_pps, $sell_order_id)
         {
-            $connPDO = connectPDOTest();
+            $connPDO = 0;
+            if($_SESSION['dependencies'] == "TEST")
+            {
+                $connPDO = connectPDOTest();
+            }
+            else
+            {
+                $connPDO = connectPDO();
+            }
             $status = StatusCodes::NONE;
 
             try {
