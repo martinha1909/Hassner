@@ -52,9 +52,9 @@
                 }
 
                 echo '
-                        <b class="text-black">❖ '.$participating_campaigns[$i]->getOffering().'</b>
-                        <p class="text-black text-bold">⌛ '.$participating_campaigns[$i]->getTimeLeft().'</p>
-                        <b class="text-black">⌖ '.$participating_campaigns[$i]->getMinEthos().'</b>
+                        <b data-toggle="tooltip" title="Offering" class="text-black tooltip-pointer">❖ '.$participating_campaigns[$i]->getOffering().'</b>
+                        <p data-toggle="tooltip" title="Time left" class="text-black tooltip-pointer text-bold">⌛ '.$participating_campaigns[$i]->getTimeLeft().'</p>
+                        <b data-toggle="tooltip" title="Target share amount" class="text-black tooltip-pointer">⌖ '.$participating_campaigns[$i]->getMinEthos().'</b>
                     </div>
                 ';
             }
@@ -131,8 +131,8 @@
                 }
 
                 echo '
-                        <b class="text-black">❖ '.$participated_campaigns[$i]->getOffering().'</b>
-                        <p class="text-black">⌛ '.$participated_campaigns[$i]->getDateExpires().'</p>
+                        <b title="Offering" data-toggle="tooltip" class="text-black tooltip-pointer">❖ '.$participated_campaigns[$i]->getOffering().'</b>
+                        <p title="Date Expired" data-toggle="tooltip" class="text-black tooltip-pointer text-bold">⌛ '.$participated_campaigns[$i]->getDateExpires().'</p>
                 ';
 
                 if(($participated_campaigns[$i]->getType() == CampaignType::RAFFLE && $participated_campaigns[$i]->getWinner() == $username) || $participated_campaigns[$i]->getType() == CampaignType::BENCHMARK)
@@ -234,9 +234,9 @@
             }
 
             echo '
-                    <b class="text-black">❖ '.$near_parti_campaigns[$i]->getOffering().'</b>
-                    <p class="text-black text-bold">⌛ '.$near_parti_campaigns[$i]->getTimeLeft().'</p>
-                    <b class="text-black">⌖ '.$near_parti_campaigns[$i]->getUserOwnedEthos().'/'.$near_parti_campaigns[$i]->getMinEthos().'('.$near_parti_campaigns[$i]->getProgress().'%)</b>
+                    <b title="Offering" data-toggle="tooltip" class="text-black tooltip-pointer">❖ '.$near_parti_campaigns[$i]->getOffering().'</b>
+                    <p title="Time left" data-toggle="tooltip" class="text-black tooltip-pointer text-bold">⌛ '.$near_parti_campaigns[$i]->getTimeLeft().'</p>
+                    <b title="Target share amount" data-toggle="tooltip" class="text-black tooltip-pointer">⌖ '.$near_parti_campaigns[$i]->getUserOwnedEthos().'/'.$near_parti_campaigns[$i]->getMinEthos().'('.$near_parti_campaigns[$i]->getProgress().'%)</b>
                 </div>
             ';
         }
@@ -670,9 +670,9 @@
                                 '.$type.'
                             </b>
                         </h3>
-                        <b class="text-black">❖ '.$current_campaigns[$i]->getOffering().'</b>
-                        <p class="text-black text-bold">⌛ '.dbDateTimeParser($current_campaigns[$i]->getDatePosted()).'</p>
-                        <b class="text-black">⌖ '.$current_campaigns[$i]->getMinEthos().'</b>
+                        <b data-toggle="tooltip" title="Offering" class="tooltip-pointer text-black">❖ '.$current_campaigns[$i]->getOffering().'</b>
+                        <p data-toggle="tooltip" title="Time left" class="tooltip-pointer text-black text-bold">⌛ '.dbDateTimeParser($current_campaigns[$i]->getDatePosted()).'</p>
+                        <b data-toggle="tooltip" title="Target share amount" class="tooltip-pointer text-black">⌖ '.$current_campaigns[$i]->getMinEthos().'</b>
                     </div>
                 ';
             }
