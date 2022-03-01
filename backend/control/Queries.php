@@ -1380,7 +1380,6 @@
             $state= "";
             $zip = "";
             $card_number="";
-            $balance = 0;
             $rate = 0;
             $num_of_shares = 0;
             $status = 0;
@@ -1390,9 +1389,15 @@
             $market_cap = 0;
             $share_repurchase = 0;
             if($type == AccountType::Artist)
+            {
                 $price_per_share = 1;
+                $balance = 0;
+            }
             else
+            {
                 $price_per_share = 0;
+                $balance = 100;
+            }
             
             try 
             {
