@@ -51,9 +51,10 @@ include '../../backend/shared/include/PersonalPageHelpers.php';
           if(isTestingPhase(null, null))
           {
             //Brings to a page that allows user to edit their email address
-            echo '
-                  <a href="../../backend/shared/EditEmailBackend.php" id="icon-btn">&nbsp<i class="fa fa-pen"></i></a>
-            ';
+            //Uncomment when testing phase ends
+            // echo '
+            //       <a href="../../backend/shared/EditEmailBackend.php" id="icon-btn">&nbsp<i class="fa fa-pen"></i></a>
+            // ';
             //If they click on the edit button, prompt a textfield that allows user to enter new email and save it
             if ($_SESSION['edit'] == 2) 
             {
