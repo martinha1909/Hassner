@@ -243,7 +243,9 @@
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>window.jQuery || document.write('<script src="../js/lib/jquery-3.6.0.js"><\/script>');</script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <script>window.jQuery.ui || document.write('<script src="../js/lib/jquery-ui-1.13.0.js"><\/script>');</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
