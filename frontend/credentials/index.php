@@ -1,5 +1,6 @@
 <?php
 session_start();
+$_SESSION['dependencies'] = "FRONTEND";
 include '../../backend/shared/include/Helper.php';
 include '../../backend/shared/include/TimeUtil.php';
 include '../../backend/constants/LoggingModes.php';
