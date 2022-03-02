@@ -789,8 +789,8 @@ function refreshBuyOrderTable()
         $ret = 0;
         $conn = connect();
         $all_pps_in_a_day = array();
-        $db_current_date_time = date("Y-m-d H:i:s");
-        $days_ago = date("Y-m-d H:i:s", strtotime("-1 day"));
+        $db_current_date_time = date("Y-m-d 23:59:59", strtotime("-1 day"));
+        $days_ago = date("Y-m-d 00:00:00", strtotime("-1 day"));
 
         $res = searchArtistCurrentPricePerShare($conn, $artist_username);
         $current_pps = $res->fetch_assoc();
