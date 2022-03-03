@@ -562,11 +562,11 @@ function refreshBuyOrderTable()
     * @param[in]  	username          user that buy history is gathering data for
     *
     */
-    function buyHistoryInit(&$sellers, &$prices, &$quantities, &$date_purchase, $username)
+    function buyHistoryInit(&$sellers, &$prices, &$quantities, &$date_purchase, $username, $artist_username)
     {
         $conn = connect();
 
-        $res = searchUsersInvestment($conn, $username);
+        $res = searchSpecificInvestment($conn, $username, $artist_username);
 
         while($row = $res->fetch_assoc())
         {

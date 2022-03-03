@@ -585,7 +585,7 @@
         $quantities = array();
         $date_purchase = array();
 
-        buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $_SESSION['username']);
+        buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $_SESSION['username'], $_SESSION['username']);
 
         for ($i = 0; $i < sizeof($sellers); $i++) {
             echo '
@@ -683,7 +683,7 @@
         }
     }
 
-    function printUserBuyHistoryTable($user_username): string
+    function printUserBuyHistoryTable($user_username, $artist_username): string
     {
         $ret = "";
 
@@ -692,7 +692,7 @@
         $quantities = array();
         $date_purchase = array();
 
-        buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $user_username);
+        buyHistoryInit($sellers, $prices, $quantities, $date_purchase, $user_username, $artist_username);
         $ret .= '
             <table class="table">
                 <thead>
