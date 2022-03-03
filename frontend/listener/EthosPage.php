@@ -309,7 +309,7 @@
                                 </div>
 
                                 <div class="div-hidden" id="user_buy_history_content">
-                                    '.printUserBuyHistoryTable($_SESSION['username']).'
+                                    '.printUserBuyHistoryTable($_SESSION['username'], $_SESSION['selected_artist']).'
                                 </div>
 
                                 <div class="div-hidden" id="user_trade_history_content">
