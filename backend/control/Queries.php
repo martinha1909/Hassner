@@ -1,7 +1,10 @@
 <?php
-        include '../../backend/constants/StatusCodes.php';
-        include '../../backend/constants/AccountTypes.php';
-        include '../../backend/constants/GraphOption.php';
+        if($_SESSION['dependencies'] != "TEST")
+        {
+            include '../../backend/constants/StatusCodes.php';
+            include '../../backend/constants/AccountTypes.php';
+            include '../../backend/constants/GraphOption.php';
+        }
         
         //logs in with provided user info and password, then use SQL query to query database 
         //after qurerying return the result
@@ -1780,7 +1783,15 @@
                 //We want to update the selling price of sell orders that are from injection to the current purchasing price
                 if($buy_mode != ShareInteraction::BUY_FROM_INJECTION)
                 {
-                    $search_conn = connect();
+                    $search_conn = 0;
+                    if($_SESSION['dependencies'] == "TEST")
+                    {
+                        $search_conn = connectTest();
+                    }
+                    else
+                    {
+                        $search_conn = connect();
+                    }
                     $res_from_injection = searchSellOrdersIDFromInjection($search_conn, $artist);
                     while($row = $res_from_injection->fetch_assoc())
                     {
@@ -1813,7 +1824,15 @@
                 $stmt->bindValue(6, $date_purchased);
                 $stmt->execute(array($buyer, $seller, $artist, $amount, $new_pps, $date_purchased));
 
-                $search_conn = connect();
+                $search_conn = 0;
+                if($_SESSION['dependencies'] == "TEST")
+                {
+                    $search_conn = connectTest();
+                }
+                else
+                {
+                    $search_conn = connect();
+                }
                 $res_buyer = searchSharesInArtistShareHolders($search_conn, $buyer, $artist);
                 $res_seller = searchSharesInArtistShareHolders($search_conn, $seller, $artist);
                 //if the buyer has not invested in the artist, add a row
@@ -1980,7 +1999,15 @@
 
         function updateSellOrderPPS($new_pps, $sell_order_id)
         {
-            $connPDO = connectPDO();
+            $connPDO = 0;
+            if($_SESSION['dependencies'] == "TEST")
+            {
+                $connPDO = connectPDOTest();
+            }
+            else
+            {
+                $connPDO = connectPDO();
+            }
             $status = StatusCodes::NONE;
 
             try {
@@ -1993,9 +2020,11 @@
 
                 $connPDO->commit();
                 $status = StatusCodes::Success;
+                echo "sell order id ".$sell_order_id." updated selling price to ".$new_pps;
                 hx_info(HX::SELL_ORDER, "sell order id ".$sell_order_id." updated selling price to ".$new_pps);
             } catch (PDOException $e) {
                 $connPDO->rollBack();
+                echo "Failed: " . $e->getMessage();
                 hx_error(HX::DB, "Failed: " . $e->getMessage());
 
                 $status = StatusCodes::ErrGeneric;
@@ -2125,7 +2154,15 @@
 
         function addToSellHistory($seller_username, $buyer_username, $artist_username, $amount_sold, $price_sold, $date_sold)
         {
-            $connPDO = connectPDO();
+            $connPDO = 0;
+            if($_SESSION['dependencies'] == "TEST")
+            {
+                $connPDO = connectPDOTest();
+            }
+            else
+            {
+                $connPDO = connectPDO();
+            }
             try
             {
                 $connPDO->beginTransaction();
