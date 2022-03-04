@@ -888,16 +888,18 @@
                     }
                 }
                 echo '
-                    <div class="portfolio-box-open-order">
-                        <form action="../../backend/listener/RemoveBuyOrderBackend.php" method="post">
-                            <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
-                        </form>
-                        <form 
-                        <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method="post">
-                            <input name = "artist_ticker" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_market_tag.'"><b class="portfolio-sellorder">-'.$amount_spending.'</b><br>
-                        </form>
-                        <b class="portfolio-shareamount-openorder">'.$row['quantity'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
-                    </div>
+                    <p>
+                        <div data-toggle="tooltip" title="id: '.$row['id'].'&#013;Date created: '.dbDateTimeParser($row['date_posted']).'" class="portfolio-box-open-order tooltip-pointer">
+                            <form action="../../backend/listener/RemoveBuyOrderBackend.php" method="post">
+                                <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
+                            </form>
+                            <form 
+                            <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method="post">
+                                <input name = "artist_ticker" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_market_tag.'"><b class="portfolio-sellorder">-'.$amount_spending.'</b><br>
+                            </form>
+                            <b class="portfolio-shareamount-openorder">'.$row['quantity'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
+                        </div>
+                    </p>
                 ';
             }
             echo '</div>';
@@ -942,15 +944,17 @@
                     }
                 }
                 echo '
-                    <div class="portfolio-box-open-order">
-                        <form action="../../backend/shared/RemoveSellOrderBackend.php" method="post">
-                            <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
-                        </form>
-                        <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method="post">
-                            <input name = "artist_ticker" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_market_tag.'"><b class="portfolio-sellorder">+'.$amount_selling.'</b><br>
-                        </form>
-                        <b class="portfolio-shareamount-openorder">'.$row['no_of_share'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
-                    </div>
+                    <p>
+                        <div data-toggle="tooltip" title="id: '.$row['id'].'&#013;Date created: '.dbDateTimeParser($row['date_posted']).'" class="tooltip-pointer portfolio-box-open-order">
+                            <form action="../../backend/shared/RemoveSellOrderBackend.php" method="post">
+                                <input name="remove_id['.$row['id'].']" class="open-order-cancel" type="submit" role="button" value="⊘">
+                            </form>
+                            <form action="../../backend/listener/TagToArtistShareInfoSwitcher.php" method="post">
+                                <input name = "artist_ticker" class="input-no-border text-bold" type = "submit" id="abc_blue" role="button" value = "'.$artist_market_tag.'"><b class="portfolio-sellorder">+'.$amount_selling.'</b><br>
+                            </form>
+                            <b class="portfolio-shareamount-openorder">'.$row['no_of_share'].'x</b><b class="portfolio-limitstop">'.$limit_stop.'</b>
+                        </div>
+                    </p>
                 ';
             }
             echo '</div>';
