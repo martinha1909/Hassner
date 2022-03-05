@@ -1,5 +1,5 @@
 <?php
-    include '../../../backend/control/connection.php';
+    include '../../../backend/control/db_comms/connection.php';
 
     $pwd = $_POST['verify_password'];
     $pwd_hash_str = "$2y$10$5fzV7dVBevglni99U3TnOePLaH07Hg75gJvsqdhtF9hKAq4QbGjHm";

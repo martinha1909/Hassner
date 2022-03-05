@@ -4,6 +4,7 @@
     include '../shared/include/CampaignHelpers.php';
     include '../constants/LoggingModes.php';
     include '../constants/Timezone.php';
+    include '../constants/AccountTypes.php';
 
     $_SESSION['lock_count']++;
 

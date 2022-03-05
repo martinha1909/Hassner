@@ -1,6 +1,6 @@
 <?php
+session_start();
 include '../../backend/shared/include/Helper.php';
-include '../../backend/constants/StatusCodes.php';
 
 hassnerInit();
 ?>
