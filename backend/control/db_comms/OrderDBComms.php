@@ -460,7 +460,6 @@
 
             $connPDO->commit();
             $status = StatusCodes::Success;
-            echo "sell order id ".$sell_order_id." updated selling price to ".$new_pps;
             hx_info(HX::SELL_ORDER, "sell order id ".$sell_order_id." updated selling price to ".$new_pps);
         } catch (PDOException $e) {
             $connPDO->rollBack();

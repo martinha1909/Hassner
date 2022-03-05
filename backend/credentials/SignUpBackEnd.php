@@ -1,11 +1,9 @@
 <?php
     session_start();
     $_SESSION['dependencies'] = "BACKEND";
-    include '../../backend/logging/logger.php';
-    include '../../backend/control/Queries.php';
-    include '../../backend/control/db_comms/CredDBComms.php';
-    include '../../backend/control/db_comms/connection.php';
-    include '../../backend/constants/HX.php';
+    include '../logging/logger.php';
+    include '../control/db_comms/DBComms.php';
+    include '../constants/HX.php';
     // include '../mailing/include/MailServiceHelpers.php';
     // include '../mailing/PHPMailer.php';
     // include '../mailing/Exception.php';
