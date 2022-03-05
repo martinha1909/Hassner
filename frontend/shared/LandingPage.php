@@ -2,6 +2,7 @@
     $_SESSION['dependencies'] = "FRONTEND";
 
     include '../../backend/control/Dependencies.php';
+    include '../../backend/constants/AccountTypes.php';
 
     if($_SESSION['account_type'] == AccountType::User)
     {

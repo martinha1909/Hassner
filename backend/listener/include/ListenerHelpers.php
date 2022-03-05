@@ -2,7 +2,7 @@
     function queryInvestment($listener_username)
     {
         $conn = connect();
-        $result = searchUsersInvestment($conn, $listener_username);
+        $result = searchUserBuyHistory($conn, $listener_username);
          
         return $result;
     }
@@ -19,15 +19,6 @@
         return $ret['Share_Distributed'];
     }
 
-    //gets the total amount of share that the user holds corresponds to the $artist_username
-    function getMaxShareQuantity($user_username, $artist_username)
-    {
-        $conn = connect();
-        $result = searchSpecificInvestment($conn, $user_username, $artist_username);
-        $amount = $result->fetch_assoc();
-         
-        return $amount['no_of_share_bought'];
-    }
     function query_account($account_type)
     {
         $conn = connect();

@@ -6,8 +6,7 @@ define("PARENT_INCLUDE_DIR", dirname(dirname(__FILE__)));
 define("CURRENT_INCLUDE_DIR", dirname(__FILE__));
 define("CURRENT_DATE", date('Y-m-d H:i:s'));
 
-include PARENT_INCLUDE_DIR."\control\connection.php";
-include PARENT_INCLUDE_DIR."\control\Queries.php";
+include PARENT_INCLUDE_DIR."\control\db_comms\DBComms.php";
 // include PARENT_INCLUDE_DIR."\shared\include\Helper.php";
 include PARENT_INCLUDE_DIR."\constants\StatusCodes.php";
 include PARENT_INCLUDE_DIR."\constants\AccountTypes.php";

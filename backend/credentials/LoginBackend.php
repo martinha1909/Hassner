@@ -2,8 +2,7 @@
     session_start();
     $_SESSION['dependencies'] = "BACKEND";
     include '../shared/include/Helper.php';
-    include '../control/Queries.php';
-    include '../control/connection.php';
+    include '../control/db_comms/DBComms.php';
     include '../logging/logger.php';
     include '../constants/AccountTypes.php';
     include '../constants/StatusCodes.php';

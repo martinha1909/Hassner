@@ -566,7 +566,7 @@ function refreshBuyOrderTable()
     {
         $conn = connect();
 
-        $res = searchSpecificInvestment($conn, $username, $artist_username);
+        $res = searchBuyHistoryByUserAndArtist($conn, $username, $artist_username);
 
         while($row = $res->fetch_assoc())
         {

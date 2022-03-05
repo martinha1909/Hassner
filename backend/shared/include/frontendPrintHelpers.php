@@ -751,7 +751,7 @@
                 $artist_username = $row['artist_username'];
                 $artist_market_price = getArtistPricePerShare($artist_username);
 
-                $res_buy_history = searchSpecificInvestment($conn, $user_username, $artist_username);
+                $res_buy_history = searchBuyHistoryByUserAndArtist($conn, $user_username, $artist_username);
                 while($row_history = $res_buy_history->fetch_assoc())
                 {
                     $buy_history = new BuyHistory();

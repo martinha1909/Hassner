@@ -1,6 +1,6 @@
 <?php
     include 'include/DatabaseHelpers.php';
-    include '../../backend/control/connection.php';
+    include '../../backend/control/db_comms/connection.php';
     include '../../backend/constants/StatusCodes.php';
 
     $conn = connect();

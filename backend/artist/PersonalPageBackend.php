@@ -1,6 +1,7 @@
 <?php
     $_SESSION['dependencies'] = "BACKEND";
     include '../control/Dependencies.php';
+    include '../control/db_comms/CredDBComms.php';
 
     $_SESSION['logging_mode'] = LogModes::PERSONAL;
 

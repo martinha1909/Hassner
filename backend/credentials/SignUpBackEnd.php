@@ -3,7 +3,8 @@
     $_SESSION['dependencies'] = "BACKEND";
     include '../../backend/logging/logger.php';
     include '../../backend/control/Queries.php';
-    include '../../backend/control/connection.php';
+    include '../../backend/control/db_comms/CredDBComms.php';
+    include '../../backend/control/db_comms/connection.php';
     include '../../backend/constants/HX.php';
     // include '../mailing/include/MailServiceHelpers.php';
     // include '../mailing/PHPMailer.php';
