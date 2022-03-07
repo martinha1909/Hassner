@@ -572,6 +572,17 @@
             return $result;
         }
 
+        function getArtistShareHoldersInfoNonBuyBack($conn, $artist_username)
+        {
+            $sql = "SELECT * FROM artist_shareholders WHERE artist_username = ? AND user_username != ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $artist_username, $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function getInjectionHistory($conn, $artist_username)
         {
             $sql = "SELECT amount, comment, date_injected FROM inject_history WHERE artist_username = ?";
