@@ -200,10 +200,10 @@
                     if(userIsParticipatingInCampaign($user_username, $campaign_info['artist_username'], $campaign_info['id']))
                     {
                         $chance = calculateCampaignWinningChance($user_username, 
-                                                                    $campaign_info['artist_username'],
-                                                                    $campaign_info['id'],
-                                                                    $campaign_info['minimum_ethos'],
-                                                                    $total_shares_bought);
+                                                                 $campaign_info['artist_username'],
+                                                                 $campaign_info['id'],
+                                                                 $campaign_info['minimum_ethos'],
+                                                                 $total_shares_bought);
                     }
                 }
 

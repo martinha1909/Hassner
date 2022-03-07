@@ -415,9 +415,7 @@
     {
         $ret = new ParticipantList();
 
-        $total_share_of_each_participant = 0;
-
-        $res = getArtistShareHoldersInfo($conn, $artist_username);
+        $res = getArtistShareHoldersInfoNonBuyBack($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
             if($ret->isListEmpty())
@@ -524,7 +522,7 @@
             $res = searchArtistTotalSharesBought($conn, $artist_username);
             while($row = $res->fetch_assoc())
             {
-                if($row['shares_owned'] >= $min_ethos && $row['user_username'] != $user_username)
+                if($row['shares_owned'] >= $min_ethos && $row['user_username'] != $user_username && $row['user_username'] != $artist_username)
                 {
                     array_push($shareholder_values, $row['shares_owned']);
                 }
