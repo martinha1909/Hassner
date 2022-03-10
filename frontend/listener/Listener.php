@@ -87,7 +87,7 @@
                         checkRaffleRoll();
                     ?>
                     <li class="selected-no-hover list-group-item-no-hover" id="li_portfolio">
-                        <input name="display_type" type="submit" id="portfolio_btn" class="menu-text menu-style" value="❖ Portfolio">
+                        <input name="display_type" type="submit" id="portfolio_btn" class="menu-text menu-style" value="🚀 Portfolio">
                     </li>
 
                     <li class="list-group-item-no-hover" id="li_campaign">
@@ -198,10 +198,19 @@
                                         <h3 class="my-5">Instructions Manual</h3>
                                         <a href="https://drive.google.com/file/d/1fS4nupvHMCs3WP4AmTNfPhLb2h5Y-e79/view?usp=sharing" target="_blank">View the manual</a>
                                     </div>
+                                <div class="white-box-faq mx-auto my-5">
+                                    <h3 class="text-center">FAQ</h3>
+                                    <b>⊳ Why is my (buy/sell) order not executing?</b>
+                                    <br>If you have created a buy or sell order that is not executing, it is likely that there is not any demand at that particular price. To complete the buy or sell order you will have to either change the price or wait it out.</br></br>                     
+                                    <b>⊳ What is the difference between benchmark ♦ and raffle ♣ campaigns?</b>
+                                    <br>♦ Benchmark campaigns require the user to reach the target share amount. Once fulfilled it gives the participant a guaranteed chance to receive the prize.</br>♣ Raffle campaigns give a % chance to receive the prize once you have reached the target share amount. The more shares you own in raffle campaign the higher the likelihood you winning.</br></br> 
+                                    <b>⊳ What happens after a campaign ends?</b>
+                                    <br>When a campaign has ended the winner(s) will be decided. If you have won you will contacted through email to receive the prize.</br></br> 
+                                    <div class="text-center text-white my-2">
+                                        <b>Other questions or concerns?</b>
+                                        <br>Please reach out to hassx.communication@gmail.com</br>
+                                    </div>
                                 </div>
-                                <div class="container mx-auto text-center">
-                                    <h6>Other questions or concerns?</h6>
-                                    <h6>Please reach out to hassx.communication@gmail.com</h6>
                                 </div>
                             </section>
                         </div>

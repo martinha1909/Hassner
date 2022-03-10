@@ -68,7 +68,7 @@ function selectPortfolio(button)
     
     button.removeClass("menu-text menu-no-underline");
     button.addClass("menu-text menu-style");
-    button.val("❖ Portfolio");
+    button.val("🚀 Portfolio");
     $("#li_portfolio").addClass("selected-no-hover");
 
     $("#portfolio_content").show();
@@ -84,7 +84,7 @@ function selectCampaign(button)
 
     button.removeClass("menu-text menu-no-underline");
     button.addClass("menu-text menu-style");
-    button.val("◔ Campaign");
+    button.val("🏆 Campaign");
     $("#li_campaign").addClass("selected-no-hover");
 
     $("#campaign_content").show();
@@ -100,7 +100,7 @@ function selectBalance(button)
 
     button.removeClass("menu-text menu-no-underline");
     button.addClass("menu-text menu-style");
-    button.val("※ Balance");
+    button.val("💲 Balance");
     $("#li_balance").addClass("selected-no-hover");
 
     $("#balance_content").show();
@@ -116,7 +116,7 @@ function selectArtists(button)
 
     button.removeClass("menu-text menu-no-underline");
     button.addClass("menu-text menu-style");
-    button.val("◈ Artists");
+    button.val("🎵 Artists");
     $("#li_artists").addClass("selected-no-hover");
 
     $("#artists_content").show();
@@ -148,7 +148,7 @@ function selectHelp(button)
 
     button.removeClass("menu-text menu-no-underline");
     button.addClass("menu-text menu-style");
-    button.val("Help");
+    button.val("ℹ️ Help");
     $("#li_help").addClass("selected-no-hover");
 
     $("#help_content").show();
