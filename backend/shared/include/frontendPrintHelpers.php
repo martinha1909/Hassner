@@ -28,7 +28,7 @@
                         <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                             <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
                                 <b data-toggle="tooltip" 
-                                    title="id: '.$participating_campaigns[$i]->getID().'&#013;type: benchmark&#013;participants: '.$participating_campaigns[$i]->getEligibleParticipants().'" 
+                                    title="id: '.$participating_campaigns[$i]->getID().'&#013;type: benchmark&#013;" 
                                     class="text-dark float-right tooltip-pointer">
                                     ♦
                                 </b>
@@ -42,7 +42,7 @@
                         <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                             <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
                                 <b data-toggle="tooltip" 
-                                    title="id: '.$participating_campaigns[$i]->getID().'&#013;type: raffle&#013;participants: '.$participating_campaigns[$i]->getEligibleParticipants().'&#013;chance: '.$participating_campaigns[$i]->getWinningChance().'%" 
+                                    title="id: '.$participating_campaigns[$i]->getID().'&#013;type: raffle&#013;chance: '.$participating_campaigns[$i]->getWinningChance().'%" 
                                     class="text-dark float-right tooltip-pointer">
                                     ♣
                                 </b>
@@ -210,7 +210,7 @@
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                         <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
                             <b data-toggle="tooltip" 
-                                title="id: '.$near_parti_campaigns[$i]->getID().'&#013;type: benchmark&#013;participants: '.$near_parti_campaigns[$i]->getEligibleParticipants().'" 
+                                title="id: '.$near_parti_campaigns[$i]->getID().'&#013;type: benchmark&#013;" 
                                 class="text-dark float-right tooltip-pointer">
                                 ♦
                             </b>
@@ -224,7 +224,7 @@
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                         <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
                             <b data-toggle="tooltip" 
-                                title="id: '.$near_parti_campaigns[$i]->getID().'&#013;type: raffle&#013;participants: '.$near_parti_campaigns[$i]->getEligibleParticipants().'&#013;chance: 0%" 
+                                title="id: '.$near_parti_campaigns[$i]->getID().'&#013;type: raffle&#013;chance: 0%" 
                                 class="text-dark float-right tooltip-pointer">
                                 ♣
                             </b>
