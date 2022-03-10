@@ -880,4 +880,22 @@ function refreshBuyOrderTable()
         closeCon($conn);
         return $ret;
     }
+
+    function getUserBuyingSharesByArtist($user_username, $artist_username): int
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $res = searchAllUserBuyOrdersByArtist($conn, $user_username, $artist_username);
+        if($res->num_rows > 0)
+        {
+            while($row = $res->fetch_assoc())
+            {
+                $ret += $row['quantity'];
+            }
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
 ?>

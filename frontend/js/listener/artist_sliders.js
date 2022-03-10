@@ -772,6 +772,10 @@ $( function() {
               {
                 $("#price_outdated").text("Price has changed, please refresh the page and try again");
               }
+              else if(data === "NUM_OF_SHARES_INVALID")
+              {
+                $("#price_outdated").text("Orders with quantity of 0 not allowed");
+              }
               else if (data === "BALANCE_OUTDATED")
               {
                 $("#price_outdated").text("Your balance has changed, please refresh and try again");
@@ -779,6 +783,10 @@ $( function() {
               else if(data === "BUYABLE_OUTDATED")
               {
                 $("#price_outdated").text("Data has changed, please refresh and try again");
+              }
+              else if(data === "CANNOT_CREATE_BUY")
+              {
+                $("#price_outdated").text("Not enough balance due to other open buy orders");
               }
               else if(data === "SUCCESS")
               {
@@ -818,6 +826,10 @@ $( function() {
             if(data === "Price Outdated")
             {
               $("#price_outdated").text("Price has changed, please refresh the page and try again");
+            }
+            else if(data === "NUM_OF_SHARES_INVALID")
+            {
+              $("#price_outdated").text("Orders with quantity of 0 not allowed");
             }
             else if(data == "SELLABLE_OUTDATED")
             {

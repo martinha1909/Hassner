@@ -30,6 +30,10 @@
     {
         $json_response = StatusCodes::PRICE_OUTDATED;
     }
+    else if($quantity <= 0)
+    {
+        $json_response = StatusCodes::NUM_OF_SHARES_INVALID;
+    }
     else
     {
         //only allow to handle request for the first request
@@ -38,14 +42,21 @@
             if($user_event == ShareInteraction::BUY)
             {
                 $buyer_balance = getUserBalance($_SESSION['username']);
+                $num_shares_buying = getUserBuyingSharesByArtist($_SESSION['username'], $_SESSION['selected_artist']);
                 $connPDO = connectPDO();
 
                 if($chosen_min == $min_lim && $chosen_max == $max_lim)
                 {
                     $purchase_price = $latest_market_price;
+                    //Need to consider the current amount of shares the user has already requesting with other buy orders
+                    $max_num_can_buy = $quantity - $num_shares_buying;
                     if($buyer_balance < ($purchase_price * $quantity))
                     {
                         $json_response = StatusCodes::BALANCE_OUTDATED;
+                    }
+                    else if($max_num_can_buy <= 0)
+                    {
+                        $json_response = StatusCodes::CANNOT_CREATE_BUY;
                     }
                     else
                     {
@@ -529,5 +540,5 @@
         }
     }
 
-    print json_encode($json_response);
+    // print json_encode($json_response);
 ?>
