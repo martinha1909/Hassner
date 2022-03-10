@@ -828,12 +828,16 @@ function refreshBuyOrderTable()
     {
         $ret = array();
         $conn = connect();
+        $current_date = dayAndTimeSplitter(getCurrentDate("America/Edmonton"));
 
         $res = searchArtistCampaigns($conn, $artist_username);
         while($row = $res->fetch_assoc())
         {
             if($row['is_active'] != 0)
             {
+                $date_expires = explode(" ", $row['date_expires'])[0];
+                $time_expires = substr(explode(" ", $row['date_expires'])[1], 0, 5);
+
                 $campaign = new Campaign();
                 $campaign->setID($row['id']);
                 $campaign->setEligibleParticipants($row['eligible_participants']);
@@ -841,6 +845,10 @@ function refreshBuyOrderTable()
                 $campaign->setMinEthos($row['minimum_ethos']);
                 $campaign->setType($row['type']);
                 $campaign->setDatePosted($row['date_posted']);
+                $campaign->setTimeLeft(calculateTimeLeft($current_date[0], 
+                                                         $current_date[1], 
+                                                         $date_expires, 
+                                                         $time_expires));
 
                 array_push($ret, $campaign);
             }

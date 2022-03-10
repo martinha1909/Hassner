@@ -42,7 +42,7 @@
                         <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
                             <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
                                 <b data-toggle="tooltip" 
-                                    title="id: '.$participating_campaigns[$i]->getID().'&#013;type: raffle&#013;participants: '.$participating_campaigns[$i]->getEligibleParticipants().'&#013;chance: '.$participating_campaigns[$i]->getWinningChance().'%" 
+                                    title="id: '.$participating_campaigns[$i]->getID().'&#013;type: raffle&#013;chance: '.$participating_campaigns[$i]->getWinningChance().'%" 
                                     class="text-dark float-right tooltip-pointer">
                                     ♣
                                 </b>
@@ -54,7 +54,8 @@
                 echo '
                         <b data-toggle="tooltip" title="Offering" class="text-black tooltip-pointer">❖ '.$participating_campaigns[$i]->getOffering().'</b>
                         <p data-toggle="tooltip" title="Time left" class="text-black tooltip-pointer text-bold">⌛ '.$participating_campaigns[$i]->getTimeLeft().'</p>
-                        <b data-toggle="tooltip" title="Target share amount" class="text-black tooltip-pointer">⌖ '.$participating_campaigns[$i]->getMinEthos().'</b>
+                        <b data-toggle="tooltip" title="Target share amount" class="text-black tooltip-pointer">⌖ '.$participating_campaigns[$i]->getMinEthos().' | </b>
+                        <b data-toggle="tooltip" title="Participants" class="text-black tooltip-pointer">⁂ '.$participating_campaigns[$i]->getEligibleParticipants().'</b>
                     </div>
                 ';
             }
@@ -236,7 +237,8 @@
             echo '
                     <b title="Offering" data-toggle="tooltip" class="text-black tooltip-pointer">❖ '.$near_parti_campaigns[$i]->getOffering().'</b>
                     <p title="Time left" data-toggle="tooltip" class="text-black tooltip-pointer text-bold">⌛ '.$near_parti_campaigns[$i]->getTimeLeft().'</p>
-                    <b title="Target share amount" data-toggle="tooltip" class="text-black tooltip-pointer">⌖ '.$near_parti_campaigns[$i]->getUserOwnedEthos().'/'.$near_parti_campaigns[$i]->getMinEthos().'('.$near_parti_campaigns[$i]->getProgress().'%)</b>
+                    <b title="Target share amount" data-toggle="tooltip" class="text-black tooltip-pointer">⌖ '.$near_parti_campaigns[$i]->getUserOwnedEthos().'/'.$near_parti_campaigns[$i]->getMinEthos().' ('.$near_parti_campaigns[$i]->getProgress().'%) | </b>
+                    <b data-toggle="tooltip" title="Participants" class="text-black tooltip-pointer">⁂ '.$near_parti_campaigns[$i]->getEligibleParticipants().'</b>
                 </div>
             ';
         }
@@ -671,8 +673,9 @@
                             </b>
                         </h3>
                         <b data-toggle="tooltip" title="Offering" class="tooltip-pointer text-black">❖ '.$current_campaigns[$i]->getOffering().'</b>
-                        <p data-toggle="tooltip" title="Time left" class="tooltip-pointer text-black text-bold">⌛ '.dbDateTimeParser($current_campaigns[$i]->getDatePosted()).'</p>
-                        <b data-toggle="tooltip" title="Target share amount" class="tooltip-pointer text-black">⌖ '.$current_campaigns[$i]->getMinEthos().'</b>
+                        <p data-toggle="tooltip" title="Time left" class="tooltip-pointer text-black text-bold">⌛ '.$current_campaigns[$i]->getTimeLeft().'</p>
+                        <b data-toggle="tooltip" title="Target share amount" class="tooltip-pointer text-black">⌖ '.$current_campaigns[$i]->getMinEthos().' | </b>
+                        <b data-toggle="tooltip" title="Participants" class="text-black tooltip-pointer">⁂ '.$current_campaigns[$i]->getEligibleParticipants().'</b>
                     </div>
                 ';
             }
