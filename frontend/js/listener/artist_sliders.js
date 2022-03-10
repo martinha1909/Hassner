@@ -634,7 +634,7 @@ $( function() {
       slide: function( event, ui ) {
         var min_limit_top = $("#buy_limit").slider("values", 0);
         var max_limit_top = $("#buy_limit").slider("values", 1);
-        if((min_limit_top == min_limit && max_limit_top == max_limit) || (min_limit_top > min_limit && max_limit_top < max_limit))
+        if(min_limit_top == min_limit && max_limit_top == max_limit)
         {
           $("#buy_num_shares").val(ui.value);
           $("#buy_cost").val("$" + ui.value*$("#pps").text());
@@ -645,6 +645,11 @@ $( function() {
           $("#buy_cost").val("$" + ui.value*min_limit_top);
         }
         else if(min_limit_top == min_limit && max_limit_top < max_limit)
+        {
+          $("#buy_num_shares").val(ui.value);
+          $("#buy_cost").val("$" + ui.value*max_limit_top);
+        }
+        else if(min_limit_top > min_limit && max_limit_top < max_limit)
         {
           $("#buy_num_shares").val(ui.value);
           $("#buy_cost").val("$" + ui.value*max_limit_top);
@@ -713,7 +718,7 @@ $( function() {
       slide: function( event, ui ) {
         var min_limit_top = $("#sell_limit").slider("values", 0);
         var max_limit_top = $("#sell_limit").slider("values", 1);
-        if((min_limit_top == min_limit && max_limit_top == max_limit) || (min_limit_top > min_limit && max_limit_top < max_limit))
+        if(min_limit_top == min_limit && max_limit_top == max_limit)
         {
           $("#sell_num_shares").val(ui.value);
           $("#sell_cost").val("$" + ui.value*$("#pps").text());
@@ -724,6 +729,11 @@ $( function() {
           $("#sell_cost").val("$" + ui.value*min_limit_top);
         }
         else if(min_limit_top == min_limit && max_limit_top < max_limit)
+        {
+          $("#sell_num_shares").val(ui.value);
+          $("#sell_cost").val("$" + ui.value*max_limit_top);
+        }
+        else if(min_limit_top > min_limit && max_limit_top < max_limit)
         {
           $("#sell_num_shares").val(ui.value);
           $("#sell_cost").val("$" + ui.value*max_limit_top);
