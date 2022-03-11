@@ -45,6 +45,12 @@ function recalcSliderLimits(new_chosen_min, new_chosen_max)
         $("#not_available_error_buy").show();
         $("#buy_order").hide();
       }
+      else if(data === -1)
+      {
+        $("#not_available_error_buy").text("Not enough balance");
+        $("#not_available_error_buy").show();
+        $("#buy_order").hide();
+      }
       else
       {
         $("#buy_order").show();

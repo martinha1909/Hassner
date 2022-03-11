@@ -42,18 +42,25 @@
         //Still allow user to create buy order in this case since the artist could release more shares
         if($chosen_min >= $artist_pps)
         {
-            $max_amount_can_purchase = $user_balance/$chosen_min;
-
-            //If the maximum amount that user can buy is greater than the amount of available shares, the slider
-            //will be capped at the number of available shares
-            if($max_amount_can_purchase >= $num_of_available_shares)
+            if($chosen_min > $user_balance)
             {
-                $json_data = $num_of_available_shares;
+                $json_data = -1;
             }
-            //otherwise the slider will be capped at the masimum number of shares the user can afford
             else
             {
-                $json_data = $max_amount_can_purchase;
+                $max_amount_can_purchase = $user_balance/$chosen_min;
+
+                //If the maximum amount that user can buy is greater than the amount of available shares, the slider
+                //will be capped at the number of available shares
+                if($max_amount_can_purchase >= $num_of_available_shares)
+                {
+                    $json_data = $num_of_available_shares;
+                }
+                //otherwise the slider will be capped at the masimum number of shares the user can afford
+                else
+                {
+                    $json_data = $max_amount_can_purchase;
+                }
             }
         }
         else
