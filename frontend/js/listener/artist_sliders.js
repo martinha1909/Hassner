@@ -640,7 +640,7 @@ $( function() {
       slide: function( event, ui ) {
         var min_limit_top = $("#buy_limit").slider("values", 0);
         var max_limit_top = $("#buy_limit").slider("values", 1);
-        if((min_limit_top == min_limit && max_limit_top == max_limit) || (min_limit_top > min_limit && max_limit_top < max_limit))
+        if(min_limit_top == min_limit && max_limit_top == max_limit)
         {
           $("#buy_num_shares").val(ui.value);
           $("#buy_cost").val("$" + ui.value*$("#pps").text());
@@ -651,6 +651,11 @@ $( function() {
           $("#buy_cost").val("$" + ui.value*min_limit_top);
         }
         else if(min_limit_top == min_limit && max_limit_top < max_limit)
+        {
+          $("#buy_num_shares").val(ui.value);
+          $("#buy_cost").val("$" + ui.value*max_limit_top);
+        }
+        else if(min_limit_top > min_limit && max_limit_top < max_limit)
         {
           $("#buy_num_shares").val(ui.value);
           $("#buy_cost").val("$" + ui.value*max_limit_top);
@@ -719,7 +724,7 @@ $( function() {
       slide: function( event, ui ) {
         var min_limit_top = $("#sell_limit").slider("values", 0);
         var max_limit_top = $("#sell_limit").slider("values", 1);
-        if((min_limit_top == min_limit && max_limit_top == max_limit) || (min_limit_top > min_limit && max_limit_top < max_limit))
+        if(min_limit_top == min_limit && max_limit_top == max_limit)
         {
           $("#sell_num_shares").val(ui.value);
           $("#sell_cost").val("$" + ui.value*$("#pps").text());
@@ -730,6 +735,11 @@ $( function() {
           $("#sell_cost").val("$" + ui.value*min_limit_top);
         }
         else if(min_limit_top == min_limit && max_limit_top < max_limit)
+        {
+          $("#sell_num_shares").val(ui.value);
+          $("#sell_cost").val("$" + ui.value*max_limit_top);
+        }
+        else if(min_limit_top > min_limit && max_limit_top < max_limit)
         {
           $("#sell_num_shares").val(ui.value);
           $("#sell_cost").val("$" + ui.value*max_limit_top);
@@ -778,6 +788,10 @@ $( function() {
               {
                 $("#price_outdated").text("Price has changed, please refresh the page and try again");
               }
+              else if(data === "NUM_OF_SHARES_INVALID")
+              {
+                $("#price_outdated").text("Orders with quantity of 0 not allowed");
+              }
               else if (data === "BALANCE_OUTDATED")
               {
                 $("#price_outdated").text("Your balance has changed, please refresh and try again");
@@ -785,6 +799,10 @@ $( function() {
               else if(data === "BUYABLE_OUTDATED")
               {
                 $("#price_outdated").text("Data has changed, please refresh and try again");
+              }
+              else if(data === "CANNOT_CREATE_BUY")
+              {
+                $("#price_outdated").text("Not enough balance due to other open buy orders");
               }
               else if(data === "SUCCESS")
               {
@@ -824,6 +842,10 @@ $( function() {
             if(data === "Price Outdated")
             {
               $("#price_outdated").text("Price has changed, please refresh the page and try again");
+            }
+            else if(data === "NUM_OF_SHARES_INVALID")
+            {
+              $("#price_outdated").text("Orders with quantity of 0 not allowed");
             }
             else if(data == "SELLABLE_OUTDATED")
             {

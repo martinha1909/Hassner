@@ -880,4 +880,61 @@ function refreshBuyOrderTable()
         closeCon($conn);
         return $ret;
     }
+
+    function getUserBuyOrdersByArtist($user_username, $artist_username)
+    {
+        $ret = array();
+        $conn = connect();
+
+        $res = searchAllUserBuyOrdersByArtist($conn, $user_username, $artist_username);
+        if($res->num_rows > 0)
+        {
+            while($row = $res->fetch_assoc())
+            {
+                $buy_order = new BuyOrder($row['id'],
+                                          $row['user_username'],
+                                          $row['artist_username'],
+                                          $row['siliqas_requested'],
+                                          $row['quantity'],
+                                          $row['date_posted']);
+                            
+                $buy_order->setBuyLimit($row['buy_limit']);
+                $buy_order->setBuyStop($row['buy_stop']);
+
+                array_push($ret, $buy_order);
+            }
+        }
+
+        closeCon($conn);
+        return $ret;
+    }
+
+    function getTotalPriceFromAllBuyOrders($all_buy_orders): float
+    {
+        $ret = 0;
+        for($i = 0; $i < sizeof($all_buy_orders); $i++)
+        {
+            //Case of market price buy orders
+            if($all_buy_orders[$i]->getRequestPrice() != -1)
+            {
+                $buy_order_cost = $all_buy_orders[$i]->getQuantity() * $all_buy_orders[$i]->getRequestPrice();
+                $ret += $buy_order_cost;
+            }
+            else
+            {
+                if($all_buy_orders[$i]->getBuyStop() == -1)
+                {
+                    $buy_order_cost = $all_buy_orders[$i]->getQuantity() * $all_buy_orders[$i]->getBuyLimit();
+                    $ret += $buy_order_cost;
+                }
+                else
+                {
+                    $buy_order_cost = $all_buy_orders[$i]->getQuantity() * $all_buy_orders[$i]->getBuyStop();
+                    $ret += $buy_order_cost;
+                }
+            }
+        }
+
+        return $ret;
+    }
 ?>
