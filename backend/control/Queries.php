@@ -312,6 +312,19 @@
             return $result;
         }
 
+        function searchAllUserBuyOrdersByArtist($conn, $user_username, $artist_username)
+        {
+            $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted
+                    FROM buy_order 
+                    WHERE user_username = ? AND artist_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $user_username, $artist_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchSharesRequested($conn, $user_username, $artist_username)
         {
             $sql = "SELECT quantity FROM buy_order WHERE user_username = ? AND artist_username = ?";

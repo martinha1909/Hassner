@@ -243,6 +243,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <h6 id="cannot_create_buy" class="error-msg"></h6>
                                 ';
                             }
                             else

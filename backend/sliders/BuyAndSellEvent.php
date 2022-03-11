@@ -9,6 +9,7 @@
     include '../constants/StatusCodes.php';
     include '../constants/MenuOption.php';
     include '../object/SellOrder.php';
+    include '../object/BuyOrder.php';
     include '../object/AutoTransact.php';
 
     date_default_timezone_set(Timezone::MST);
@@ -30,6 +31,10 @@
     {
         $json_response = StatusCodes::PRICE_OUTDATED;
     }
+    else if($quantity <= 0)
+    {
+        $json_response = StatusCodes::NUM_OF_SHARES_INVALID;
+    }
     else
     {
         //only allow to handle request for the first request
@@ -38,14 +43,21 @@
             if($user_event == ShareInteraction::BUY)
             {
                 $buyer_balance = getUserBalance($_SESSION['username']);
+                $open_buy_orders = getUserBuyOrdersByArtist($_SESSION['username'], $_SESSION['selected_artist']);
+                $balance_spending = getTotalPriceFromAllBuyOrders($open_buy_orders);
                 $connPDO = connectPDO();
 
                 if($chosen_min == $min_lim && $chosen_max == $max_lim)
                 {
                     $purchase_price = $latest_market_price;
+                    $balance_remaining = $buyer_balance - $balance_spending - ($purchase_price * $quantity);
                     if($buyer_balance < ($purchase_price * $quantity))
                     {
                         $json_response = StatusCodes::BALANCE_OUTDATED;
+                    }
+                    else if($balance_remaining < 0)
+                    {
+                        $json_response = StatusCodes::CANNOT_CREATE_BUY;
                     }
                     else
                     {
@@ -81,9 +93,14 @@
                     $conn = connect();
                     if($chosen_min >= $latest_market_price)
                     {
+                        $balance_remaining = $buyer_balance - $balance_spending - ($chosen_min * $quantity);
                         if(($buyer_balance < ($chosen_min * $quantity)) || ($buyer_balance < ($latest_market_price * $quantity)))
                         {
                             $json_response = StatusCodes::BALANCE_OUTDATED;
+                        }
+                        else if($balance_remaining < 0)
+                        {
+                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
                         }
                         else
                         {
@@ -114,9 +131,14 @@
                     }
                     else
                     {
+                        $balance_remaining = $buyer_balance - $balance_spending - ($chosen_min * $quantity);
                         if($buyer_balance < ($chosen_min * $quantity))
                         {
                             $json_response = StatusCodes::BALANCE_OUTDATED;
+                        }
+                        else if($balance_remaining < 0)
+                        {
+                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
                         }
                         else
                         {
@@ -170,9 +192,14 @@
                     $conn = connect();
                     if($chosen_max <= $latest_market_price)
                     {
-                        if(($buyer_balance < ($chosen_max * $quantity)) || ($buyer_balance < ($latest_market_price * $quantity)))
+                        $balance_remaining = $buyer_balance - $balance_spending - ($chosen_max * $quantity);
+                        if($buyer_balance < ($chosen_max * $quantity))
                         {
                             $json_response = StatusCodes::BALANCE_OUTDATED;
+                        }
+                        else if($balance_remaining < 0)
+                        {
+                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
                         }
                         else
                         {
@@ -204,9 +231,14 @@
                     }
                     else
                     {
+                        $balance_remaining = $buyer_balance - $balance_spending - ($chosen_max * $quantity);
                         if($buyer_balance < ($chosen_max * $quantity))
                         {
                             $json_response = StatusCodes::BALANCE_OUTDATED;
+                        }
+                        else if($balance_remaining < 0)
+                        {
+                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
                         }
                         else
                         {
@@ -258,12 +290,17 @@
                 else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
                 {
                     $conn = connect();
+                    $balance_remaining = $buyer_balance - $balance_spending - ($chosen_max * $quantity);
                     if($chosen_max <= $latest_market_price || $chosen_min >= $latest_market_price)
                     {
                         //since chosen max will always be greater than chosen min, no need to include chosen min into this balance check
                         if(($buyer_balance < ($chosen_max * $quantity)) || ($buyer_balance < ($latest_market_price * $quantity)))
                         {
                             $json_response = StatusCodes::BALANCE_OUTDATED;
+                        }
+                        else if($balance_remaining < 0)
+                        {
+                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
                         }
                         else
                         {
@@ -299,6 +336,10 @@
                         if($buyer_balance < ($chosen_max * $quantity))
                         {
                             $json_response = StatusCodes::BALANCE_OUTDATED;
+                        }
+                        else if($balance_remaining < 0)
+                        {
+                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
                         }
                         else
                         {
