@@ -315,6 +315,19 @@
             return $result;
         }
 
+        function searchBuyOrdersByArtistWithinInterval($conn, $artist_username, $from_date, $to_date)
+        {
+            $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted 
+                    FROM buy_order 
+                    WHERE artist_username = ? AND date_posted >=? AND date_posted <= ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('sss', $artist_username, $from_date, $to_date);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchAllUserBuyOrdersByArtist($conn, $user_username, $artist_username)
         {
             $sql = "SELECT id, user_username, artist_username, quantity, siliqas_requested, buy_limit, buy_stop, date_posted
@@ -617,6 +630,27 @@
             $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted FROM sell_order WHERE artist_username = ? ORDER BY date_posted ASC";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $artist_username);
+            if($stmt->execute() == true)
+            {
+                $result = $stmt->get_result();
+            }
+            else
+            {
+                hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+            }
+
+            return $result;
+        }
+
+        function searchSellOrderByArtistWithinInterval($conn, $artist_username, $from_date, $to_date)
+        {
+            $result = 0;
+
+            $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
+                    FROM sell_order 
+                    WHERE artist_username = ? AND date_posted >= ? AND date_posted <= ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('sss', $artist_username, $from_date, $to_date);
             if($stmt->execute() == true)
             {
                 $result = $stmt->get_result();
