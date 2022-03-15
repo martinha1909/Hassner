@@ -81,4 +81,28 @@
 
         return $ret;
     }
+
+    function decreaseStockPriceSlightly($conn, $artist_username): float
+    {
+        $ret = -1;
+        $residual = 0;
+        
+        $res = searchArtistCurrentPricePerShare($conn, $artist_username);
+        if($res->num_rows > 0)
+        {
+            $artist_current_pps = $res->fetch_assoc();
+            $ret = $artist_current_pps['price_per_share'];
+
+            $residual -= ((rand(1, 2))/10);
+
+            $ret += round($residual, 1);
+            //Fail safe in case penny stock falls below 0
+            if($ret <= 0)
+            {
+                $ret = 0.01;
+            }
+        }
+
+        return $ret;
+    }
 ?>

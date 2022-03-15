@@ -251,6 +251,17 @@
             return $result;
         }
 
+        function searchBuyHistoryWithinInterval($conn, $artist_username, $from_date, $to_date)
+        {
+            $sql = "SELECT id FROM buy_history WHERE artist_username = ? AND date_purchased >= ? AND date_purchased <= ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('sss', $artist_username, $from_date, $to_date);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
         function searchSellHistoryByUserAndArtist($conn, $seller_username, $artist_username)
         {
             $sql = "SELECT id, seller_username, buyer_username, artist_username, amount_sold, price_sold, date_sold FROM sell_history WHERE seller_username = ? AND artist_username = ?";
