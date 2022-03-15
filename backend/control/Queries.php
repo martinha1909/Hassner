@@ -1,7 +1,10 @@
 <?php
-        include '../../backend/constants/StatusCodes.php';
-        include '../../backend/constants/AccountTypes.php';
-        include '../../backend/constants/GraphOption.php';
+        if($_SESSION['dependencies'] != "TEST" && $_SESSION['dependencies'] != "CRON")
+        {
+            include '../../backend/constants/StatusCodes.php';
+            include '../../backend/constants/AccountTypes.php';
+            include '../../backend/constants/GraphOption.php';
+        }
         
         //logs in with provided user info and password, then use SQL query to query database 
         //after qurerying return the result
