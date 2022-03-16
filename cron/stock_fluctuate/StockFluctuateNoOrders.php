@@ -3,7 +3,7 @@
     *   This script is scheduled to run every 4 hours
     */
     define("HX_INCLUDE_DIR", dirname(dirname(dirname(__FILE__))));
-    define("CRON_INCLUDE_DIR", dirname(dirname(__FILE__))."\include");
+    define("CRON_INCLUDE_DIR", dirname(dirname(__FILE__))."/include");
 
     session_start();
     $_SESSION['dependencies'] = "CRON";
