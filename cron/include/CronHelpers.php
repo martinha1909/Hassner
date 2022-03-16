@@ -1,4 +1,20 @@
 <?php
+    function getUserBalance($user_username): float
+    {
+        $ret = 0;
+        $conn = connect();
+
+        $result = searchAccount($conn, $user_username);
+        $msg = "searchAccount returned ".$result->num_rows." rows";
+        hx_debug(HX::HELPER, $msg);
+
+        $balance = $result->fetch_assoc();     
+        hx_debug(HX::QUERY, "balance data: ".json_encode($balance));
+
+        $ret = $balance['balance'];   
+
+        return $ret;
+    }
     function getAllArtist($conn)
     {
         $ret = array();
