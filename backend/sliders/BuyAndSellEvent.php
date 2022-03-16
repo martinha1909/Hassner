@@ -91,326 +91,122 @@
                 else if ($chosen_min > $min_lim && $chosen_max == $max_lim)
                 {
                     $conn = connect();
-                    if($chosen_min >= $latest_market_price)
+                    $balance_remaining = $buyer_balance - $balance_spending - ($chosen_min * $quantity);
+                    if(($buyer_balance < ($chosen_min * $quantity)) || ($buyer_balance < ($latest_market_price * $quantity)))
                     {
-                        $balance_remaining = $buyer_balance - $balance_spending - ($chosen_min * $quantity);
-                        if(($buyer_balance < ($chosen_min * $quantity)) || ($buyer_balance < ($latest_market_price * $quantity)))
-                        {
-                            $json_response = StatusCodes::BALANCE_OUTDATED;
-                        }
-                        else if($balance_remaining < 0)
-                        {
-                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
-                        }
-                        else
-                        {
-                            $new_quantity = autoPurchaseLimitSet($_SESSION['username'],
-                                                                 $_SESSION['selected_artist'],
-                                                                 $quantity,
-                                                                 $chosen_min,
-                                                                 $latest_market_price);
-                            refreshBuyOrderTable();
-                            if($new_quantity > 0)
-                            {
-                                //User posting buy order without limit and stop
-                                postBuyOrder($connPDO, 
-                                            $_SESSION['username'],
-                                            $_SESSION['selected_artist'], 
-                                            $new_quantity, 
-                                            -1, 
-                                            $chosen_min,
-                                            -1,
-                                            $current_date);
-                            }
-                            refreshSellOrderTable();
-                            
-                            $_SESSION['display'] = MenuOption::Portfolio;
-                            $_SESSION['dependencies'] = "FRONTEND";
-                            $json_response = StatusCodes::Success;
-                        }
+                        $json_response = StatusCodes::BALANCE_OUTDATED;
+                    }
+                    else if($balance_remaining < 0)
+                    {
+                        $json_response = StatusCodes::CANNOT_CREATE_BUY;
                     }
                     else
                     {
-                        $balance_remaining = $buyer_balance - $balance_spending - ($chosen_min * $quantity);
-                        if($buyer_balance < ($chosen_min * $quantity))
+                        $new_quantity = autoPurchaseLimitSet($_SESSION['username'],
+                                                                $_SESSION['selected_artist'],
+                                                                $quantity,
+                                                                $chosen_min,
+                                                                $latest_market_price);
+                        refreshBuyOrderTable();
+                        if($new_quantity > 0)
                         {
-                            $json_response = StatusCodes::BALANCE_OUTDATED;
+                            //User posting buy order without limit and stop
+                            postBuyOrder($connPDO, 
+                                        $_SESSION['username'],
+                                        $_SESSION['selected_artist'], 
+                                        $new_quantity, 
+                                        -1, 
+                                        $chosen_min,
+                                        -1,
+                                        $current_date);
                         }
-                        else if($balance_remaining < 0)
-                        {
-                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
-                        }
-                        else
-                        {
-                            $matching_shares_sold = 0;
-
-                            //These are the shares from sell orders that have their limit match with this current chosen limit
-                            $res_sell_limit = searchNumOfSharesLimitSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_min);
-                            if($res_sell_limit->num_rows > 0)
-                            {
-                                while($row = $res_sell_limit->fetch_assoc())
-                                {
-                                    $matching_shares_sold += $row['no_of_share'];
-                                }
-                            }
-
-                            if($quantity > $matching_shares_sold)
-                            {
-                                $json_response = StatusCodes::BUYABLE_OUTDATED;
-                            }
-                            else
-                            {
-                                $new_quantity = autoPurchaseLimitSet($_SESSION['username'],
-                                                                     $_SESSION['selected_artist'],
-                                                                     $quantity,
-                                                                     $chosen_min,
-                                                                     $latest_market_price);
-                                refreshBuyOrderTable();
-                                if($new_quantity > 0)
-                                {
-                                    //User posting buy order without limit and stop
-                                    postBuyOrder($connPDO, 
-                                                $_SESSION['username'],
-                                                $_SESSION['selected_artist'], 
-                                                $new_quantity, 
-                                                -1, 
-                                                $chosen_min,
-                                                -1,
-                                                $current_date);
-                                }
-                                refreshSellOrderTable();
-                                
-                                $_SESSION['display'] = MenuOption::Portfolio;
-                                $_SESSION['dependencies'] = "FRONTEND";
-                                $json_response = StatusCodes::Success;
-                            }
-                        }
+                        refreshSellOrderTable();
+                        
+                        $_SESSION['display'] = MenuOption::Portfolio;
+                        $_SESSION['dependencies'] = "FRONTEND";
+                        $json_response = StatusCodes::Success;
                     }
                 }
                 else if ($chosen_min == $min_lim && $chosen_max < $max_lim)
                 {
                     $conn = connect();
-                    if($chosen_max <= $latest_market_price)
+                    $balance_remaining = $buyer_balance - $balance_spending - ($chosen_max * $quantity);
+                    if($buyer_balance < ($chosen_max * $quantity))
                     {
-                        $balance_remaining = $buyer_balance - $balance_spending - ($chosen_max * $quantity);
-                        if($buyer_balance < ($chosen_max * $quantity))
-                        {
-                            $json_response = StatusCodes::BALANCE_OUTDATED;
-                        }
-                        else if($balance_remaining < 0)
-                        {
-                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
-                        }
-                        else
-                        {
-                            $new_quantity = autoPurchaseStopSet($_SESSION['username'],
-                                                                $_SESSION['selected_artist'],
-                                                                $quantity,
-                                                                $chosen_max,
-                                                                $latest_market_price);
-
-                            refreshBuyOrderTable();
-                            if($new_quantity > 0)
-                            {
-                                //User posting buy order without limit and stop
-                                postBuyOrder($connPDO, 
-                                            $_SESSION['username'],
-                                            $_SESSION['selected_artist'], 
-                                            $new_quantity, 
-                                            -1, 
-                                            -1,
-                                            $chosen_max,
-                                            $current_date);
-                            }
-                            refreshSellOrderTable();
-                            
-                            $_SESSION['display'] = MenuOption::Portfolio;
-                            $_SESSION['dependencies'] = "FRONTEND";
-                            $json_response = StatusCodes::Success;
-                        }
+                        $json_response = StatusCodes::BALANCE_OUTDATED;
+                    }
+                    else if($balance_remaining < 0)
+                    {
+                        $json_response = StatusCodes::CANNOT_CREATE_BUY;
                     }
                     else
                     {
-                        $balance_remaining = $buyer_balance - $balance_spending - ($chosen_max * $quantity);
-                        if($buyer_balance < ($chosen_max * $quantity))
-                        {
-                            $json_response = StatusCodes::BALANCE_OUTDATED;
-                        }
-                        else if($balance_remaining < 0)
-                        {
-                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
-                        }
-                        else
-                        {
-                            $matching_shares_sold = 0;
+                        $new_quantity = autoPurchaseStopSet($_SESSION['username'],
+                                                            $_SESSION['selected_artist'],
+                                                            $quantity,
+                                                            $chosen_max,
+                                                            $latest_market_price);
 
-                            $res_sell_stop = searchNumOfSharesStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_max);
-                            if($res_sell_stop->num_rows > 0)
-                            {
-                                while($row = $res_sell_stop->fetch_assoc())
-                                {
-                                    $matching_shares_sold += $row['no_of_share'];
-                                }
-                            }
-
-                            if($quantity > $matching_shares_sold)
-                            {
-                                $json_response = StatusCodes::BUYABLE_OUTDATED;
-                            }
-                            else
-                            {
-                                $new_quantity = autoPurchaseStopSet($_SESSION['username'],
-                                                                    $_SESSION['selected_artist'],
-                                                                    $quantity,
-                                                                    $chosen_max,
-                                                                    $latest_market_price);
-
-                                refreshBuyOrderTable();
-                                if($new_quantity > 0)
-                                {
-                                    //User posting buy order without limit and stop
-                                    postBuyOrder($connPDO, 
-                                                $_SESSION['username'],
-                                                $_SESSION['selected_artist'], 
-                                                $new_quantity, 
-                                                -1, 
-                                                -1,
-                                                $chosen_max,
-                                                $current_date);
-                                }
-                                refreshSellOrderTable();
-                                
-                                $_SESSION['display'] = MenuOption::Portfolio;
-                                $_SESSION['dependencies'] = "FRONTEND";
-                                $json_response = StatusCodes::Success;
-                            }
+                        refreshBuyOrderTable();
+                        if($new_quantity > 0)
+                        {
+                            //User posting buy order without limit and stop
+                            postBuyOrder($connPDO, 
+                                        $_SESSION['username'],
+                                        $_SESSION['selected_artist'], 
+                                        $new_quantity, 
+                                        -1, 
+                                        -1,
+                                        $chosen_max,
+                                        $current_date);
                         }
+                        refreshSellOrderTable();
+                        
+                        $_SESSION['display'] = MenuOption::Portfolio;
+                        $_SESSION['dependencies'] = "FRONTEND";
+                        $json_response = StatusCodes::Success;
                     }
                 }
                 else if ($chosen_min > $min_lim && $chosen_max < $max_lim)
                 {
                     $conn = connect();
                     $balance_remaining = $buyer_balance - $balance_spending - ($chosen_max * $quantity);
-                    if($chosen_max <= $latest_market_price || $chosen_min >= $latest_market_price)
+                    //since chosen max will always be greater than chosen min, no need to include chosen min into this balance check
+                    if(($buyer_balance < ($chosen_max * $quantity)) || ($buyer_balance < ($latest_market_price * $quantity)))
                     {
-                        //since chosen max will always be greater than chosen min, no need to include chosen min into this balance check
-                        if(($buyer_balance < ($chosen_max * $quantity)) || ($buyer_balance < ($latest_market_price * $quantity)))
-                        {
-                            $json_response = StatusCodes::BALANCE_OUTDATED;
-                        }
-                        else if($balance_remaining < 0)
-                        {
-                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
-                        }
-                        else
-                        {
-                            $new_quantity = autoPurchaseLimitStopSet($_SESSION['username'],
-                                                                     $_SESSION['selected_artist'],
-                                                                     $quantity,
-                                                                     $chosen_min,
-                                                                     $chosen_max,
-                                                                     $latest_market_price);
-
-                            refreshBuyOrderTable();
-                            if($new_quantity > 0)
-                            {
-                                //User posting buy order without limit and stop
-                                postBuyOrder($connPDO, 
-                                            $_SESSION['username'],
-                                            $_SESSION['selected_artist'], 
-                                            $new_quantity, 
-                                            -1, 
-                                            $chosen_min,
-                                            $chosen_max,
-                                            $current_date);
-                            }
-                            refreshSellOrderTable();
-                            
-                            $_SESSION['display'] = MenuOption::Portfolio;
-                            $_SESSION['dependencies'] = "FRONTEND";
-                            $json_response = StatusCodes::Success;
-                        }
+                        $json_response = StatusCodes::BALANCE_OUTDATED;
+                    }
+                    else if($balance_remaining < 0)
+                    {
+                        $json_response = StatusCodes::CANNOT_CREATE_BUY;
                     }
                     else
                     {
-                        if($buyer_balance < ($chosen_max * $quantity))
+                        $new_quantity = autoPurchaseLimitStopSet($_SESSION['username'],
+                                                                    $_SESSION['selected_artist'],
+                                                                    $quantity,
+                                                                    $chosen_min,
+                                                                    $chosen_max,
+                                                                    $latest_market_price);
+
+                        refreshBuyOrderTable();
+                        if($new_quantity > 0)
                         {
-                            $json_response = StatusCodes::BALANCE_OUTDATED;
+                            //User posting buy order without limit and stop
+                            postBuyOrder($connPDO, 
+                                        $_SESSION['username'],
+                                        $_SESSION['selected_artist'], 
+                                        $new_quantity, 
+                                        -1, 
+                                        $chosen_min,
+                                        $chosen_max,
+                                        $current_date);
                         }
-                        else if($balance_remaining < 0)
-                        {
-                            $json_response = StatusCodes::CANNOT_CREATE_BUY;
-                        }
-                        else
-                        {
-                            $matching_shares_sold = 0;
-
-                            $res_array_size = searchMaxIDSellOrdersNotFromUser($conn, $_SESSION['username'], $_SESSION['selected_artist']);
-                            $max_arr_size = $res_array_size->fetch_assoc();
-                            //Using a hashmap for quicker lookup
-                            $already_matched_orders = array_fill(0, $max_arr_size['max_sell_order_id'] + 1, false);
-
-                            $res_sell_stop = searchNumOfSharesStopSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_max);
-                            if($res_sell_stop->num_rows > 0)
-                            {
-                                while($row = $res_sell_stop->fetch_assoc())
-                                {
-                                    //We don't want to take into consideration of the same order twice
-                                    if(!$already_matched_orders[$row['id']])
-                                    {
-                                        $matching_shares_sold += $row['no_of_share'];
-                                    }
-                                    $already_matched_orders[$row['id']] = true;
-                                }
-                            }
-
-                            $res_sell_limit = searchNumOfSharesLimitSellOrders($conn, $_SESSION['username'], $_SESSION['selected_artist'], $chosen_min);
-                            if($res_sell_limit->num_rows > 0)
-                            {
-                                while($row = $res_sell_limit->fetch_assoc())
-                                {
-                                    //We don't want to take into consideration of the same order twice
-                                    if(!$already_matched_orders[$row['id']])
-                                    {
-                                        $matching_shares_sold += $row['no_of_share'];
-                                    }
-                                    $already_matched_orders[$row['id']] = true;
-                                }
-                            }
-
-                            if($quantity > $matching_shares_sold)
-                            {
-                                $json_response = StatusCodes::BUYABLE_OUTDATED;
-                            }
-                            else
-                            {
-                                $new_quantity = autoPurchaseLimitStopSet($_SESSION['username'],
-                                                                         $_SESSION['selected_artist'],
-                                                                         $quantity,
-                                                                         $chosen_min,
-                                                                         $chosen_max,
-                                                                         $latest_market_price);
-
-                                refreshBuyOrderTable();
-                                if($new_quantity > 0)
-                                {
-                                    //User posting buy order without limit and stop
-                                    postBuyOrder($connPDO, 
-                                                $_SESSION['username'],
-                                                $_SESSION['selected_artist'], 
-                                                $new_quantity, 
-                                                -1, 
-                                                $chosen_min,
-                                                $chosen_max,
-                                                $current_date);
-                                }
-                                refreshSellOrderTable();
-                                
-                                $_SESSION['display'] = MenuOption::Portfolio;
-                                $_SESSION['dependencies'] = "FRONTEND";
-                                $json_response = StatusCodes::Success;
-                            }
-                        }
+                        refreshSellOrderTable();
+                        
+                        $_SESSION['display'] = MenuOption::Portfolio;
+                        $_SESSION['dependencies'] = "FRONTEND";
+                        $json_response = StatusCodes::Success;
                     }
                 }
             }

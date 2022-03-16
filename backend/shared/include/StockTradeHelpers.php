@@ -1156,12 +1156,10 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
                                   "selling quantity: ".$selling_quantity.", row['quantity']: ".$row['quantity']);
 
         $selling_price = $row['buy_stop'];
-        $new_pps = $row['buy_stop'];
+        $new_pps = $current_market_price;
         //This check will always fail if $include_market_orders is false
         if($row['siliqas_requested'] != -1 && $row['buy_limit'] == -1 && $row['buy_stop'] == -1)
         {
-            //Case of a market price sell order
-            $new_pps = $row['siliqas_requested'];
             $selling_price = $row['siliqas_requested'];
         }
 
@@ -1186,8 +1184,6 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
             //Remove since all shares have been bought at this point
             removeBuyOrder($conn, $row['id']);
 
-            //Updates stock price
-            $current_market_price = $new_pps;
             $current_quantity = $selling_quantity - $row['quantity'];
             if($current_quantity > 0)
             {
@@ -1221,8 +1217,6 @@ function autoSellStopSet($seller_username, $artist_username, $selling_quantity, 
                           $buy_mode,
                           ShareInteraction::SELL);
 
-            //Upates stock price
-            $current_market_price = $new_pps;
             $current_buy_order_quantity = $row['quantity'] - $selling_quantity;
             $new_buy_order_quantity = executeMarketPriceSellOrders($conn,
                                                                    $connPDO,
@@ -1302,12 +1296,10 @@ function autoSellLimitSet($seller_username, $artist_username, $selling_quantity,
                                   "selling quantity: ".$selling_quantity.", row['quantity']: ".$row['quantity']);
 
         $selling_price = $sell_limit;
-        $new_pps = $sell_limit;
+        $new_pps = $current_market_price;
         //This check will always fail if $include_market_orders is false
         if($row['siliqas_requested'] != -1 && $row['buy_limit'] == -1 && $row['buy_stop'] == -1)
         {
-            //Case of a market price sell order
-            $new_pps = $row['siliqas_requested'];
             $selling_price = $row['siliqas_requested'];
         }
 
@@ -1332,8 +1324,6 @@ function autoSellLimitSet($seller_username, $artist_username, $selling_quantity,
             //Remove since all shares have been bought at this point
             removeBuyOrder($conn, $row['id']);
 
-            //Updates stock price
-            $current_market_price = $new_pps;
             $current_quantity = $selling_quantity - $row['quantity'];
 
             if($current_quantity > 0)
@@ -1368,8 +1358,6 @@ function autoSellLimitSet($seller_username, $artist_username, $selling_quantity,
                           $buy_mode,
                           ShareInteraction::SELL);
 
-            //Upates stock price
-            $current_market_price = $new_pps;
             $current_buy_order_quantity = $row['quantity'] - $selling_quantity;
             $new_buy_order_quantity = executeMarketPriceSellOrders($conn,
                                                                    $connPDO,
@@ -1454,13 +1442,14 @@ function autoSellLimitStopSet($seller_username, $artist_username, $selling_quant
         }
         hx_debug(HX::SELL_SHARES, "Auto selling to buy order ".$row['id']."\n".
                                   "selling quantity: ".$selling_quantity.", row['quantity']: ".$row['quantity']);
+
+        $new_pps = $current_market_price;
         //case of market price, shoult only hit this if block if $include_market_orders is true
         if($row['siliqas_requested'] != -1 && $row['buy_limit'] == -1 && $row['buy_stop'] == -1)
         {
             hx_debug(HX::SELL_SHARES, "market price execution, selling_price and new_pps set to market price value");
             //price and new stock price will be at market price for this case
             $selling_price = $row['siliqas_requested'];
-            $new_pps = $row['siliqas_requested'];
             $will_execute = true;
             hx_debug(HX::SELL_SHARES, "Will execute buy order id ".$row['id']);
         }
@@ -1468,7 +1457,6 @@ function autoSellLimitStopSet($seller_username, $artist_username, $selling_quant
         {
             hx_debug(HX::SELL_SHARES, "limit order execution, selling_price and new_pps set to sell_limit");
             $selling_price = $sell_limit;
-            $new_pps = $sell_limit;
             $will_execute = true;
             hx_debug(HX::SELL_SHARES, "Will execute buy order id ".$row['id']);
         }
@@ -1476,7 +1464,6 @@ function autoSellLimitStopSet($seller_username, $artist_username, $selling_quant
         {
             hx_debug(HX::SELL_SHARES, "stop order execution, selling_price and new_pps set to row['buy_stop']");
             $selling_price = $row['buy_stop'];
-            $new_pps = $row['buy_stop'];
             $will_execute = true;
             hx_debug(HX::SELL_SHARES, "Will execute buy order id ".$row['id']);
         }
@@ -1503,8 +1490,6 @@ function autoSellLimitStopSet($seller_username, $artist_username, $selling_quant
                 //Remove since all shares have been bought at this point
                 removeBuyOrder($conn, $row['id']);
 
-                //Updates stock price
-                $current_market_price = $new_pps;
                 $current_quantity = $selling_quantity - $row['quantity'];
                 if($current_quantity > 0)
                 {
@@ -1538,8 +1523,6 @@ function autoSellLimitStopSet($seller_username, $artist_username, $selling_quant
                               $buy_mode,
                               ShareInteraction::SELL);
 
-                //Upates stock price
-                $current_market_price = $new_pps;
                 $current_buy_order_quantity = $row['quantity'] - $selling_quantity;
                 $new_buy_order_quantity = executeMarketPriceSellOrders($conn,
                                                                        $connPDO,
@@ -1623,12 +1606,10 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
 
         //Purchasing price always favors the seller in the case of limit set, except for the case when a sell order is at market price
         $purchase_price = $row['sell_limit'];
-        $new_pps = $row['sell_limit'];
+        $new_pps = $current_market_price;
         //This check will always fail if $include_market_orders is false
         if($row['selling_price'] != -1 && $row['sell_limit'] == -1 && $row['sell_stop'] == -1)
         {
-            //Case of a market price sell order
-            $new_pps = $row['selling_price'];
             $purchase_price = $row['selling_price'];
         }
 
@@ -1663,8 +1644,6 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
             //Remove since all the shares have been sold at this point
             removeSellOrder($conn, $row['id']);
 
-            //Updates the stock price after execution
-            $current_market_price = $new_pps;
             $current_quantity = $request_quantity - $row['no_of_share'];
 
             if($current_quantity > 0)
@@ -1702,8 +1681,6 @@ function autoPurchaseLimitSet($user_username, $artist_username, $request_quantit
                           $buy_mode,
                           ShareInteraction::BUY);
 
-            //Updates the stock price after execution
-            $current_market_price = $new_pps;
             //This has already been update in the function doTransaction through purchaseAskedPriceShare, but we do this to skip having to renew the query
             $current_sell_order_quantity = $row['no_of_share'] - $request_quantity;
             $new_sell_order_quantity = executeMarketPriceBuyOrders($conn,
@@ -1778,12 +1755,10 @@ function autoPurchaseStopSet($user_username, $artist_username, $request_quantity
 
         //Purchasing price always favors the buyer in the case of stop set, except for the case when a sell order is at market price
         $purchase_price = $buy_stop;
-        $new_pps = $buy_stop;
+        $new_pps = $current_market_price;
         //This check will always fail if $include_market_orders is false
         if($row['selling_price'] != -1 && $row['sell_limit'] == -1 && $row['sell_stop'] == -1)
         {
-            //Case of a market price sell order
-            $new_pps = $row['selling_price'];
             $purchase_price = $row['selling_price'];
         }
         $transact = autoPurchaseInit($conn, $user_username, $row['user_username'], $artist_username);
@@ -1815,8 +1790,6 @@ function autoPurchaseStopSet($user_username, $artist_username, $request_quantity
 
             //Remove since all the shares have been sold at this point
             removeSellOrder($conn, $row['id']);
-
-            $current_market_price = $new_pps;
             $current_quantity = $request_quantity - $row['no_of_share'];
             if($current_quantity > 0)
             {
@@ -1850,8 +1823,6 @@ function autoPurchaseStopSet($user_username, $artist_username, $request_quantity
                           $buy_mode,
                           ShareInteraction::BUY);
 
-            //Updates the stock price after execution
-            $current_market_price = $new_pps;
             //This has already been update in the function doTransaction through purchaseAskedPriceShare, but we do this to skip having to renew the query
             $current_sell_order_quantity = $row['no_of_share'] - $request_quantity;
             $new_sell_order_quantity = executeMarketPriceBuyOrders($conn,
@@ -1949,24 +1920,22 @@ function autoPurchaseLimitStopSet($user_username, $artist_username, $request_qua
             $buy_mode = ShareInteraction::BUY;
         }
 
+        $new_pps = $current_market_price;
         //case of market price, shoult only hit this if block if $include_market_orders is true
         if($row['selling_price'] != -1 && $row['sell_limit'] == -1 && $row['sell_stop'] == -1)
         {
             //price and new stock price will be at market price for this case
             $purchase_price = $current_market_price;
-            $new_pps = $current_market_price;
             $will_execute = true;
         }
         else if($row['sell_limit'] <= $buy_limit && $row['sell_limit'] != -1)
         {
             $purchase_price = $row['sell_limit'];
-            $new_pps = $row['sell_limit'];
             $will_execute = true;
         }
         else if($row['sell_stop'] >= $buy_stop)
         {
             $purchase_price = $buy_stop;
-            $new_pps = $buy_stop;
             $will_execute = true;
         }
 
@@ -1989,9 +1958,6 @@ function autoPurchaseLimitStopSet($user_username, $artist_username, $request_qua
                             ShareInteraction::BUY);
 
                 removeSellOrder($conn, $row['id']);
-
-                //Update new market price
-                $current_market_price = $new_pps;
                 $current_quantity = $request_quantity - $row['no_of_share'];
 
                 if($current_quantity > 0)
@@ -2026,7 +1992,6 @@ function autoPurchaseLimitStopSet($user_username, $artist_username, $request_qua
                             $buy_mode,
                             ShareInteraction::BUY);
 
-                $current_market_price = $new_pps;
                 $current_sell_order_quantity = $row['no_of_share'] - $request_quantity;
                 hx_debug(HX::BUY_SHARES, "Executing market price buy orders....");
                 $new_sell_order_quantity = executeMarketPriceBuyOrders($conn,

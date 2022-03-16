@@ -1871,10 +1871,6 @@
                 $stmt->bindValue(1, $seller);
                 $stmt->execute(array($seller));
 
-                $stmt = $conn->prepare("UPDATE account SET price_per_share = '$new_pps' WHERE username = ?");
-                $stmt->bindValue(1, $artist);
-                $stmt->execute(array($artist));
-
                 $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased)
                                         VALUES(?, ?, ?, ?, ?, ?)");
                 $stmt->bindValue(1, $buyer);
