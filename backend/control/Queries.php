@@ -938,28 +938,6 @@
             return $result;
         }
 
-        // function searchMatchingSellOrder($conn, $user_username, $artist_username, $current_market_price)
-        // {
-        //     $result = 0;
-
-        //     $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
-        //             FROM sell_order 
-        //             WHERE artist_username = ? AND user_username != ? AND selling_price = ?
-        //             ORDER BY date_posted ASC";
-        //     $stmt = $conn->prepare($sql);
-        //     $stmt->bind_param('ssd', $artist_username, $user_username, $current_market_price);
-        //     if($stmt->execute() == true)
-        //     {
-        //         $result = $stmt->get_result();
-        //     }
-        //     else
-        //     {
-        //         hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
-        //     }
-
-        //     return $result;
-        // }
-
         function searchMatchingSellOrderNoLimitStop($conn, $user_username, $artist_username, $market_price)
         {
             $result = 0;
