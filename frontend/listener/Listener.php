@@ -206,6 +206,8 @@
                                     <br>♦ Benchmark campaigns require the user to reach the target share amount. Once fulfilled it gives the participant a guaranteed chance to receive the prize.</br>♣ Raffle campaigns give a % chance to receive the prize once you have reached the target share amount. The more shares you own in raffle campaign the higher the likelihood you winning.</br></br> 
                                     <b>⊳ What happens after a campaign ends?</b>
                                     <br>When a campaign has ended the winner(s) will be decided. If you have won you will contacted through email to receive the prize.</br></br> 
+                                    <b>⊳ Why has the quantity of my buy order changed?</b>
+                                    <br>If the share price has changed since you originally created the buy order, it may readjust the quantity of shares automatically. This is due to the fact that you can no longer afford the original quantity.</br></br> 
                                     <div class="text-center text-white my-2">
                                         <b>Other questions or concerns?</b>
                                         <br>Please reach out to hassx.communication@gmail.com</br>
