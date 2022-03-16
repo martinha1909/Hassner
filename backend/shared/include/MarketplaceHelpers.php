@@ -186,7 +186,7 @@ function fetchMarketPrice($artist_username)
             echo '
                             <form action="../../backend/shared/RemoveSellOrderBackend.php" method="post">
                                 <tr>
-                                    <th scope="row"><input name="remove_id" class="cursor-context" value = "' . $ids[$i] . '"></th>
+                                    <th scope="row"><input name="remove_id['.$ids[$i].']" class="cursor-context" value = "' . $ids[$i] . '"></th>
                                     <td>' . $artist_usernames[$i] . '</th>
                                     <td>' . $selling_prices[$i] . '</td>
                                     <td>' . $share_amounts[$i] . '</td>

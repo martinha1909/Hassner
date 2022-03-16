@@ -938,6 +938,28 @@
             return $result;
         }
 
+        // function searchMatchingSellOrder($conn, $user_username, $artist_username, $current_market_price)
+        // {
+        //     $result = 0;
+
+        //     $sql = "SELECT id, user_username, artist_username, selling_price, no_of_share, sell_limit, sell_stop, is_from_injection, date_posted 
+        //             FROM sell_order 
+        //             WHERE artist_username = ? AND user_username != ? AND selling_price = ?
+        //             ORDER BY date_posted ASC";
+        //     $stmt = $conn->prepare($sql);
+        //     $stmt->bind_param('ssd', $artist_username, $user_username, $current_market_price);
+        //     if($stmt->execute() == true)
+        //     {
+        //         $result = $stmt->get_result();
+        //     }
+        //     else
+        //     {
+        //         hx_error(HX::DB, "db error occured: ".$conn->mysqli_error($conn));
+        //     }
+
+        //     return $result;
+        // }
+
         function searchMatchingSellOrderNoLimitStop($conn, $user_username, $artist_username, $market_price)
         {
             $result = 0;
@@ -1870,10 +1892,6 @@
                 $stmt = $conn->prepare("UPDATE account SET balance = '$seller_new_balance' WHERE username = ?");
                 $stmt->bindValue(1, $seller);
                 $stmt->execute(array($seller));
-
-                $stmt = $conn->prepare("UPDATE account SET price_per_share = '$new_pps' WHERE username = ?");
-                $stmt->bindValue(1, $artist);
-                $stmt->execute(array($artist));
 
                 $stmt = $conn->prepare("INSERT INTO buy_history (user_username, seller_username, artist_username, no_of_share_bought, price_per_share_when_bought, date_purchased)
                                         VALUES(?, ?, ?, ?, ?, ?)");
