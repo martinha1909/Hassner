@@ -471,11 +471,11 @@
     * Determines if an expiration date is in the future or not
     *
     * @param  	date_check	date to be determined if in range
-    *                       has format of DD-MM-YYYY
+    *                       has format of DD-MM-YYYY HH:MM:SS
     * @param  	date_from	date that a range starts
-    *                       has format of DD-MM-YYYY
+    *                       has format of DD-MM-YYYY HH:MM:SS
     * @param  	date_to	    date that a range ends
-    *                       has format of DD-MM-YYYY
+    *                       has format of DD-MM-YYYY HH:MM:SS
     * @return 	ret	a boolean, true if the date is in the indicated range, false otherwise
     */
     function isInRange($date_check, $date_from, $date_to)
