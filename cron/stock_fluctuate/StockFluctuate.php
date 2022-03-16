@@ -1,6 +1,6 @@
 <?php
     define("HX_INCLUDE_DIR", dirname(dirname(dirname(__FILE__))));
-    define("CRON_INCLUDE_DIR", dirname(dirname(__FILE__))."\include");
+    define("CRON_INCLUDE_DIR", dirname(dirname(__FILE__))."/include");
 
     session_start();
     $_SESSION['dependencies'] = "CRON";
