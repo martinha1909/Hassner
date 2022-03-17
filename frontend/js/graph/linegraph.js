@@ -134,8 +134,7 @@ function JSONToAJAX(graph_option)
                     fontColor : "#e2cda9ff"
                 },
                 legend : {
-                    display : true,
-                    position : "bottom"
+                    display : false
                 }
             };
 
