@@ -76,14 +76,14 @@
             {
                 for($i = 0; $i < ($num_open_sell - $num_open_buy); $i++)
                 {
-                    $residual -= ((rand(3, 6))/10);
+                    $residual -= ((rand(1, 6))/10);
                 }
             }
             else if($num_open_sell < $num_open_buy)
             {
                 for($i = 0; $i < ($num_open_buy - $num_open_sell); $i++)
                 {
-                    $residual += ((rand(3, 6))/10);
+                    $residual += ((rand(1, 6))/10);
                 }
             }
 
