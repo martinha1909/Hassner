@@ -5,7 +5,6 @@
     include '../shared/include/MarketplaceHelpers.php';
     include '../constants/GraphOption.php';
 
-    date_default_timezone_set("America/Edmonton");
     $graph_options = $_POST['graph_option'];
 
     $conn = connect();

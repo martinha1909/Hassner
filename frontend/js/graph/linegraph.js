@@ -85,8 +85,6 @@ function JSONToAJAX(graph_option)
                         last_fetched_date = date_recorded;
                     }
                 }
-
-                console.log(x_axis);
             }
             //one-month graph, 6-month graph, YTD graph, and 1-year graph are pre-filtered
             else
