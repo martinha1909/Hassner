@@ -860,7 +860,7 @@
         {
             echo '
                 <div>
-                <h3 data-toggle="tooltip" title="Order in queue to purchase shares." class="tooltip-pointer py-2 mx-2">Buy Order</h3>
+                <b class="h3-white py-2 mx-2">Buy Order</b><a data-toggle="tooltip" title="Order in queue to purchase shares." class="h3-blue tooltip-pointer">ⓘ</a>
             ';
             while($row = $res->fetch_assoc())
             {
@@ -916,7 +916,7 @@
         {
             echo '
                 <div>
-                <h3 data-toggle="tooltip" title="Order in queue to sell shares." class="tooltip-pointer py-2 mx-2">Sell Order</h3>
+                <b class="h3-white py-2 mx-2">Sell Order</b><a data-toggle="tooltip" title="Order in queue to sell shares." class="h3-blue tooltip-pointer">ⓘ</a>
             ';
             while($row = $res->fetch_assoc())
             {
