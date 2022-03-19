@@ -1,5 +1,6 @@
 <?php
     include '../../backend/control/Dependencies.php';
+    $_SESSION['dependencies'] = "FRONTEND";
     include '../../backend/shared/include/MarketplaceHelpers.php';
     include '../../backend/shared/include/frontendPrintHelpers.php';
     include '../../backend/constants/StatusCodes.php';
@@ -142,27 +143,7 @@
                             $market_cap = calculateMarketCap($_SESSION['selected_artist']);
                             echo '
                                     <h2 data-toggle="tooltip" title="Share Price" class="tooltip-pointer" id="pps">'.$_SESSION['current_pps']['price_per_share'].'</h2>
-                            ';
-                            if($change == 0)
-                            {
-                                echo '
-                                    <h3>'.$change.'%</h3>
-                                ';
-                            }
-                            else if($change > 0)
-                            {
-                                echo '
-                                    <h3 class="suc-msg">+'.$change.'%</h3>
-                                ';
-                            }
-                            else
-                            {
-                                echo '
-                                    <h3 class="error-msg">'.$change.'%</h3>
-                                ';
-                            }
-
-                            echo '
+                                    <h3 id="price_change"></h3>
                                     <button id = "'.GraphOption::ONE_DAY.'" class="btn btn-secondary">'.GraphOption::ONE_DAY.'</button>
                                     <button id = "'.GraphOption::FIVE_DAY.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::FIVE_DAY.'</button>
                                     <button id = "'.GraphOption::ONE_MONTH.'" class="btn btn-secondary" aria-pressed="true">'.GraphOption::ONE_MONTH.'</button>

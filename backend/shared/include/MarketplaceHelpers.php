@@ -937,4 +937,20 @@ function refreshBuyOrderTable()
 
         return $ret;
     }
+
+    function getMaxValWithinInterval($conn, $artist_username, $date_from, $date_to)
+    {
+        $ret = 0;
+        $res = getJSONDataWithinInterval($conn, $artist_username, $date_from, $date_to);
+
+        while($row = $res->fetch_assoc())
+        {
+            if($row['price_per_share'] > $ret)
+            {
+                $ret = $row['price_per_share'];
+            }
+        }
+
+        return $ret;
+    }
 ?>
