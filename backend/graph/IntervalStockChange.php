@@ -48,8 +48,10 @@
         }
     }
 
-    $interval_max_val = getMaxValWithinInterval($conn, $_SESSION['selected_artist'], $days_ago, $db_current_date_time);
-    $json_data = round((($current_stock_price - $interval_max_val)/$interval_max_val) * 100, 2);
+    $res = getJSONDataWithinInterval($conn, $_SESSION['selected_artist'], $days_ago, $db_current_date_time);
+    //gets the first opening point of days ago
+    $days_ago_open = $res->fetch_assoc();
+    $json_data = round((($current_stock_price - $days_ago_open['price_per_share'])/$days_ago_open['price_per_share']) * 100, 2);
 
     closeCon($conn);
     $_SESSION['dependencies'] = "FRONTEND";
