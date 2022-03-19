@@ -139,7 +139,6 @@
                     <!-- Displaying stock graph -->
                     <div class="chart-container mx-auto">
                         <?php
-                            $change = getArtistDayChange($_SESSION['selected_artist']);
                             $market_cap = calculateMarketCap($_SESSION['selected_artist']);
                             echo '
                                     <h2 data-toggle="tooltip" title="Share Price" class="tooltip-pointer" id="pps">'.$_SESSION['current_pps']['price_per_share'].'</h2>

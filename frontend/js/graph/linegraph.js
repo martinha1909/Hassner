@@ -150,13 +150,20 @@ function JSONToAJAX(graph_option)
                         ticks: {
                             beginAtZero: true,
                             callback: function(value, index, values) {
-                                if(index.length > 6)
+                                if(graph_option === "5D")
+                                {
+                                    if(index.length > 6)
+                                    {
+                                        return value;
+                                    }
+                                    if(index % 4 === 0) 
+                                    {
+                                        return value;
+                                    }
+                                }
+                                else
                                 {
                                     return value;
-                                }
-                                if(index % 4 === 0) 
-                                {
-                                    return value
                                 }
                             }
                         }
