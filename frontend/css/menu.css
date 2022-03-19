@@ -617,7 +617,7 @@ select::-ms-expand {
 }
 
 .white-box-faq {
-  background: rgb(119, 119, 119);
+  background: rgb(255, 255, 255);
   width: 50%;
   min-height: 200px;
   color: black;

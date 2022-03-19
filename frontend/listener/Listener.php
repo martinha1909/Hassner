@@ -120,21 +120,21 @@
 
                         <div class="div-hidden" id="campaign_content">
                             <div class="py-4">
-                                <h4 data-toggle="tooltip" title="Campaigns that you are eligible for and participating in." class="h4-blue tooltip-pointer">Participating</h4>
+                                <b class="h4-blue">Participating</b><a data-toggle="tooltip" title="Campaigns that you are eligible for and participating in." class="tooltip-pointer"> ⓘ</a>  
                                 <?php
                                     printParticipatingCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
                             <div class="py-4">
-                                <h4 data-toggle="tooltip" title="Campaigns that you are not yet eligible for (need to reach the campaign's target share amount ⌖)." class="h4-blue tooltip-pointer">Potential Participation</h4>
+                                <b class="h4-blue">Potential Participation</b><a data-toggle="tooltip" title="Campaigns that you are not yet eligible for (need to reach the campaign's target share amount ⌖)." class="tooltip-pointer"> ⓘ</a>  
                                 <?php
                                     printNearParticipationCampaignTable($_SESSION['username']);
                                 ?>
                             </div>
 
                             <div class="py-4">
-                                <h4 data-toggle="tooltip" title="Campaigns that you were eligible for and that have now expired." class="h4-blue tooltip-pointer">Past Participation</h4>
+                                <b class="h4-blue">Past Participation</b><a data-toggle="tooltip" title="Campaigns that you were eligible for and that have now expired." class="tooltip-pointer"> ⓘ</a> 
                                 <?php
                                     printPastParticipatedCampaignTable($_SESSION['username']);
                                 ?>
@@ -199,7 +199,7 @@
                                         <a href="https://drive.google.com/file/d/1fS4nupvHMCs3WP4AmTNfPhLb2h5Y-e79/view?usp=sharing" target="_blank">View the manual</a>
                                     </div>
                                 <div class="white-box-faq mx-auto my-5">
-                                    <h3 class="text-center">FAQ</h3>
+                                    <h3 class="text-center text-blue">FAQ</h3>
                                     <b>⊳ Why is my (buy/sell) order not executing?</b>
                                     <br>If you have created a buy or sell order that is not executing, it is likely that there is not any demand at that particular price. To complete the buy or sell order you will have to either change the price or wait it out.</br></br>                     
                                     <b>⊳ What is the difference between benchmark ♦ and raffle ♣ campaigns?</b>
@@ -208,7 +208,7 @@
                                     <br>When a campaign has ended the winner(s) will be decided. If you have won you will contacted through email to receive the prize.</br></br> 
                                     <b>⊳ Why has the quantity of my buy order changed?</b>
                                     <br>If the share price has changed since you originally created the buy order, it may readjust the quantity of shares automatically. This is due to the fact that you can no longer afford the original quantity.</br></br> 
-                                    <div class="text-center text-white my-2">
+                                    <div class="text-center text-blue my-2">
                                         <b>Other questions or concerns?</b>
                                         <br>Please reach out to hassx.communication@gmail.com</br>
                                     </div>

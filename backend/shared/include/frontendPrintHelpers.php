@@ -26,13 +26,13 @@
                 {
                     echo '
                         <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
-                            <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
-                                <b data-toggle="tooltip" 
-                                    title="id: '.$participating_campaigns[$i]->getID().'&#013;type: benchmark&#013;" 
-                                    class="text-dark float-right tooltip-pointer">
-                                    ♦
-                                </b>
-                            </h3>
+                            <b class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
+                                <b class="text-dark float-right">♦</b>
+                            </b>
+                            <b data-toggle="tooltip" 
+                                title="id: '.$participating_campaigns[$i]->getID().'&#013;type: benchmark&#013;" 
+                                class="tooltip-pointer">ⓘ
+                            </b>
                         </form>
                     ';
                 }
@@ -40,13 +40,13 @@
                 {
                     echo '
                         <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
-                            <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
-                                <b data-toggle="tooltip" 
-                                    title="id: '.$participating_campaigns[$i]->getID().'&#013;type: raffle&#013;chance: '.$participating_campaigns[$i]->getWinningChance().'%" 
-                                    class="text-dark float-right tooltip-pointer">
-                                    ♣
-                                </b>
-                            </h3>
+                            <b class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-blue text-bold" role="button" value = "'.$artist_market_tag.'">
+                                <b class="text-dark float-right">♣</b>
+                            </b>
+                            <b data-toggle="tooltip" 
+                                title="id: '.$participating_campaigns[$i]->getID().'&#013;type: raffle&#013;chance: '.$participating_campaigns[$i]->getWinningChance().'%"" 
+                                class="tooltip-pointer text-black float-right">ⓘ
+                            </b>
                         </form>
                     ';
                 }
@@ -106,13 +106,13 @@
                 {
                     echo '
                         <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
-                            <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                                <b data-toggle="tooltip" 
-                                    title="id: '.$participated_campaigns[$i]->getID().'&#013;type: benchmark&#013;participants: '.$participated_campaigns[$i]->getEligibleParticipants().'" 
-                                    class="text-dark float-right tooltip-pointer">
-                                    ♦
-                                </b>
-                            </h3>
+                            <b class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
+                                <b class="text-dark float-right">♦</b>
+                            </b>
+                            <b data-toggle="tooltip"   
+                                title="id: '.$participated_campaigns[$i]->getID().'&#013;type: benchmark&#013;participants: '.$participated_campaigns[$i]->getEligibleParticipants().'"
+                                class="tooltip-pointer text-black float-right">ⓘ
+                            </b>
                         </form>
                     ';
                 }
@@ -120,13 +120,13 @@
                 {
                     echo '
                         <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
-                            <h3 class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                                <b data-toggle="tooltip" 
-                                    title="id: '.$participated_campaigns[$i]->getID().'&#013;type: raffle&#013;participants: '.$participated_campaigns[$i]->getEligibleParticipants().'" 
-                                    class="text-dark float-right tooltip-pointer">
-                                    ♣
-                                </b>
-                            </h3>
+                            <b class="h3-blue"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
+                                <b class="text-dark float-right">♣</b>
+                            </b>
+                            <b data-toggle="tooltip"
+                                title="id: '.$participated_campaigns[$i]->getID().'&#013;type: raffle&#013;participants: '.$participated_campaigns[$i]->getEligibleParticipants().'"
+                                class="tooltip-pointer text-black float-right">ⓘ
+                            </b>
                         </form>
                     ';
                 }
@@ -209,13 +209,13 @@
             {
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
-                        <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                            <b data-toggle="tooltip" 
+                        <b class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
+                            <b class="text-dark float-right">♦</b>
+                        </b>
+                        <b data-toggle="tooltip"
                                 title="id: '.$near_parti_campaigns[$i]->getID().'&#013;type: benchmark&#013;" 
-                                class="text-dark float-right tooltip-pointer">
-                                ♦
-                            </b>
-                        </h3>
+                                class="tooltip-pointer text-black float-right">ⓘ
+                        </b>
                     </form>
                 ';
             }
@@ -223,13 +223,13 @@
             {
                 echo '
                     <form action="../../backend/listener/ArtistTagShareInfoBackend.php" method="post">
-                        <h3 class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
-                            <b data-toggle="tooltip" 
+                        <b class="h3-white"><input name = "artist_tag" type = "submit" class="input-no-border text-white text-bold" role="button" value = "'.$artist_market_tag.'">
+                            <b class="text-dark float-right">♣</b>
+                        </b>
+                        <b data-toggle="tooltip"
                                 title="id: '.$near_parti_campaigns[$i]->getID().'&#013;type: raffle&#013;chance: 0%" 
-                                class="text-dark float-right tooltip-pointer">
-                                ♣
-                            </b>
-                        </h3>
+                                class="tooltip-pointer text-black float-right">ⓘ
+                        </b>
                     </form>
                 ';
             }
@@ -646,8 +646,9 @@
         {
             $artist_market_tag = getArtistMarketTag($artist_username);
             echo '
-                <h3 data-toggle="tooltip" title="Here the artist offers rewards in return for users buying shares." class="h3-blue tooltip-pointer col-4 py-5">Current Campaigns</h3>
-                <div class="row">
+            <div>
+                <b class="h3-blue">Current Campaigns</b><a data-toggle="tooltip" title="Here the artist offers rewards in return for users buying shares." class="tooltip-pointer"> ⓘ</a>
+            </div>
             ';
 
             for($i = 0; $i < sizeof($current_campaigns); $i++)
@@ -665,13 +666,15 @@
                     $type = "♦";
                 }
                 echo '
-                        <h3 class="h3-blue">'.$artist_market_tag.'
-                            <b data-toggle="tooltip" 
-                                title="id: '.$current_campaigns[$i]->getID().'&#013;type: '.$current_campaigns[$i]->getType().'&#013;participants: '.$current_campaigns[$i]->getEligibleParticipants().'" 
-                                class="text-dark float-right tooltip-pointer">
-                                '.$type.'
+                        <div>
+                            <b class="h3-blue">'.$artist_market_tag.'
+                                <b class="text-dark float-right">'.$type.'</b>
                             </b>
-                        </h3>
+                            <b data-toggle="tooltip"
+                                title="id: '.$current_campaigns[$i]->getID().'&#013;type: '.$current_campaigns[$i]->getType().'&#013;participants: '.$current_campaigns[$i]->getEligibleParticipants().'"
+                                class="tooltip-pointer text-black float-right">ⓘ
+                            </b>
+                        </div>
                         <b data-toggle="tooltip" title="Offering" class="tooltip-pointer text-black">❖ '.$current_campaigns[$i]->getOffering().'</b>
                         <p data-toggle="tooltip" title="Time left" class="tooltip-pointer text-black text-bold">⌛ '.$current_campaigns[$i]->getTimeLeft().'</p>
                         <b data-toggle="tooltip" title="Target share amount" class="tooltip-pointer text-black">⌖ '.$current_campaigns[$i]->getMinEthos().' | </b>
@@ -863,7 +866,7 @@
         {
             echo '
                 <div>
-                <b class="h3-white py-2 mx-2">Buy Order</b><a data-toggle="tooltip" title="Order in queue to purchase shares." class="h3-blue tooltip-pointer">ⓘ</a>
+                <b class="h3-white py-2 mx-2">Buy Order</b><a data-toggle="tooltip" title="Order in queue to purchase shares." class="tooltip-pointer">ⓘ</a>
             ';
             while($row = $res->fetch_assoc())
             {
@@ -919,7 +922,7 @@
         {
             echo '
                 <div>
-                <b class="h3-white py-2 mx-2">Sell Order</b><a data-toggle="tooltip" title="Order in queue to sell shares." class="h3-blue tooltip-pointer">ⓘ</a>
+                <b class="h3-white py-2 mx-2">Sell Order</b><a data-toggle="tooltip" title="Order in queue to sell shares." class="tooltip-pointer">ⓘ</a>
             ';
             while($row = $res->fetch_assoc())
             {
