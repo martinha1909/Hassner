@@ -1,6 +1,8 @@
 <?php
     session_start();
 
+    date_default_timezone_set("America/Edmonton");
+
     if(!isset($_SESSION['username']) || $_SESSION['username'] === 0)
     {
         header("Location: ../credentials/index.php");

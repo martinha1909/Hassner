@@ -1,33 +1,41 @@
 $(document).ready(function(){
     var graph_option = "1D";
     JSONToAJAX(graph_option);
+    stockChangeWithinInterval(graph_option);
     $("#1D").click(function (){
         graph_option = "1D";
         JSONToAJAX(graph_option);
+        stockChangeWithinInterval(graph_option);
     });
     $("#5D").click(function (){
         graph_option = "5D";
         JSONToAJAX(graph_option);
+        stockChangeWithinInterval(graph_option);
     });
     $("#1M").click(function (){
         graph_option = "1M";
         JSONToAJAX(graph_option);
+        stockChangeWithinInterval(graph_option);
     });
     $("#6M").click(function (){
         graph_option = "6M";
         JSONToAJAX(graph_option);
+        stockChangeWithinInterval(graph_option);
     });
     $("#YTD").click(function (){
         graph_option = "YTD";
         JSONToAJAX(graph_option);
+        stockChangeWithinInterval(graph_option);
     });
     $("#1Y").click(function (){
         graph_option = "1Y";
         JSONToAJAX(graph_option);
+        stockChangeWithinInterval(graph_option);
     });
     $("#5Y").click(function (){
         graph_option = "5Y";
         JSONToAJAX(graph_option);
+        stockChangeWithinInterval(graph_option);
     });
 });
 
@@ -77,8 +85,6 @@ function JSONToAJAX(graph_option)
                         last_fetched_date = date_recorded;
                     }
                 }
-
-                console.log(x_axis);
             }
             //one-month graph, 6-month graph, YTD graph, and 1-year graph are pre-filtered
             else
@@ -135,7 +141,32 @@ function JSONToAJAX(graph_option)
                 },
                 legend : {
                     display : false
-                }
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        ticks: {
+                            beginAtZero: true,
+                            callback: function(value, index, values) {
+                                if(graph_option === "5D")
+                                {
+                                    if(index.length > 6)
+                                    {
+                                        return value;
+                                    }
+                                    if(index % 4 === 0) 
+                                    {
+                                        return value;
+                                    }
+                                }
+                                else
+                                {
+                                    return value;
+                                }
+                            }
+                        }
+                    }]
+                },
             };
 
             var chart = new Chart( ctx, {
@@ -144,6 +175,37 @@ function JSONToAJAX(graph_option)
                 options : options
             });
 
+        },
+        error : function(data){
+
+        }
+    });
+}
+
+function stockChangeWithinInterval(graph_option)
+{
+    const url = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Hassner/backend/graph/IntervalStockChange.php";
+    $.ajax({
+        url : url,
+        method : "POST",
+        data:{
+            graph_option: graph_option
+        },
+        success : function(data){
+            if(data === 0)
+            {
+                $("#price_change").text(data + "%");
+            }
+            else if(data > 0)
+            {
+                $("#price_change").text("+" + data + "%");
+                $("#price_change").addClass("suc-msg");
+            }
+            else
+            {
+                $("#price_change").text(data + "%");
+                $("#price_change").addClass("error-msg");
+            }
         },
         error : function(data){
 

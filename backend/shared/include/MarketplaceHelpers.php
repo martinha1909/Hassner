@@ -937,4 +937,30 @@ function refreshBuyOrderTable()
 
         return $ret;
     }
+
+    /**
+    * Gets the max value of an artist's stock price in a given time interval
+    *
+    * @param  	conn	            connection to db
+    * @param  	artist_username	    artist username to retrieve stock price from
+    * @param  	date_from	        start of the interval
+    * @param  	date_to	            end of the interval
+    *
+    * @return 	ret	               higest stock price within the interval
+    */
+    function getMaxValWithinInterval($conn, $artist_username, $date_from, $date_to)
+    {
+        $ret = 0;
+        $res = getJSONDataWithinInterval($conn, $artist_username, $date_from, $date_to);
+
+        while($row = $res->fetch_assoc())
+        {
+            if($row['price_per_share'] > $ret)
+            {
+                $ret = $row['price_per_share'];
+            }
+        }
+
+        return $ret;
+    }
 ?>
