@@ -195,15 +195,19 @@ function stockChangeWithinInterval(graph_option)
             if(data === 0)
             {
                 $("#price_change").text(data + "%");
+                $("#price_change").removeClass("suc-msg");
+                $("#price_change").removeClass("error-msg");
             }
             else if(data > 0)
             {
                 $("#price_change").text("+" + data + "%");
+                $("#price_change").removeClass("error-msg");
                 $("#price_change").addClass("suc-msg");
             }
             else
             {
                 $("#price_change").text(data + "%");
+                $("#price_change").removeClass("suc-msg");
                 $("#price_change").addClass("error-msg");
             }
         },
