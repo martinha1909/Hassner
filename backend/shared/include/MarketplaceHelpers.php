@@ -788,31 +788,16 @@ function refreshBuyOrderTable()
     {
         $ret = 0;
         $conn = connect();
-        $all_pps_in_a_day = array();
-        $db_current_date_time = date("Y-m-d 23:59:59", strtotime("-1 day"));
-        $days_ago = date("Y-m-d 00:00:00", strtotime("-1 day"));
+        $db_current_date_time = date('Y-m-d H:i:s');
+        $days_ago = date("Y-m-d H:i:s", strtotime("-1 day"));
 
         $res = searchArtistCurrentPricePerShare($conn, $artist_username);
         $current_pps = $res->fetch_assoc();
 
         $res = getJSONDataWithinInterval($conn, $artist_username, $days_ago, $db_current_date_time);
-        while($row = $res->fetch_assoc())
-        {
-            array_push($all_pps_in_a_day, $row['price_per_share']);
-        }
-
-        $prev_day_high = round(getMaxPPSByDay($all_pps_in_a_day), 2);
-        //if the return value from getMaxPPSByDay is 0, it means that there was no trade going on in the previous day
-        //In this case we can just return 0
-        if($prev_day_high == 0)
-        {
-            $ret = 0;
-        }
-        else
-        {
-            //Day change is compared between yesterday's high vs current price per share
-            $ret = round((($current_pps['price_per_share'] - $prev_day_high)/$prev_day_high) * 100, 2);
-        }
+        $prev_day_close = $res->fetch_assoc();
+        //Day change is compared between yesterday's open vs current price per share
+        $ret = round((($current_pps['price_per_share'] - $prev_day_close['price_per_share'])/$prev_day_close['price_per_share']) * 100, 2);
 
         return $ret;
     }
