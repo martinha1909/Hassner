@@ -31,7 +31,7 @@
                             </b>
                             <b data-toggle="tooltip" 
                                 title="id: '.$participating_campaigns[$i]->getID().'&#013;type: benchmark&#013;" 
-                                class="tooltip-pointer">ⓘ
+                                class="tooltip-pointer text-black float-right">ⓘ
                             </b>
                         </form>
                     ';
