@@ -271,16 +271,24 @@
         </div>
     </section>
 
-    <section class="vh-md-100" id="Marketplace">
+    <section class="vh-md-100">
         <div class="container-fluid">
             <div class="row">
-                <div class="text-center col-6">
+                <div class="col-6">
                     <?php
                         if($_SESSION['artist_found'])
                         {
                             echo '
-                                <h3 data-toggle="tooltip" title="Buy History records the trades made with your account.&#013;Trade History records the trades made by all shareholders.&#013;Inject History tracks the amount of shares distributed by the artist." class="h3-blue tooltip-pointer my-5">History</h3>
-                                <div class="mx-auto select-dark">
+                            <div>
+                                <div class="text-center my-2">
+                                    <b class="h3-blue">History</b>
+                                    <a 
+                                        data-toggle="tooltip" 
+                                        title="Buy History records the trades made with your account.&#013;Trade History records the trades made by all shareholders.&#013;Inject History tracks the amount of shares distributed by the artist." 
+                                        class="tooltip-pointer"> ⓘ
+                                    </a>
+                                </div>
+                                <div class="select-dark mx-auto">
                                     <select class="select-dropdown select-dropdown-dark text-center" id="user_history_dropdown">
                                         <option selected disabled>'.TradeHistoryType::NONE.'</option>
                                         <option value="'.TradeHistoryType::BUY_HISTORY.'">'.TradeHistoryType::BUY_HISTORY.'</option>
@@ -300,6 +308,7 @@
                                 <div class="div-hidden" id="user_inject_history_content">
                                     '.injectionHistoryInit($_SESSION['selected_artist']).'
                                 </div>
+                            </div>
                             ';
                         }
                     ?>
