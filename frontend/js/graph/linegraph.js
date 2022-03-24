@@ -150,11 +150,12 @@ function JSONToAJAX(graph_option)
                             callback: function(value, index, values) {
                                 if(graph_option === "5D")
                                 {
-                                    if(index.length > 6)
+                                    if(value.length > 6)
                                     {
                                         return value;
                                     }
-                                    if(index % 4 === 0) 
+                                    //keep the x-axis clean by only display 2 time slots per day for 5D graph
+                                    if(value === "08:00" || value === "16:00")
                                     {
                                         return value;
                                     }
