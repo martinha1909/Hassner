@@ -142,27 +142,6 @@ function JSONToAJAX(graph_option)
                 legend : {
                     display : false
                 },
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        ticks: {
-                            beginAtZero: true,
-                            callback: function(value, index, values) {
-                                if(graph_option === "5D")
-                                {
-                                    if(value.length > 6)
-                                    {
-                                        return value;
-                                    }
-                                }
-                                else
-                                {
-                                    return value;
-                                }
-                            }
-                        }
-                    }]
-                },
             };
 
             var chart = new Chart( ctx, {
