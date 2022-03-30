@@ -1,5 +1,12 @@
 <?php
 
+    define("HX_EXCLUDED_USERS", array(
+                                    "JackCampbell", 
+                                    "Al Lure", 
+                                    "sloves", 
+                                    "Calypso Inquisition", 
+                                    "RandallKeaty"
+                                ));
     function searchShareholdersByArtist($conn, $artist_username)
     {
         $sql = "SELECT artist_username, user_username FROM artist_shareholders WHERE artist_username = ?";
@@ -232,7 +239,7 @@
         $max = 3;
         $all_users = array();
 
-        $res = searchAccountWithExclusions($conn, "JackCampbell", "Al Lure", "sloves", "Calypso Inquisition", "RandallKeaty");
+        $res = searchAccountWithExclusions($conn, HX_EXCLUDED_USERS);
         while($row = $res->fetch_assoc())
         {
             $investor = new Investor();
@@ -247,7 +254,7 @@
         }
 
         Investor::sort($all_users, 0, sizeof($all_users) - 1, "Descending", "Net Worth");
-        
+
         if($view_full_board == 1)
         {
             $max = sizeof($all_users);

@@ -47,7 +47,7 @@
             return $result;
         }
 
-        function searchAccountWithExclusions($conn, ...$excluded_usernames)
+        function searchAccountWithExclusions($conn, $excluded_usernames)
         {
             $sql = "SELECT username, balance, email FROM account WHERE username != '$excluded_usernames[0]' ";
             for ($i = 1; $i < sizeof($excluded_usernames); $i++)
