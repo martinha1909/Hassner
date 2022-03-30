@@ -110,8 +110,8 @@
                     </li>
                 </ul>
 
-                <div class="col">
-                    <div id="ethos_content">
+                <div class="col-6 mx-auto my-4">
+                    <div id="ethos_content container">
                     <?php
                         if ($account_info['Share_Distributed'] == 0) 
                         {
