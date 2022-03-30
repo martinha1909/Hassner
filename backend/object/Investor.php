@@ -8,11 +8,45 @@
         private $amount_invested;
         private $campaigns_won;
         private $campaigns_participated;
+        private $net_worth;
+        private $num_of_trades;
 
         function __construct()
         {
             parent::__construct("user");
             $this->total_shares_bought = 0;
+        }
+
+        /**
+         * Get the value of num_of_trades
+         */ 
+        public function getNumOfTrades()
+        {
+                return $this->num_of_trades;
+        }
+
+        /**
+         * Set the value of num_of_trades
+         */ 
+        public function setNumOfTrades($num_of_trades)
+        {
+                $this->num_of_trades = $num_of_trades;
+        }
+
+        /**
+         * Get the value of net_worth
+         */ 
+        public function getNetWorth()
+        {
+                return $this->net_worth;
+        }
+
+        /**
+         * Set the value of net_worth
+         */ 
+        public function setNetWorth($net_worth)
+        {
+                $this->net_worth = $net_worth;
         }
 
         /**
@@ -118,6 +152,10 @@
                 {
                         $pivot = $info_arr[$high]->getAmountInvested();
                 }
+                if($item == "Net Worth")
+                {
+                        $pivot = $info_arr[$high]->getNetWorth();
+                }
 
                 $i = $low - 1;
 
@@ -133,12 +171,28 @@
                                                 Investor::swap($info_arr, $i, $j);
                                         }
                                 }
+                                else if($item == "Net Worth")
+                                {
+                                        if($info_arr[$j]->getNetWorth() > $pivot)
+                                        {
+                                                $i++;
+                                                Investor::swap($info_arr, $i, $j);
+                                        }
+                                }
                         }
                         else if($option == "Ascending")
                         {
                                 if($item == "Amount Invested")
                                 {
                                         if($info_arr[$j]->getAmountInvested() < $pivot)
+                                        {
+                                                $i++;
+                                                Investor::swap($info_arr, $i, $j);
+                                        }
+                                }
+                                else if($item == "Net Worth")
+                                {
+                                        if($info_arr[$j]->getNetWorth() < $pivot)
                                         {
                                                 $i++;
                                                 Investor::swap($info_arr, $i, $j);

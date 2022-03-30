@@ -1,3 +1,8 @@
+<?php
+    session_start();
+    $_SESSION['dependencies'] = "SCRIPTS";
+    $_SESSION['leaderboard_full'] = 0;
+?>
 <!doctype html>
 <html lang="en">
 
@@ -21,7 +26,8 @@
         <div id="verified_content" class="div-hidden">
             <h3 class="h3-blue">Available Scripts</h3>
             <a class="py-4" href = "PopulateUserBalance.php">Reset user balance</a></br>
-            <a class="py-4" href = "CreateArtist.php">Create an Artist</a>
+            <a class="py-4" href = "CreateArtist.php">Create an Artist</a></br>
+            <a class="py-4" href = "Leaderboard.php">View Leaderboard</a>
         </div>
     </div>
 

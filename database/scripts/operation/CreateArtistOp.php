@@ -1,6 +1,10 @@
 <?php
+    session_start();
+    $_SESSION['dependencies'] = "SCRIPTS";
+
     include '../include/DatabaseHelpers.php';
     include '../../../backend/control/connection.php';
+    include '../../../backend/control/Queries.php';
     include '../../../backend/constants/AccountTypes.php';
     include '../../../backend/constants/StatusCodes.php';
 
