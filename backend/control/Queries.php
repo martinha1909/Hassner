@@ -47,6 +47,19 @@
             return $result;
         }
 
+        function searchAccountWithExclusions($conn, $excluded_usernames)
+        {
+            $sql = "SELECT username, balance, email FROM account WHERE username != '$excluded_usernames[0]' ";
+            for ($i = 1; $i < sizeof($excluded_usernames); $i++)
+            {
+                $sql .= "AND username != '$excluded_usernames[$i]' "; 
+            }
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result;
+        }
+
         function getAccountTypeFromUsername($conn, $username)
         {
             $sql = "SELECT account_type FROM account WHERE username = ?";
@@ -212,6 +225,17 @@
             $sql = "SELECT * FROM buy_history WHERE user_username = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('s', $user_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result;
+        }
+
+        function searchUserTrades($conn, $user_username)
+        {
+            $sql = "SELECT * FROM buy_history WHERE user_username = ? OR seller_username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $user_username, $user_username);
             $stmt->execute();
             $result = $stmt->get_result();
 
